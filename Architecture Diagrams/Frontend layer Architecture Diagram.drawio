@@ -1,0 +1,334 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.6.6 Chrome/144.0.7559.236 Electron/40.8.4 Safari/537.36">
+  <diagram name="Page-1" id="32f81xM9x6UxA2FareCx">
+    <mxGraphModel dx="2727" dy="2301" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="" vertex="1">
+          <mxGeometry height="130" width="320" x="561" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-2" parent="1" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;labelBackgroundColor=none;fontColor=#143642;rounded=1;" value="Frontend Web Application" vertex="1">
+          <mxGeometry height="40" width="100" x="671" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-3" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=1;labelBackgroundColor=none;fontColor=#143642;" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;Next.js / React&lt;/font&gt;" vertex="1">
+          <mxGeometry height="30" width="100" x="575" y="75" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-4" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=1;labelBackgroundColor=none;fontColor=#143642;" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;App Router Structure&lt;/font&gt;" vertex="1">
+          <mxGeometry height="30" width="146" x="575" y="105" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="" vertex="1">
+          <mxGeometry height="160" width="370" x="-250" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-6" parent="1" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;labelBackgroundColor=none;fontColor=#143642;rounded=1;" value="Application&amp;nbsp; Core File&amp;nbsp;" vertex="1">
+          <mxGeometry height="30" width="100" x="-109" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-8" parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="" vertex="1">
+          <mxGeometry height="40" width="320" x="240" y="281" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-9" parent="1" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;labelBackgroundColor=none;fontColor=#143642;rounded=1;" value="Route Pages" vertex="1">
+          <mxGeometry height="40" width="100" x="354" y="281" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-10" parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="" vertex="1">
+          <mxGeometry height="40" width="320" x="721" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-11" parent="1" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;labelBackgroundColor=none;fontColor=#143642;rounded=1;" value="Reusable Components" vertex="1">
+          <mxGeometry height="40" width="100" x="829" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-12" edge="1" parent="1" style="endArrow=none;html=1;rounded=1;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="200" y="302" as="sourcePoint" />
+            <mxPoint x="240" y="302" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-13" edge="1" parent="1" style="endArrow=none;html=1;rounded=1;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="200" y="1160" as="sourcePoint" />
+            <mxPoint x="200" y="302" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-14" edge="1" parent="1" style="endArrow=none;html=1;rounded=1;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="200" y="440" as="sourcePoint" />
+            <mxPoint x="240" y="440" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-15" parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="" vertex="1">
+          <mxGeometry height="80" width="320" x="240" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-16" parent="1" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;labelBackgroundColor=none;fontColor=#143642;rounded=1;" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;Dashboard Page&lt;/font&gt;" vertex="1">
+          <mxGeometry height="40" width="100" x="354" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-17" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=1;labelBackgroundColor=none;fontColor=#143642;" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;app/dashboard/page.jsx&lt;/b&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry height="30" width="146" x="320" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-18" edge="1" parent="1" style="endArrow=none;html=1;rounded=1;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="200" y="799" as="sourcePoint" />
+            <mxPoint x="240" y="799" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-19" parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="" vertex="1">
+          <mxGeometry height="80" width="320" x="240" y="761" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-20" parent="1" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;labelBackgroundColor=none;fontColor=#143642;rounded=1;" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;Reports Page&lt;/font&gt;" vertex="1">
+          <mxGeometry height="40" width="100" x="354" y="761" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-21" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=1;labelBackgroundColor=none;fontColor=#143642;" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;app/dashboard/reports/page.jsx&lt;/b&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry height="30" width="250" x="260" y="801" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-22" edge="1" parent="1" style="endArrow=none;html=1;rounded=1;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="201" y="918" as="sourcePoint" />
+            <mxPoint x="241" y="918" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-23" parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="" vertex="1">
+          <mxGeometry height="80" width="320" x="240" y="881" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-24" parent="1" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;labelBackgroundColor=none;fontColor=#143642;rounded=1;" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;Reservation-Forecast Page&lt;/font&gt;" vertex="1">
+          <mxGeometry height="40" width="100" x="354" y="871" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-25" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=1;labelBackgroundColor=none;fontColor=#143642;" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;app/dashboard/reservation-forecast/page.jsx&lt;/b&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry height="30" width="290" x="260" y="919" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-26" edge="1" parent="1" style="endArrow=none;html=1;rounded=1;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="201" y="1039" as="sourcePoint" />
+            <mxPoint x="241" y="1039" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-27" parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="" vertex="1">
+          <mxGeometry height="80" width="320" x="240" y="999" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-28" parent="1" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;labelBackgroundColor=none;fontColor=#143642;rounded=1;" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;Staff-Forecast Page&lt;/font&gt;" vertex="1">
+          <mxGeometry height="40" width="100" x="354" y="999" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-29" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=1;labelBackgroundColor=none;fontColor=#143642;" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;app/dashboard/staff-forecast/page.jsx&lt;/b&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry height="30" width="227" x="277.5" y="1039" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-30" edge="1" parent="1" style="endArrow=none;html=1;rounded=1;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="201" y="1159" as="sourcePoint" />
+            <mxPoint x="241" y="1159" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-31" parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="" vertex="1">
+          <mxGeometry height="80" width="320" x="241" y="1119" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-32" parent="1" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;labelBackgroundColor=none;fontColor=#143642;rounded=1;" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;Staffing-Rules Page&lt;/font&gt;" vertex="1">
+          <mxGeometry height="40" width="100" x="351" y="1119" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-33" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=1;labelBackgroundColor=none;fontColor=#143642;" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;app/dashboard/staffing-rules/page.jsx&lt;/b&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry height="30" width="270" x="250" y="1159" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-39" parent="1" style="text;strokeColor=none;fillColor=none;html=1;whiteSpace=wrap;verticalAlign=middle;overflow=hidden;labelBackgroundColor=none;fontColor=#143642;rounded=1;" value="&lt;ul&gt;&lt;li&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;src/app/layout.jsx&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;src/app/page.jsx&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;src/app/globals.css&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;src/app/favicon.ico&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;src/app/page.module.css&amp;nbsp; &amp;nbsp;&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;" vertex="1">
+          <mxGeometry height="120" width="240" x="-190" y="310" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-40" edge="1" parent="1" style="endArrow=none;html=1;rounded=1;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="681" y="300.5" as="sourcePoint" />
+            <mxPoint x="721" y="300.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-42" edge="1" parent="1" style="endArrow=none;html=1;rounded=1;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="680" y="1080" as="sourcePoint" />
+            <mxPoint x="680" y="302" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-43" edge="1" parent="1" style="endArrow=none;html=1;rounded=1;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="681" y="440" as="sourcePoint" />
+            <mxPoint x="721" y="440" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-44" parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="" vertex="1">
+          <mxGeometry height="80" width="320" x="721" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-45" parent="1" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;labelBackgroundColor=none;fontColor=#143642;rounded=1;" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;Auth&lt;/font&gt;" vertex="1">
+          <mxGeometry height="40" width="100" x="820" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-47" edge="1" parent="1" style="endArrow=none;html=1;rounded=1;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="681" y="580" as="sourcePoint" />
+            <mxPoint x="721" y="580" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-51" parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="" vertex="1">
+          <mxGeometry height="160" width="320" x="718" y="678" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-52" edge="1" parent="1" style="endArrow=none;html=1;rounded=1;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="681" y="759" as="sourcePoint" />
+            <mxPoint x="721" y="759" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-53" parent="1" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;labelBackgroundColor=none;fontColor=#143642;rounded=1;" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;Dashboard&lt;/font&gt;" vertex="1">
+          <mxGeometry height="40" width="100" x="826" y="679" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-54" parent="1" style="text;strokeColor=none;fillColor=none;html=1;whiteSpace=wrap;verticalAlign=middle;overflow=hidden;labelBackgroundColor=none;fontColor=#143642;rounded=1;" value="&lt;ul&gt;&lt;li&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;addNewBooking.jsx&lt;/b&gt;&lt;/font&gt;&lt;/li&gt;&lt;li&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;dashboardContent.jsx&lt;/b&gt;&lt;/font&gt;&lt;/li&gt;&lt;li&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;dashboardLayout.jsx&lt;/b&gt;&lt;/font&gt;&lt;/li&gt;&lt;li&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;dashboardMain.jsx&lt;/b&gt;&lt;/font&gt;&lt;/li&gt;&lt;li&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;summaryCards.jsx&lt;/b&gt;&lt;/font&gt;&lt;/li&gt;&lt;/ul&gt;" vertex="1">
+          <mxGeometry height="119.5" width="200" x="769.5" y="709" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-55" parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="" vertex="1">
+          <mxGeometry height="80" width="320" x="720" y="894" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-56" edge="1" parent="1" style="endArrow=none;html=1;rounded=1;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="680" y="934.95" as="sourcePoint" />
+            <mxPoint x="720" y="934.95" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-57" parent="1" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;labelBackgroundColor=none;fontColor=#143642;rounded=1;" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;Layout&lt;/font&gt;" vertex="1">
+          <mxGeometry height="40" width="100" x="828" y="894" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-58" parent="1" style="text;strokeColor=none;fillColor=none;html=1;whiteSpace=wrap;verticalAlign=middle;overflow=hidden;labelBackgroundColor=none;fontColor=#143642;rounded=1;" value="&lt;ul&gt;&lt;li&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;sidebar.jsx&lt;/b&gt;&lt;/font&gt;&lt;/li&gt;&lt;li&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;topbar.jsx&lt;/b&gt;&lt;/font&gt;&lt;/li&gt;&lt;/ul&gt;" vertex="1">
+          <mxGeometry height="50" width="147" x="796" y="914" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-59" parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="" vertex="1">
+          <mxGeometry height="80" width="320" x="721" y="1038" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-60" parent="1" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;labelBackgroundColor=none;fontColor=#143642;rounded=1;" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;Tables&lt;/font&gt;" vertex="1">
+          <mxGeometry height="40" width="100" x="829" y="1038" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-61" parent="1" style="text;strokeColor=none;fillColor=none;html=1;whiteSpace=wrap;verticalAlign=middle;overflow=hidden;labelBackgroundColor=none;fontColor=#143642;rounded=1;" value="&lt;ul&gt;&lt;li&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;RecentBookingTable.jsx&lt;/b&gt;&lt;/font&gt;&lt;/li&gt;&lt;/ul&gt;" vertex="1">
+          <mxGeometry height="50" width="209" x="751" y="1068" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-63" edge="1" parent="1" style="endArrow=none;html=1;rounded=1;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="717" y="178" as="sourcePoint" />
+            <mxPoint x="717" y="218" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-64" edge="1" parent="1" style="endArrow=none;html=1;rounded=1;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="-81" y="220" as="sourcePoint" />
+            <mxPoint x="1360" y="220" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-65" edge="1" parent="1" style="endArrow=none;html=1;rounded=1;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="-82" y="226" as="sourcePoint" />
+            <mxPoint x="-82" y="276" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-66" edge="1" parent="1" style="endArrow=none;html=1;rounded=1;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="399" y="229" as="sourcePoint" />
+            <mxPoint x="399" y="269" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-67" edge="1" parent="1" style="endArrow=none;html=1;rounded=1;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="889" y="228" as="sourcePoint" />
+            <mxPoint x="889" y="268" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-68" parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="" vertex="1">
+          <mxGeometry height="80" width="320" x="240" y="518" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-69" edge="1" parent="1" style="endArrow=none;html=1;rounded=1;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="202" y="558" as="sourcePoint" />
+            <mxPoint x="242" y="558" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-70" parent="1" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;labelBackgroundColor=none;fontColor=#143642;rounded=1;" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;Bookings Page&lt;/font&gt;" vertex="1">
+          <mxGeometry height="40" width="100" x="353" y="514" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-71" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=1;labelBackgroundColor=none;fontColor=#143642;" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;app/dashboard/bookings/page.jsx&lt;/b&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry height="30" width="300" x="240" y="559" as="geometry" />
+        </mxCell>
+        <mxCell id="wdWIP8UuK1jCzuRiASKV-74" parent="1" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;fontColor=#143642;" value="Frontend Layer Architecture Diagram" vertex="1">
+          <mxGeometry height="40" width="100" x="687" y="-30" as="geometry" />
+        </mxCell>
+        <mxCell id="GO8Tjcy6PwzbOma8JrmY-1" edge="1" parent="1" style="endArrow=none;html=1;rounded=1;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="1358" y="230" as="sourcePoint" />
+            <mxPoint x="1358" y="270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GO8Tjcy6PwzbOma8JrmY-2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="" vertex="1">
+          <mxGeometry height="40" width="320" x="1198" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="GO8Tjcy6PwzbOma8JrmY-3" parent="1" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;labelBackgroundColor=none;fontColor=#143642;rounded=1;" value="Supporting Logic" vertex="1">
+          <mxGeometry height="40" width="100" x="1308" y="281" as="geometry" />
+        </mxCell>
+        <mxCell id="GO8Tjcy6PwzbOma8JrmY-4" edge="1" parent="1" style="endArrow=none;html=1;rounded=1;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="1157" y="300" as="sourcePoint" />
+            <mxPoint x="1197" y="300" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GO8Tjcy6PwzbOma8JrmY-5" edge="1" parent="1" style="endArrow=none;html=1;rounded=1;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="1160" y="560" as="sourcePoint" />
+            <mxPoint x="1160" y="301" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GO8Tjcy6PwzbOma8JrmY-6" edge="1" parent="1" style="endArrow=none;html=1;rounded=1;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="1160" y="439" as="sourcePoint" />
+            <mxPoint x="1200" y="439" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GO8Tjcy6PwzbOma8JrmY-7" parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="" vertex="1">
+          <mxGeometry height="80" width="320" x="1198" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="GO8Tjcy6PwzbOma8JrmY-8" parent="1" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;labelBackgroundColor=none;fontColor=#143642;rounded=1;" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;Hooks&lt;/font&gt;" vertex="1">
+          <mxGeometry height="40" width="100" x="1308" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="GO8Tjcy6PwzbOma8JrmY-9" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=1;labelBackgroundColor=none;fontColor=#143642;" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;useDashoardData.js&lt;/b&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry height="30" width="146" x="1290" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="GO8Tjcy6PwzbOma8JrmY-10" edge="1" parent="1" style="endArrow=none;html=1;rounded=1;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="1160" y="558" as="sourcePoint" />
+            <mxPoint x="1200" y="558" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GO8Tjcy6PwzbOma8JrmY-11" parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="" vertex="1">
+          <mxGeometry height="101" width="320" x="1198" y="519" as="geometry" />
+        </mxCell>
+        <mxCell id="GO8Tjcy6PwzbOma8JrmY-12" parent="1" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;labelBackgroundColor=none;fontColor=#143642;rounded=1;" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;Utils&lt;/font&gt;" vertex="1">
+          <mxGeometry height="40" width="100" x="1313" y="519" as="geometry" />
+        </mxCell>
+        <mxCell id="GO8Tjcy6PwzbOma8JrmY-13" parent="1" style="text;strokeColor=none;fillColor=none;html=1;whiteSpace=wrap;verticalAlign=middle;overflow=hidden;labelBackgroundColor=none;fontColor=#143642;rounded=1;" value="&lt;ul&gt;&lt;li&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;bookingTimeSlot.js&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;DashboardHelpers.js&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;DateFormat.js&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;" vertex="1">
+          <mxGeometry height="70.5" width="204" x="1266" y="539.5" as="geometry" />
+        </mxCell>
+        <mxCell id="dpg5L1O0fBrN9LPw0QyS-1" edge="1" parent="1" style="endArrow=none;html=1;rounded=1;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="200" y="678.57" as="sourcePoint" />
+            <mxPoint x="240" y="678.57" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dpg5L1O0fBrN9LPw0QyS-2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="" vertex="1">
+          <mxGeometry height="80" width="320" x="241" y="641" as="geometry" />
+        </mxCell>
+        <mxCell id="dpg5L1O0fBrN9LPw0QyS-3" parent="1" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;labelBackgroundColor=none;fontColor=#143642;rounded=1;" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;Create Booking Page&lt;/font&gt;" vertex="1">
+          <mxGeometry height="40" width="100" x="351" y="640" as="geometry" />
+        </mxCell>
+        <mxCell id="dpg5L1O0fBrN9LPw0QyS-4" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=1;labelBackgroundColor=none;fontColor=#143642;" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;app/dashboard/createBooking/page.jsx&lt;/b&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry height="30" width="300" x="247" y="681" as="geometry" />
+        </mxCell>
+        <mxCell id="YC2K0JfD6ogtElShlCJL-1" parent="1" style="text;strokeColor=none;fillColor=none;html=1;whiteSpace=wrap;verticalAlign=middle;overflow=hidden;" value="&lt;ul&gt;&lt;li&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;loginForm.jsx&lt;/b&gt;&lt;/font&gt;&lt;/li&gt;&lt;li&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;logoutForm.jsx&lt;/b&gt;&lt;/font&gt;&lt;/li&gt;&lt;/ul&gt;" vertex="1">
+          <mxGeometry height="80" width="169" x="791" y="415" as="geometry" />
+        </mxCell>
+        <mxCell id="YC2K0JfD6ogtElShlCJL-2" edge="1" parent="1" style="endArrow=none;html=1;rounded=1;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="681" y="1078.47" as="sourcePoint" />
+            <mxPoint x="721" y="1078.47" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="YC2K0JfD6ogtElShlCJL-3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="" vertex="1">
+          <mxGeometry height="120.5" width="320" x="719" y="520.25" as="geometry" />
+        </mxCell>
+        <mxCell id="YC2K0JfD6ogtElShlCJL-4" parent="1" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;labelBackgroundColor=none;fontColor=#143642;rounded=1;" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;Charts&lt;/font&gt;" vertex="1">
+          <mxGeometry height="40" width="100" x="820" y="530" as="geometry" />
+        </mxCell>
+        <mxCell id="YC2K0JfD6ogtElShlCJL-5" parent="1" style="text;strokeColor=none;fillColor=none;html=1;whiteSpace=wrap;verticalAlign=middle;overflow=hidden;labelBackgroundColor=none;fontColor=#143642;rounded=1;" value="&lt;ul&gt;&lt;li&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;BookingsTrend.jsx&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;BookingTypeChart.jsx&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;StaffingOverviewChart.jsx&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;" vertex="1">
+          <mxGeometry height="119.5" width="244" x="776" y="532.5" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

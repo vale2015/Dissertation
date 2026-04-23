@@ -1,0 +1,220 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.6.6 Chrome/144.0.7559.236 Electron/40.8.4 Safari/537.36" version="29.6.6">
+  <diagram name="Page-1" id="HY5cSEDNd5hMjwhOkkk4">
+    <mxGraphModel dx="2194" dy="2394" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-1" parent="1" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;labelBackgroundColor=none;fontColor=#143642;" value="&lt;font style=&quot;font-size: 28px;&quot;&gt;Frontend-Backend Communication Architecture&lt;/font&gt;" vertex="1">
+          <mxGeometry height="40" width="100" x="1574" y="-270" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="" vertex="1">
+          <mxGeometry height="200" width="250" x="258" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-3" parent="1" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;labelBackgroundColor=none;fontColor=#143642;" value="Restaurant Manager" vertex="1">
+          <mxGeometry height="40" width="100" x="333" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-4" parent="1" style="text;strokeColor=none;fillColor=none;html=1;whiteSpace=wrap;verticalAlign=middle;overflow=hidden;labelBackgroundColor=none;fontColor=#143642;" value="&lt;ul&gt;&lt;li&gt;&lt;b&gt;View Dashboard&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;Bookings Overview&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;Add New Booking&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;Reservation Forecast&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;Staff Forecast&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;Staffing Rules&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;Reports&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;Logout&lt;/b&gt;&lt;/li&gt;&lt;/ul&gt;" vertex="1">
+          <mxGeometry height="130" width="180" x="258" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-5" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="509" y="200" as="sourcePoint" />
+            <mxPoint x="669" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-6" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;labelBackgroundColor=none;fontColor=#143642;" value="&lt;b&gt;Uses System Interface&lt;/b&gt;" vertex="1">
+          <mxGeometry height="30" width="60" x="569" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-7" parent="1" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="" vertex="1">
+          <mxGeometry height="160" width="240" x="669" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-8" parent="1" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;labelBackgroundColor=none;fontColor=#143642;" value="Browser/&amp;nbsp;&lt;div&gt;Client&lt;/div&gt;" vertex="1">
+          <mxGeometry height="40" width="100" x="739" y="138" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-9" parent="1" style="text;strokeColor=none;fillColor=none;html=1;whiteSpace=wrap;verticalAlign=middle;overflow=hidden;labelBackgroundColor=none;fontColor=#143642;" value="&lt;ul&gt;&lt;li&gt;&lt;b&gt;Loads frontend UI&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;Displays Pages&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;Sends User Actions&lt;/b&gt;&lt;/li&gt;&lt;/ul&gt;" vertex="1">
+          <mxGeometry height="60" width="180" x="679" y="178" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-10" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="910" y="201" as="sourcePoint" />
+            <mxPoint x="1070" y="201" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-12" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;labelBackgroundColor=none;fontColor=#143642;" value="&lt;b&gt;Loads UI at&lt;/b&gt;&lt;div&gt;&lt;b&gt;localhost:3000&amp;nbsp;&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="30" width="80" x="950" y="161" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-14" parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="" vertex="1">
+          <mxGeometry height="280" width="330" x="1070" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-15" parent="1" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;labelBackgroundColor=none;fontColor=#143642;" value="Frontend Web Application" vertex="1">
+          <mxGeometry height="40" width="100" x="1182" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-16" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;labelBackgroundColor=none;fontColor=#143642;" value="&lt;b&gt;Next.js / React&lt;/b&gt;&lt;div&gt;&lt;b&gt;Port 3000&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="30" width="60" x="1202" y="138" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-17" parent="1" style="text;strokeColor=none;fillColor=none;html=1;whiteSpace=wrap;verticalAlign=middle;overflow=hidden;labelBackgroundColor=none;fontColor=#143642;" value="&lt;ul&gt;&lt;li&gt;&lt;b&gt;Dashboard&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;Bookings Overview&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;Reservation Forecast&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;Staff Forecast&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;Reports&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;Components&amp;nbsp;&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;Hooks&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;Utils&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;JWT Stored Client-Side&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;Fetch Requests To Backend API&lt;/b&gt;&lt;/li&gt;&lt;/ul&gt;" vertex="1">
+          <mxGeometry height="190" width="240" x="1070" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-18" parent="1" style="shape=document;whiteSpace=wrap;html=1;boundedLbl=1;dashed=0;flipH=1;legacyAnchorPoints=0;labelBackgroundColor=none;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="" vertex="1">
+          <mxGeometry height="190" width="240" x="1120" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-19" parent="1" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;labelBackgroundColor=none;fontColor=#143642;" value="Frontend Security" vertex="1">
+          <mxGeometry height="40" width="100" x="1189" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-21" parent="1" style="text;strokeColor=none;fillColor=none;html=1;whiteSpace=wrap;verticalAlign=middle;overflow=hidden;labelBackgroundColor=none;fontColor=#143642;" value="&lt;ul&gt;&lt;li&gt;&lt;b&gt;Input Validation&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;Safe Rendering&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;XSS Mitigation&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;Protected Page Navigation&lt;/b&gt;&lt;/li&gt;&lt;/ul&gt;" vertex="1">
+          <mxGeometry height="80" width="206" x="1144" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-22" edge="1" parent="1" style="shape=flexArrow;endArrow=classic;html=1;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="1244.5" y="436" as="sourcePoint" />
+            <mxPoint x="1244.5" y="376" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-23" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;entryX=-0.004;entryY=0.14;entryDx=0;entryDy=0;entryPerimeter=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" target="tU5m0CCvI8Fr9Q7HqzTt-29" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="1401" y="120" as="sourcePoint" />
+            <mxPoint x="1561" y="120" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-24" edge="1" parent="1" source="tU5m0CCvI8Fr9Q7HqzTt-32" style="endArrow=classic;html=1;rounded=0;exitX=0.013;exitY=0.686;exitDx=0;exitDy=0;exitPerimeter=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="1560" y="280" as="sourcePoint" />
+            <mxPoint x="1400" y="280" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-25" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;labelBackgroundColor=none;fontColor=#143642;" value="&lt;b&gt;HTTP / REST Requests&lt;/b&gt;&lt;div&gt;&lt;b&gt;fetch() to 127.0.0.1:5000/api&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="30" width="160" x="1401" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-26" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;labelBackgroundColor=none;fontColor=#143642;" value="&lt;b&gt;JSON&amp;nbsp; Responses&lt;/b&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="1420" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-27" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;labelBackgroundColor=none;fontColor=#143642;" value="&lt;b&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;Cross-origin Communication Allowed With Flask-CORS JWT Sent On Protected Requests&lt;/font&gt;&lt;/b&gt;" vertex="1">
+          <mxGeometry height="30" width="180" x="1400" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-29" parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="" vertex="1">
+          <mxGeometry height="280" width="330" x="1577" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-30" parent="1" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;labelBackgroundColor=none;fontColor=#143642;" value="Backend API" vertex="1">
+          <mxGeometry height="40" width="100" x="1692" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-31" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;labelBackgroundColor=none;fontColor=#143642;" value="&lt;b&gt;Flask&lt;/b&gt;&lt;div&gt;&lt;b&gt;Port 5000&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="30" width="60" x="1717" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-32" parent="1" style="text;strokeColor=none;fillColor=none;html=1;whiteSpace=wrap;verticalAlign=middle;overflow=hidden;labelBackgroundColor=none;fontColor=#143642;" value="&lt;ul&gt;&lt;li&gt;&lt;b&gt;Routes&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;Controllers&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;Services&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;JWT Authentication Middleware&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;CORS Enabled&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;JSON Response Handling&lt;/b&gt;&lt;/li&gt;&lt;/ul&gt;" vertex="1">
+          <mxGeometry height="190" width="240" x="1577" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-33" parent="1" style="shape=document;whiteSpace=wrap;html=1;boundedLbl=1;dashed=0;flipH=1;legacyAnchorPoints=0;labelBackgroundColor=none;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="" vertex="1">
+          <mxGeometry height="190" width="240" x="1615" y="-190" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-34" parent="1" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;labelBackgroundColor=none;fontColor=#143642;" value="Backend Security" vertex="1">
+          <mxGeometry height="40" width="100" x="1684" y="-190" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-35" parent="1" style="text;strokeColor=none;fillColor=none;html=1;whiteSpace=wrap;verticalAlign=middle;overflow=hidden;labelBackgroundColor=none;fontColor=#143642;" value="&lt;ul&gt;&lt;li&gt;&lt;b&gt;JWT Verification&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;Route Protection&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;Request Validation&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;Controlled Error Responses&lt;/b&gt;&lt;/li&gt;&lt;/ul&gt;" vertex="1">
+          <mxGeometry height="100" width="221" x="1639" y="-160" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-36" edge="1" parent="1" style="shape=flexArrow;endArrow=classic;html=1;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="1733.5" as="sourcePoint" />
+            <mxPoint x="1733.5" y="70" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-37" edge="1" parent="1" style="endArrow=classic;startArrow=classic;html=1;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="1907" y="200" as="sourcePoint" />
+            <mxPoint x="2080" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-38" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;labelBackgroundColor=none;fontColor=#143642;" value="&lt;b&gt;Read / Write Data&lt;/b&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="1947" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-39" parent="1" style="shape=datastore;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="" vertex="1">
+          <mxGeometry height="230" width="280" x="2080" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-40" parent="1" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;labelBackgroundColor=none;fontColor=#143642;" value="Supabase / PostgreSQL&lt;div&gt;Database&lt;/div&gt;" vertex="1">
+          <mxGeometry height="40" width="100" x="2170" y="178" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-41" parent="1" style="text;strokeColor=none;fillColor=none;html=1;whiteSpace=wrap;verticalAlign=middle;overflow=hidden;labelBackgroundColor=none;fontColor=#143642;" value="&lt;ul&gt;&lt;li&gt;&lt;b&gt;users&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;bookings&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;restaurant_demand_features&lt;/b&gt;&lt;/li&gt;&lt;/ul&gt;" vertex="1">
+          <mxGeometry height="60" width="180" x="2080" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-42" parent="1" style="shape=document;whiteSpace=wrap;html=1;boundedLbl=1;dashed=0;flipH=1;legacyAnchorPoints=0;labelBackgroundColor=none;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="" vertex="1">
+          <mxGeometry height="190" width="270" x="2070" y="-190" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-43" parent="1" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;labelBackgroundColor=none;fontColor=#143642;" value="Data security" vertex="1">
+          <mxGeometry height="40" width="100" x="2169" y="-190" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-44" parent="1" style="text;strokeColor=none;fillColor=none;html=1;whiteSpace=wrap;verticalAlign=middle;overflow=hidden;labelBackgroundColor=none;fontColor=#143642;" value="&lt;ul&gt;&lt;li&gt;&lt;b&gt;Controlled Access&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;User Data Storage&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;Booking And Forecast Data Separation&lt;/b&gt;&lt;/li&gt;&lt;/ul&gt;" vertex="1">
+          <mxGeometry height="80" width="271" x="2069" y="-160" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-45" edge="1" parent="1" style="shape=flexArrow;endArrow=classic;html=1;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="2218.5" as="sourcePoint" />
+            <mxPoint x="2218.5" y="70" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-46" parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="" vertex="1">
+          <mxGeometry height="170" width="330" x="1583" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-47" parent="1" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;labelBackgroundColor=none;fontColor=#143642;" value="ML Forecasting Layer" vertex="1">
+          <mxGeometry height="40" width="100" x="1693" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-48" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;labelBackgroundColor=none;fontColor=#143642;" value="&lt;b&gt;predict_pipeline.py&lt;/b&gt;&lt;div&gt;&lt;b&gt;train_pipeline.py&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="30" width="60" x="1713" y="495" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-49" parent="1" style="text;strokeColor=none;fillColor=none;html=1;whiteSpace=wrap;verticalAlign=middle;overflow=hidden;labelBackgroundColor=none;fontColor=#143642;" value="&lt;ul&gt;&lt;li&gt;&lt;b&gt;Feature Preparation&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;Random Forest Regressor&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;Forecast Generation&lt;/b&gt;&lt;/li&gt;&lt;/ul&gt;" vertex="1">
+          <mxGeometry height="60" width="210" x="1583" y="525" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-50" edge="1" parent="1" source="tU5m0CCvI8Fr9Q7HqzTt-46" style="endArrow=classic;html=1;rounded=0;entryX=0.699;entryY=0.99;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.682;exitY=-0.009;exitDx=0;exitDy=0;exitPerimeter=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" target="tU5m0CCvI8Fr9Q7HqzTt-29" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="1808.7" y="430" as="sourcePoint" />
+            <mxPoint x="1808.7" y="370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-51" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;entryX=0.355;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" target="tU5m0CCvI8Fr9Q7HqzTt-46" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="1700" y="360" as="sourcePoint" />
+            <mxPoint x="1700" y="421" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-52" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;labelBackgroundColor=none;fontColor=#143642;" value="&lt;b&gt;Return Forecast Result&lt;/b&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="1820" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-53" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;labelBackgroundColor=none;fontColor=#143642;" value="&lt;b&gt;Forecast Request&lt;/b&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="1564" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-54" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="1747.7" y="610" as="sourcePoint" />
+            <mxPoint x="1748.2" y="690" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-55" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;labelBackgroundColor=none;fontColor=#143642;" value="&lt;b&gt;Load Trained Model&lt;/b&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="1759" y="630" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-56" parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="" vertex="1">
+          <mxGeometry height="140" width="280" x="1612" y="690" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-57" parent="1" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;labelBackgroundColor=none;fontColor=#143642;" value="Model Artifact Storage" vertex="1">
+          <mxGeometry height="40" width="100" x="1704" y="700" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-58" parent="1" style="text;strokeColor=none;fillColor=none;html=1;whiteSpace=wrap;verticalAlign=middle;overflow=hidden;labelBackgroundColor=none;fontColor=#143642;" value="&lt;ul&gt;&lt;li&gt;&lt;b&gt;Trained Forecasting Model&lt;/b&gt;&lt;/li&gt;&lt;/ul&gt;" vertex="1">
+          <mxGeometry height="60" width="210" x="1604" y="750" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-59" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;labelBackgroundColor=none;fontColor=#143642;" value="&lt;b&gt;demand_model.pkl&lt;/b&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="1679" y="730" as="geometry" />
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-60" edge="1" parent="1" source="tU5m0CCvI8Fr9Q7HqzTt-46" style="endArrow=classic;html=1;rounded=0;curved=0;entryX=0.572;entryY=1.004;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.996;exitY=0.465;exitDx=0;exitDy=0;exitPerimeter=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" target="tU5m0CCvI8Fr9Q7HqzTt-39" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <Array as="points">
+              <mxPoint x="2240" y="520" />
+            </Array>
+            <mxPoint x="1920" y="520" as="sourcePoint" />
+            <mxPoint x="2246.8" y="318.1600000000001" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-61" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;labelBackgroundColor=none;fontColor=#143642;" value="&lt;b&gt;Retrieve Historical Demand Features&lt;/b&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="2005" y="480" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

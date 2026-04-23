@@ -1,0 +1,164 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.6.6 Chrome/144.0.7559.236 Electron/40.8.4 Safari/537.36">
+  <diagram name="Page-1" id="Zf_1hUHojFa1hfHUHLyH">
+    <mxGraphModel dx="848" dy="543" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="pgp7s__w_lc4IUdjgqEo-1" parent="1" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;labelBackgroundColor=none;fontColor=#143642;" value="Sequence Diagram for Reservation Forecast Generation" vertex="1">
+          <mxGeometry height="40" width="100" x="900" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="nqA3ouvy8QU4juxGBfgY-7" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="&lt;b&gt;Frontend App&lt;/b&gt;" vertex="1">
+          <mxGeometry height="840" width="100" x="480" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="nqA3ouvy8QU4juxGBfgY-8" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="&lt;b&gt;Demand Controller&lt;/b&gt;" vertex="1">
+          <mxGeometry height="840" width="100" x="851" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="nqA3ouvy8QU4juxGBfgY-9" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="&lt;b&gt;Prediction&amp;nbsp;&lt;/b&gt;&lt;div&gt;&lt;b&gt;Pipeline&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="840" width="100" x="1031" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="nqA3ouvy8QU4juxGBfgY-20" parent="nqA3ouvy8QU4juxGBfgY-9" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="" vertex="1">
+          <mxGeometry height="510" width="10" x="45" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="nqA3ouvy8QU4juxGBfgY-26" edge="1" parent="nqA3ouvy8QU4juxGBfgY-9" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="&lt;b&gt;Validate Selected Date&lt;/b&gt;">
+          <mxGeometry relative="1" x="0.0316" y="14" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="85" y="500" />
+            </Array>
+            <mxPoint x="55" y="470" as="sourcePoint" />
+            <mxPoint x="69" y="500" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nqA3ouvy8QU4juxGBfgY-10" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="&lt;b&gt;Model Storage&lt;/b&gt;" vertex="1">
+          <mxGeometry height="840" width="100" x="1201" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="nqA3ouvy8QU4juxGBfgY-11" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="&lt;b&gt;Database&lt;/b&gt;" vertex="1">
+          <mxGeometry height="840" width="100" x="1381" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="nqA3ouvy8QU4juxGBfgY-12" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" target="nqA3ouvy8QU4juxGBfgY-7" value="&lt;b&gt;Open Forecast Page&lt;/b&gt;">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <mxPoint x="340" y="160" as="sourcePoint" />
+            <mxPoint x="430" y="160" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nqA3ouvy8QU4juxGBfgY-14" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="&lt;b&gt;Demand&lt;/b&gt;&lt;div&gt;&lt;b&gt;API Route&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="840" width="100" x="660" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="nqA3ouvy8QU4juxGBfgY-15" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="&lt;b&gt;GET / api/demand/forecast&lt;/b&gt;">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="530" y="200" as="sourcePoint" />
+            <mxPoint x="710" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nqA3ouvy8QU4juxGBfgY-18" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" target="nqA3ouvy8QU4juxGBfgY-8" value="&lt;b&gt;Forward Request&lt;/b&gt;">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="710" y="240" as="sourcePoint" />
+            <mxPoint x="890" y="240" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nqA3ouvy8QU4juxGBfgY-19" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="&lt;b&gt;prediction_demand(days, date)&lt;/b&gt;">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="900" y="280" as="sourcePoint" />
+            <mxPoint x="1080" y="280" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nqA3ouvy8QU4juxGBfgY-21" edge="1" parent="1" source="nqA3ouvy8QU4juxGBfgY-20" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="&lt;b&gt;Load demand_model.pkl&lt;/b&gt;">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="1090" y="310" as="sourcePoint" />
+            <mxPoint x="1250" y="310" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nqA3ouvy8QU4juxGBfgY-22" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" target="nqA3ouvy8QU4juxGBfgY-9" value="&lt;b&gt;Return trained model&lt;/b&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1250" y="360" as="sourcePoint" />
+            <mxPoint x="1170" y="360" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nqA3ouvy8QU4juxGBfgY-23" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;exitX=0.4;exitY=0.12;exitDx=0;exitDy=0;exitPerimeter=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" target="nqA3ouvy8QU4juxGBfgY-11" value="&lt;b&gt;Retrieve Historical Features&lt;/b&gt;">
+          <mxGeometry relative="1" width="80" x="-0.0588" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="1080" y="440" as="sourcePoint" />
+            <mxPoint x="1250" y="440" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nqA3ouvy8QU4juxGBfgY-24" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" target="nqA3ouvy8QU4juxGBfgY-9" value="&lt;b&gt;Return Historical Demand Data&lt;/b&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1430" y="500" as="sourcePoint" />
+            <mxPoint x="1350" y="500" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nqA3ouvy8QU4juxGBfgY-28" edge="1" parent="1" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="&lt;b&gt;Prepare Input Features&lt;/b&gt;">
+          <mxGeometry relative="1" x="0.0043" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="1117" y="630" />
+            </Array>
+            <mxPoint x="1087" y="600" as="sourcePoint" />
+            <mxPoint x="1100" y="630" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nqA3ouvy8QU4juxGBfgY-29" edge="1" parent="1" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="&lt;b&gt;Generate Future Dates&lt;/b&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1116" y="690" />
+            </Array>
+            <mxPoint x="1086" y="660" as="sourcePoint" />
+            <mxPoint x="1099" y="690" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nqA3ouvy8QU4juxGBfgY-30" edge="1" parent="1" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="&lt;b&gt;Predict Demand Values&lt;/b&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1117" y="750" />
+            </Array>
+            <mxPoint x="1087" y="720" as="sourcePoint" />
+            <mxPoint x="1100" y="750" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nqA3ouvy8QU4juxGBfgY-31" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="&lt;b&gt;Return Forecast Result&lt;/b&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1079" y="800" as="sourcePoint" />
+            <mxPoint x="910" y="800" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nqA3ouvy8QU4juxGBfgY-32" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" target="nqA3ouvy8QU4juxGBfgY-14" value="&lt;b&gt;Build JSON Response&lt;/b&gt;">
+          <mxGeometry relative="1" x="0.0467" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="899" y="840" as="sourcePoint" />
+            <mxPoint x="730" y="840" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nqA3ouvy8QU4juxGBfgY-33" edge="1" parent="1" source="nqA3ouvy8QU4juxGBfgY-14" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="&lt;b&gt;Return JSON Forecast Data&lt;/b&gt;">
+          <mxGeometry relative="1" x="0.0467" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="700" y="860" as="sourcePoint" />
+            <mxPoint x="530" y="860" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nqA3ouvy8QU4juxGBfgY-34" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="&lt;b&gt;Display Rorecast Data&lt;/b&gt;">
+          <mxGeometry relative="1" x="0.0467" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="530" y="880" as="sourcePoint" />
+            <mxPoint x="340" y="880" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="480LaBXH79dICiKwENT5-1" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#FAE5C7;strokeColor=#0F8B8D;" value="&lt;b&gt;Restaurant&amp;nbsp;&lt;/b&gt;&lt;div&gt;&lt;b&gt;Manager&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="30" x="320" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="480LaBXH79dICiKwENT5-2" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="340" y="880" as="sourcePoint" />
+            <mxPoint x="340" y="150" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="480LaBXH79dICiKwENT5-3" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#FAE5C7;strokeColor=#0F8B8D;" value="&lt;b&gt;Restaurant&amp;nbsp;&lt;/b&gt;&lt;div&gt;&lt;b&gt;Manager&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="30" x="320" y="880" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

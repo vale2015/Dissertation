@@ -1,0 +1,43 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.6.1 Chrome/142.0.7444.265 Electron/39.8.0 Safari/537.36" version="29.6.1">
+  <diagram name="Page-1" id="7D3gC7sXRJ-LYrw0GrQb">
+    <mxGraphModel dx="2063" dy="828" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="zNGNlUIGffUU_JDGLwpO-1" parent="1" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;" value="USE CASE DIAGRAM" vertex="1">
+          <mxGeometry height="40" width="100" x="360" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="zNGNlUIGffUU_JDGLwpO-2" parent="1" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;align=center;" value="RESTAURANT MANAGER" vertex="1">
+          <mxGeometry height="60" width="30" x="400" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="zNGNlUIGffUU_JDGLwpO-3" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="LOGIN" vertex="1">
+          <mxGeometry height="70" width="140" x="345" y="239" as="geometry" />
+        </mxCell>
+        <mxCell id="zNGNlUIGffUU_JDGLwpO-4" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="DASHBOARD" vertex="1">
+          <mxGeometry height="70" width="140" x="345" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="zNGNlUIGffUU_JDGLwpO-5" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="INSERT BOOKING" vertex="1">
+          <mxGeometry height="70" width="140" x="60" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="zNGNlUIGffUU_JDGLwpO-6" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="GENERATE BOOKING FORECAST" vertex="1">
+          <mxGeometry height="70" width="140" x="-120" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="zNGNlUIGffUU_JDGLwpO-7" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="VIEW BOOKINGS" vertex="1">
+          <mxGeometry height="70" width="140" x="240" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="zNGNlUIGffUU_JDGLwpO-8" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="VIEW STAFF" vertex="1">
+          <mxGeometry height="70" width="140" x="630" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="zNGNlUIGffUU_JDGLwpO-9" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="GENERATE STAFFING FORECAST" vertex="1">
+          <mxGeometry height="70" width="140" x="810" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="zNGNlUIGffUU_JDGLwpO-10" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="LOGOUT" vertex="1">
+          <mxGeometry height="70" width="140" x="345" y="710" as="geometry" />
+        </mxCell>
+        <mxCell id="zNGNlUIGffUU_JDGLwpO-14" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="REGISTER NEW STAFF MEMBER" vertex="1">
+          <mxGeometry height="70" width="140" x="460" y="460" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

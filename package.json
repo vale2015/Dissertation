@@ -1,0 +1,16 @@
+{
+  "name": "dissertation-app",
+  "private": true,
+  "scripts": {
+    "frontend": "cd frontend && npm run dev",
+    "backend": "cd backend && .\\venv\\Scripts\\python.exe run.py",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "lucide-react": "^1.8.0"
+  }
+}

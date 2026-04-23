@@ -1,0 +1,164 @@
+<mxfile host="Electron">
+  <diagram name="Page-1" id="T6rhLZp25muv679zbNiq">
+    <mxGraphModel dx="1546" dy="989" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="oNIkT-siokUiOkJVtv5N-1" parent="1" style="text;align=center;fontStyle=1;verticalAlign=middle;spacingLeft=3;spacingRight=3;strokeColor=none;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;fontSize=25;labelBackgroundColor=none;fontColor=#143642;" value="Labour Cost Forecast Sequence Diagram&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="26" width="80" x="720" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="oNIkT-siokUiOkJVtv5N-2" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="Restaurant Manager" vertex="1">
+          <mxGeometry height="60" width="30" x="170" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="oNIkT-siokUiOkJVtv5N-4" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="&lt;b&gt;Frontend Dashboard&lt;/b&gt;" vertex="1">
+          <mxGeometry height="760" width="100" x="360" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="oNIkT-siokUiOkJVtv5N-5" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="&lt;b&gt;Flask API&lt;/b&gt;" vertex="1">
+          <mxGeometry height="760" width="100" x="580" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="oNIkT-siokUiOkJVtv5N-6" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="&lt;b&gt;Labour Cost Service&lt;/b&gt;" vertex="1">
+          <mxGeometry height="760" width="100" x="800" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="oNIkT-siokUiOkJVtv5N-7" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="&lt;b&gt;Staff Forecast&lt;/b&gt;&lt;div&gt;&lt;b&gt;Database&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="760" width="100" x="1020" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="oNIkT-siokUiOkJVtv5N-8" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="&lt;b&gt;Business Setting Database&lt;/b&gt;" vertex="1">
+          <mxGeometry height="760" width="100" x="1240" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="oNIkT-siokUiOkJVtv5N-10" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;rounded=0;labelBackgroundColor=none;strokeColor=#0F8B8D;fontColor=default;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="180" y="840" as="sourcePoint" />
+            <mxPoint x="180" y="110" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="oNIkT-siokUiOkJVtv5N-12" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" target="oNIkT-siokUiOkJVtv5N-4" value="&lt;b&gt;Open labour Cost View/&amp;nbsp;&lt;/b&gt;&lt;div&gt;&lt;b&gt;Select Forecast Date&lt;/b&gt;&lt;/div&gt;">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <mxPoint x="180" y="160" as="sourcePoint" />
+            <mxPoint x="260" y="160" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="oNIkT-siokUiOkJVtv5N-13" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" target="oNIkT-siokUiOkJVtv5N-5" value="&lt;b&gt;Request Labour Cost Forecast&lt;/b&gt;&lt;div&gt;&lt;b&gt;(selected_date)&lt;/b&gt;&lt;/div&gt;">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <mxPoint x="410" y="180" as="sourcePoint" />
+            <mxPoint x="490" y="180" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="oNIkT-siokUiOkJVtv5N-14" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" target="oNIkT-siokUiOkJVtv5N-6" value="&lt;b&gt;Generate Labour Cost Summary&lt;/b&gt;&lt;div&gt;&lt;b&gt;(selected_date)&lt;/b&gt;&lt;/div&gt;">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <mxPoint x="630" y="210" as="sourcePoint" />
+            <mxPoint x="710" y="210" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="oNIkT-siokUiOkJVtv5N-15" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="&lt;b&gt;Retrieve Staff Forecast Records&lt;/b&gt;&lt;div&gt;&lt;b&gt;(selected_date)&lt;/b&gt;&lt;/div&gt;">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <mxPoint x="850" y="250" as="sourcePoint" />
+            <mxPoint x="1069" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="oNIkT-siokUiOkJVtv5N-16" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" target="oNIkT-siokUiOkJVtv5N-6" value="&lt;b&gt;Return Department Cost Records&lt;/b&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1070" y="280" as="sourcePoint" />
+            <mxPoint x="990" y="280" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="oNIkT-siokUiOkJVtv5N-17" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" target="oNIkT-siokUiOkJVtv5N-8" value="&lt;b&gt;Retrieve Business Settings&lt;/b&gt;">
+          <mxGeometry relative="1" width="80" x="-0.001" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="850" y="320" as="sourcePoint" />
+            <mxPoint x="1069" y="320" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="oNIkT-siokUiOkJVtv5N-18" edge="1" parent="1" source="oNIkT-siokUiOkJVtv5N-8" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" target="oNIkT-siokUiOkJVtv5N-6" value="&lt;b&gt;Return Revenue Settings&lt;/b&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1150" y="360" />
+            </Array>
+            <mxPoint x="1220" y="360" as="sourcePoint" />
+            <mxPoint x="1000" y="360" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="oNIkT-siokUiOkJVtv5N-19" parent="1" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="" vertex="1">
+          <mxGeometry height="40" width="10" x="846" y="419" as="geometry" />
+        </mxCell>
+        <mxCell id="oNIkT-siokUiOkJVtv5N-20" edge="1" parent="1" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" target="oNIkT-siokUiOkJVtv5N-19" value="&lt;b&gt;Sum Estimated Labour Cost&lt;/b&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="881" y="429" />
+            </Array>
+            <mxPoint x="851" y="399" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="oNIkT-siokUiOkJVtv5N-21" parent="1" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="" vertex="1">
+          <mxGeometry height="40" width="10" x="845" y="499" as="geometry" />
+        </mxCell>
+        <mxCell id="oNIkT-siokUiOkJVtv5N-22" edge="1" parent="1" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" target="oNIkT-siokUiOkJVtv5N-21" value="&lt;b&gt;Estimate Food Revenue&lt;/b&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="880" y="509" />
+            </Array>
+            <mxPoint x="850" y="479" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="oNIkT-siokUiOkJVtv5N-23" parent="1" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="" vertex="1">
+          <mxGeometry height="40" width="10" x="846" y="580" as="geometry" />
+        </mxCell>
+        <mxCell id="oNIkT-siokUiOkJVtv5N-24" edge="1" parent="1" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" target="oNIkT-siokUiOkJVtv5N-23" value="&lt;b&gt;Calculate Revenue VS&amp;nbsp;&lt;/b&gt;&lt;div&gt;&lt;b&gt;Labour Cost Ratio&lt;/b&gt;&lt;/div&gt;">
+          <mxGeometry relative="1" x="0.0118" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="881" y="590" />
+            </Array>
+            <mxPoint x="851" y="560" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="oNIkT-siokUiOkJVtv5N-25" parent="1" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="" vertex="1">
+          <mxGeometry height="40" width="10" x="845" y="660" as="geometry" />
+        </mxCell>
+        <mxCell id="oNIkT-siokUiOkJVtv5N-26" edge="1" parent="1" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" target="oNIkT-siokUiOkJVtv5N-25" value="&lt;b&gt;Calculate Gross&amp;nbsp;&lt;/b&gt;&lt;div&gt;&lt;b&gt;Margin After Labour&lt;/b&gt;&lt;/div&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="880" y="670" />
+            </Array>
+            <mxPoint x="850" y="640" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="oNIkT-siokUiOkJVtv5N-27" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="&lt;b&gt;Return Labour Cost Summary&lt;/b&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="850" y="720" as="sourcePoint" />
+            <mxPoint x="630" y="720" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="oNIkT-siokUiOkJVtv5N-28" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="&lt;b&gt;Return Labour Cost Response&lt;/b&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="630" y="760" as="sourcePoint" />
+            <mxPoint x="410" y="760" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="oNIkT-siokUiOkJVtv5N-29" edge="1" parent="1" source="oNIkT-siokUiOkJVtv5N-4" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="&lt;b&gt;Display Labour Cost Comparison&lt;/b&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="400" y="800" as="sourcePoint" />
+            <mxPoint x="180" y="800" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p5ztNzBiY5lfjr_MiAAU-1" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#FAE5C7;strokeColor=#0F8B8D;" value="Restaurant Manger" vertex="1">
+          <mxGeometry height="60" width="30" x="165" y="840" as="geometry" />
+        </mxCell>
+        <mxCell id="p5ztNzBiY5lfjr_MiAAU-4" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="&lt;b&gt;Frontend Dashboard&lt;/b&gt;" vertex="1">
+          <mxGeometry height="40" width="100" x="360" y="840" as="geometry" />
+        </mxCell>
+        <mxCell id="p5ztNzBiY5lfjr_MiAAU-5" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="&lt;b&gt;Flask API&lt;/b&gt;" vertex="1">
+          <mxGeometry height="40" width="100" x="580" y="840" as="geometry" />
+        </mxCell>
+        <mxCell id="p5ztNzBiY5lfjr_MiAAU-6" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="&lt;b&gt;Labour Cost Service&lt;/b&gt;" vertex="1">
+          <mxGeometry height="40" width="100" x="801" y="840" as="geometry" />
+        </mxCell>
+        <mxCell id="p5ztNzBiY5lfjr_MiAAU-7" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="&lt;b&gt;Staff Forecast&lt;/b&gt;&lt;div&gt;&lt;b&gt;Database&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="40" width="100" x="1020" y="840" as="geometry" />
+        </mxCell>
+        <mxCell id="p5ztNzBiY5lfjr_MiAAU-8" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="&lt;b&gt;Business Setting Database&lt;/b&gt;" vertex="1">
+          <mxGeometry height="40" width="100" x="1240" y="840" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
