@@ -180,22 +180,22 @@ export default function ReservationForecastPage() {
                     <SummaryCard
                       title="Forecasted Covers"
                       value={totalForecastedCovers}
-                      description={`Predicted total covers across the next ${forecastDays} days, excluding closed-day demand.`}
+                      description={`Predicted total covers in the next ${forecastDays} days, excluding Monday`}
                     />
                     <SummaryCard
                       title="Peak Day"
                       value={peakDay}
-                      description="Highest expected reservation demand on an open day."
+                      description="Highest expected reservations day"
                     />
                     <SummaryCard
                       title="Lowest Day"
                       value={lowestDay}
-                      description="Lowest expected reservation demand on an open day."
+                      description="Lowest expected reservation day"
                     />
                     <SummaryCard
                       title="Average Per Day"
                       value={averagePerDay}
-                      description="Average forecasted covers across open days only."
+                      description="Average forecasted covers across business days"
                     />
                   </section>
 
@@ -212,9 +212,9 @@ export default function ReservationForecastPage() {
                             <th>Day</th>
                             <th>Status</th>
                             <th>Predicted Covers</th>
-                            <th>Same-day Avg (7d)</th>
-                            <th>Walk-in Avg (7d)</th>
-                            <th>Advance Avg (7d)</th>
+                            <th>Same-day Average(7d)</th>
+                            <th>Walk-in Average(7d)</th>
+                            <th>Advance Average (7d)</th>
                           </tr>
                         </thead>
 

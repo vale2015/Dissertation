@@ -2,12 +2,19 @@ from flask import jsonify
 from app.services.staffing_rules_service import get_all_staffing_rules_service
 
 
-def get_all_staffing_rules():
+def get_all_staffing_rules_controller():
     try:
-        result = get_all_staffing_rules_service()
-        return jsonify(result), 200
-    except Exception as e:
+        data = get_all_staffing_rules_service()
+
         return jsonify({
-            "message": "Failed to fetch staffing rules",
-            "error": str(e),
+            "success": True,
+            "data": data
+        }), 200
+
+    except Exception as error:
+        print("GET STAFFING RULES ERROR:", error)
+
+        return jsonify({
+            "success": False,
+            "message": str(error)
         }), 500

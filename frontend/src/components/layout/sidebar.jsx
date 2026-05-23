@@ -10,7 +10,7 @@ import "react-datepicker/dist/react-datepicker.css";
 const API_BASE = "http://127.0.0.1:5000/api";
 
 /**
- * Normalizes a date value into YYYY-MM-DD.
+ * Normalises a date value into YYYY-MM-DD.
  * This helps keep URL dates and fetched dates consistent.
  */
 function normalizeDate(value) {

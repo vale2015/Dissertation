@@ -12,8 +12,11 @@ from app.services.booking_service import (
 # Checks whether the provided booking date falls on a Monday.
 # This is used because the restaurant is closed on Mondays.
 def is_monday(date_string):
-    booking_date = datetime.strptime(date_string, "%Y-%m-%d")
-    return booking_date.weekday() == 0
+    try:
+        booking_date = datetime.strptime(str(date_string), "%Y-%m-%d")
+        return booking_date.weekday() == 0
+    except ValueError:
+        return None
 
 
 # Validates optional text fields before they are sent to the service layer.
@@ -34,37 +37,45 @@ def validate_text_field(value, field_name, max_length):
 # Handles the creation of a new booking.
 def add_booking():
     try:
-        # Read JSON data from the request body.
         data = request.get_json()
 
-        # Stop the request if no JSON body was sent.
         if not data:
             return jsonify({"error": "Request body is required"}), 400
 
-        # Define the minimum required fields for creating a booking.
-        required_fields = ["booking_date", "party_size", "booking_type"]
+        required_fields = ["booking_date", "booking_time", "party_size", "booking_type"]
 
-        # Check that each required field exists and is not empty.
         for field in required_fields:
             if field not in data or data[field] in [None, ""]:
                 return jsonify({"error": f"{field} is required"}), 400
 
-        # Validate and convert party_size into an integer.
+        monday_check = is_monday(data["booking_date"])
+
+        if monday_check is None:
+            return jsonify({
+                "error": "Invalid booking_date format. Use YYYY-MM-DD."
+            }), 400
+
+        if monday_check:
+            return jsonify({
+                "error": "Bookings cannot be added on Monday because the restaurant is closed."
+            }), 400
+
         try:
             data["party_size"] = int(data["party_size"])
         except (ValueError, TypeError):
             return jsonify({"error": "party_size must be a valid number"}), 400
 
-        # Ensure party_size is greater than zero.
         if data["party_size"] <= 0:
             return jsonify({"error": "party_size must be greater than 0"}), 400
 
-        # Only allow predefined booking types.
+        data["booking_type"] = str(data["booking_type"]).strip().lower()
+
         allowed_types = ["walk_in", "same_day", "advance"]
         if data["booking_type"] not in allowed_types:
-            return jsonify({"error": "Invalid booking_type"}), 400
+            return jsonify({
+                "error": "Invalid booking_type. Use walk_in, same_day, or advance."
+            }), 400
 
-        # Validate optional text fields before saving them.
         name_error = validate_text_field(data.get("customer_name"), "customer_name", 100)
         if name_error:
             return jsonify({"error": name_error}), 400
@@ -73,26 +84,16 @@ def add_booking():
         if notes_error:
             return jsonify({"error": notes_error}), 400
 
-        # Prevent bookings from being created on Mondays.
-        if is_monday(data["booking_date"]):
-            return jsonify({
-                "error": "Bookings cannot be added on Monday because the restaurant is closed."
-            }), 400
-
-        # Pass the validated data to the service layer,
-        # which inserts the booking and updates demand features.
         booking = create_booking_and_sync_features(data)
 
-        # Return the newly created booking.
         return jsonify({
             "message": "Booking added successfully",
             "booking": booking
         }), 201
 
-    except Exception:
-        # Return a generic error instead of exposing internal details.
+    except Exception as e:
+        print("ADD BOOKING ERROR:", str(e))
         return jsonify({"error": "Internal server error"}), 500
-
 
 # Returns all bookings.
 def get_all_bookings():

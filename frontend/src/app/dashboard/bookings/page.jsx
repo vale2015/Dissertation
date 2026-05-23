@@ -275,7 +275,7 @@ export default function BookingsPage() {
               <section className="dashboard-hero">
                 <h1 className="dashboard-title">Bookings Overview</h1>
                 <p className="dashboard-text">
-                  Overview of reservations and staffing insights for the selected day.
+                  Overview of reservations and staffing insights for the selected day
                 </p>
               </section>
 
@@ -287,25 +287,25 @@ export default function BookingsPage() {
                     <SummaryCard
                       title="Selected Date"
                       value={selectedDateDisplay}
-                      description="Historical record selected from the calendar."
+                      description="Historical record selected from the calendar"
                     />
 
                     <SummaryCard
                       title="Total Covers"
                       value={totalCovers}
-                      description="Recorded total covers for the selected day."
+                      description="Total reservation for tomorrow"
                     />
 
                     <SummaryCard
                       title="Main Booking Type"
                       value={mainBookingType}
-                      description="Largest booking source for the selected historical day."
+                      description="Main booking source for the selected day"
                     />
 
                     <SummaryCard
                       title="Estimated Staff Needed"
                       value={estimatedStaff}
-                      description="Recommended staff level based on recorded demand."
+                      description="Recommended staff level based on reservation number"
                     />
                   </section>
 
@@ -316,12 +316,12 @@ export default function BookingsPage() {
 
                     <div className="historical-insights-grid">
                       <div className="historical-insight-item">
-                        <p className="historical-insight-label">Same-day Covers</p>
+                        <p className="historical-insight-label">Same-Day Covers</p>
                         <p className="historical-insight-value">{sameDayCovers}</p>
                       </div>
 
                       <div className="historical-insight-item">
-                        <p className="historical-insight-label">Walk-in Covers</p>
+                        <p className="historical-insight-label">Walk-In Covers</p>
                         <p className="historical-insight-value">{walkInCovers}</p>
                       </div>
 

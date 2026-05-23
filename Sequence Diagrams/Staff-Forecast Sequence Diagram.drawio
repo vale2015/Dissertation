@@ -1,6 +1,6 @@
 <mxfile host="Electron">
   <diagram name="Page-1" id="r2IhHHmxOGojAH8Kcxv4">
-    <mxGraphModel dx="1752" dy="1121" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1642" dy="989" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -13,11 +13,17 @@
         <mxCell id="b68rUkt7QxiwFDBTm0N9-3" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="&lt;b&gt;&lt;font&gt;Flask API&lt;/font&gt;&lt;/b&gt;" vertex="1">
           <mxGeometry height="800" width="100" x="640" y="120" as="geometry" />
         </mxCell>
+        <mxCell id="5Q_O4PfGScbmydfmXFAR-2" parent="b68rUkt7QxiwFDBTm0N9-3" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};fillColor=#FAE5C7;strokeColor=#0F8B8D;" value="" vertex="1">
+          <mxGeometry height="140" width="10" x="45" y="550" as="geometry" />
+        </mxCell>
         <mxCell id="b68rUkt7QxiwFDBTm0N9-4" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="&lt;b&gt;&lt;font&gt;Restaurant&lt;/font&gt;&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;font&gt;&amp;nbsp;Manager&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;" vertex="1">
           <mxGeometry height="60" width="30" x="250" y="100" as="geometry" />
         </mxCell>
         <mxCell id="b68rUkt7QxiwFDBTm0N9-5" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="&lt;b&gt;&lt;font&gt;Prediction&lt;/font&gt;&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;font&gt;Service&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;" vertex="1">
           <mxGeometry height="800" width="100" x="860" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="5Q_O4PfGScbmydfmXFAR-1" parent="b68rUkt7QxiwFDBTm0N9-5" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};strokeColor=#0F8B8D;fillColor=#FAE5C7;" value="" vertex="1">
+          <mxGeometry height="90" width="10" x="45" y="350" as="geometry" />
         </mxCell>
         <mxCell id="b68rUkt7QxiwFDBTm0N9-6" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" value="&lt;b&gt;Model Artifact Storage&lt;/b&gt;" vertex="1">
           <mxGeometry height="800" width="100" x="1080" y="120" as="geometry" />
@@ -99,10 +105,10 @@
             <mxPoint x="915" y="550" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="b68rUkt7QxiwFDBTm0N9-23" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" target="b68rUkt7QxiwFDBTm0N9-3" value="&lt;b&gt;Return Predicted Covers&lt;/b&gt;">
+        <mxCell id="b68rUkt7QxiwFDBTm0N9-23" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="&lt;b&gt;Return Predicted Covers&lt;/b&gt;">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="910" y="560" as="sourcePoint" />
-            <mxPoint x="470" y="560" as="targetPoint" />
+            <mxPoint x="910" y="575" as="sourcePoint" />
+            <mxPoint x="689.3235294117649" y="574.9999999999998" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="b68rUkt7QxiwFDBTm0N9-24" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;exitX=0.5;exitY=0.214;exitDx=0;exitDy=0;exitPerimeter=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" target="b68rUkt7QxiwFDBTm0N9-8" value="&lt;b&gt;Retrieve Staffing Rules(predicted_covers)&lt;/b&gt;">

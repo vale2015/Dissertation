@@ -307,7 +307,7 @@ export default function StaffForecastPage() {
                 <h1 className="dashboard-title">Staff Forecast</h1>
 
                 <p className="dashboard-text">
-                  {forecastDays}-day staffing recommendations and labour cost
+                  {forecastDays}-day staffing recommendations and cost
                   forecast by department
                 </p>
 
@@ -383,9 +383,9 @@ export default function StaffForecastPage() {
         <th rowSpan={2}>Day</th>
         <th rowSpan={2}>Covers</th>
         <th colSpan={4} className="department-staffing-heading">
-          Department Staffing
+          Department 
         </th>
-        {viewMode === "cost" && <th rowSpan={2}>Estimated Labour Cost</th>}
+        {viewMode === "cost" && <th rowSpan={2}>Estimated Staff Cost</th>}
       </tr>
 
       <tr>
@@ -455,8 +455,8 @@ export default function StaffForecastPage() {
                         <h3>Average Daily Staff</h3>
                         <p>{averageDailyStaff}</p>
                         <span>
-                          Across all forecasted open days in the {forecastDays}
-                          -day period
+                          Across all forecasted open days in the next  {forecastDays} days
+                            
                         </span>
                       </div>
 
@@ -464,26 +464,25 @@ export default function StaffForecastPage() {
                         <h3>Total Predicted Covers</h3>
                         <p>{totalPredictedCovers}</p>
                         <span>
-                          Across all open days in the {forecastDays}-day forecast
-                          period
+                          Across all open days in the {forecastDays} days
                         </span>
                       </div>
 
                       {viewMode === "cost" && (
                         <>
                           <div className="summary-mini-card">
-                            <h3>Total Forecast Labour Cost</h3>
+                            <h3>Total Forecast Staffing Cost</h3>
                             <p>{formatCurrency(totalForecastLabourCost)}</p>
                             <span>
-                              Combined labour cost across all open forecast days
+                              Total staffing cost in the next {forecastDays} days
                             </span>
                           </div>
 
                           <div className="summary-mini-card">
-                            <h3>Average Daily Labour Cost</h3>
+                            <h3>Average Daily Staffing Cost</h3>
                             <p>{formatCurrency(averageDailyLabourCost)}</p>
                             <span>
-                              Average labour cost across open days in the forecast
+                              Average Daily Staffing
                             </span>
                           </div>
                         </>

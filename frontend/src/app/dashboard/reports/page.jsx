@@ -85,8 +85,7 @@ export default function ReportsPage() {
               <section className="dashboard-hero">
                 <h1 className="dashboard-title">Weekly Report</h1>
                 <p className="dashboard-text">
-                  Summary insights generated from database records and Random
-                  Forest forecasts.
+                  Summary insights generated from reservation records
                 </p>
               </section>
 
