@@ -28,3 +28,5 @@ def update_booking_route(booking_id):
 @booking_bp.route("/<int:booking_id>", methods=["DELETE"])
 def delete_booking_route(booking_id):
     return delete_booking(booking_id)
+
+
