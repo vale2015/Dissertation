@@ -10,23 +10,25 @@ import {
   buildRecentBookings,
 } from "@/utils/DashboardHelpers";
 
+// Base URL used for all Flask backend API requests.
 const API_BASE = "http://127.0.0.1:5000/api";
-
+// Custom hook that loads and prepares all dashboard data.
 export default function useDashboardData() {
+  // Read the selected date from the URL query string.
   const searchParams = useSearchParams();
   const selectedDate = searchParams.get("date") || "";
-
+  // Store dashboard, forecast, weekly demand, and loading state.
   const [dashboardData, setDashboardData] = useState(null);
   const [forecastData, setForecastData] = useState([]);
   const [weeklyData, setWeeklyData] = useState([]);
   const [allDemandData, setAllDemandData] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  // Convert the selected date into a consistent format for comparison.
   const normalizedSelectedDate = useMemo(() => {
     return normalizeDate(selectedDate);
   }, [selectedDate]);
 
-  useEffect(() => {
+  useEffect(() => {// Load dashboard data whenever the selected date changes.
     const loadDashboardData = async () => {
       setLoading(true);
 
@@ -36,7 +38,8 @@ export default function useDashboardData() {
               normalizedSelectedDate
             )}`
           : `${API_BASE}/demand/forecast`;
-
+        
+        //Load all dashboard-related API data at the same time.
         const [dashboardRes, forecastRes, weeklyRes, demandRes] =
           await Promise.all([
             fetch(`${API_BASE}/dashboard/`),
@@ -58,7 +61,7 @@ export default function useDashboardData() {
         const forecastJson = await forecastRes.json();
         const weeklyJson = await weeklyRes.json();
         const demandJson = await demandRes.json();
-
+        // Prepare weekly data for the dashboard charts.
         const normalizedWeeklyData = Array.isArray(weeklyJson)
           ? weeklyJson.map((item, index) => ({
               label: item.label || `Day ${index + 1}`,
@@ -125,7 +128,7 @@ export default function useDashboardData() {
       return sum + Number(item.predicted_total_covers || 0);
     }, 0);
   }, [forecastData]);
-
+   // Find the forecast day with the highest demand.
   const peakDemandDay = useMemo(() => {
     if (!forecastData.length) return "-";
 
@@ -137,7 +140,7 @@ export default function useDashboardData() {
 
     return maxItem?.day_of_week || maxItem?.date || "-";
   }, [forecastData]);
-
+  // Estimate staff needed for the next forecast day.
   const staffNeededTomorrow = useMemo(() => {
     if (!forecastData.length) return "-";
     return getStaffFromCovers(forecastData[0]?.predicted_total_covers);
@@ -178,7 +181,7 @@ export default function useDashboardData() {
       selectedForecastRecord?.input_features
     );
   }, [selectedForecastRecord]);
-
+  // Return all values needed by the dashboard page
   return {
     loading,
     selectedDate,

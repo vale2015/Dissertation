@@ -1,13 +1,14 @@
+// Converts different date formats into YYYY-MM-DD format.
 export function normalizeDate(value) {
   if (!value) return "";
 
   const text = String(value).trim();
-
+  // Keep the date if it is already in ISO format.
   const isoMatch = text.match(/^(\d{4})-(\d{2})-(\d{2})$/);
   if (isoMatch) {
     return text;
   }
-
+  // Convert DD/MM/YYYY into YYYY-MM-DD.
   const slashMatch = text.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
   if (slashMatch) {
     const [, day, month, year] = slashMatch;
@@ -57,7 +58,7 @@ export function getBookingTypeFromForecastInput(inputFeatures) {
   if (max === walkIn) return "Walk-in";
   return "Same-day";
 }
-
+// Builds the latest five booking records for dashboard display.
 export function buildRecentBookings(allDemandData) {
   return [...allDemandData]
     .sort((a, b) => new Date(b.date) - new Date(a.date))

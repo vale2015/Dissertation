@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 
+// Formats a date as DD-MM for the chart axis labels.
 function formatShortDate(value) {
   if (!value) return "";
 
@@ -13,7 +14,7 @@ function formatShortDate(value) {
   const [, year, month, day] = directMatch;
   return `${day}-${month}`;
 }
-
+// Formats a date as DD/MM/YYYY for the tooltip.
 function formatFullDate(value) {
   if (!value) return "";
 
@@ -25,10 +26,12 @@ function formatFullDate(value) {
   const [, year, month, day] = directMatch;
   return `${day}/${month}/${year}`;
 }
-
+// Line chart component used to display reservation or demand trends.
 export default function BookingsTrend({ data = [] }) {
+  // Stores the chart point currently hovered by the user.
   const [hoveredPoint, setHoveredPoint] = useState(null);
 
+  // Clean and normalise incoming data before drawing the chart.
   const chartData = useMemo(() => {
     if (!Array.isArray(data)) return [];
 
@@ -52,7 +55,7 @@ export default function BookingsTrend({ data = [] }) {
       })
       .filter((item) => item.value >= 0);
   }, [data]);
-
+  // Calculate chart scale values.
   const maxValue = Math.max(...chartData.map((item) => item.value), 1);
   const minValue = Math.min(...chartData.map((item) => item.value), 0);
 

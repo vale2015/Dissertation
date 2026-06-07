@@ -10,7 +10,7 @@ from app.services.demand_service import (
     get_weekly_demand_summary,
 )
 
-
+# Return all restaurant demand records from the database.
 def get_demand_features():
     try:
         rows = get_all_demand_records()
@@ -18,7 +18,7 @@ def get_demand_features():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
+# Return the most recent demand record.
 def latest_demand():
     try:
         row = get_latest_demand_record()
@@ -31,7 +31,7 @@ def latest_demand():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
+# Validate the request body and insert a new demand record.
 def insert_demand():
     try:
         data = request.get_json()
@@ -57,7 +57,7 @@ def insert_demand():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
+# Return summary statistics for restaurant demand data.
 def demand_stats():
     try:
         row = get_demand_statistics()
@@ -65,7 +65,7 @@ def demand_stats():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
+# Return demand data for a selected date.
 def get_demand_by_date(date):
     try:
         row = get_demand_record_by_date(date)
@@ -78,7 +78,7 @@ def get_demand_by_date(date):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
+# Delete a demand record for a selected date.
 def delete_demand(date):
     try:
         deleted_rows = delete_demand_record(date)
@@ -91,7 +91,7 @@ def delete_demand(date):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
+# Return a weekly summary of restaurant demand.
 def weekly_demand():
     try:
         rows = get_weekly_demand_summary()
@@ -99,7 +99,7 @@ def weekly_demand():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
+# Generate a short-term demand forecast using the trained machine learning model.
 def demand_forecast():
     try:
         days_ahead = request.args.get("days_ahead", type=int)
@@ -118,9 +118,10 @@ def demand_forecast():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
+# Train or retrain the Random Forest demand forecasting model.
 def training_demand_model():
     try:
+        # Import here so the training pipeline only loads when this endpoint is called.
         from app.ml.pipelines.train_pipeline import train_model
         result = train_model()
         return jsonify(result), 200

@@ -3,18 +3,20 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import DashboardLayout from "@/components/dashboard/dashboardLayout";
-
+// Flask backend API base URL.
 const API_BASE = "http://127.0.0.1:5000/api";
-
+// Page used to display staffing rules and operational role data.
 export default function StaffingRulesPage() {
   const router = useRouter();
-
+// Store the logged-in user and staffing data.
   const [user, setUser] = useState(null);
   const [staffingRules, setStaffingRules] = useState([]);
   const [staffRoles, setStaffRoles] = useState([]);
+
+  // Store loading and error states.
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
-
+// Check that the user is logged in before showing the page.
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     const storedUser = localStorage.getItem("user");
@@ -26,7 +28,7 @@ export default function StaffingRulesPage() {
 
     setUser(JSON.parse(storedUser));
   }, [router]);
-
+// Load staffing rules and staff role data from the backend.
   useEffect(() => {
     async function fetchStaffingRules() {
       try {

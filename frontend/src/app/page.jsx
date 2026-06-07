@@ -4,18 +4,22 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import LoginForm from "@/components/auth/loginForm";
 
+// Main login page shown when the application first opens.
 export default function HomePage() {
   const router = useRouter();
 
+  // Store login form values and interface states.
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
+  // Demo login details used to guide the user during testing.
   const demoEmail = "manager@example.com";
   const demoPassword = "admin123";
 
+  // Checks whether the entered password matches the demo password.
   const getPasswordStatus = () => {
     if (!password) return "";
     return password === demoPassword ? "correct" : "incorrect";
@@ -23,6 +27,7 @@ export default function HomePage() {
 
   const passwordStatus = getPasswordStatus();
 
+  // Sends the login request to the Flask backend.
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
@@ -43,9 +48,11 @@ export default function HomePage() {
         setError(data.error || "Login failed");
         return;
       }
-
+      // Save the JWT token and user details in local storage after successful login.
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
+
+      // Redirect the user to the dashboard after login.
       router.push("/dashboard");
     } catch {
       setError("Unable to connect to the server");
@@ -53,7 +60,8 @@ export default function HomePage() {
       setLoading(false);
     }
   };
-
+  
+  /* Right-side hero section introducing the application. */
   return (
     <main className="entry-page">
       <section className="entry-login-side">

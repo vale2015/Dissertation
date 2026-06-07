@@ -5,15 +5,15 @@ import Sidebar from "@/components/layout/sidebar";
 import Topbar from "@/components/layout/topbar";
 
 const API_BASE = "http://127.0.0.1:5000/api";
-
+// Weekly report page showing summary insights from dashboard and forecast data.
 export default function ReportsPage() {
   const [dashboardData, setDashboardData] = useState(null);
   const [forecastData, setForecastData] = useState([]);
   const [loading, setLoading] = useState(true);
-
+// Load report data when the page opens.
   useEffect(() => {
     const loadReportsData = async () => {
-      try {
+      try {// Fetch dashboard metrics and demand forecast at the same time.
         const [dashboardRes, forecastRes] = await Promise.all([
           fetch(`${API_BASE}/dashboard/`),
           fetch(`${API_BASE}/demand/forecast`),
@@ -21,7 +21,7 @@ export default function ReportsPage() {
 
         const dashboardJson = await dashboardRes.json();
         const forecastJson = await forecastRes.json();
-
+// Save API responses into state.
         setDashboardData(dashboardJson);
         setForecastData(
           Array.isArray(forecastJson?.forecast) ? forecastJson.forecast : []
@@ -35,7 +35,7 @@ export default function ReportsPage() {
 
     loadReportsData();
   }, []);
-
+// extract dashboard summary values.
   const summary = dashboardData?.summary || {};
 
   const weeklyForecast = useMemo(() => {
@@ -48,7 +48,7 @@ export default function ReportsPage() {
   const averageBookingDuration = Math.round(
     Number(summary.avg_duration_covers_summary || 0)
   );
-
+// Identify the most active booking type using average booking sources.
   const mostActiveBookingType = useMemo(() => {
     const advance = Number(summary.avg_advance_covers || 0);
     const walkIn = Number(summary.avg_walk_in_covers || 0);
@@ -60,7 +60,7 @@ export default function ReportsPage() {
     if (max === walkIn) return "Walk-in";
     return "Same-day";
   }, [summary]);
-
+// Estimate total staff required across the forecast period.
   const estimatedWeeklyStaffNeed = useMemo(() => {
     return forecastData.reduce((sum, item) => {
       const covers = Number(item.predicted_total_covers || 0);

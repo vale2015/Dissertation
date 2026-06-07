@@ -1,7 +1,7 @@
 from sqlalchemy import text
 from app.db.dbcon import SessionLocal
 
-
+# Retrieve all demand records from the restaurant demand table.
 def get_all_demand_records():
     with SessionLocal() as db:
         result = db.execute(text("""
@@ -11,7 +11,7 @@ def get_all_demand_records():
         """))
         return [dict(r._mapping) for r in result]
 
-
+# Retrieve the latest demand record based on the most recent date.
 def get_latest_demand_record():
     with SessionLocal() as db:
         result = db.execute(text("""
@@ -30,12 +30,14 @@ def get_latest_demand_record():
 
     return dict(row._mapping) if row else None
 
-
+# Insert a new demand record and calculate total covers before saving.
 def insert_demand_record(data):
     same_day_covers = data["same_day_covers"]
     walk_in_covers = data["walk_in_covers"]
     advance_covers = data["advance_covers"]
     avg_duration_min = data["avg_duration_min"]
+
+    # Total covers are calculated from the three demand sources.
     total_covers = same_day_covers + walk_in_covers + advance_covers
 
     with SessionLocal() as db:
@@ -66,6 +68,7 @@ def insert_demand_record(data):
             "total_covers": total_covers,
             "avg_duration_min": avg_duration_min
         })
+        # Commit the transaction so the new record is saved.
         db.commit()
 
     return {
@@ -73,7 +76,7 @@ def insert_demand_record(data):
         "total_covers": total_covers
     }
 
-
+# Calculate summary statistics from the demand dataset.
 def get_demand_statistics():
     with SessionLocal() as db:
         result = db.execute(text("""
@@ -91,7 +94,7 @@ def get_demand_statistics():
 
     return dict(row._mapping) if row else {}
 
-
+# Retrieve a single demand record for a selected date.
 def get_demand_record_by_date(date):
     with SessionLocal() as db:
         result = db.execute(text("""
@@ -103,7 +106,7 @@ def get_demand_record_by_date(date):
 
     return dict(row._mapping) if row else None
 
-
+# Delete a demand record for a selected date.
 def delete_demand_record(date):
     with SessionLocal() as db:
         result = db.execute(text("""
@@ -114,7 +117,7 @@ def delete_demand_record(date):
 
     return result.rowcount
 
-
+# Retrieve the latest seven demand records and format them for the dashboard chart.
 def get_weekly_demand_summary():
     with SessionLocal() as db:
         result = db.execute(text("""
@@ -129,6 +132,7 @@ def get_weekly_demand_summary():
 
     rows.reverse()
 
+    # Estimate the number of staff required based on total covers.
     def get_staff_from_covers(covers):
         covers = int(covers or 0)
 
@@ -141,6 +145,8 @@ def get_weekly_demand_summary():
         return 8
 
     formatted_rows = []
+
+    # Format the rows into the structure expected by the frontend chart.
     for row in rows:
         date_value = row.get("date")
         total_covers = float(row.get("total_covers") or 0)

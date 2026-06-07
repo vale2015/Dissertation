@@ -7,20 +7,22 @@ from sqlalchemy import text
 
 from app.db.dbcon import SessionLocal
 
+# Number of recent historical days used to build forecasting features.
 HISTORICAL_WINDOW_DAYS = 90
 HOLIDAY_COUNTRY = "GB"
 HOLIDAY_SUBDIV = None
 
+# Fixed Christmas closure period used to mark the restaurant as closed.
 CHRISTMAS_CLOSED_START = date(2025, 12, 21)
 CHRISTMAS_CLOSED_END = date(2025, 12, 29)
 
-
+# Checks whether the restaurant is closed on the selected date.
 def is_closed_date(check_date):
     is_monday_closed = check_date.weekday() == 0
     is_christmas_shutdown = CHRISTMAS_CLOSED_START <= check_date <= CHRISTMAS_CLOSED_END
     return is_monday_closed or is_christmas_shutdown
 
-
+# Returns the reason why the restaurant is closed.
 def get_closure_reason(check_date):
     if CHRISTMAS_CLOSED_START <= check_date <= CHRISTMAS_CLOSED_END:
         return "Christmas Closure"
@@ -28,7 +30,7 @@ def get_closure_reason(check_date):
         return "Monday"
     return None
 
-
+# Builds the UK holiday calendar used for forecast date features.
 def build_holiday_calendar(years):
     if HOLIDAY_SUBDIV:
         return holidays.country_holidays(
@@ -41,7 +43,7 @@ def build_holiday_calendar(years):
         years=years,
     )
 
-
+# Creates holiday and festive-period features for a forecast date.
 def get_calendar_features(check_date, holiday_calendar):
     holiday_name = holiday_calendar.get(check_date)
     is_bank_holiday = int(holiday_name is not None)
@@ -93,7 +95,7 @@ def get_calendar_features(check_date, holiday_calendar):
         "is_special_day": is_special_day,
     }
 
-
+# Generates future demand predictions using the trained Random Forest model.
 def prediction_demand(days_ahead=7, selected_date=None):
     try:
         model_path = os.path.abspath(
@@ -104,10 +106,10 @@ def prediction_demand(days_ahead=7, selected_date=None):
                 "demand_model.pkl",
             )
         )
-
+        # Stop forecasting if the model has not been trained yet.
         if not os.path.exists(model_path):
             return {"message": "Model file not found. Train the model first."}
-
+        # Load the trained model and the feature columns used during training.
         saved_artifact = joblib.load(model_path)
         model = saved_artifact["model"]
         feature_columns = saved_artifact["feature_columns"]

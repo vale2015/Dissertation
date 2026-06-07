@@ -1,5 +1,5 @@
 "use client";
-
+// Reusable card component used to display one dashboard summary metric.
 export default function SummaryCard({
   title,
   value,

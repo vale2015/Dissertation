@@ -6,11 +6,14 @@ import StaffingOverviewChart from "@/components/charts/StaffingOverviewChart";
 import { formatDateDDMMYYYY } from "@/utils/DateFormat";
 import useDashboardData from "@/hooks/useDashboardData";
 
+// Formats numeric values as GBP currency for dashboard financial metrics.
 function formatCurrency(value) {
   return `£${Number(value || 0).toFixed(2)}`;
 }
 
+// Main dashboard content component that displays summary cards, reports, and charts.
 export default function DashboardContent({ user }) {
+  // Load dashboard data and calculated values from the custom dashboard hook.
   const {
     loading,
     selectedDate,
@@ -30,6 +33,7 @@ export default function DashboardContent({ user }) {
     getStaffFromCovers,
   } = useDashboardData();
 
+  // Prepare staffing chart data when a historical date is selected.
   const historicalStaffData = selectedHistoricalRecord
     ? [
         {
@@ -38,7 +42,7 @@ export default function DashboardContent({ user }) {
         },
       ]
     : [];
-
+  // Prepare staffing chart data when a forecast date is selected.
   const forecastStaffData = selectedForecastRecord
     ? [
         {
@@ -56,7 +60,7 @@ export default function DashboardContent({ user }) {
   }));
 
   return (
-    <>
+    <> {/* Dashboard header showing the page title, user name, and selected date. */}
       <section className="dashboard-hero">
         <h1 className="dashboard-title">Dashboard</h1>
         <p className="dashboard-text">

@@ -6,8 +6,9 @@ from app.controllers.booking_controller import (
     update_booking,
     delete_booking
 )
-
+# Create a Blueprint to group all booking-related API endpoints.
 booking_bp = Blueprint("booking_bp", __name__)
+
 
 @booking_bp.route("/", methods=["GET"])
 def fetch_bookings_route():
@@ -21,6 +22,7 @@ def fetch_booking_by_id_route(booking_id):
 def create_booking_route():
     return add_booking()
 
+# Update an existing booking record by booking ID.
 @booking_bp.route("/<int:booking_id>", methods=["PUT"])
 def update_booking_route(booking_id):
     return update_booking(booking_id)

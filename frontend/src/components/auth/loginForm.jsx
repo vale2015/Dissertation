@@ -1,5 +1,6 @@
 "use client";
 
+// Reusable login form component used by the home/login page
 export default function LoginForm({
   email,
   password,

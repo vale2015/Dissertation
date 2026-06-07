@@ -7,16 +7,16 @@ import Topbar from "@/components/layout/topbar";
 import AddNewBooking from "@/components/dashboard/addNewBooking";
 
 const API_BASE = "http://127.0.0.1:5000/api";
-
+// Checks if the selected booking date is a Monday.
 function isMonday(dateString) {
   if (!dateString) return false;
   const selectedDate = new Date(dateString);
   return selectedDate.getDay() === 1;
 }
-
+// Page used to create a new restaurant booking.
 export default function CreateBookingPage() {
   const router = useRouter();
-
+// Store all booking form values.
   const [formData, setFormData] = useState({
     booking_date: "",
     booking_time: "",
@@ -25,11 +25,11 @@ export default function CreateBookingPage() {
     customer_name: "",
     notes: "",
   });
-
+// Store form status messages and loading state.
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-
+// Update the form field that the user is editing.
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -41,24 +41,24 @@ export default function CreateBookingPage() {
     setErrorMessage("");
     setSuccessMessage("");
   };
-
+// Return the user to the dashboard when cancelling.
   const handleCancel = () => {
     router.push("/dashboard");
   };
-
+// Validate the form and send the booking to the backend.
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     setErrorMessage("");
     setSuccessMessage("");
-
+// Prevent bookings on Monday because the restaurant is closed.
     if (isMonday(formData.booking_date)) {
       setErrorMessage(
         "Bookings cannot be added on Monday because the restaurant is closed."
       );
       return;
     }
-
+// Check that all required fields are completed.
     if (
       !formData.booking_date ||
       !formData.booking_time ||
@@ -71,7 +71,7 @@ export default function CreateBookingPage() {
 
     try {
       setLoading(true);
-
+// Send the new booking data to the Flask backend.
       const response = await fetch(`${API_BASE}/booking/add`, {
         method: "POST",
         headers: {
@@ -94,7 +94,7 @@ export default function CreateBookingPage() {
       }
 
       setSuccessMessage("Booking added successfully and synced to forecast data.");
-
+// Reset the form after a successful booking.
       setFormData({
         booking_date: "",
         booking_time: "",

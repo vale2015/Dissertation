@@ -1,3 +1,4 @@
+// Converts a date value into DD/MM/YYYY format for display.
 export function formatDateDDMMYYYY(dateString) {
   if (!dateString) return "-";
 
@@ -10,7 +11,7 @@ export function formatDateDDMMYYYY(dateString) {
     }
     return dateString;
   }
-
+  // Format the parsed date as DD/MM/YYYY.
   const day = String(date.getDate()).padStart(2, "0");
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const year = date.getFullYear();

@@ -9,8 +9,10 @@ import BookingsTrend from "@/components/charts/BookingsTrend";
 import StaffingOverviewChart from "@/components/charts/StaffingOverviewChart";
 import { formatDateDDMMYYYY } from "@/utils/DateFormat";
 
+// Flask backend API base URL.
 const API_BASE = "http://127.0.0.1:5000/api";
 
+// Converts different date formats into YYYY-MM-DD.
 function normalizeDate(value) {
   if (!value) return "";
 
@@ -36,7 +38,7 @@ function normalizeDate(value) {
 
   return `${year}-${month}-${day}`;
 }
-
+// Formats a JavaScript Date object as YYYY-MM-DD.
 function formatAsIsoLocal(date) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -68,11 +70,11 @@ function getFullWeekdayFromDate(dateString) {
 
   return date.toLocaleDateString("en-GB", { weekday: "long" });
 }
-
+// Checks if the selected date is a closed trading day.
 function isClosedDayFromDate(dateString) {
   return getFullWeekdayFromDate(dateString).toLowerCase() === "monday";
 }
-
+// Estimates recommended staff based on total covers and trading day.
 function getStaffRecommendation(covers, dateString) {
   if (isClosedDayFromDate(dateString)) {
     return {
@@ -108,7 +110,7 @@ function getStaffRecommendation(covers, dateString) {
     demand_level: demandLevel,
   };
 }
-
+// Creates an empty row when the selected date has no stored data.
 function buildPlaceholderRow(dateString) {
   const recommendation = getStaffRecommendation(0, dateString);
 
@@ -127,14 +129,14 @@ function buildPlaceholderRow(dateString) {
     isPlaceholder: true,
   };
 }
-
+// Bookings overview page showing historical demand and staffing insights.
 export default function BookingsPage() {
   const searchParams = useSearchParams();
   const selectedDate = normalizeDate(searchParams.get("date"));
 
   const [historicalData, setHistoricalData] = useState([]);
   const [loading, setLoading] = useState(true);
-
+// Load historical demand data from the backend when the page opens.
   useEffect(() => {
     const loadBookingsData = async () => {
       try {
@@ -148,7 +150,7 @@ export default function BookingsPage() {
           : Array.isArray(json?.data)
           ? json.data
           : [];
-
+        // Normalise dates and sort records chronologically.
         const normalizedRows = rows
           .map((item) => ({
             ...item,
@@ -167,7 +169,7 @@ export default function BookingsPage() {
 
     loadBookingsData();
   }, []);
-
+// Add calculated staffing and demand-level values to each historical row.
   const allRows = useMemo(() => {
     return historicalData.map((item) => {
       const totalCovers = Number(
@@ -187,7 +189,7 @@ export default function BookingsPage() {
       };
     });
   }, [historicalData]);
-
+// Find the selected date record or use the latest available record.
   const selectedDayData = useMemo(() => {
     if (!allRows.length) return null;
 
@@ -203,7 +205,7 @@ export default function BookingsPage() {
 
     return buildPlaceholderRow(selectedDate);
   }, [allRows, selectedDate]);
-
+// Build a 7-day view starting from the selected date.
   const visibleRows = useMemo(() => {
     if (!selectedDayData?.date) return [];
 
@@ -234,7 +236,7 @@ export default function BookingsPage() {
       0
   );
   const estimatedStaff = Number(selectedDayData?.recommended_staff || 0);
-
+// Identify the largest booking source for the selected day.
   const mainBookingType = useMemo(() => {
     const sources = [
       { label: "Same-day", value: sameDayCovers },
@@ -245,7 +247,7 @@ export default function BookingsPage() {
     sources.sort((a, b) => b.value - a.value);
     return sources[0]?.label || "-";
   }, [sameDayCovers, walkInCovers, advanceCovers]);
-
+// Prepare covers data for the reservations trend chart.
   const bookingsTrendData = useMemo(() => {
     return visibleRows.map((item, index) => ({
       label: getShortWeekdayFromDate(item.date) || `Day ${index + 1}`,
@@ -261,7 +263,7 @@ export default function BookingsPage() {
       date: item.date,
     }));
   }, [visibleRows]);
-
+{/* Page header and description. */}
   return (
     <div className="dashboard-app">
       <Topbar />
@@ -278,7 +280,7 @@ export default function BookingsPage() {
                   Overview of reservations and staffing insights for the selected day
                 </p>
               </section>
-
+                {/* Show loading text while booking data is being fetched. */}
               {loading ? (
                 <p className="dashboard-text">Loading bookings overview...</p>
               ) : (

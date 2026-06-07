@@ -6,21 +6,21 @@ import Sidebar from "@/components/layout/sidebar";
 import Topbar from "@/components/layout/topbar";
 import SummaryCard from "@/components/dashboard/summaryCard";
 import { formatDateDDMMYYYY } from "@/utils/DateFormat";
-
+// Flask backend API base URL.
 const API_BASE = "http://127.0.0.1:5000/api";
-
+// Checks if the forecast day is a closed trading day.
 function isClosedDay(day) {
   return String(day || "").trim().toLowerCase() === "monday";
 }
-
+// Reservation forecast page showing predicted covers for 7 or 10 days.
 export default function ReservationForecastPage() {
   const searchParams = useSearchParams();
   const selectedDate = searchParams.get("date");
-
+// Store forecast length, forecast results, and loading state.
   const [forecastDays, setForecastDays] = useState(7);
   const [forecastData, setForecastData] = useState([]);
   const [loading, setLoading] = useState(false);
-
+// Load forecast data whenever the selected date or forecast length changes.
   useEffect(() => {
     let ignore = false;
 
@@ -28,13 +28,13 @@ export default function ReservationForecastPage() {
       setLoading(true);
       setForecastData([]);
 
-      try {
+      try { // Build the forecast API URL using the selected date if available.
         const requestUrl = selectedDate
           ? `${API_BASE}/demand/forecast?days=${forecastDays}&date=${selectedDate}`
           : `${API_BASE}/demand/forecast?days=${forecastDays}`;
 
         console.log("Fetching forecast:", requestUrl);
-
+// Request forecast data from the Flask backend.
         const response = await fetch(requestUrl, {
           method: "GET",
           cache: "no-store",

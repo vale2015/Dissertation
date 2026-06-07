@@ -7,7 +7,7 @@ from app.controllers.staff_cost_controller import (
 
 staff_cost_bp = Blueprint("staff_cost", __name__)
 
-
+# Generate staff-cost forecast records.
 @staff_cost_bp.get("/forecast")
 def generate_staff_cost():
     return create_staff_cost_forecast()

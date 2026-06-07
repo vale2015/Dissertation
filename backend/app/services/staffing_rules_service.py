@@ -2,8 +2,11 @@ from sqlalchemy import text
 from app.db.dbcon import SessionLocal
 
 
+# Retrieve staffing rules and staff role details from the database.
 def get_all_staffing_rules_service():
     with SessionLocal() as db:
+
+        # Retrieve staffing rules and categorise them by demand level.
         staffing_rules_result = db.execute(
             text("""
                 SELECT
@@ -34,7 +37,7 @@ def get_all_staffing_rules_service():
         staffing_rules = [
             dict(row._mapping) for row in staffing_rules_result.fetchall()
         ]
-
+        # Retrieve staff role details used for labour-cost calculations.
         staff_roles_result = db.execute(
             text("""
                 SELECT
@@ -48,6 +51,7 @@ def get_all_staffing_rules_service():
             """)
         )
 
+        # Convert staff role rows into dictionaries for the frontend.
         staff_roles = [
             dict(row._mapping) for row in staff_roles_result.fetchall()
         ]

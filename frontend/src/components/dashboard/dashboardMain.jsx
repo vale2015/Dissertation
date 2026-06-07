@@ -1,5 +1,5 @@
 "use client";
-
+// dashboard main component showing welcome text and feature cards.
 export default function DashboardMain({ user }) {
   return (
     <main className="dashboard-page">

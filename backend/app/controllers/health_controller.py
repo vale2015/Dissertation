@@ -2,14 +2,14 @@ from flask import jsonify
 from sqlalchemy import text
 from app.db.dbcon import SessionLocal
 
-
+# Return a simple response to confirm that the backend API is running.
 def health():
     return jsonify({
         "status": "ok",
         "message": "Backend service is running"
     }), 200
 
-
+# Test the database connection by running a simple SQL query.
 def database_health():
     try:
         with SessionLocal() as db:

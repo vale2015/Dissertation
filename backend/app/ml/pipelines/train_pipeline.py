@@ -9,11 +9,12 @@ from sklearn.model_selection import cross_val_score, TimeSeriesSplit
 
 from app.db.dbcon import SessionLocal
 
+# Number of historical days used by the prediction pipeline.
 HISTORICAL_WINDOW_DAYS = 90
 HOLIDAY_COUNTRY = "GB"
 HOLIDAY_SUBDIV = None  # Set a UK subdivision later if needed
 
-
+# Builds the UK holiday calendar used to identify bank holidays and special days.
 def build_holiday_calendar(years):
     if HOLIDAY_SUBDIV:
         return holidays.country_holidays(
@@ -26,8 +27,10 @@ def build_holiday_calendar(years):
         years=years,
     )
 
-
+# Creates calendar-based features for a specific date.
 def get_calendar_features(check_date, holiday_calendar):
+
+    # Check whether the selected date is a bank holiday.
     holiday_name = holiday_calendar.get(check_date)
     is_bank_holiday = int(holiday_name is not None)
 
@@ -77,7 +80,7 @@ def get_calendar_features(check_date, holiday_calendar):
         "is_special_day": is_special_day,
     }
 
-
+# Trains the Random Forest demand forecasting model using historical restaurant data.
 def train_model():
     try:
         with SessionLocal() as db:
@@ -98,12 +101,12 @@ def train_model():
             )
             rows = result.fetchall()
             columns = result.keys()
-
+        # Convert database rows into a pandas DataFrame for data preparation.
         df = pd.DataFrame(rows, columns=columns)
 
         if df.empty:
             return {"message": "No data found in restaurant_demand_features"}
-
+        # Convert the date column into datetime format and sort records chronologically.
         df["date"] = pd.to_datetime(df["date"])
         df = df.sort_values("date").reset_index(drop=True)
 

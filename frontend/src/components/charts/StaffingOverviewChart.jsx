@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-
+// Formats a date as DD-MM for the chart labels.
 function formatShortDate(value) {
   if (!value) return "";
 
@@ -13,8 +13,9 @@ function formatShortDate(value) {
   const [, year, month, day] = directMatch;
   return `${day}-${month}`;
 }
-
+// Bar chart component used to display estimated staffing levels.
 export default function StaffingOverviewChart({ data = [] }) {
+  // Clean and normalise staffing data before rendering the chart.
   const chartData = useMemo(() => {
     if (!Array.isArray(data)) return [];
 
@@ -71,7 +72,7 @@ export default function StaffingOverviewChart({ data = [] }) {
         </div>
       </div>
 
-      <div className="staffing-overview-chart">
+      <div className="staffing-overview-chart">{/* Render the bar chart when staffing data is available. */}
         {chartData.length > 0 ? (
           <div className="staffing-overview-bars staffing-overview-bars-monthly">
             {chartData.map((item, index) => {

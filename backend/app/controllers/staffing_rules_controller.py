@@ -1,7 +1,7 @@
 from flask import jsonify
 from app.services.staffing_rules_service import get_all_staffing_rules_service
 
-
+# Return all staffing rules from the service layer.
 def get_all_staffing_rules_controller():
     try:
         data = get_all_staffing_rules_service()

@@ -1,10 +1,11 @@
 "use client";
-
+// Reusable confirmation modal used when the user clicks Logout.
 export default function LogoutForm({
   isOpen = false,
   onConfirm = () => {},
   onCancel = () => {},
 }) {
+  // Do not render the modal when it is closed.
   if (!isOpen) return null;
 
   return (
