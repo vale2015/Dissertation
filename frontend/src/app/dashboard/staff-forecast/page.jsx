@@ -8,6 +8,7 @@ import { formatDateDDMMYYYY } from "@/utils/DateFormat";
 
 const API_BASE = "http://127.0.0.1:5000/api";
 
+/*Normalise Data function*/
 function normalizeDate(value) {
   if (!value) return "";
 
