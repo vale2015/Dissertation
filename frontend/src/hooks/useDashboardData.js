@@ -9,9 +9,9 @@ import {
   getBookingTypeFromForecastInput,
   buildRecentBookings,
 } from "@/utils/DashboardHelpers";
+import { API_BASE } from "@/lib/api";
 
-// Base URL used for all Flask backend API requests.
-const API_BASE = "http://127.0.0.1:5000/api";
+
 // Custom hook that loads and prepares all dashboard data.
 export default function useDashboardData() {
   // Read the selected date from the URL query string.
