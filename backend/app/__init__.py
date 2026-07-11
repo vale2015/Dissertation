@@ -1,3 +1,4 @@
+import os
 from flask import Flask
 from flask_cors import CORS
 
@@ -13,9 +14,10 @@ from app.api.staffing_rules_route import staffing_rules_bp
 def create_app():
     # Create the main Flask application instance.
     app = Flask(__name__)
+    frontend_url = os.environ.get("FRONTEND_URL", "http://localhost:3000")
 
     # Enable CORS only for the frontend running on localhost:3000.
-    CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
+    CORS(app, resources={r"/api/*": {"origins": ["http://localhost:3000", frontend_url]}})
 
     # Add security headers to every response.
     @app.after_request
