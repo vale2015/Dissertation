@@ -1,22 +1,27 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useRouter } from "next/navigation";
 import Sidebar from "@/components/layout/sidebar";
 import Topbar from "@/components/layout/topbar";
 import AddNewBooking from "@/components/dashboard/addNewBooking";
 import { API_BASE } from "@/lib/api";
 
+
 // Checks if the selected booking date is a Monday.
 function isMonday(dateString) {
   if (!dateString) return false;
+
   const selectedDate = new Date(dateString);
   return selectedDate.getDay() === 1;
 }
+
+
 // Page used to create a new restaurant booking.
 export default function CreateBookingPage() {
   const router = useRouter();
-// Store all booking form values.
+
+  // Store all booking form values.
   const [formData, setFormData] = useState({
     booking_date: "",
     booking_time: "",
@@ -25,40 +30,46 @@ export default function CreateBookingPage() {
     customer_name: "",
     notes: "",
   });
-// Store form status messages and loading state.
+
+  // Store form status messages and loading state.
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-// Update the form field that the user is editing.
-  const handleChange = (e) => {
-    const { name, value } = e.target;
 
-    setFormData((prev) => ({
-      ...prev,
+  // Update the form field that the user is editing.
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+
+    setFormData((previousFormData) => ({
+      ...previousFormData,
       [name]: value,
     }));
 
     setErrorMessage("");
     setSuccessMessage("");
   };
-// Return the user to the dashboard when cancelling.
+
+  // Return the user to the dashboard when cancelling.
   const handleCancel = () => {
     router.push("/dashboard");
   };
-// Validate the form and send the booking to the backend.
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+
+  // Validate the form and send the booking to the backend.
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
     setErrorMessage("");
     setSuccessMessage("");
-// Prevent bookings on Monday because the restaurant is closed.
+
+    // Prevent bookings on Monday because the restaurant is closed.
     if (isMonday(formData.booking_date)) {
       setErrorMessage(
         "Bookings cannot be added on Monday because the restaurant is closed."
       );
       return;
     }
-// Check that all required fields are completed.
+
+    // Check that all required fields are completed.
     if (
       !formData.booking_date ||
       !formData.booking_time ||
@@ -71,7 +82,8 @@ export default function CreateBookingPage() {
 
     try {
       setLoading(true);
-// Send the new booking data to the Flask backend.
+
+      // Send the new booking data to the Flask backend.
       const response = await fetch(`${API_BASE}/booking/add`, {
         method: "POST",
         headers: {
@@ -93,8 +105,11 @@ export default function CreateBookingPage() {
         throw new Error(data?.error || "Failed to add booking.");
       }
 
-      setSuccessMessage("Booking added successfully and synced to forecast data.");
-// Reset the form after a successful booking.
+      setSuccessMessage(
+        "Booking added successfully and synced to forecast data."
+      );
+
+      // Reset the form after a successful booking.
       setFormData({
         booking_date: "",
         booking_time: "",
@@ -111,28 +126,34 @@ export default function CreateBookingPage() {
   };
 
   return (
-    <div className="dashboard-app">
-      <Topbar />
+    <Suspense
+      fallback={
+        <p className="dashboard-text">Loading booking form...</p>
+      }
+    >
+      <div className="dashboard-app">
+        <Topbar />
 
-      <div className="dashboard-shell">
-        <Sidebar />
+        <div className="dashboard-shell">
+          <Sidebar />
 
-        <div className="dashboard-main-area">
-          <main className="dashboard-page">
-            <div className="dashboard-container">
-              <AddNewBooking
-                formData={formData}
-                loading={loading}
-                successMessage={successMessage}
-                errorMessage={errorMessage}
-                onChange={handleChange}
-                onSubmit={handleSubmit}
-                onCancel={handleCancel}
-              />
-            </div>
-          </main>
+          <div className="dashboard-main-area">
+            <main className="dashboard-page">
+              <div className="dashboard-container">
+                <AddNewBooking
+                  formData={formData}
+                  loading={loading}
+                  successMessage={successMessage}
+                  errorMessage={errorMessage}
+                  onChange={handleChange}
+                  onSubmit={handleSubmit}
+                  onCancel={handleCancel}
+                />
+              </div>
+            </main>
+          </div>
         </div>
       </div>
-    </div>
+    </Suspense>
   );
 }
