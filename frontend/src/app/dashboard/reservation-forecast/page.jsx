@@ -1,6 +1,11 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import {
+  Suspense,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useSearchParams } from "next/navigation";
 import Sidebar from "@/components/layout/sidebar";
 import Topbar from "@/components/layout/topbar";
@@ -11,17 +16,23 @@ import { API_BASE } from "@/lib/api";
 
 // Checks if the forecast day is a closed trading day.
 function isClosedDay(day) {
-  return String(day || "").trim().toLowerCase() === "monday";
+  return (
+    String(day || "").trim().toLowerCase() === "monday"
+  );
 }
-// Reservation forecast page showing predicted covers for 7 or 10 days.
-export default function ReservationForecastPage() {
+
+
+// Contains the page logic that depends on useSearchParams().
+function ReservationForecastContent() {
   const searchParams = useSearchParams();
   const selectedDate = searchParams.get("date");
-// Store forecast length, forecast results, and loading state.
+
+  // Store forecast length, results and loading state.
   const [forecastDays, setForecastDays] = useState(7);
   const [forecastData, setForecastData] = useState([]);
   const [loading, setLoading] = useState(false);
-// Load forecast data whenever the selected date or forecast length changes.
+
+  // Load forecast data when the date or forecast length changes.
   useEffect(() => {
     let ignore = false;
 
@@ -29,26 +40,38 @@ export default function ReservationForecastPage() {
       setLoading(true);
       setForecastData([]);
 
-      try { // Build the forecast API URL using the selected date if available.
+      try {
         const requestUrl = selectedDate
           ? `${API_BASE}/demand/forecast?days=${forecastDays}&date=${selectedDate}`
           : `${API_BASE}/demand/forecast?days=${forecastDays}`;
 
         console.log("Fetching forecast:", requestUrl);
-// Request forecast data from the Flask backend.
+
         const response = await fetch(requestUrl, {
           method: "GET",
           cache: "no-store",
         });
 
+        if (!response.ok) {
+          throw new Error(
+            `Forecast request failed: ${response.status}`
+          );
+        }
+
         const json = await response.json();
 
-        if (ignore) return;
+        if (ignore) {
+          return;
+        }
 
-        const rawRows = Array.isArray(json?.forecast) ? json.forecast : [];
+        const rawRows = Array.isArray(json?.forecast)
+          ? json.forecast
+          : [];
 
         const adjustedRows = rawRows.map((item) => {
-          const closed = item.closed === true || isClosedDay(item.day_of_week);
+          const closed =
+            item.closed === true ||
+            isClosedDay(item.day_of_week);
 
           return {
             ...item,
@@ -61,7 +84,11 @@ export default function ReservationForecastPage() {
 
         setForecastData(adjustedRows);
       } catch (error) {
-        console.error("Failed to load forecast data:", error);
+        console.error(
+          "Failed to load forecast data:",
+          error
+        );
+
         if (!ignore) {
           setForecastData([]);
         }
@@ -81,46 +108,70 @@ export default function ReservationForecastPage() {
 
   const totalForecastedCovers = useMemo(() => {
     return forecastData.reduce(
-      (sum, item) => sum + Number(item.predicted_total_covers || 0),
+      (sum, item) =>
+        sum +
+        Number(item.predicted_total_covers || 0),
       0
     );
   }, [forecastData]);
 
   const peakDay = useMemo(() => {
-    const openDays = forecastData.filter((item) => !item.closed);
+    const openDays = forecastData.filter(
+      (item) => !item.closed
+    );
 
-    if (!openDays.length) return "-";
+    if (!openDays.length) {
+      return "-";
+    }
 
     const maxItem = [...openDays].sort(
-      (a, b) =>
-        Number(b.predicted_total_covers || 0) -
-        Number(a.predicted_total_covers || 0)
+      (firstItem, secondItem) =>
+        Number(
+          secondItem.predicted_total_covers || 0
+        ) -
+        Number(
+          firstItem.predicted_total_covers || 0
+        )
     )[0];
 
     return maxItem?.day_of_week || "-";
   }, [forecastData]);
 
   const lowestDay = useMemo(() => {
-    const openDays = forecastData.filter((item) => !item.closed);
+    const openDays = forecastData.filter(
+      (item) => !item.closed
+    );
 
-    if (!openDays.length) return "-";
+    if (!openDays.length) {
+      return "-";
+    }
 
     const minItem = [...openDays].sort(
-      (a, b) =>
-        Number(a.predicted_total_covers || 0) -
-        Number(b.predicted_total_covers || 0)
+      (firstItem, secondItem) =>
+        Number(
+          firstItem.predicted_total_covers || 0
+        ) -
+        Number(
+          secondItem.predicted_total_covers || 0
+        )
     )[0];
 
     return minItem?.day_of_week || "-";
   }, [forecastData]);
 
   const averagePerDay = useMemo(() => {
-    const openDays = forecastData.filter((item) => !item.closed);
+    const openDays = forecastData.filter(
+      (item) => !item.closed
+    );
 
-    if (!openDays.length) return 0;
+    if (!openDays.length) {
+      return 0;
+    }
 
     const total = openDays.reduce(
-      (sum, item) => sum + Number(item.predicted_total_covers || 0),
+      (sum, item) =>
+        sum +
+        Number(item.predicted_total_covers || 0),
       0
     );
 
@@ -138,10 +189,18 @@ export default function ReservationForecastPage() {
           <main className="dashboard-page">
             <div className="dashboard-container">
               <section className="dashboard-hero">
-                <h1 className="dashboard-title">Reservation Forecast</h1>
+                <h1 className="dashboard-title">
+                  Reservation Forecast
+                </h1>
+
                 <p className="dashboard-text">
-                  Forecast expected covers for the next {forecastDays} days
-                  {selectedDate ? ` from ${formatDateDDMMYYYY(selectedDate)}` : ""}
+                  Forecast expected covers for the next{" "}
+                  {forecastDays} days
+                  {selectedDate
+                    ? ` from ${formatDateDDMMYYYY(
+                        selectedDate
+                      )}`
+                    : ""}
                 </p>
 
                 <div className="forecast-toggle">
@@ -153,7 +212,9 @@ export default function ReservationForecastPage() {
                         : "forecast-toggle-btn"
                     }
                     onClick={() => setForecastDays(7)}
-                    disabled={loading && forecastDays === 7}
+                    disabled={
+                      loading && forecastDays === 7
+                    }
                   >
                     7 Days
                   </button>
@@ -166,7 +227,9 @@ export default function ReservationForecastPage() {
                         : "forecast-toggle-btn"
                     }
                     onClick={() => setForecastDays(10)}
-                    disabled={loading && forecastDays === 10}
+                    disabled={
+                      loading && forecastDays === 10
+                    }
                   >
                     10 Days
                   </button>
@@ -174,7 +237,9 @@ export default function ReservationForecastPage() {
               </section>
 
               {loading ? (
-                <p className="dashboard-text">Loading forecast data...</p>
+                <p className="dashboard-text">
+                  Loading forecast data...
+                </p>
               ) : (
                 <>
                   <section className="dashboard-summary-grid">
@@ -183,16 +248,19 @@ export default function ReservationForecastPage() {
                       value={totalForecastedCovers}
                       description={`Predicted total covers in the next ${forecastDays} days, excluding Monday`}
                     />
+
                     <SummaryCard
                       title="Peak Day"
                       value={peakDay}
                       description="Highest expected reservations day"
                     />
+
                     <SummaryCard
                       title="Lowest Day"
                       value={lowestDay}
                       description="Lowest expected reservation day"
                     />
+
                     <SummaryCard
                       title="Average Per Day"
                       value={averagePerDay}
@@ -213,45 +281,82 @@ export default function ReservationForecastPage() {
                             <th>Day</th>
                             <th>Status</th>
                             <th>Predicted Covers</th>
-                            <th>Same-day Average(7d)</th>
-                            <th>Walk-in Average(7d)</th>
-                            <th>Advance Average (7d)</th>
+                            <th>
+                              Same-day Average (7d)
+                            </th>
+                            <th>
+                              Walk-in Average (7d)
+                            </th>
+                            <th>
+                              Advance Average (7d)
+                            </th>
                           </tr>
                         </thead>
 
                         <tbody>
                           {forecastData.length > 0 ? (
-                            forecastData.map((item, index) => (
-                              <tr key={`${item.date}-${forecastDays}-${index}`}>
-                                <td>{formatDateDDMMYYYY(item.date)}</td>
-                                <td>{item.day_of_week}</td>
-                                <td>
-                                  {item.closed
-                                    ? item.closure_reason || "Closed"
-                                    : "Open"}
-                                </td>
-                                <td>{item.predicted_total_covers}</td>
-                                <td>
-                                  {item.closed
-                                    ? "-"
-                                    : item.input_features?.same_day_avg_7 ?? "-"}
-                                </td>
-                                <td>
-                                  {item.closed
-                                    ? "-"
-                                    : item.input_features?.walk_in_avg_7 ?? "-"}
-                                </td>
-                                <td>
-                                  {item.closed
-                                    ? "-"
-                                    : item.input_features?.advance_avg_7 ?? "-"}
-                                </td>
-                              </tr>
-                            ))
+                            forecastData.map(
+                              (item, index) => (
+                                <tr
+                                  key={`${item.date}-${forecastDays}-${index}`}
+                                >
+                                  <td>
+                                    {formatDateDDMMYYYY(
+                                      item.date
+                                    )}
+                                  </td>
+
+                                  <td>
+                                    {item.day_of_week}
+                                  </td>
+
+                                  <td>
+                                    {item.closed
+                                      ? item.closure_reason ||
+                                        "Closed"
+                                      : "Open"}
+                                  </td>
+
+                                  <td>
+                                    {
+                                      item.predicted_total_covers
+                                    }
+                                  </td>
+
+                                  <td>
+                                    {item.closed
+                                      ? "-"
+                                      : item.input_features
+                                          ?.same_day_avg_7 ??
+                                        "-"}
+                                  </td>
+
+                                  <td>
+                                    {item.closed
+                                      ? "-"
+                                      : item.input_features
+                                          ?.walk_in_avg_7 ??
+                                        "-"}
+                                  </td>
+
+                                  <td>
+                                    {item.closed
+                                      ? "-"
+                                      : item.input_features
+                                          ?.advance_avg_7 ??
+                                        "-"}
+                                  </td>
+                                </tr>
+                              )
+                            )
                           ) : (
                             <tr>
-                              <td colSpan="7" className="empty-state-cell">
-                                No forecast data available for the selected date.
+                              <td
+                                colSpan="7"
+                                className="empty-state-cell"
+                              >
+                                No forecast data available
+                                for the selected date.
                               </td>
                             </tr>
                           )}
@@ -266,5 +371,21 @@ export default function ReservationForecastPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+
+// Export the page with a parent Suspense boundary.
+export default function ReservationForecastPage() {
+  return (
+    <Suspense
+      fallback={
+        <p className="dashboard-text">
+          Loading reservation forecast...
+        </p>
+      }
+    >
+      <ReservationForecastContent />
+    </Suspense>
   );
 }
