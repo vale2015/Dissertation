@@ -8,9 +8,8 @@ import SummaryCard from "@/components/dashboard/summaryCard";
 import BookingsTrend from "@/components/charts/BookingsTrend";
 import StaffingOverviewChart from "@/components/charts/StaffingOverviewChart";
 import { formatDateDDMMYYYY } from "@/utils/DateFormat";
+import { API_BASE } from "@/lib/api";
 
-// Flask backend API base URL.
-const API_BASE = "http://127.0.0.1:5000/api";
 
 // Converts different date formats into YYYY-MM-DD.
 function normalizeDate(value) {

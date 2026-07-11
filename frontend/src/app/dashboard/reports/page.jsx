@@ -3,8 +3,8 @@
 import { useEffect, useMemo, useState } from "react";
 import Sidebar from "@/components/layout/sidebar";
 import Topbar from "@/components/layout/topbar";
+import { API_BASE } from "@/lib/api";
 
-const API_BASE = "http://127.0.0.1:5000/api";
 // Weekly report page showing summary insights from dashboard and forecast data.
 export default function ReportsPage() {
   const [dashboardData, setDashboardData] = useState(null);

@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import Sidebar from "@/components/layout/sidebar";
 import Topbar from "@/components/layout/topbar";
 import AddNewBooking from "@/components/dashboard/addNewBooking";
+import { API_BASE } from "@/lib/api";
 
-const API_BASE = "http://127.0.0.1:5000/api";
 // Checks if the selected booking date is a Monday.
 function isMonday(dateString) {
   if (!dateString) return false;

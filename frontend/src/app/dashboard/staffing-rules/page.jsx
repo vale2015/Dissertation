@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import DashboardLayout from "@/components/dashboard/dashboardLayout";
-// Flask backend API base URL.
-const API_BASE = "http://127.0.0.1:5000/api";
+import { API_BASE } from "@/lib/api";
+
+
 // Page used to display staffing rules and operational role data.
 export default function StaffingRulesPage() {
   const router = useRouter();

@@ -5,8 +5,9 @@ import { useSearchParams } from "next/navigation";
 import Sidebar from "@/components/layout/sidebar";
 import Topbar from "@/components/layout/topbar";
 import { formatDateDDMMYYYY } from "@/utils/DateFormat";
+import { API_BASE } from "@/lib/api";
 
-const API_BASE = "http://127.0.0.1:5000/api";
+
 
 /*Normalise Data function*/
 function normalizeDate(value) {

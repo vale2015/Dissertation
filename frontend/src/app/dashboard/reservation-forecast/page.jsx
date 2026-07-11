@@ -6,8 +6,9 @@ import Sidebar from "@/components/layout/sidebar";
 import Topbar from "@/components/layout/topbar";
 import SummaryCard from "@/components/dashboard/summaryCard";
 import { formatDateDDMMYYYY } from "@/utils/DateFormat";
-// Flask backend API base URL.
-const API_BASE = "http://127.0.0.1:5000/api";
+import { API_BASE } from "@/lib/api";
+
+
 // Checks if the forecast day is a closed trading day.
 function isClosedDay(day) {
   return String(day || "").trim().toLowerCase() === "monday";
