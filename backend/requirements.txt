@@ -11,8 +11,6 @@ joblib==1.5.3
 MarkupSafe==3.0.3
 numpy==2.4.3
 pandas==3.0.1
-psycopg==3.3.3
-psycopg-binary==3.3.3
 PyJWT==2.12.1
 python-dateutil==2.9.0.post0
 python-dotenv==1.2.2
