@@ -2,6 +2,7 @@ import os
 
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
+from sqlalchemy.engine import make_url
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import NullPool
 
@@ -13,42 +14,54 @@ BACKEND_DIR = os.path.abspath(
 ENV_PATH = os.path.join(BACKEND_DIR, ".env")
 
 # Load local environment variables.
-# On Vercel, variables are provided by the project configuration.
+# Vercel provides its variables through the project configuration.
 load_dotenv(ENV_PATH)
 
 
-# Prefer the URL provided by the Vercel-Supabase integration.
-# Fall back to DATABASE_URL when running locally.
-DATABASE_URL = os.getenv("POSTGRES_URL") or os.getenv("DATABASE_URL")
+# Use the Vercel-Supabase integration URL in production.
+# Fall back to DATABASE_URL during local development.
+raw_database_url = (
+    os.getenv("POSTGRES_URL")
+    or os.getenv("DATABASE_URL")
+)
 
-if not DATABASE_URL:
+if not raw_database_url:
     raise RuntimeError(
         "Database connection URL is missing. "
         "Expected POSTGRES_URL or DATABASE_URL."
     )
 
 
-# Convert the Supabase URL into an explicit SQLAlchemy psycopg2 URL.
-if DATABASE_URL.startswith("postgres://"):
-    DATABASE_URL = DATABASE_URL.replace(
+# Explicitly select the psycopg2 SQLAlchemy driver.
+if raw_database_url.startswith("postgres://"):
+    raw_database_url = raw_database_url.replace(
         "postgres://",
         "postgresql+psycopg2://",
         1,
     )
-elif DATABASE_URL.startswith("postgresql://"):
-    DATABASE_URL = DATABASE_URL.replace(
+elif raw_database_url.startswith("postgresql://"):
+    raw_database_url = raw_database_url.replace(
         "postgresql://",
         "postgresql+psycopg2://",
         1,
     )
 
 
-# NullPool is appropriate for serverless deployments because each
-# invocation opens and closes its own database connection.
+# Parse the URL and remove integration metadata that psycopg2
+# does not recognize as a database connection option.
+database_url = make_url(raw_database_url)
+
+query_parameters = dict(database_url.query)
+query_parameters.pop("supa", None)
+query_parameters["sslmode"] = "require"
+
+database_url = database_url.set(query=query_parameters)
+
+
+# Use a new database connection for each serverless invocation.
 engine = create_engine(
-    DATABASE_URL,
+    database_url,
     poolclass=NullPool,
-    connect_args={"sslmode": "require"},
     future=True,
     echo=False,
 )
