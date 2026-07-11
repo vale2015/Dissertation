@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Sidebar from "@/components/layout/sidebar";
 import Topbar from "@/components/layout/topbar";
@@ -130,7 +130,7 @@ function buildPlaceholderRow(dateString) {
   };
 }
 // Bookings overview page showing historical demand and staffing insights.
-export default function BookingsPage() {
+function BookingsContent() {
   const searchParams = useSearchParams();
   const selectedDate = normalizeDate(searchParams.get("date"));
 
@@ -363,5 +363,13 @@ export default function BookingsPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function BookingsPage() {
+  return (
+    <Suspense fallback={<p className="dashboard-text">Loading bookings overview...</p>}>
+      <BookingsContent />
+    </Suspense>
   );
 }

@@ -110,7 +110,7 @@
           <mxGeometry height="40" width="100" x="1684" y="-190" as="geometry" />
         </mxCell>
         <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-35" parent="1" style="text;strokeColor=none;fillColor=none;html=1;whiteSpace=wrap;verticalAlign=middle;overflow=hidden;labelBackgroundColor=none;fontColor=#143642;" value="&lt;ul&gt;&lt;li&gt;&lt;b&gt;JWT Verification&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;Route Protection&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;Request Validation&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;Controlled Error Responses&lt;/b&gt;&lt;/li&gt;&lt;/ul&gt;" vertex="1">
-          <mxGeometry height="80" width="201" x="1639" y="-160" as="geometry" />
+          <mxGeometry height="100" width="221" x="1639" y="-160" as="geometry" />
         </mxCell>
         <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-36" edge="1" parent="1" style="shape=flexArrow;endArrow=classic;html=1;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
@@ -143,7 +143,7 @@
           <mxGeometry height="40" width="100" x="2169" y="-190" as="geometry" />
         </mxCell>
         <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-44" parent="1" style="text;strokeColor=none;fillColor=none;html=1;whiteSpace=wrap;verticalAlign=middle;overflow=hidden;labelBackgroundColor=none;fontColor=#143642;" value="&lt;ul&gt;&lt;li&gt;&lt;b&gt;Controlled Access&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;User Data Storage&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;Booking And Forecast Data Separation&lt;/b&gt;&lt;/li&gt;&lt;/ul&gt;" vertex="1">
-          <mxGeometry height="80" width="251" x="2069" y="-160" as="geometry" />
+          <mxGeometry height="80" width="271" x="2069" y="-160" as="geometry" />
         </mxCell>
         <mxCell id="tU5m0CCvI8Fr9Q7HqzTt-45" edge="1" parent="1" style="shape=flexArrow;endArrow=classic;html=1;rounded=0;labelBackgroundColor=none;strokeColor=#A8201A;fontColor=default;" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">

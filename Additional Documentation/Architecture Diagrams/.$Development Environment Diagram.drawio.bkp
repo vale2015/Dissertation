@@ -1,6 +1,6 @@
-<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.6.6 Chrome/144.0.7559.236 Electron/40.8.4 Safari/537.36" version="29.6.6">
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.6.6 Chrome/144.0.7559.236 Electron/40.8.4 Safari/537.36">
   <diagram name="Development Environment Architecture" id="Lf-CouDm7NghPsFcJILh">
-    <mxGraphModel dx="2276" dy="841" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="2338" dy="1985" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -11,7 +11,7 @@
           <mxGeometry height="110" width="280" x="870" y="60" as="geometry" />
         </mxCell>
         <mxCell id="RNC2E_XrJaavAUVxAZqJ-3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=10;strokeColor=#2a4d69;fillColor=#edf2f7;fontStyle=1;fontSize=14;align=center;verticalAlign=top;spacingTop=10;" value="Developer" vertex="1">
-          <mxGeometry height="80" width="160" x="-60" as="geometry" />
+          <mxGeometry height="80" width="160" x="-60" y="-2" as="geometry" />
         </mxCell>
         <mxCell id="RNC2E_XrJaavAUVxAZqJ-4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=10;strokeColor=#4a5568;fillColor=#f7fafc;fontStyle=1;fontSize=14;align=center;verticalAlign=top;spacingTop=10;" value="Local Development Machine" vertex="1">
           <mxGeometry height="150" width="220" x="250" y="100" as="geometry" />
@@ -38,10 +38,10 @@
           <mxGeometry height="120" width="220" y="80" as="geometry" />
         </mxCell>
         <mxCell id="RNC2E_XrJaavAUVxAZqJ-12" parent="1" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=10;strokeColor=#4c51bf;fillColor=#e0e7ff;fontStyle=1;fontSize=14;align=center;verticalAlign=top;spacingTop=10;" value="Supabase / PostgreSQL Database" vertex="1">
-          <mxGeometry height="150" width="240" x="910" y="320" as="geometry" />
+          <mxGeometry height="170" width="240" x="910" y="320" as="geometry" />
         </mxCell>
-        <mxCell id="RNC2E_XrJaavAUVxAZqJ-13" parent="RNC2E_XrJaavAUVxAZqJ-12" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=10;spacingTop=10;overflow=hidden;rounded=0;fontSize=13;fontColor=#434190;" value="users&#xa;bookings&#xa;restaurant_demand_features" vertex="1">
-          <mxGeometry height="105" width="240" y="45" as="geometry" />
+        <mxCell id="RNC2E_XrJaavAUVxAZqJ-13" parent="RNC2E_XrJaavAUVxAZqJ-12" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=10;spacingTop=10;overflow=hidden;rounded=0;fontSize=13;fontColor=#434190;" value="users&lt;br&gt;bookings&lt;br&gt;restaurant_demand_features&lt;div&gt;staffing_rules&lt;/div&gt;&lt;div&gt;staff_roles&lt;/div&gt;&lt;div&gt;staff_cost_forecast&lt;/div&gt;" vertex="1">
+          <mxGeometry height="125" width="240" y="32.5" as="geometry" />
         </mxCell>
         <mxCell id="RNC2E_XrJaavAUVxAZqJ-14" edge="1" parent="1" source="RNC2E_XrJaavAUVxAZqJ-3" style="endArrow=classic;html=1;rounded=1;strokeColor=#444444;labelBackgroundColor=#f7fafc;edgeStyle=orthogonalEdgeStyle;fontSize=12;" target="RNC2E_XrJaavAUVxAZqJ-4" value="Run single development command">
           <mxGeometry height="50" relative="1" width="50" as="geometry" />
