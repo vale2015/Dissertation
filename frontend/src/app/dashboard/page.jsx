@@ -1,32 +1,66 @@
-"use client";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import Sidebar from "@/components/layout/sidebar";
 import Topbar from "@/components/layout/topbar";
 import DashboardContent from "@/components/dashboard/dashboardContent";
 
-// Protected dashboard page shown after the user logs in.
-export default function DashboardPage() {
-  const router = useRouter();
-  // Store the logged-in user details from local storage.
-  const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    // Check if the user has a valid token before showing the dashboard.
-    const storedToken = localStorage.getItem("token");
-    const storedUser = localStorage.getItem("user");
+// Ensure the authenticated dashboard is never statically cached.
+export const dynamic = "force-dynamic";
 
-    if (!storedToken || !storedUser) {
-      
-      router.push("/login");
-      return;
+
+// Validate the HttpOnly session with the Flask backend.
+async function getAuthenticatedUser() {
+  const backendApiUrl = process.env.BACKEND_API_URL?.replace(/\/$/, "");
+
+  if (!backendApiUrl) {
+    console.error("BACKEND_API_URL is not configured.");
+    return null;
+  }
+
+  const cookieStore = await cookies();
+  const token = cookieStore.get("rfs_session")?.value;
+
+  if (!token) {
+    return null;
+  }
+
+  try {
+    const response = await fetch(
+      `${backendApiUrl}/auth/me`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+        cache: "no-store",
+      }
+    );
+
+    if (!response.ok) {
+      return null;
     }
 
-    setUser(JSON.parse(storedUser));
-  }, [router]);
+    const data = await response.json();
 
-  if (!user) return null;
+    return data?.user || null;
+  } catch (error) {
+    console.error("Dashboard authentication check failed:", error);
+    return null;
+  }
+}
+
+
+// Protected dashboard page.
+export default async function DashboardPage() {
+  const user = await getAuthenticatedUser();
+
+  // Your login page is "/", not "/login".
+  if (!user) {
+    redirect("/");
+  }
 
   return (
     <div className="dashboard-app">

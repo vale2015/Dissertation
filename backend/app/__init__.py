@@ -1,53 +1,129 @@
 import os
-from flask import Flask
+
+from flask import Flask, request
 from flask_cors import CORS
 
-from app.api.demand_route import demand_bp
-from app.api.health_route import health_bp
-from app.api.dashboard_route import dashboard_bp
 from app.api.auth_route import auth_bp
 from app.api.booking_route import booking_bp
+from app.api.dashboard_route import dashboard_bp
+from app.api.demand_route import demand_bp
+from app.api.health_route import health_bp
 from app.api.staff_cost_route import staff_cost_bp
 from app.api.staffing_rules_route import staffing_rules_bp
+from app.middleware.auth_middleware import require_authenticated_request
+
+
+# Blueprints containing private restaurant data.
+PROTECTED_BLUEPRINTS = {
+    demand_bp.name,
+    dashboard_bp.name,
+    booking_bp.name,
+    staff_cost_bp.name,
+    staffing_rules_bp.name,
+}
 
 
 def create_app():
-    # Create the main Flask application instance.
+    # Create the main Flask application.
     app = Flask(__name__)
-    frontend_url = os.environ.get("FRONTEND_URL", "http://localhost:3000")
 
-    # Enable CORS only for the frontend running on localhost:3000.
-    CORS(app, resources={r"/api/*": {"origins": ["http://localhost:3000", frontend_url]}})
+    frontend_url = os.environ.get(
+        "FRONTEND_URL",
+        "http://localhost:3000",
+    )
+
+    # Remove duplicate origins when FRONTEND_URL is localhost.
+    allowed_origins = list(
+        dict.fromkeys([
+            "http://localhost:3000",
+            frontend_url,
+        ])
+    )
+
+    # Allow requests only from the local and deployed Next.js frontend.
+    CORS(
+        app,
+        resources={
+            r"/api/*": {
+                "origins": allowed_origins,
+            }
+        },
+        methods=[
+            "GET",
+            "POST",
+            "PUT",
+            "PATCH",
+            "DELETE",
+            "OPTIONS",
+        ],
+        allow_headers=[
+            "Content-Type",
+            "Authorization",
+        ],
+    )
+
+    # Authenticate requests for protected blueprints.
+    @app.before_request
+    def protect_private_api_routes():
+        if request.blueprint in PROTECTED_BLUEPRINTS:
+            return require_authenticated_request()
+
+        return None
 
     # Add security headers to every response.
     @app.after_request
     def add_security_headers(response):
         response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["X-Frame-Options"] = "DENY"
-        response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
-        response.headers["Content-Security-Policy"] = "default-src 'self'"
+        response.headers[
+            "Referrer-Policy"
+        ] = "strict-origin-when-cross-origin"
+        response.headers[
+            "Content-Security-Policy"
+        ] = "default-src 'self'"
+
         return response
 
-    # Register the health-check routes under /api/health.
-    app.register_blueprint(health_bp, url_prefix="/api/health")
+    # Public health-check routes.
+    app.register_blueprint(
+        health_bp,
+        url_prefix="/api/health",
+    )
 
-    # Register the demand routes under /api/demand.
-    app.register_blueprint(demand_bp, url_prefix="/api/demand")
+    # Public authentication routes.
+    app.register_blueprint(
+        auth_bp,
+        url_prefix="/api/auth",
+    )
 
-    # Register the dashboard routes under /api/dashboard.
-    app.register_blueprint(dashboard_bp, url_prefix="/api/dashboard")
+    # Protected demand routes.
+    app.register_blueprint(
+        demand_bp,
+        url_prefix="/api/demand",
+    )
 
-    # Register the authentication routes under /api/auth.
-    app.register_blueprint(auth_bp, url_prefix="/api/auth")
+    # Protected dashboard routes.
+    app.register_blueprint(
+        dashboard_bp,
+        url_prefix="/api/dashboard",
+    )
 
-    # Register the booking routes under /api/booking.
-    app.register_blueprint(booking_bp, url_prefix="/api/booking")
+    # Protected booking routes.
+    app.register_blueprint(
+        booking_bp,
+        url_prefix="/api/booking",
+    )
 
-    # Register the staff cost routes under /api/staff-cost.
-    app.register_blueprint(staff_cost_bp, url_prefix="/api/staff-cost")
+    # Protected staff-cost routes.
+    app.register_blueprint(
+        staff_cost_bp,
+        url_prefix="/api/staff-cost",
+    )
 
-    # Register the staffing rules routes under /api/staffing-rules.
-    app.register_blueprint(staffing_rules_bp, url_prefix="/api/staffing-rules")
+    # Protected staffing-rules routes.
+    app.register_blueprint(
+        staffing_rules_bp,
+        url_prefix="/api/staffing-rules",
+    )
 
-    # Return the fully configured Flask app.
     return app

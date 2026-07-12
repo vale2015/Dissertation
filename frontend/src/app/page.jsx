@@ -3,66 +3,59 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import LoginForm from "@/components/auth/loginForm";
-import { API_BASE } from "@/lib/api";
 
 // Main login page shown when the application first opens.
 export default function HomePage() {
   const router = useRouter();
 
-  // Store login form values and interface states.
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  // Demo login details used to guide the user during testing.
-  const demoEmail = "manager@example.com";
-  const demoPassword = "admin123";
+  // Send the login details to the same-origin Next.js authentication route.
+  const handleLogin = async (event) => {
+    event.preventDefault();
 
-  // Checks whether the entered password matches the demo password.
-  const getPasswordStatus = () => {
-    if (!password) return "";
-    return password === demoPassword ? "correct" : "incorrect";
-  };
+    if (loading) return;
 
-  const passwordStatus = getPasswordStatus();
-
-  // Sends the login request to the Flask backend.
-  const handleLogin = async (e) => {
-    e.preventDefault();
     setError("");
     setLoading(true);
 
     try {
-      const response = await fetch(`${API_BASE}/auth/login`, {
+      const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({
+          email: email.trim().toLowerCase(),
+          password,
+        }),
       });
 
-      const data = await response.json();
+      const data = await response.json().catch(() => null);
 
       if (!response.ok) {
-        setError(data.error || "Login failed");
+        setError(data?.error || "Login failed.");
         return;
       }
-      // Save the JWT token and user details in local storage after successful login.
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
 
-      // Redirect the user to the dashboard after login.
-      router.push("/dashboard");
-    } catch {
-      setError("Unable to connect to the server");
+      // The JWT is now stored in an HttpOnly cookie by the server.
+      // Nothing is saved in localStorage.
+      setPassword("");
+
+      router.replace("/dashboard");
+      router.refresh();
+    } catch (error) {
+      console.error("Login request failed:", error);
+      setError("Unable to connect to the server.");
     } finally {
       setLoading(false);
     }
   };
-  
-  /* Right-side hero section introducing the application. */
+
   return (
     <main className="entry-page">
       <section className="entry-login-side">
@@ -73,11 +66,17 @@ export default function HomePage() {
             error={error}
             loading={loading}
             showPassword={showPassword}
-            passwordStatus={passwordStatus}
-            isDemoEmail={email === demoEmail}
-            onEmailChange={(e) => setEmail(e.target.value)}
-            onPasswordChange={(e) => setPassword(e.target.value)}
-            onToggleShowPassword={() => setShowPassword((prev) => !prev)}
+            onEmailChange={(event) => {
+              setEmail(event.target.value);
+              setError("");
+            }}
+            onPasswordChange={(event) => {
+              setPassword(event.target.value);
+              setError("");
+            }}
+            onToggleShowPassword={() => {
+              setShowPassword((currentValue) => !currentValue);
+            }}
             onSubmit={handleLogin}
           />
         </div>
@@ -88,12 +87,16 @@ export default function HomePage() {
 
         <div className="entry-hero-content">
           <div className="entry-hero-inner">
-            <p className="entry-hero-kicker">AI-powered restaurant analytics</p>
+            <p className="entry-hero-kicker">
+              AI-powered restaurant analytics
+            </p>
+
             <h1 className="entry-hero-title">
               <span className="entry-hero-title-mark">RFS</span>
               <br />
               Restaurant Forecasting System
             </h1>
+
             <p className="entry-hero-text">
               Machine-learning insights for restaurant demand forecasting,
               booking analysis, and staff planning.

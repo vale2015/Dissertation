@@ -1,27 +1,53 @@
-import os
+import logging
+
 import jwt
-from functools import wraps
-from flask import request, jsonify, g
+from flask import g, jsonify, request
+
+from app.services.auth_service import decode_user_token
 
 
-def token_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        auth_header = request.headers.get("Authorization")
+logger = logging.getLogger(__name__)
 
-        if not auth_header or not auth_header.startswith("Bearer "):
-            return jsonify({"error": "Missing or invalid Authorization header"}), 401
 
-        token = auth_header.split(" ")[1]
+# Authenticate every request handled by a protected Flask blueprint.
+def require_authenticated_request():
+    # Allow Flask-CORS to complete browser preflight requests.
+    if request.method == "OPTIONS":
+        return None
 
-        try:
-            payload = jwt.decode(token, os.getenv("SECRET_KEY"), algorithms=["HS256"])
-            g.current_user = payload
-        except jwt.ExpiredSignatureError:
-            return jsonify({"error": "Token has expired"}), 401
-        except jwt.InvalidTokenError:
-            return jsonify({"error": "Invalid token"}), 401
+    auth_header = request.headers.get("Authorization", "")
+    scheme, separator, token = auth_header.partition(" ")
 
-        return f(*args, **kwargs)
+    if (
+        not separator
+        or scheme.lower() != "bearer"
+        or not token.strip()
+    ):
+        return jsonify({
+            "error": "Authentication required"
+        }), 401
 
-    return decorated
+    try:
+        result = decode_user_token(token.strip())
+
+        # Make the authenticated user available to controllers.
+        g.current_user = result["user"]
+
+        return None
+
+    except jwt.ExpiredSignatureError:
+        return jsonify({
+            "error": "Session has expired"
+        }), 401
+
+    except jwt.InvalidTokenError:
+        return jsonify({
+            "error": "Invalid authentication token"
+        }), 401
+
+    except Exception:
+        logger.exception("Protected API authentication failed")
+
+        return jsonify({
+            "error": "Unable to verify authentication"
+        }), 500

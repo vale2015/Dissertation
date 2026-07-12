@@ -1,70 +1,80 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import DashboardLayout from "@/components/dashboard/dashboardLayout";
 import { API_BASE } from "@/lib/api";
 
 
-// Page used to display staffing rules and operational role data.
+// Display staffing rules and operational role data.
 export default function StaffingRulesPage() {
-  const router = useRouter();
-// Store the logged-in user and staffing data.
-  const [user, setUser] = useState(null);
   const [staffingRules, setStaffingRules] = useState([]);
   const [staffRoles, setStaffRoles] = useState([]);
 
-  // Store loading and error states.
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
-// Check that the user is logged in before showing the page.
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    const storedUser = localStorage.getItem("user");
 
-    if (!storedToken || !storedUser) {
-      router.push("/login");
-      return;
-    }
 
-    setUser(JSON.parse(storedUser));
-  }, [router]);
-// Load staffing rules and staff role data from the backend.
+  // Load staffing rules and role data from the Flask backend.
   useEffect(() => {
+    let ignore = false;
+
     async function fetchStaffingRules() {
+      setLoading(true);
+      setErrorMessage("");
+
       try {
-        const response = await fetch(`${API_BASE}/staffing-rules/`);
+        const response = await fetch(
+          `${API_BASE}/staffing-rules/`,
+          {
+            method: "GET",
+            cache: "no-store",
+          }
+        );
+
+        const result = await response.json().catch(() => null);
 
         if (!response.ok) {
-          throw new Error("Failed to fetch staffing rules");
+          throw new Error(
+            result?.message || "Failed to fetch staffing rules."
+          );
         }
 
-        const result = await response.json();
-
-        if (!result.success) {
-          throw new Error(result.message || "Failed to fetch staffing rules");
+        if (!result?.success) {
+          throw new Error(
+            result?.message || "Failed to fetch staffing rules."
+          );
         }
 
-        setStaffingRules(result.data.staffing_rules || []);
-        setStaffRoles(result.data.staff_roles || []);
+        if (ignore) return;
+
+        setStaffingRules(result?.data?.staffing_rules || []);
+        setStaffRoles(result?.data?.staff_roles || []);
       } catch (error) {
         console.error("Failed to fetch staffing rules:", error);
-        setErrorMessage("Failed to fetch staffing rules");
+
+        if (!ignore) {
+          setErrorMessage(
+            error.message || "Failed to fetch staffing rules."
+          );
+        }
       } finally {
-        setLoading(false);
+        if (!ignore) {
+          setLoading(false);
+        }
       }
     }
 
     fetchStaffingRules();
+
+    return () => {
+      ignore = true;
+    };
   }, []);
 
-  if (!user) {
-    return null;
-  }
 
   if (loading) {
     return (
-      <DashboardLayout user={user}>
+      <DashboardLayout>
         <main className="dashboard-main">
           <h1>Staffing Rules by Department</h1>
           <p>Loading staffing rules...</p>
@@ -73,13 +83,16 @@ export default function StaffingRulesPage() {
     );
   }
 
+
   return (
-    <DashboardLayout user={user}>
+    <DashboardLayout>
       <main className="dashboard-main">
         <section className="staffing-rules-header">
           <h1>Staffing Rules by Department</h1>
+
           <p>
-            Staff needed based on minimun and maximun restaurant seating capacity, staffing calculations are based on reservation level. 
+            Staff requirements are based on the restaurant&apos;s minimum and
+            maximum seating capacity and the expected reservation-demand level.
           </p>
         </section>
 
@@ -89,7 +102,9 @@ export default function StaffingRulesPage() {
           </h2>
 
           {errorMessage ? (
-            <p className="error-message">{errorMessage}</p>
+            <p className="error-message" role="alert">
+              {errorMessage}
+            </p>
           ) : (
             <>
               <div className="booking-table-wrapper">
@@ -108,23 +123,29 @@ export default function StaffingRulesPage() {
                   </thead>
 
                   <tbody>
-                    {staffingRules.map((rule) => (
-                      <tr key={rule.id}>
-                        <td>{rule.demand_level}</td>
-                        <td>{rule.min_covers}</td>
-                        <td>{rule.max_covers}</td>
-                        <td>{rule.total_staff}</td>
-                        <td>{rule.front_of_house}</td>
-                        <td>{rule.kitchen}</td>
-                        <td>{rule.bar}</td>
-                        <td>{rule.supervisor}</td>
+                    {staffingRules.length > 0 ? (
+                      staffingRules.map((rule) => (
+                        <tr key={rule.id}>
+                          <td>{rule.demand_level}</td>
+                          <td>{rule.min_covers}</td>
+                          <td>{rule.max_covers}</td>
+                          <td>{rule.total_staff}</td>
+                          <td>{rule.front_of_house}</td>
+                          <td>{rule.kitchen}</td>
+                          <td>{rule.bar}</td>
+                          <td>{rule.supervisor}</td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="8">
+                          No staffing-rule data found.
+                        </td>
                       </tr>
-                    ))}
+                    )}
                   </tbody>
                 </table>
               </div>
-
-              
 
               <h2 className="dashboard-panel-title operational-role-title">
                 Operational Role Data
@@ -147,13 +168,19 @@ export default function StaffingRulesPage() {
                         <tr key={role.id}>
                           <td>{role.role_name}</td>
                           <td>{role.department}</td>
-                          <td>£{Number(role.hourly_rate).toFixed(2)}</td>
-                          <td>{Number(role.standard_shift_hours).toFixed(2)}</td>
+                          <td>
+                            £{Number(role.hourly_rate).toFixed(2)}
+                          </td>
+                          <td>
+                            {Number(role.standard_shift_hours).toFixed(2)}
+                          </td>
                         </tr>
                       ))
                     ) : (
                       <tr>
-                        <td colSpan="4">No staff role data found.</td>
+                        <td colSpan="4">
+                          No staff-role data found.
+                        </td>
                       </tr>
                     )}
                   </tbody>

@@ -1,38 +1,71 @@
 import os
-import jwt
 from datetime import datetime, timedelta, timezone
 
+import jwt
 from sqlalchemy import text
 from werkzeug.security import check_password_hash
 
 from app.db.dbcon import SessionLocal
 
-# Creates a JWT token containing the user's basic details and expiry time.
+
+TOKEN_DURATION_HOURS = 8
+TOKEN_ISSUER = "rfs-backend"
+
+
+# Return the JWT signing key from the backend environment.
+def get_secret_key():
+    secret_key = os.getenv("SECRET_KEY")
+
+    if not secret_key:
+        raise RuntimeError("JWT signing key is not configured")
+
+    return secret_key
+
+
+# Create a short-lived JWT for an authenticated user.
 def create_token(user):
-    # Store user information inside the token payload.
+    now = datetime.now(timezone.utc)
+
     payload = {
-        "user_id": user["id"],
-        "email": user["email"],
-        "role": user["role"],
-        # Token expires after 8 hours.
-        "exp": datetime.now(timezone.utc) + timedelta(hours=8)
+        # JWT subject values should be strings.
+        "sub": str(user["id"]),
+        "iat": now,
+        "exp": now + timedelta(hours=TOKEN_DURATION_HOURS),
+        "iss": TOKEN_ISSUER,
     }
 
-    # Encode the payload using the secret key from the .env file.
-    return jwt.encode(payload, os.getenv("SECRET_KEY"), algorithm="HS256")
+    return jwt.encode(
+        payload,
+        get_secret_key(),
+        algorithm="HS256",
+    )
 
-# Checks the user's email and password during login.
+
+# Check the supplied email and password.
 def authenticate_user(email, password):
+    normalized_email = str(email).strip().lower()
+
     with SessionLocal() as db:
-        result = db.execute(text("""
-            SELECT id, full_name, email, password_hash, role
-            FROM public.users
-            WHERE email = :email
-            LIMIT 1
-        """), {"email": email})
+        result = db.execute(
+            text(
+                """
+                SELECT
+                    id,
+                    full_name,
+                    email,
+                    password_hash,
+                    role
+                FROM public.users
+                WHERE LOWER(email) = :email
+                LIMIT 1
+                """
+            ),
+            {"email": normalized_email},
+        )
 
         row = result.fetchone()
 
+    # Use the same result for an unknown email or incorrect password.
     if not row:
         return None
 
@@ -40,7 +73,7 @@ def authenticate_user(email, password):
 
     if not check_password_hash(user["password_hash"], password):
         return None
-    # Create a JWT token after successful authentication.
+
     token = create_token(user)
 
     return {
@@ -50,20 +83,58 @@ def authenticate_user(email, password):
             "id": user["id"],
             "full_name": user["full_name"],
             "email": user["email"],
-            "role": user["role"]
-        }
+            "role": user["role"],
+        },
     }
 
-# Decodes the JWT token to retrieve the authenticated user's details.
+
+# Decode the JWT and retrieve the latest user details from the database.
 def decode_user_token(token):
-    # Validate and decode the token using the secret key.
-    payload = jwt.decode(token, os.getenv("SECRET_KEY"), algorithms=["HS256"])
-    # Return the authenticated user's details from the token payload.
+    payload = jwt.decode(
+        token,
+        get_secret_key(),
+        algorithms=["HS256"],
+        issuer=TOKEN_ISSUER,
+        options={
+            "require": ["sub", "iat", "exp", "iss"],
+        },
+    )
+
+    try:
+        user_id = int(payload["sub"])
+    except (TypeError, ValueError):
+        raise jwt.InvalidTokenError("Invalid user identifier")
+
+    with SessionLocal() as db:
+        result = db.execute(
+            text(
+                """
+                SELECT
+                    id,
+                    full_name,
+                    email,
+                    role
+                FROM public.users
+                WHERE id = :user_id
+                LIMIT 1
+                """
+            ),
+            {"user_id": user_id},
+        )
+
+        row = result.fetchone()
+
+    if not row:
+        raise jwt.InvalidTokenError("Authenticated user no longer exists")
+
+    user = dict(row._mapping)
+
     return {
         "message": "Authenticated user",
         "user": {
-            "user_id": payload["user_id"],
-            "email": payload["email"],
-            "role": payload["role"]
-        }
+            "id": user["id"],
+            "full_name": user["full_name"],
+            "email": user["email"],
+            "role": user["role"],
+        },
     }

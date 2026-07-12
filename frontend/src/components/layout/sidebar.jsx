@@ -178,13 +178,31 @@ function SidebarContent() {
   /**
    * Clear authentication data and return to the login page.
    */
-  const handleConfirmLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+  const handleConfirmLogout = async () => {
+  try {
+    const response = await fetch("/api/auth/logout", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      const data = await response.json().catch(() => null);
+
+      throw new Error(
+        data?.error || "Unable to complete logout."
+      );
+    }
 
     setShowLogoutModal(false);
-    router.push("/");
-  };
+
+    router.replace("/");
+    router.refresh();
+  } catch (error) {
+    console.error("Logout failed:", error);
+  }
+};
 
   /**
    * Close the logout confirmation modal.
