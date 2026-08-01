@@ -1,511 +1,415 @@
-# RFS – Restaurant Forecasting System
+RFS – Restaurant Forecasting System
 
-## Overview
+Open the live application
 
-RFS (Restaurant Forecasting System) is a full-stack dissertation project developed to support small independent restaurants with operational decision-making. The application allows a restaurant manager to view demand data, monitor dashboard metrics, generate short-term demand forecasts, and estimate staffing and labour-cost requirements.
+RFS is a full-stack decision-support application for small independent restaurants. It combines operational dashboards, booking data, short-term demand forecasting, and staffing-cost estimates to help restaurant managers make data-informed decisions.
 
-The system combines a **Next.js/React frontend**, a **Python Flask backend**, a **Supabase/PostgreSQL database**, and a **Random Forest machine learning model**. The purpose of the project is to demonstrate how web development, database integration, and machine learning can be used to support restaurant managers with data-driven decisions.
+This project was developed by Valerio Gerardi as a BSc (Hons) Computing dissertation at Southampton Solent University.
 
----
+Current Architecture
 
-## Academic Context
+The deployed system uses separate frontend and backend services on Vercel, with Supabase providing the managed PostgreSQL database.
 
-This application was developed as part of a dissertation project. It demonstrates the use of full-stack web development, database integration, and machine learning to support operational decision-making in small independent restaurants.
+flowchart LR
+    A[Browser] -->|HTTPS| B[Next.js frontend on Vercel]
+    B --> C[Next.js route handlers / BFF]
+    C -->|Bearer JWT| D[Flask API on Vercel]
+    D -->|SQLAlchemy + SSL| E[(Supabase PostgreSQL)]
+    D --> F[Random Forest model]
 
----
+Request flow
 
-## Main Objectives
+The browser communicates only with same-origin Next.js endpoints.
 
-The main objectives of this project are to:
+The Next.js authentication route sends login credentials to Flask.
 
-- create a web-based restaurant decision-support dashboard;
-- store, retrieve, and manage restaurant demand data;
-- generate short-term demand forecasts using machine learning;
-- support staffing and labour-cost planning;
-- expose backend functionality through REST API endpoints;
-- test the system using API testing, frontend checks, and model evaluation metrics.
+Flask validates the user against the PostgreSQL users table and returns an eight-hour JWT.
 
----
+Next.js stores the JWT in an HttpOnly, Secure production cookie named rfs_session. Browser JavaScript never receives the token.
 
-## Technology Stack
+Protected frontend requests use /api/backend/[...path]. The Next.js proxy reads the server-managed cookie and forwards the request to Flask with an Authorization: Bearer header.
 
-| Area | Technology |
-|---|---|
-| Frontend | Next.js, React, JavaScript, CSS |
-| Backend | Python, Flask, Flask-CORS |
-| Database | Supabase/PostgreSQL |
-| Database Connection | SQLAlchemy |
-| Machine Learning | pandas, scikit-learn, joblib |
-| Forecasting Model | Random Forest Regressor |
-| Development Utility | Concurrently |
-| Testing Tools | Postman, browser testing, model evaluation metrics |
-| Development Environment | VS Code, GitHub |
+Flask middleware validates the JWT before allowing access to demand, dashboard, booking, staff-cost, and staffing-rules blueprints.
 
----
+Flask queries Supabase PostgreSQL through SQLAlchemy and returns the response through the same Next.js proxy.
 
-## Project Structure
+All authentication and protected-data responses use no-store cache policies. Cross-origin state-changing proxy requests are rejected.
 
-```text
-DissertationApp/
-│
+Main Features
+
+Authenticated restaurant management dashboard
+
+Monthly summary metrics and latest operational records
+
+Booking overview and booking management
+
+Short-term reservation-demand forecasts
+
+Staffing requirements and labour-cost forecasts
+
+Demand data retrieval, insertion, statistics, and weekly summaries
+
+Random Forest model training and forecasting
+
+Date-based dashboard navigation
+
+Backend and database health checks
+
+Technology Stack
+
+Layer
+
+Technology
+
+Frontend
+
+Next.js 16, React 19, JavaScript, CSS
+
+Frontend API layer
+
+Next.js App Router route handlers
+
+Backend
+
+Python, Flask, Flask-CORS
+
+Authentication
+
+JWT, HttpOnly cookies, Werkzeug password hashing
+
+Database
+
+Supabase PostgreSQL
+
+Data access
+
+SQLAlchemy, psycopg2, SSL, NullPool
+
+Machine learning
+
+pandas, scikit-learn, joblib
+
+Forecasting model
+
+Random Forest Regressor
+
+Hosting
+
+Vercel frontend and backend deployments
+
+Testing
+
+Postman, Lighthouse, OWASP ZAP, usability testing
+
+Repository Structure
+
+Dissertation/
 ├── backend/
 │   ├── app/
-│   │   ├── api/
-│   │   │   ├── auth_route.py
-│   │   │   ├── booking_route.py
-│   │   │   ├── dashboard_route.py
-│   │   │   ├── demand_route.py
-│   │   │   ├── health_route.py
-│   │   │   ├── staff_cost_route.py
-│   │   │   └── staffing_rules_route.py
-│   │   │
-│   │   ├── controllers/
-│   │   ├── db/
-│   │   │   └── dbcon.py
-│   │   ├── middleware/
-│   │   ├── ml/
-│   │   │   ├── artifacts/
-│   │   │   └── pipelines/
-│   │   ├── services/
-│   │   └── __init__.py
-│   │
+│   │   ├── api/                 # Flask blueprints
+│   │   ├── controllers/         # Request handling
+│   │   ├── db/                  # Supabase/PostgreSQL connection
+│   │   ├── middleware/          # JWT protection
+│   │   ├── ml/                  # ML pipelines and model artifacts
+│   │   └── services/            # Business and authentication logic
+│   ├── requirements.txt
 │   └── run.py
-│
 ├── frontend/
 │   ├── public/
 │   ├── src/
 │   │   ├── app/
+│   │   │   ├── api/auth/        # Login, logout, and session routes
+│   │   │   └── api/backend/     # Authenticated Flask proxy
 │   │   ├── components/
 │   │   ├── hooks/
-│   │   └── utils/
-│   │
+│   │   └── lib/api.js           # Same-origin API base
 │   ├── package.json
 │   └── next.config.mjs
-│
-├── .gitignore
 ├── package.json
-├── package-lock.json
 └── README.md
-```
 
----
+Security Design
 
-## Main Features
+JWTs expire after eight hours and are signed with HS256.
 
-The system includes the following features:
+JWTs are stored in HttpOnly cookies instead of localStorage.
 
-- restaurant dashboard;
-- demand data overview;
-- demand record insertion and retrieval;
-- latest demand record view;
-- demand statistics;
-- weekly demand summary;
-- 7-day and 10-day demand forecasting;
-- Random Forest model training endpoint;
-- booking management endpoints;
-- staff-cost forecasting;
-- staffing rules retrieval;
-- login, logout, and current-user authentication endpoints;
-- backend health check;
-- database connection health check.
+Production cookies use Secure and SameSite=Lax settings.
 
----
+Private Flask blueprints require a valid bearer token.
 
-## Prerequisites
+The Next.js proxy validates the origin of POST, PUT, PATCH, and DELETE requests.
 
-Before running the application, make sure the following are installed:
+Flask CORS permits only localhost and the configured deployed frontend origin.
 
-- Node.js
-- npm
-- Python 3
-- pip
-- VS Code or another code editor
-- access to the Supabase/PostgreSQL database used by the project
+Database connections require SSL.
 
----
+Security headers include Content-Security-Policy, X-Content-Type-Options, X-Frame-Options, and Referrer-Policy.
 
-## ZIP Submission Setup
+Error responses avoid exposing database credentials.
 
-This project is intended to be submitted and opened as a **ZIP file**.
+Secrets and environment files are excluded from source control.
 
-After receiving the ZIP file:
+Environment Variables
 
-1. Extract the ZIP file.
-2. Open the extracted folder in VS Code.
-3. Open a terminal from the root project folder.
+Frontend deployment
 
-The root folder should look similar to this:
+Configure the following variable in the Vercel project whose root directory is frontend:
 
-```text
-DissertationApp/
-├── backend/
-├── frontend/
-├── package.json
-├── package-lock.json
-└── README.md
-```
+BACKEND_API_URL=https://your-backend-deployment.vercel.app/api
 
----
+This variable is server-only. The browser uses the same-origin /api/backend proxy and does not need the Flask URL.
 
-## Environment Variables
+Backend deployment
 
-The backend requires a database connection string.
+Configure the following variables in the Vercel project whose root directory is backend:
 
-Create a `.env` file inside the `backend` folder:
+SECRET_KEY=use-a-long-random-secret
+FRONTEND_URL=https://your-frontend-deployment.vercel.app
 
-```env
-DATABASE_URL=your_database_connection_string_here
-```
+# Use either separate Supabase pooler values:
+POSTGRES_USER=your-user
+POSTGRES_PASSWORD=your-password
+POSTGRES_HOST=your-pooler-host
+POSTGRES_PORT=6543
+POSTGRES_DATABASE=postgres
 
-Example format:
+# Or a complete connection URL:
+DATABASE_URL=postgresql://user:password@host:6543/postgres
 
-```env
-DATABASE_URL=postgresql://username:password@host:port/database
-```
+The backend also accepts POSTGRES_URL and POSTGRES_DB. Do not commit real credentials.
 
-The real `.env` file should not be uploaded publicly or included in the submitted ZIP if it contains private database credentials.
+Local Development
 
----
+Prerequisites
 
-## Installation
+Node.js and npm
 
-### 1. Install root dependencies
+Python 3
 
-From the root project folder:
+Access to a PostgreSQL database with the required project tables
 
-```bash
+1. Install JavaScript dependencies
+
+From the repository root:
+
 npm install
-```
-
-This installs the root-level dependencies, including **Concurrently**, which is used to run the frontend and backend servers at the same time.
-
-### 2. Install frontend dependencies
-
-From the root project folder:
-
-```bash
 cd frontend
 npm install
 cd ..
-```
 
-### 3. Create the backend virtual environment
+2. Create the Python environment
 
-From the root project folder:
-
-```bash
 cd backend
 python -m venv venv
-```
 
-Activate the virtual environment on Windows:
+Activate it on Windows:
 
-```bash
 venv\Scripts\activate
-```
 
-### 4. Install backend dependencies
+Activate it on macOS or Linux:
 
-With the backend virtual environment activated, run:
+source venv/bin/activate
 
-```bash
-pip install flask flask-cors python-dotenv sqlalchemy psycopg2-binary pandas scikit-learn joblib holidays
-```
+Install the pinned backend dependencies:
 
-Then return to the root project folder:
+pip install -r requirements.txt
 
-```bash
-cd ..
-```
+3. Configure local variables
 
----
+Create backend/.env:
 
-## Running the Application
+SECRET_KEY=use-a-long-random-local-secret
+FRONTEND_URL=http://localhost:3000
+DATABASE_URL=postgresql://user:password@host:6543/postgres
 
-The project uses **Concurrently** to run the frontend and backend servers together from one terminal command.
+Create frontend/.env.local:
 
-### Run the full application
+BACKEND_API_URL=http://127.0.0.1:5000/api
 
-From the root project folder:
+4. Run the application
 
-```bash
+On Windows, the root scripts can start both services:
+
 npm run dev
-```
 
-This command starts both servers:
+The root backend script uses backend\venv\Scripts\python.exe. On macOS or Linux, start the services in separate terminals:
 
-```text
-Frontend: http://localhost:3000
-Backend:  http://127.0.0.1:5000
-```
+# Terminal 1
+cd backend
+source venv/bin/activate
+python run.py
 
-This is the recommended way to run the project because it starts the full application with one command.
+# Terminal 2
+cd frontend
+npm run dev
 
-### Run the backend only
+Local addresses:
 
-From the root project folder:
+Service
 
-```bash
-npm run backend
-```
+URL
 
-The backend should run at:
+Frontend
 
-```text
-http://127.0.0.1:5000
-```
-
-### Run the frontend only
-
-From the root project folder:
-
-```bash
-npm run frontend
-```
-
-The frontend should run at:
-
-```text
 http://localhost:3000
-```
 
-### Important Windows Note
+Flask API
 
-The backend script in the root `package.json` uses a Windows virtual environment path:
+http://127.0.0.1:5000/api
 
-```json
-"backend": "cd backend && .\\venv\\Scripts\\python.exe run.py"
-```
+API Overview
 
-This means the provided `npm run backend` and `npm run dev` commands are designed for a Windows setup. On macOS or Linux, the backend command would need to be adjusted to use the correct virtual environment path.
+Authentication and health endpoints are public. All other Flask blueprint groups require a valid bearer token. In the deployed frontend, protected calls are made through /api/backend/... rather than directly from browser code.
 
----
+Public endpoints
 
-## Root Package Scripts
+Method
 
-The root `package.json` contains the following scripts:
+Flask endpoint
 
-```json
-{
-  "scripts": {
-    "frontend": "cd frontend && npm run dev",
-    "backend": "cd backend && .\\venv\\Scripts\\python.exe run.py",
-    "dev": "concurrently \"npm run backend\" \"npm run frontend\""
-  }
-}
-```
+Purpose
 
-| Script | Description |
-|---|---|
-| `npm run frontend` | Starts the Next.js frontend |
-| `npm run backend` | Starts the Flask backend |
-| `npm run dev` | Starts both frontend and backend using Concurrently |
+POST
 
----
+/api/auth/login
 
-## API Endpoints
+Authenticate a user
 
-The backend base URL is:
+POST
 
-```text
-http://127.0.0.1:5000
-```
+/api/auth/logout
 
-### Health Endpoints
+End a session
 
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/api/health/` | Checks that the backend is running |
-| GET | `/api/health/database` | Checks the database connection |
+GET
 
-### Authentication Endpoints
+/api/auth/me
 
-| Method | Endpoint | Description |
-|---|---|---|
-| POST | `/api/auth/login` | Logs in a user |
-| POST | `/api/auth/logout` | Logs out a user |
-| GET | `/api/auth/me` | Returns the current authenticated user |
+Return the authenticated user
 
-### Dashboard Endpoint
+GET
 
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/api/dashboard/` | Retrieves dashboard metrics |
+/api/health/
 
-### Demand Endpoints
+Check backend availability
 
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/api/demand/` | Retrieves demand records |
-| POST | `/api/demand/` | Adds a new demand record |
-| GET | `/api/demand/latest` | Retrieves the latest demand record |
-| GET | `/api/demand/stats` | Retrieves demand statistics |
-| GET | `/api/demand/weekly` | Retrieves weekly demand data |
-| GET | `/api/demand/forecast?days_ahead=7` | Generates a 7-day demand forecast |
-| GET | `/api/demand/forecast?days_ahead=10` | Generates a 10-day demand forecast |
-| GET | `/api/demand/train` | Trains the Random Forest demand model |
-| GET | `/api/demand/date/<date>` | Retrieves demand data for a specific date |
-| DELETE | `/api/demand/date/<date>` | Deletes demand data for a specific date |
+GET
 
-### Booking Endpoints
+/api/health/database
 
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/api/booking/` | Retrieves booking records |
-| POST | `/api/booking/add` | Adds a new booking |
-| GET | `/api/booking/<booking_id>` | Retrieves a booking by ID |
-| PUT | `/api/booking/<booking_id>` | Updates a booking |
-| DELETE | `/api/booking/<booking_id>` | Deletes a booking |
+Check the database connection
 
-### Staff Cost Endpoints
+Protected endpoint groups
 
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/api/staff-cost/` | Retrieves staff cost data |
-| GET | `/api/staff-cost/forecast` | Generates a staff cost forecast |
-| GET | `/api/staff-cost/date/<forecast_date>` | Retrieves staff cost data for a specific date |
+Group
 
-### Staffing Rules Endpoint
+Example endpoints
 
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/api/staffing-rules/` | Retrieves staffing rules |
+Purpose
 
----
+Dashboard
 
-## Example API Request
+GET /api/dashboard/
 
-Example request body for adding a demand record:
+Dashboard metrics
 
-```json
-{
-  "date": "2026-04-25",
-  "same_day_covers": 18,
-  "walk_in_covers": 12,
-  "advance_covers": 25,
-  "avg_duration_min": 90
-}
-```
+Demand
 
-The system uses these values to calculate total covers and support demand forecasting.
+GET/POST /api/demand/
 
----
+Retrieve or add demand records
 
-## Database
+Demand forecast
 
-The backend connects to a Supabase/PostgreSQL database using SQLAlchemy.
+GET /api/demand/forecast
 
-The main table used by the demand forecasting process is:
+Generate a short-term forecast
 
-```text
-restaurant_demand_features
-```
+Demand history
 
-The main fields used include:
+GET /api/demand/weekly, GET/DELETE /api/demand/date/<date>
 
-```text
+Weekly and date-specific demand
+
+Model training
+
+GET /api/demand/train
+
+Train the Random Forest model
+
+Bookings
+
+GET /api/booking/, POST /api/booking/add
+
+List and create bookings
+
+Booking record
+
+GET/PUT/DELETE /api/booking/<booking_id>
+
+Manage a booking
+
+Staff cost
+
+GET /api/staff-cost/, GET /api/staff-cost/forecast
+
+Retrieve and generate forecasts
+
+Staffing rules
+
+GET /api/staffing-rules/
+
+Retrieve staffing rules
+
+Database and Forecasting
+
+The main demand table is restaurant_demand_features, containing values such as:
+
 date
-same_day_covers
-walk_in_covers
-advance_covers
-total_covers
-avg_duration_covers_summary
-```
 
----
+same-day, walk-in, and advance covers
 
-## Machine Learning Component
+total covers
 
-The machine learning component uses a Random Forest Regressor to generate short-term restaurant demand forecasts.
+average visit duration
 
-The forecasting process uses historical restaurant demand data and engineered features such as:
+duration-adjusted covers
 
-- day of the week;
-- month;
-- weekend indicators;
-- rolling averages;
-- lag features;
-- UK bank holiday indicators.
+The forecasting pipeline engineers calendar, lag, rolling-average, weekend, and UK bank-holiday features. Candidate approaches were evaluated using a chronological split, and the Random Forest Regressor was selected for its ability to model non-linear demand patterns.
 
-The model is evaluated using common regression metrics, including:
+Model performance is assessed using:
 
-- MAE;
-- RMSE;
-- R² score.
+Mean Absolute Error (MAE)
 
-After training, the model is saved inside the backend machine learning artifacts folder.
+Root Mean Squared Error (RMSE)
 
----
+R²
 
-## Testing
+Staffing forecasts combine predicted demand with database-managed staffing rules, staff roles, hourly rates, and standard shift lengths.
 
-The project was tested using API testing, frontend interaction checks, and model evaluation.
+Testing
 
-### API Testing
+API: Postman tests for authentication, health, demand, booking, dashboard, and staff-cost routes
 
-Postman was used to test backend endpoints such as:
+Security: OWASP ZAP checks, protected-route verification, CORS restrictions, and security headers
 
-```text
-GET http://127.0.0.1:5000/api/health/
-GET http://127.0.0.1:5000/api/health/database
-GET http://127.0.0.1:5000/api/demand/
-POST http://127.0.0.1:5000/api/demand/
-GET http://127.0.0.1:5000/api/demand/forecast?days_ahead=7
-GET http://127.0.0.1:5000/api/staff-cost/forecast
-```
+Performance and accessibility: Google Lighthouse
 
-### Frontend Testing
+Usability: Task-based interface testing and user feedback
 
-The frontend was tested manually through browser interaction to check:
+Machine learning: MAE, RMSE, R², and chronological validation
 
-- page navigation;
-- dashboard layout;
-- data display;
-- forecast display;
-- form behaviour;
-- interface consistency.
+Current Limitations
 
-### Model Testing
+The project is an academic prototype rather than a commercial restaurant platform.
 
-The forecasting model was evaluated using regression metrics such as MAE, RMSE, and R².
+Forecast quality depends on the size and representativeness of the available dataset.
 
----
+The deployed backend uses serverless execution, so occasional cold starts may occur.
 
-## Security and Configuration
+Broader validation with live data from multiple independent restaurants would be required before production use.
 
-The backend includes basic security headers and CORS configuration. CORS allows communication between the frontend development server and the backend API.
+Author
 
-The following files and folders should not be included in the final ZIP submission:
-
-```text
-node_modules/
-frontend/node_modules/
-backend/venv/
-backend/.env
-dbpass.txt
-.next/
-__pycache__/
-*.pyc
-```
-
-These files are either generated locally or may contain sensitive information.
-
----
-
-## Known Limitations
-
-This project was developed as an academic prototype. The system demonstrates the main functionality required for the dissertation, but it has some limitations:
-
-- the system depends on the available restaurant dataset;
-- the forecasting model is limited by the quality and size of the data;
-- the application is designed for local development rather than full production deployment;
-- additional security hardening would be required for a live commercial system;
-- more real-world restaurant testing would improve validation.
-
----
-
-## Author
-
-**Valerio Gerardi**  
-Dissertation Project  
-Southampton Solent University
+Valerio GerardiBSc (Hons) Computing – First Class HonoursSouthampton Solent University
