@@ -1,61 +1,82 @@
-RFS – Restaurant Forecasting System
+RFS — Restaurant Forecasting System
 
 Open the live application
 
-RFS is a full-stack decision-support application for small independent restaurants. It combines operational dashboards, booking data, short-term demand forecasting, and staffing-cost estimates to help restaurant managers make data-informed decisions.
+RFS is a full-stack decision-support application for small independent restaurants. It combines booking data, operational dashboards, short-term demand forecasting, and staffing-cost estimates to help restaurant managers make informed planning decisions.
 
-This project was developed by Valerio Gerardi as a BSc (Hons) Computing dissertation at Southampton Solent University.
+The project was developed by Valerio Gerardi as a BSc (Hons) Computing dissertation at Southampton Solent University.
 
-Current Architecture
+Project objectives
 
-The deployed system uses separate frontend and backend services on Vercel, with Supabase providing the managed PostgreSQL database.
+Consolidate restaurant demand and booking information in one dashboard.
+
+Forecast short-term reservation demand using historical operational data.
+
+Translate predicted demand into staffing requirements and labour-cost estimates.
+
+Provide a secure, usable interface for restaurant managers.
+
+Demonstrate an end-to-end machine-learning workflow in a deployed web application.
+
+Main features
+
+Secure manager login and protected dashboard routes.
+
+Monthly summary metrics and recent operational records.
+
+Booking overview, creation, editing, and deletion.
+
+Short-term reservation-demand forecasts.
+
+Staffing requirements and labour-cost forecasts.
+
+Date-based dashboard navigation and weekly demand summaries.
+
+Database-managed staffing rules, roles, hourly rates, and shift lengths.
+
+Random Forest model training and forecast generation.
+
+Backend and database health checks.
+
+Current deployed architecture
+
+The frontend and backend are deployed independently. The browser communicates with the Next.js application only; Next.js acts as a Backend for Frontend (BFF) and securely communicates with the Flask API.
 
 flowchart LR
-    A[Browser] -->|HTTPS| B[Next.js frontend on Vercel]
-    B --> C[Next.js route handlers / BFF]
-    C -->|Bearer JWT| D[Flask API on Vercel]
-    D -->|SQLAlchemy + SSL| E[(Supabase PostgreSQL)]
-    D --> F[Random Forest model]
+    Browser[Browser]
+    Next[Next.js 16 on Vercel]
+    BFF[Next.js route handlers]
+    Flask[Flask API]
+    DB[(Supabase PostgreSQL)]
+    ML[Random Forest model]
 
-Request flow
+    Browser -->|HTTPS and HttpOnly cookie| Next
+    Next --> BFF
+    BFF -->|Bearer JWT| Flask
+    Flask -->|SQLAlchemy and SSL| DB
+    Flask --> ML
 
-The browser communicates only with same-origin Next.js endpoints.
+Authentication and request flow
 
-The Next.js authentication route sends login credentials to Flask.
+The browser submits login credentials to the same-origin Next.js endpoint at /api/auth/login.
 
-Flask validates the user against the PostgreSQL users table and returns an eight-hour JWT.
+The Next.js route handler forwards the credentials to Flask.
 
-Next.js stores the JWT in an HttpOnly, Secure production cookie named rfs_session. Browser JavaScript never receives the token.
+Flask validates the user against the PostgreSQL users table and issues an eight-hour JWT.
 
-Protected frontend requests use /api/backend/[...path]. The Next.js proxy reads the server-managed cookie and forwards the request to Flask with an Authorization: Bearer header.
+Next.js stores the JWT in an HttpOnly cookie named rfs_session. Browser JavaScript never receives the token.
 
-Flask middleware validates the JWT before allowing access to demand, dashboard, booking, staff-cost, and staffing-rules blueprints.
+The frontend sends protected requests to /api/backend/[...path].
 
-Flask queries Supabase PostgreSQL through SQLAlchemy and returns the response through the same Next.js proxy.
+The Next.js proxy reads the cookie and forwards the request to Flask with an Authorization: Bearer header.
 
-All authentication and protected-data responses use no-store cache policies. Cross-origin state-changing proxy requests are rejected.
+Flask middleware validates the JWT before protected blueprints can access restaurant data.
 
-Main Features
+Flask queries Supabase PostgreSQL or runs the forecasting pipeline and returns the result through the Next.js proxy.
 
-Authenticated restaurant management dashboard
+The dashboard layout also validates the session on the server before rendering protected pages. Authentication and private-data responses use no-store cache policies.
 
-Monthly summary metrics and latest operational records
-
-Booking overview and booking management
-
-Short-term reservation-demand forecasts
-
-Staffing requirements and labour-cost forecasts
-
-Demand data retrieval, insertion, statistics, and weekly summaries
-
-Random Forest model training and forecasting
-
-Date-based dashboard navigation
-
-Backend and database health checks
-
-Technology Stack
+Technology stack
 
 Layer
 
@@ -67,7 +88,7 @@ Next.js 16, React 19, JavaScript, CSS
 
 Frontend API layer
 
-Next.js App Router route handlers
+Next.js App Router route handlers and server components
 
 Backend
 
@@ -83,11 +104,11 @@ Supabase PostgreSQL
 
 Data access
 
-SQLAlchemy, psycopg2, SSL, NullPool
+SQLAlchemy, psycopg2, SSL, Supabase transaction pooler
 
 Machine learning
 
-pandas, scikit-learn, joblib
+pandas, NumPy, scikit-learn, joblib
 
 Forecasting model
 
@@ -95,91 +116,77 @@ Random Forest Regressor
 
 Hosting
 
-Vercel frontend and backend deployments
+Vercel frontend and backend services
 
 Testing
 
 Postman, Lighthouse, OWASP ZAP, usability testing
 
-Repository Structure
+Repository structure
 
 Dissertation/
 ├── backend/
 │   ├── app/
-│   │   ├── api/                 # Flask blueprints
-│   │   ├── controllers/         # Request handling
-│   │   ├── db/                  # Supabase/PostgreSQL connection
-│   │   ├── middleware/          # JWT protection
-│   │   ├── ml/                  # ML pipelines and model artifacts
-│   │   └── services/            # Business and authentication logic
+│   │   ├── api/                 # Flask blueprints and endpoint definitions
+│   │   ├── controllers/         # Request and response handling
+│   │   ├── db/                  # PostgreSQL connection configuration
+│   │   ├── middleware/          # JWT protection for private blueprints
+│   │   ├── ml/                  # Training, prediction, and model artifacts
+│   │   └── services/            # Business, data, and authentication logic
+│   ├── main.py                  # Serverless Flask entry point
 │   ├── requirements.txt
-│   └── run.py
+│   └── run.py                   # Local Flask entry point
 ├── frontend/
 │   ├── public/
 │   ├── src/
 │   │   ├── app/
-│   │   │   ├── api/auth/        # Login, logout, and session routes
-│   │   │   └── api/backend/     # Authenticated Flask proxy
+│   │   │   ├── api/auth/        # Login, logout, and session route handlers
+│   │   │   └── api/backend/     # Authenticated proxy to Flask
 │   │   ├── components/
 │   │   ├── hooks/
-│   │   └── lib/api.js           # Same-origin API base
+│   │   └── lib/api.js           # Same-origin frontend API base
 │   ├── package.json
 │   └── next.config.mjs
-├── package.json
+├── Additional Documentation/    # Research, diagrams, datasets, and evidence
+├── package.json                 # Combined local-development scripts
 └── README.md
 
-Security Design
+Deployment configuration
 
-JWTs expire after eight hours and are signed with HS256.
+Frontend service
 
-JWTs are stored in HttpOnly cookies instead of localStorage.
+The production Vercel project uses frontend as its root directory and builds the Next.js application with:
 
-Production cookies use Secure and SameSite=Lax settings.
+npm run build
 
-Private Flask blueprints require a valid bearer token.
-
-The Next.js proxy validates the origin of POST, PUT, PATCH, and DELETE requests.
-
-Flask CORS permits only localhost and the configured deployed frontend origin.
-
-Database connections require SSL.
-
-Security headers include Content-Security-Policy, X-Content-Type-Options, X-Frame-Options, and Referrer-Policy.
-
-Error responses avoid exposing database credentials.
-
-Secrets and environment files are excluded from source control.
-
-Environment Variables
-
-Frontend deployment
-
-Configure the following variable in the Vercel project whose root directory is frontend:
+Configure this server-only environment variable in the frontend Vercel project:
 
 BACKEND_API_URL=https://your-backend-deployment.vercel.app/api
 
-This variable is server-only. The browser uses the same-origin /api/backend proxy and does not need the Flask URL.
+Do not prefix this value with NEXT_PUBLIC_. The Flask URL is used only by Next.js server code; browser requests use the same-origin /api/backend proxy.
 
-Backend deployment
+Backend service
 
-Configure the following variables in the Vercel project whose root directory is backend:
+Deploy backend/main.py as the Flask entry point and configure:
 
-SECRET_KEY=use-a-long-random-secret
+SECRET_KEY=replace-with-a-long-random-secret
 FRONTEND_URL=https://your-frontend-deployment.vercel.app
 
-# Use either separate Supabase pooler values:
-POSTGRES_USER=your-user
-POSTGRES_PASSWORD=your-password
-POSTGRES_HOST=your-pooler-host
+Use either separate Supabase pooler values:
+
+POSTGRES_USER=postgres.your-project-reference
+POSTGRES_PASSWORD=replace-with-your-database-password
+POSTGRES_HOST=your-pooler-host.supabase.com
 POSTGRES_PORT=6543
 POSTGRES_DATABASE=postgres
 
-# Or a complete connection URL:
+Or provide a complete connection string:
+
 DATABASE_URL=postgresql://user:password@host:6543/postgres
 
-The backend also accepts POSTGRES_URL and POSTGRES_DB. Do not commit real credentials.
+The backend also accepts POSTGRES_URL and POSTGRES_DB. Never commit real credentials or local .env files.
 
-Local Development
+Local development
 
 Prerequisites
 
@@ -187,11 +194,9 @@ Node.js and npm
 
 Python 3
 
-Access to a PostgreSQL database with the required project tables
+Access to a PostgreSQL database containing the required project tables
 
 1. Install JavaScript dependencies
-
-From the repository root:
 
 npm install
 cd frontend
@@ -211,29 +216,26 @@ Activate it on macOS or Linux:
 
 source venv/bin/activate
 
-Install the pinned backend dependencies:
+Install the backend dependencies:
 
 pip install -r requirements.txt
+cd ..
 
-3. Configure local variables
+3. Configure local environment variables
 
-Create backend/.env:
-
-SECRET_KEY=use-a-long-random-local-secret
-FRONTEND_URL=http://localhost:3000
-DATABASE_URL=postgresql://user:password@host:6543/postgres
+Create backend/.env using the backend variables shown in the deployment section, then replace every placeholder value. At minimum, the backend requires database credentials and a JWT signing key.
 
 Create frontend/.env.local:
 
 BACKEND_API_URL=http://127.0.0.1:5000/api
 
-4. Run the application
+4. Run both services
 
-On Windows, the root scripts can start both services:
+On Windows, with the Python environment created at backend/venv:
 
 npm run dev
 
-The root backend script uses backend\venv\Scripts\python.exe. On macOS or Linux, start the services in separate terminals:
+On macOS or Linux, run the services in separate terminals:
 
 # Terminal 1
 cd backend
@@ -244,13 +246,11 @@ python run.py
 cd frontend
 npm run dev
 
-Local addresses:
-
 Service
 
-URL
+Local URL
 
-Frontend
+Next.js frontend
 
 http://localhost:3000
 
@@ -258,15 +258,15 @@ Flask API
 
 http://127.0.0.1:5000/api
 
-API Overview
+API overview
 
-Authentication and health endpoints are public. All other Flask blueprint groups require a valid bearer token. In the deployed frontend, protected calls are made through /api/backend/... rather than directly from browser code.
+Authentication and health routes are public. All dashboard, demand, booking, staff-cost, and staffing-rules blueprints require a valid bearer token. In the deployed application, the browser accesses protected endpoints through /api/backend/....
 
-Public endpoints
+Public Flask endpoints
 
 Method
 
-Flask endpoint
+Endpoint
 
 Purpose
 
@@ -274,19 +274,19 @@ POST
 
 /api/auth/login
 
-Authenticate a user
+Authenticate a user and issue a JWT
 
 POST
 
 /api/auth/logout
 
-End a session
+Acknowledge logout
 
 GET
 
 /api/auth/me
 
-Return the authenticated user
+Validate a JWT and return the current user
 
 GET
 
@@ -298,9 +298,9 @@ GET
 
 /api/health/database
 
-Check the database connection
+Check database connectivity
 
-Protected endpoint groups
+Protected Flask endpoints
 
 Group
 
@@ -312,13 +312,13 @@ Dashboard
 
 GET /api/dashboard/
 
-Dashboard metrics
+Return dashboard metrics
 
 Demand
 
-GET/POST /api/demand/
+GET /api/demand/, POST /api/demand/
 
-Retrieve or add demand records
+Retrieve or create demand records
 
 Demand forecast
 
@@ -330,31 +330,31 @@ Demand history
 
 GET /api/demand/weekly, GET/DELETE /api/demand/date/<date>
 
-Weekly and date-specific demand
+Retrieve weekly or date-specific demand
 
 Model training
 
 GET /api/demand/train
 
-Train the Random Forest model
+Retrain the Random Forest model
 
 Bookings
 
 GET /api/booking/, POST /api/booking/add
 
-List and create bookings
+List or create bookings
 
 Booking record
 
 GET/PUT/DELETE /api/booking/<booking_id>
 
-Manage a booking
+Manage one booking
 
 Staff cost
 
 GET /api/staff-cost/, GET /api/staff-cost/forecast
 
-Retrieve and generate forecasts
+Retrieve or generate staffing-cost forecasts
 
 Staffing rules
 
@@ -362,23 +362,23 @@ GET /api/staffing-rules/
 
 Retrieve staffing rules
 
-Database and Forecasting
+Forecasting and data model
 
-The main demand table is restaurant_demand_features, containing values such as:
+The main demand table is restaurant_demand_features. It stores:
 
-date
+Date and day-of-week information.
 
-same-day, walk-in, and advance covers
+Same-day, walk-in, and advance covers.
 
-total covers
+Total covers.
 
-average visit duration
+Average visit duration.
 
-duration-adjusted covers
+Duration-adjusted covers.
 
-The forecasting pipeline engineers calendar, lag, rolling-average, weekend, and UK bank-holiday features. Candidate approaches were evaluated using a chronological split, and the Random Forest Regressor was selected for its ability to model non-linear demand patterns.
+The machine-learning pipeline creates calendar, lag, rolling-average, weekend, and UK bank-holiday features. Candidate approaches were compared using a chronological split, and the Random Forest Regressor was selected for its ability to model non-linear demand patterns.
 
-Model performance is assessed using:
+Model performance is evaluated with:
 
 Mean Absolute Error (MAE)
 
@@ -388,28 +388,56 @@ R²
 
 Staffing forecasts combine predicted demand with database-managed staffing rules, staff roles, hourly rates, and standard shift lengths.
 
+Security design
+
+JWTs are signed with HS256 and expire after eight hours.
+
+Tokens are stored in HttpOnly cookies instead of localStorage.
+
+Production cookies use Secure and SameSite=Lax settings.
+
+The browser never receives the Flask API URL or bearer token.
+
+Protected Flask blueprints require a valid JWT.
+
+The Next.js proxy rejects cross-origin POST, PUT, PATCH, and DELETE requests.
+
+Flask CORS allows localhost and the configured frontend origin only.
+
+PostgreSQL connections require SSL.
+
+Private responses are not cached.
+
+Flask adds Content Security Policy, X-Content-Type-Options, X-Frame-Options, and Referrer-Policy headers.
+
 Testing
 
-API: Postman tests for authentication, health, demand, booking, dashboard, and staff-cost routes
+API: Postman tests for authentication, health, demand, bookings, dashboard, and staff-cost routes.
 
-Security: OWASP ZAP checks, protected-route verification, CORS restrictions, and security headers
+Security: OWASP ZAP checks, protected-route verification, restricted CORS, and security-header checks.
 
-Performance and accessibility: Google Lighthouse
+Performance and accessibility: Google Lighthouse.
 
-Usability: Task-based interface testing and user feedback
+Usability: Task-based interface testing and user feedback.
 
-Machine learning: MAE, RMSE, R², and chronological validation
+Machine learning: MAE, RMSE, R², and chronological validation.
 
-Current Limitations
+Current limitations
 
-The project is an academic prototype rather than a commercial restaurant platform.
+RFS is an academic prototype, not a commercial restaurant-management platform.
 
-Forecast quality depends on the size and representativeness of the available dataset.
+Forecast accuracy depends on the size and representativeness of the available dataset.
 
-The deployed backend uses serverless execution, so occasional cold starts may occur.
+The backend uses serverless execution, so occasional cold starts may occur.
 
-Broader validation with live data from multiple independent restaurants would be required before production use.
+Model retraining is triggered through an API route rather than a scheduled production pipeline.
+
+Broader validation with live data from multiple independent restaurants would be required before commercial use.
 
 Author
 
-Valerio GerardiBSc (Hons) Computing – First Class HonoursSouthampton Solent University
+Valerio Gerardi
+
+BSc (Hons) Computing — First Class Honours
+
+Southampton Solent University
