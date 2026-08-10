@@ -156,6 +156,19 @@ DATABASE_URL=postgresql://user:password@host:port/database
 
 Database connections require SSL. `POSTGRES_DB` is accepted as an alias for `POSTGRES_DATABASE`.
 
+Weather is resolved for the restaurant configured at deployment time, not for the location of the user's browser or device. Configure the restaurant location in `backend/.env` for local development:
+
+```env
+RESTAURANT_NAME=Your Restaurant
+RESTAURANT_CITY=Your City
+RESTAURANT_LATITUDE=
+RESTAURANT_LONGITUDE=
+RESTAURANT_TIMEZONE=Europe/London
+WEATHER_CACHE_TTL_SECONDS=1800
+```
+
+The name, city, and timezone must not be empty. Latitude must be between `-90` and `90`, longitude between `-180` and `180`, and the cache duration must be a positive integer. Weather uses Open-Meteo and does not require an API key.
+
 ### Frontend: `frontend/.env`
 
 `BACKEND_API_URL` must include Flask's `/api` prefix:
