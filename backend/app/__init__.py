@@ -7,6 +7,7 @@ from app.api.auth_route import auth_bp
 from app.api.booking_route import booking_bp
 from app.api.dashboard_route import dashboard_bp
 from app.api.demand_route import demand_bp
+from app.api.events_route import events_bp
 from app.api.health_route import health_bp
 from app.api.staff_cost_route import staff_cost_bp
 from app.api.staffing_rules_route import staffing_rules_bp
@@ -22,6 +23,7 @@ PROTECTED_BLUEPRINTS = {
     staff_cost_bp.name,
     staffing_rules_bp.name,
     weather_bp.name,
+    events_bp.name,
 }
 
 
@@ -132,6 +134,12 @@ def create_app():
     app.register_blueprint(
         weather_bp,
         url_prefix="/api/weather",
+    )
+
+    # Protected nearby-event routes.
+    app.register_blueprint(
+        events_bp,
+        url_prefix="/api/events",
     )
 
     return app

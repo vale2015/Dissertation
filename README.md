@@ -165,6 +165,12 @@ RESTAURANT_LATITUDE=
 RESTAURANT_LONGITUDE=
 RESTAURANT_TIMEZONE=Europe/London
 WEATHER_CACHE_TTL_SECONDS=1800
+TICKETMASTER_API_KEY=replace-with-your-consumer-key
+RESTAURANT_COUNTRY_CODE=GB
+EVENT_SEARCH_RADIUS_KM=10
+EVENTS_CACHE_TTL_SECONDS=21600
+EVENTS_MAX_RESULTS=100
+TICKETMASTER_LOCALE=en-gb
 ```
 
 The name, city, and timezone must not be empty. Latitude must be between `-90` and `90`, longitude between `-180` and `180`, and the cache duration must be a positive integer. Weather uses Open-Meteo and does not require an API key.
