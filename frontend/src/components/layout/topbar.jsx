@@ -1,5 +1,7 @@
 "use client";
 
+import WeatherWidget from "@/components/weather/WeatherWidget";
+
 export default function Topbar({ user }) {
   return (
     <header className="topbar">
@@ -9,6 +11,8 @@ export default function Topbar({ user }) {
       </div>
 
       <div className="topbar-right">
+        <WeatherWidget />
+
         <div className="topbar-user-icon">👤</div>
 
         <div className="topbar-user">
