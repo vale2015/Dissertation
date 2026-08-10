@@ -10,6 +10,7 @@ from app.api.demand_route import demand_bp
 from app.api.health_route import health_bp
 from app.api.staff_cost_route import staff_cost_bp
 from app.api.staffing_rules_route import staffing_rules_bp
+from app.api.weather_route import weather_bp
 from app.middleware.auth_middleware import require_authenticated_request
 
 
@@ -20,6 +21,7 @@ PROTECTED_BLUEPRINTS = {
     booking_bp.name,
     staff_cost_bp.name,
     staffing_rules_bp.name,
+    weather_bp.name,
 }
 
 
@@ -124,6 +126,12 @@ def create_app():
     app.register_blueprint(
         staffing_rules_bp,
         url_prefix="/api/staffing-rules",
+    )
+
+    # Protected restaurant weather routes.
+    app.register_blueprint(
+        weather_bp,
+        url_prefix="/api/weather",
     )
 
     return app
