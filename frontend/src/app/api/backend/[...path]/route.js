@@ -99,7 +99,10 @@ async function proxyRequest(request, context) {
       headers,
       body: requestBody,
       cache: "no-store",
-      redirect: "manual",
+      // Flask routes may canonicalize a path by adding a trailing slash.
+      // Follow that redirect so callers always receive the API response,
+      // rather than an unusable redirect without a proxied Location header.
+      redirect: "follow",
     });
 
     const responseHeaders = new Headers();

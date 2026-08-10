@@ -89,7 +89,7 @@ export default function useWeather() {
     }
 
     try {
-      const response = await fetch(`${API_BASE}/weather/`, {
+      const response = await fetch(`${API_BASE}/weather`, {
         cache: "no-store",
         signal: controller.signal,
       });
