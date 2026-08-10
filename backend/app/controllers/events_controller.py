@@ -29,8 +29,17 @@ def get_local_events_controller():
         return jsonify(
             {"success": False, "message": "Local-event service is not configured."}
         ), 500
-    except EventsProviderError:
-        current_app.logger.error("Local-event provider request failed.")
+    except EventsProviderError as error:
+        provider_reason = {
+            "The local-event provider credentials are invalid.": "credentials_invalid",
+            "The local-event provider quota is unavailable.": "quota_unavailable",
+            "The local-event provider is temporarily unavailable.": "provider_unavailable",
+            "The local-event provider returned an invalid response.": "invalid_response",
+        }.get(str(error), "provider_request_failed")
+        current_app.logger.error(
+            "Local-event provider request failed (%s).",
+            provider_reason,
+        )
         return jsonify(
             {
                 "success": False,

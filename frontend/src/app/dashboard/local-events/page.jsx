@@ -102,7 +102,7 @@ export default function LocalEventsPage() {
               <section className="dashboard-panel events-results" aria-labelledby="events-results-title">
                 <h2 id="events-results-title" className="dashboard-panel-title">Available events</h2>
                 {loading && !eventContext ? <p>Loading available events…</p> : null}
-                {!loading && eventDays.length === 0 ? (
+                {!loading && !error && eventContext && eventDays.length === 0 ? (
                   <p>No Ticketmaster events were found for the selected dates.</p>
                 ) : null}
                 <div className="events-day-grid">
