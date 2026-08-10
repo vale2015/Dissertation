@@ -2765,3 +2765,95 @@ button.event-impact-badge:hover {
     width: 100%;
   }
 }
+.events-search-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.events-search-form label {
+  display: grid;
+  gap: 0.4rem;
+  color: var(--text-primary, #101828);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.events-search-form input {
+  min-height: 44px;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid #98a2b3;
+  border-radius: 8px;
+  background: #fff;
+  color: #101828;
+  font: inherit;
+}
+
+.events-results {
+  margin-top: 1.5rem;
+}
+
+.events-day-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.events-day-card {
+  padding: 1rem;
+  border: 1px solid #d0d5dd;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.events-day-card h3 {
+  margin: 0.25rem 0 0.5rem;
+}
+
+.events-day-date {
+  margin: 0;
+  color: #d71920;
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.events-day-button {
+  min-height: 44px;
+  margin-top: 0.75rem;
+  padding: 0.65rem 0.9rem;
+  border: 1px solid #d71920;
+  border-radius: 8px;
+  background: #fff;
+  color: #b42318;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.events-day-button:hover,
+.events-day-button:focus-visible {
+  background: #fff1f1;
+}
+
+@media (max-width: 900px) {
+  .events-day-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .events-search-form,
+  .events-search-form label,
+  .events-search-form input,
+  .events-search-form button {
+    width: 100%;
+  }
+
+  .events-day-grid {
+    grid-template-columns: 1fr;
+  }
+}

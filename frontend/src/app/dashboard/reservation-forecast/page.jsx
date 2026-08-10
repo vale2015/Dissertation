@@ -2,20 +2,14 @@
 
 import {
   Suspense,
-  useCallback,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from "react";
 import { useSearchParams } from "next/navigation";
 import Sidebar from "@/components/layout/sidebar";
 import Topbar from "@/components/layout/topbar";
 import SummaryCard from "@/components/dashboard/summaryCard";
-import EventDetailsModal from "@/components/events/EventDetailsModal";
-import EventImpactBadge from "@/components/events/EventImpactBadge";
-import NearbyEventsPanel from "@/components/events/NearbyEventsPanel";
-import useLocalEvents from "@/hooks/useLocalEvents";
 import { formatDateDDMMYYYY } from "@/utils/DateFormat";
 import { API_BASE } from "@/lib/api";
 
@@ -28,11 +22,6 @@ function isClosedDay(day) {
 }
 
 
-function isForecastDate(value) {
-  return typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value);
-}
-
-
 // Contains the page logic that depends on useSearchParams().
 function ReservationForecastContent() {
   const searchParams = useSearchParams();
@@ -42,8 +31,6 @@ function ReservationForecastContent() {
   const [forecastDays, setForecastDays] = useState(7);
   const [forecastData, setForecastData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [selectedEventDay, setSelectedEventDay] = useState(null);
-  const eventTriggerRef = useRef(null);
 
   // Load forecast data when the date or forecast length changes.
   useEffect(() => {
@@ -191,36 +178,6 @@ function ReservationForecastContent() {
     return Math.round(total / openDays.length);
   }, [forecastData]);
 
-  const eventRange = useMemo(() => {
-    const dates = forecastData
-      .map((item) => item.date)
-      .filter(isForecastDate);
-    return {
-      startDate: dates.at(0) || null,
-      endDate: dates.at(-1) || null,
-    };
-  }, [forecastData]);
-
-  const {
-    eventContext,
-    eventsByDate,
-    loading: eventsLoading,
-    refreshing: eventsRefreshing,
-    error: eventsError,
-    refreshEvents,
-  } = useLocalEvents(
-    loading ? null : eventRange.startDate,
-    loading ? null : eventRange.endDate
-  );
-
-  const openEventModal = useCallback((dayContext, trigger) => {
-    eventTriggerRef.current = trigger;
-    setSelectedEventDay(dayContext);
-  }, []);
-
-  const closeEventModal = useCallback(() => {
-    setSelectedEventDay(null);
-  }, []);
 
   return (
     <div className="dashboard-app">
@@ -334,7 +291,6 @@ function ReservationForecastContent() {
                             <th>
                               Advance Average (7d)
                             </th>
-                            <th>Events</th>
                           </tr>
                         </thead>
 
@@ -392,25 +348,13 @@ function ReservationForecastContent() {
                                         "-"}
                                   </td>
 
-                                  <td>
-                                    <EventImpactBadge
-                                      dayContext={eventsByDate[item.date]}
-                                      loading={eventsLoading}
-                                      onClick={(event) =>
-                                        openEventModal(
-                                          eventsByDate[item.date],
-                                          event.currentTarget
-                                        )
-                                      }
-                                    />
-                                  </td>
                                 </tr>
                               )
                             )
                           ) : (
                             <tr>
                               <td
-                                colSpan="8"
+                                colSpan="7"
                                 className="empty-state-cell"
                               >
                                 No forecast data available
@@ -422,27 +366,12 @@ function ReservationForecastContent() {
                       </table>
                     </div>
                   </section>
-
-                  <NearbyEventsPanel
-                    eventContext={eventContext}
-                    loading={eventsLoading}
-                    error={eventsError}
-                    onRefresh={refreshEvents}
-                    refreshing={eventsRefreshing}
-                  />
                 </>
               )}
             </div>
           </main>
         </div>
       </div>
-
-      <EventDetailsModal
-        dayContext={selectedEventDay}
-        isOpen={Boolean(selectedEventDay)}
-        onClose={closeEventModal}
-        triggerRef={eventTriggerRef}
-      />
     </div>
   );
 }

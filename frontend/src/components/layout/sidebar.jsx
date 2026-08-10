@@ -104,6 +104,7 @@ function SidebarContent() {
 
   // The main dashboard displays a monthly summary.
   const isDashboardPage = pathname === "/dashboard";
+  const isLocalEventsPage = pathname === "/dashboard/local-events";
 
   /**
    * Synchronise selectedDate with the URL query string.
@@ -141,7 +142,7 @@ function SidebarContent() {
          * Add the latest available date only to pages that use
          * a single selected day.
          */
-        if (!isDashboardPage && !urlDate && latestDate) {
+        if (!isDashboardPage && !isLocalEventsPage && !urlDate && latestDate) {
           const parameters = new URLSearchParams(
             searchParams.toString()
           );
@@ -163,6 +164,7 @@ function SidebarContent() {
     loadLatestDate();
   }, [
     isDashboardPage,
+    isLocalEventsPage,
     pathname,
     router,
     searchParams,
@@ -243,7 +245,7 @@ function SidebarContent() {
    * single-day pages.
    */
   const withDate = (href) => {
-    if (href === "/dashboard") {
+    if (href === "/dashboard" || href === "/dashboard/local-events") {
       return href;
     }
 
@@ -281,6 +283,10 @@ function SidebarContent() {
         href: "/dashboard/reservation-forecast",
       },
       {
+        label: "Local Events",
+        href: "/dashboard/local-events",
+      },
+      {
         label: "Staff Forecast",
         href: "/dashboard/staff-forecast",
       },
@@ -316,6 +322,20 @@ function SidebarContent() {
                 <p className="sidebar-calendar-note">
                   Summary based on the most recent month of
                   available data
+                </p>
+              </>
+            ) : isLocalEventsPage ? (
+              <>
+                <label className="sidebar-calendar-label">
+                  Event search
+                </label>
+                <div className="sidebar-range-box">
+                  <span className="sidebar-range-value">
+                    Choose dates on the page
+                  </span>
+                </div>
+                <p className="sidebar-calendar-note">
+                  Search nearby events independently of forecasts
                 </p>
               </>
             ) : (
