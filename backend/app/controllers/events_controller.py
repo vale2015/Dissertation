@@ -17,6 +17,7 @@ def get_local_events_controller():
         data = get_local_events(
             request.args.get("start_date"),
             request.args.get("end_date"),
+            force_refresh=request.args.get("refresh") == "1",
         )
         return jsonify({"success": True, "data": data}), 200
     except EventsRequestError:

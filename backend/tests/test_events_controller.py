@@ -45,7 +45,30 @@ def test_events_controller_returns_data_and_passes_dates(client):
     response, service = _authenticated_request(client, result=data)
     assert response.status_code == 200
     assert response.json == {"success": True, "data": data}
-    service.assert_called_once_with("2026-08-11", "2026-08-17")
+    service.assert_called_once_with(
+        "2026-08-11", "2026-08-17", force_refresh=False
+    )
+
+
+def test_events_controller_forwards_authenticated_refresh(client):
+    with (
+        patch(
+            "app.middleware.auth_middleware.decode_user_token",
+            return_value={"user": {"id": 1, "role": "manager"}},
+        ),
+        patch(
+            "app.controllers.events_controller.get_local_events",
+            return_value={"days": []},
+        ) as service,
+    ):
+        response = client.get(
+            "/api/events/?start_date=2026-08-11&end_date=2026-08-31&refresh=1",
+            headers={"Authorization": "Bearer test-token"},
+        )
+    assert response.status_code == 200
+    service.assert_called_once_with(
+        "2026-08-11", "2026-08-31", force_refresh=True
+    )
 
 
 @pytest.mark.parametrize(

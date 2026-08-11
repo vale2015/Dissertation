@@ -104,6 +104,7 @@ export default function useLocalEvents(startDate, endDate) {
       start_date: startDate,
       end_date: endDate,
     });
+    if (refresh) parameters.set("refresh", "1");
 
     try {
       const response = await fetch(`${API_BASE}/events?${parameters}`, {

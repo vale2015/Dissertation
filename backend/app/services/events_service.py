@@ -580,7 +580,7 @@ def _final_event_context(configuration, validated_range, normalised):
     }
 
 
-def get_local_events(start_date=None, end_date=None):
+def get_local_events(start_date=None, end_date=None, *, force_refresh=False):
     """Return cached or freshly normalised local-event context."""
 
     configuration = load_events_configuration()
@@ -597,7 +597,7 @@ def get_local_events(start_date=None, end_date=None):
     now = time.monotonic()
     with _events_cache_lock:
         cached_entry = _events_cache.get(cache_key)
-        if cached_entry and now < cached_entry["expires_at"]:
+        if cached_entry and not force_refresh and now < cached_entry["expires_at"]:
             return deepcopy(cached_entry["data"])
 
     try:

@@ -468,6 +468,19 @@ def test_cache_hit_avoids_second_provider_request(event_environment, monkeypatch
     assert first["summary"]["total_events"] == 0
 
 
+def test_force_refresh_bypasses_a_fresh_backend_cache(event_environment, monkeypatch):
+    calls = []
+
+    def fake_fetch(*args):
+        calls.append(True)
+        return {"_embedded": {"events": []}}
+
+    monkeypatch.setattr("app.services.events_service.fetch_ticketmaster_events", fake_fetch)
+    get_local_events()
+    get_local_events(force_refresh=True)
+    assert len(calls) == 2
+
+
 def test_different_ranges_and_radius_use_separate_cache_entries(
     event_environment, monkeypatch
 ):
