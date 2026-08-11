@@ -123,9 +123,6 @@ def load_events_configuration():
         "locale": locale,
         "geo_point": geo_point,
         "skiddle_api_key": os.getenv("SKIDDLE_API_KEY", "").strip(),
-        "sportsdb_enabled": os.getenv("SPORTSDB_ENABLED", "true").strip().casefold()
-        in {"1", "true", "yes", "on"},
-        "sportsdb_api_key": os.getenv("SPORTSDB_API_KEY", "123").strip() or "123",
         "sportsdb_league_ids": sportsdb_league_ids,
     }
 
@@ -531,6 +528,15 @@ def build_daily_event_context(events, validated_range):
             "busiest_date": busiest["date"] if busiest else None,
             "busiest_event_count": busiest["event_count"] if busiest else 0,
             "results_truncated": results_truncated,
+            "concert_events": sum(
+                1 for event in event_list if event.get("event_type") == "concerts"
+            ),
+            "general_events": sum(
+                1 for event in event_list if event.get("event_type") == "general"
+            ),
+            "sports_events": sum(
+                1 for event in event_list if event.get("event_type") == "sports"
+            ),
         },
     }
 
@@ -545,8 +551,6 @@ def _events_cache_key(configuration, validated_range):
         validated_range["end_date"],
         configuration["max_results"],
         configuration["skiddle_api_key"],
-        configuration["sportsdb_enabled"],
-        configuration["sportsdb_api_key"],
         tuple(configuration["sportsdb_league_ids"]),
     )
 

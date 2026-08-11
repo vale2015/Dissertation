@@ -26,8 +26,6 @@ def _inputs():
         "timezone": "Europe/London",
         "max_results": 100,
         "skiddle_api_key": "private-skiddle-key",
-        "sportsdb_enabled": True,
-        "sportsdb_api_key": "123",
         "sportsdb_league_ids": ["4328"],
     }
     return configuration, {"supported_dates": [today]}
@@ -93,9 +91,7 @@ def test_sportsdb_normalises_known_london_venue_without_feed_coordinates(monkeyp
     assert captured["s"] == f"{start_year}-{start_year + 1}"
 
 
-def test_optional_providers_are_disabled_without_configuration():
+def test_skiddle_is_disabled_without_configuration():
     configuration, date_range = _inputs()
     configuration["skiddle_api_key"] = ""
-    configuration["sportsdb_enabled"] = False
     assert fetch_skiddle_events(configuration, date_range) == ([], None)
-    assert fetch_sportsdb_events(configuration, date_range) == ([], None)

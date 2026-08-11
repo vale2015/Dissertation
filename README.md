@@ -174,8 +174,6 @@ RESTAURANT_COUNTRY_CODE=GB
 EVENT_SEARCH_RADIUS_KM=10
 EVENTS_CACHE_TTL_SECONDS=21600
 EVENTS_MAX_RESULTS=100
-SPORTSDB_ENABLED=true
-SPORTSDB_API_KEY=123
 SPORTSDB_LEAGUE_IDS=4328
 SKIDDLE_API_KEY=replace-with-your-skiddle-api-key
 TICKETMASTER_LOCALE=en-gb
@@ -282,7 +280,7 @@ Demand forecasting accepts `days_ahead=7|10` and an optional `selected_date=YYYY
 
 Local-event searches accept `start_date` and `end_date` in `YYYY-MM-DD` format for ranges of up to 31 days. The Local Events dashboard page converts the selected calendar month into its exact first and last dates and offers Concerts, General events and Sports filters. Flask combines location-wide Ticketmaster and Skiddle discovery with TheSportsDB schedules; credentials are never exposed to the browser. Results are normalised, deduplicated and cached. The Refresh control sends an authenticated `refresh=1` request that refreshes both frontend and backend caches. Ticketmaster and Skiddle rows are filtered to the configured restaurant radius. TheSportsDB's free schedule feed frequently omits venue coordinates, so the backend applies a small London venue-coordinate lookup and safely excludes unknown venues.
 
-Set `SKIDDLE_API_KEY` to enable location-wide Skiddle discovery; no artist list is required. Skiddle's API terms require visible source credit and use of the event link supplied with each result, both of which are preserved in the Local Events interface. TheSportsDB can use its documented free v1 key `123`; one season-schedule request is made for each configured `SPORTSDB_LEAGUE_IDS` value (English Premier League `4328` by default), then results are filtered to the selected month and restaurant radius. This avoids the free daily endpoint's three-result worldwide limit and Vercel request bursts. Set `SPORTSDB_ENABLED=false` to disable that source. Each optional provider fails independently, so its outage does not remove results from the other services.
+Set `SKIDDLE_API_KEY` to enable location-wide Skiddle discovery; no artist list is required. Skiddle's API terms require visible source credit and use of the event link supplied with each result, both of which are preserved in the Local Events interface. TheSportsDB uses its documented public free v1 key `123`, so it requires no secret or Vercel environment variable. One season-schedule request is made for each configured `SPORTSDB_LEAGUE_IDS` value (English Premier League `4328` by default), then results are filtered to the selected month and restaurant radius. This avoids the free daily endpoint's three-result worldwide limit and Vercel request bursts. Each provider fails independently, so its outage does not remove results from the other services.
 
 ### Next.js server endpoints
 

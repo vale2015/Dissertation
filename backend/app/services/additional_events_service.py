@@ -11,6 +11,7 @@ from app.utils.geo_utils import calculate_distance_km
 
 SKIDDLE_URL = "https://www.skiddle.com/api/v1/events/search/"
 SPORTSDB_URL = "https://www.thesportsdb.com/api/v1/json/{key}/eventsseason.php"
+SPORTSDB_FREE_API_KEY = "123"
 PROVIDER_TIMEOUT = (3, 7)
 # The free schedule feed exposes venue names but not venue coordinates. This
 # small London lookup lets the shared radius rule remain exact; unknown venues
@@ -168,7 +169,7 @@ def _sports_season(date_value):
 
 def _fetch_sports_season(configuration, league_id, season):
     response = requests.get(
-        SPORTSDB_URL.format(key=configuration["sportsdb_api_key"]),
+        SPORTSDB_URL.format(key=SPORTSDB_FREE_API_KEY),
         params={"id": league_id, "s": season}, timeout=PROVIDER_TIMEOUT,
     )
     if response.status_code != 200:
@@ -181,8 +182,6 @@ def _fetch_sports_season(configuration, league_id, season):
 def fetch_sportsdb_events(configuration, validated_range):
     """Fetch daily sports schedules concurrently and retain verifiably local events."""
 
-    if not configuration.get("sportsdb_enabled"):
-        return [], None
     dates = validated_range["supported_dates"]
     league_ids = configuration.get("sportsdb_league_ids", [])
     if not dates or not league_ids:

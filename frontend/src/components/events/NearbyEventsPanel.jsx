@@ -60,6 +60,7 @@ export default function NearbyEventsPanel({
         <>
           <dl className="events-summary-grid">
             <SummaryItem label="Total" value={formatEventCount(summary.total_events)} />
+            <SummaryItem label="Sports events" value={formatEventCount(summary.sports_events)} />
             <SummaryItem label="Days with events" value={summary.days_with_events ?? "—"} />
             <SummaryItem label="High-impact days" value={summary.high_impact_days ?? "—"} />
             <SummaryItem label="Busiest date" value={formatEventDate(summary.busiest_date)} />
