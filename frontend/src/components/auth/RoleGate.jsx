@@ -1,0 +1,2 @@
+"use client";import useSession from"@/hooks/useSession";import{hasPermission,hasRole}from"@/lib/permissions";import AccessDenied from"./AccessDenied";
+export default function RoleGate({permission,roles=[],children}){const{user,loading,error}=useSession();if(loading)return <p aria-live="polite">Checking access…</p>;if(error)return <section role="alert"><h1>Session unavailable</h1><p>{error}</p></section>;const allowed=permission?hasPermission(user,permission):hasRole(user,...roles);return allowed?children:<AccessDenied/>}

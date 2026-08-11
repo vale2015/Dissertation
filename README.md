@@ -77,6 +77,28 @@ Optional, non-secret metadata can be configured with `REPORT_CURRENCY` (default 
 
 Demand prediction is required. Weather and local-event context are optional: provider failures add visible warnings but do not block core staffing and financial reporting. Weather appears only when an exact forecast date is available, so historical or later report dates may show **Unavailable**. Financial figures are estimates based on the latest business settings and are intended for management planning, not accounting statements.
 
+## Staff accounts and role-based access
+
+Staff registration is manager-invitation only; there is no public registration endpoint. Application access roles are separate from operational restaurant roles:
+
+- `manager`: dashboard, bookings, forecasts, reports, staffing rules, staff administration and own profile;
+- `supervisor`: dashboard, bookings, forecasts, reports and own profile;
+- `staff`: own profile and future personal shifts only.
+
+Operational roles continue to come from `public.staff_roles` (for example Kitchen Assistant in Kitchen) and remain the source for staffing and labour-cost calculations. Account states are `invited`, `active`, `suspended` and `inactive`. Flask enforces every permission even when the frontend hides a page or navigation item.
+
+### Database migration
+
+Before deploying the staff-account code, back up the database and run the inspection queries at the top of `backend/migrations/001_staff_accounts.sql`. Resolve any duplicate emails differing only by case, then apply that migration through the Supabase SQL editor or an approved migration workflow. The script preserves existing users, marks them active, adds a case-insensitive email constraint, and creates token/audit tables. It is idempotent for repeat application. The rollback file removes account columns and token storage but deliberately retains audit history; review its comments before use.
+
+### Invitation and recovery lifecycle
+
+Managers open **Dashboard > Staff Management**, create an account, and copy the activation link shown once. The raw token is never stored: PostgreSQL receives only its SHA-256 hash. Activation links expire after 24 hours. The employee opens `/activate-account`, creates a 12–128 character password, then signs in normally; activation does not create a session automatically.
+
+Managers may reissue an invitation or create a one-hour password-reset link. Resetting a password, suspending an account or deactivating it increments `session_version`, invalidating existing sessions on their next Flask request. Accounts are soft-deactivated, never deleted. A manager cannot suspend/deactivate themselves or demote, suspend or deactivate the final active manager. Audit metadata excludes passwords, password hashes, raw tokens, JWTs and API keys.
+
+Invitation and reset links are copyable only; email delivery is not included. `FRONTEND_URL` determines the public link origin. Never commit real links or test passwords.
+
 ## Repository structure
 
 ```text

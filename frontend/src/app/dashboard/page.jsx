@@ -62,6 +62,10 @@ export default async function DashboardPage() {
     redirect("/");
   }
 
+  if (user.role === "staff") {
+    redirect("/dashboard/profile");
+  }
+
   return (
     <div className="dashboard-app">
       <Topbar user={user} />

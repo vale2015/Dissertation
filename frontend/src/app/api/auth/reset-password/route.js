@@ -1,0 +1,1 @@
+import{forwardPublicAccountRequest}from"@/lib/public-auth-proxy";export async function POST(request){const body=await request.clone().json().catch(()=>({}));return forwardPublicAccountRequest(request,body?.validate?"auth/password-reset/validate":"auth/password-reset")}

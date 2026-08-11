@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, request
+from flask import Flask, request, g, jsonify
 from flask_cors import CORS
 
 from app.api.auth_route import auth_bp
@@ -13,7 +13,9 @@ from app.api.staff_cost_route import staff_cost_bp
 from app.api.staffing_rules_route import staffing_rules_bp
 from app.api.weather_route import weather_bp
 from app.api.report_route import reports_bp
+from app.api.staff_route import staff_bp
 from app.middleware.auth_middleware import require_authenticated_request
+from app.services.permission_service import has_permission,VIEW_DASHBOARD,MANAGE_BOOKINGS,VIEW_FORECASTS,VIEW_REPORTS,MANAGE_STAFFING_RULES,MANAGE_STAFF_ACCOUNTS
 
 
 # Blueprints containing private restaurant data.
@@ -26,6 +28,19 @@ PROTECTED_BLUEPRINTS = {
     weather_bp.name,
     events_bp.name,
     reports_bp.name,
+    staff_bp.name,
+}
+
+BLUEPRINT_PERMISSIONS = {
+    dashboard_bp.name: VIEW_DASHBOARD,
+    booking_bp.name: MANAGE_BOOKINGS,
+    demand_bp.name: VIEW_FORECASTS,
+    staff_cost_bp.name: VIEW_FORECASTS,
+    weather_bp.name: VIEW_FORECASTS,
+    events_bp.name: VIEW_FORECASTS,
+    reports_bp.name: VIEW_REPORTS,
+    staffing_rules_bp.name: MANAGE_STAFFING_RULES,
+    staff_bp.name: MANAGE_STAFF_ACCOUNTS,
 }
 
 
@@ -72,7 +87,12 @@ def create_app():
     @app.before_request
     def protect_private_api_routes():
         if request.blueprint in PROTECTED_BLUEPRINTS:
-            return require_authenticated_request()
+            authentication_error = require_authenticated_request()
+            if authentication_error:
+                return authentication_error
+            permission = BLUEPRINT_PERMISSIONS.get(request.blueprint)
+            if permission and not has_permission(g.current_user, permission):
+                return jsonify({"error":{"code":"FORBIDDEN","message":"You do not have permission to perform this action."}}),403
 
         return None
 
@@ -145,5 +165,6 @@ def create_app():
     )
 
     app.register_blueprint(reports_bp, url_prefix="/api/reports")
+    app.register_blueprint(staff_bp, url_prefix="/api/staff")
 
     return app

@@ -10,6 +10,8 @@ import {
 import DatePicker from "react-datepicker";
 import LogoutForm from "@/components/auth/logoutForm";
 import { API_BASE } from "@/lib/api";
+import useSession from "@/hooks/useSession";
+import { hasPermission, PERMISSIONS } from "@/lib/permissions";
 import "react-datepicker/dist/react-datepicker.css";
 
 
@@ -92,6 +94,7 @@ function SidebarContent() {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { user } = useSession();
 
   // Stores the selected date for single-day pages.
   const [selectedDate, setSelectedDate] = useState("");
@@ -105,6 +108,8 @@ function SidebarContent() {
   // The main dashboard displays a monthly summary.
   const isDashboardPage = pathname === "/dashboard";
   const isLocalEventsPage = pathname === "/dashboard/local-events";
+  const isAccountPage = pathname === "/dashboard/staff" || pathname === "/dashboard/profile";
+  const isDateIndependentPage = isDashboardPage || isLocalEventsPage || isAccountPage;
 
   /**
    * Synchronise selectedDate with the URL query string.
@@ -118,6 +123,9 @@ function SidebarContent() {
    * Load the latest historical date from the Flask backend.
    */
   useEffect(() => {
+    if (!user || !hasPermission(user, PERMISSIONS.VIEW_DASHBOARD) || isAccountPage) {
+      return;
+    }
     const loadLatestDate = async () => {
       try {
         const response = await fetch(`${API_BASE}/dashboard/`);
@@ -142,7 +150,7 @@ function SidebarContent() {
          * Add the latest available date only to pages that use
          * a single selected day.
          */
-        if (!isDashboardPage && !isLocalEventsPage && !urlDate && latestDate) {
+        if (!isDateIndependentPage && !urlDate && latestDate) {
           const parameters = new URLSearchParams(
             searchParams.toString()
           );
@@ -163,11 +171,12 @@ function SidebarContent() {
 
     loadLatestDate();
   }, [
-    isDashboardPage,
-    isLocalEventsPage,
+    isDateIndependentPage,
+    isAccountPage,
     pathname,
     router,
     searchParams,
+    user,
   ]);
 
   /**
@@ -245,7 +254,7 @@ function SidebarContent() {
    * single-day pages.
    */
   const withDate = (href) => {
-    if (href === "/dashboard" || href === "/dashboard/local-events") {
+    if (["/dashboard","/dashboard/local-events","/dashboard/staff","/dashboard/profile"].includes(href)) {
       return href;
     }
 
@@ -269,34 +278,52 @@ function SidebarContent() {
       {
         label: "Dashboard",
         href: "/dashboard",
+        permission: PERMISSIONS.VIEW_DASHBOARD,
       },
       {
         label: "Bookings Overview",
         href: "/dashboard/bookings",
+        permission: PERMISSIONS.MANAGE_BOOKINGS,
       },
       {
         label: "Add New Booking",
         href: "/dashboard/createBooking",
+        permission: PERMISSIONS.MANAGE_BOOKINGS,
       },
       {
         label: "Reservation Forecast",
         href: "/dashboard/reservation-forecast",
+        permission: PERMISSIONS.VIEW_FORECASTS,
       },
       {
         label: "Local Events",
         href: "/dashboard/local-events",
+        permission: PERMISSIONS.VIEW_FORECASTS,
       },
       {
         label: "Staff Forecast",
         href: "/dashboard/staff-forecast",
+        permission: PERMISSIONS.VIEW_FORECASTS,
       },
       {
         label: "Staffing Rules",
         href: "/dashboard/staffing-rules",
+        permission: PERMISSIONS.MANAGE_STAFFING_RULES,
       },
       {
         label: "Reports",
         href: "/dashboard/reports",
+        permission: PERMISSIONS.VIEW_REPORTS,
+      },
+      {
+        label: "Staff Management",
+        href: "/dashboard/staff",
+        permission: PERMISSIONS.MANAGE_STAFF_ACCOUNTS,
+      },
+      {
+        label: "My Profile",
+        href: "/dashboard/profile",
+        permission: PERMISSIONS.VIEW_OWN_PROFILE,
       },
     ],
     []
@@ -324,6 +351,8 @@ function SidebarContent() {
                   available data
                 </p>
               </>
+            ) : isAccountPage ? (
+              <><label className="sidebar-calendar-label">Account</label><div className="sidebar-range-box"><span className="sidebar-range-value">No forecast date required</span></div></>
             ) : isLocalEventsPage ? (
               <>
                 <label className="sidebar-calendar-label">
@@ -366,7 +395,7 @@ function SidebarContent() {
           </div>
 
           <nav className="sidebar-nav">
-            {menuItems.map((item) => {
+            {menuItems.filter(item => hasPermission(user, item.permission)).map((item) => {
               const isActive = pathname === item.href;
 
               return (

@@ -46,7 +46,7 @@ export default function HomePage() {
       // Nothing is saved in localStorage.
       setPassword("");
 
-      router.replace("/dashboard");
+      router.replace(data?.user?.role === "staff" ? "/dashboard/profile" : "/dashboard");
       router.refresh();
     } catch (error) {
       console.error("Login request failed:", error);

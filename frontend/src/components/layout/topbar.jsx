@@ -1,8 +1,12 @@
 "use client";
 
 import WeatherWidget from "@/components/weather/WeatherWidget";
+import useSession from "@/hooks/useSession";
+import {hasPermission,PERMISSIONS} from "@/lib/permissions";
 
 export default function Topbar({ user }) {
+  const session = useSession();
+  const currentUser = user || session.user;
   return (
     <header className="topbar">
       <div className="topbar-left">
@@ -11,14 +15,15 @@ export default function Topbar({ user }) {
       </div>
 
       <div className="topbar-right">
-        <WeatherWidget />
+        {hasPermission(currentUser,PERMISSIONS.VIEW_FORECASTS) && <WeatherWidget />}
 
         <div className="topbar-user-icon">👤</div>
 
         <div className="topbar-user">
           <span className="topbar-user-name">
-            {user?.full_name || "Test Manager"}
+            {currentUser?.full_name || "Loading user…"}
           </span>
+          {currentUser?.role && <span className="topbar-user-role">{currentUser.role}</span>}
         </div>
       </div>
     </header>
