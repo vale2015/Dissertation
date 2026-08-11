@@ -2803,6 +2803,35 @@ button.event-impact-badge:hover {
   margin-top: 1rem;
 }
 
+.events-filter-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.events-filter-tabs button {
+  border: 1px solid var(--border-color, #c8c8c8);
+  border-radius: 999px;
+  background: #fff;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+  padding: 0.55rem 0.9rem;
+}
+
+.events-filter-tabs button.is-active {
+  border-color: #dc2038;
+  background: #dc2038;
+  color: #fff;
+}
+
+.events-filter-tabs button:focus-visible {
+  outline: 3px solid rgba(220, 32, 56, 0.3);
+  outline-offset: 2px;
+}
+
 .events-day-card {
   padding: 1rem;
   border: 1px solid #d0d5dd;

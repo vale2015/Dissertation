@@ -116,7 +116,7 @@ export default function EventDetailsModal({
               <header className="event-card-header">
                 <div>
                   <h3>{event.name}</h3>
-                  <p>{event.category} · {event.genre}</p>
+                  <p>{event.category} · {event.genre} · {event.provider || "Event provider"}</p>
                 </div>
                 <span className={`event-impact-badge ${getImpactClassName(event.impact_level)}`}>
                   {event.impact_level} potential impact
@@ -130,13 +130,13 @@ export default function EventDetailsModal({
               </dl>
               {event.url ? (
                 <a href={event.url} target="_blank" rel="noreferrer">
-                  View event on Ticketmaster
+                  View event on {event.provider || "provider"}
                 </a>
               ) : null}
             </article>
           ))}
         </div>
-        <p className="events-attribution">Event information provided by Ticketmaster.</p>
+        <p className="events-attribution">Event information provided by Ticketmaster, Bandsintown and TheSportsDB.</p>
       </section>
     </div>
   );

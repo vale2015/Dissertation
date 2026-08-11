@@ -9,6 +9,12 @@ import Topbar from "@/components/layout/topbar";
 import useLocalEvents from "@/hooks/useLocalEvents";
 import { formatEventCount, formatEventDate } from "@/utils/EventFormat";
 
+const EVENT_FILTERS = [
+  ["all", "All events"],
+  ["concerts", "Concerts"],
+  ["general", "General events"],
+  ["sports", "Sports"],
+];
 
 function formatMonthInput(date) {
   const year = date.getFullYear();
@@ -39,6 +45,7 @@ export default function LocalEventsPage() {
   const [selectedMonth, setSelectedMonth] = useState(currentMonth);
   const [searchRange, setSearchRange] = useState(() => monthRange(currentMonth()));
   const [selectedDay, setSelectedDay] = useState(null);
+  const [eventFilter, setEventFilter] = useState("all");
   const triggerRef = useRef(null);
 
   const { eventContext, loading, refreshing, error, refreshEvents } =
@@ -46,9 +53,12 @@ export default function LocalEventsPage() {
 
   const monthError = monthRange(selectedMonth) ? null : "Choose a valid month.";
 
-  const eventDays = (eventContext?.days || []).filter(
-    (day) => Number(day?.event_count) > 0
-  );
+  const eventDays = (eventContext?.days || []).map((day) => {
+    const events = (day?.events || []).filter(
+      (item) => eventFilter === "all" || item?.event_type === eventFilter
+    );
+    return { ...day, events, event_count: events.length };
+  }).filter((day) => day.event_count > 0);
 
   const handleSearch = (event) => {
     event.preventDefault();
@@ -72,7 +82,7 @@ export default function LocalEventsPage() {
               <section className="dashboard-hero">
                 <h1 className="dashboard-title">Local Events</h1>
                 <p className="dashboard-text">
-                  Find Ticketmaster events for a full calendar month within 10 km of the restaurant.
+                  Find concerts, general events and sports for a full calendar month near the restaurant.
                 </p>
                 <form className="events-search-form" onSubmit={handleSearch}>
                   <label>
@@ -96,9 +106,22 @@ export default function LocalEventsPage() {
 
               <section className="dashboard-panel events-results" aria-labelledby="events-results-title">
                 <h2 id="events-results-title" className="dashboard-panel-title">Available events</h2>
+                <div className="events-filter-tabs" role="group" aria-label="Filter available events">
+                  {EVENT_FILTERS.map(([value, label]) => (
+                    <button
+                      key={value}
+                      type="button"
+                      className={eventFilter === value ? "is-active" : ""}
+                      aria-pressed={eventFilter === value}
+                      onClick={() => setEventFilter(value)}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
                 {loading && !eventContext ? <p>Loading available events…</p> : null}
                 {!loading && !error && eventContext && eventDays.length === 0 ? (
-                  <p>No Ticketmaster events were found for the selected dates.</p>
+                  <p>No matching events were found for the selected month.</p>
                 ) : null}
                 <div className="events-day-grid">
                   {eventDays.map((day) => (

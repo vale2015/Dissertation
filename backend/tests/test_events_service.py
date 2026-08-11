@@ -30,6 +30,7 @@ VALID_ENVIRONMENT = {
     "EVENTS_CACHE_TTL_SECONDS": "21600",
     "EVENTS_MAX_RESULTS": "100",
     "TICKETMASTER_LOCALE": "en-gb",
+    "SPORTSDB_ENABLED": "false",
 }
 
 
@@ -321,6 +322,8 @@ def test_valid_event_is_normalised_without_provider_internals(event_environment)
     assert event["genre"] == "Rock"
     assert event["distance_km"] == 1.8
     assert event["impact_level"] == "High"
+    assert event["provider"] == "Ticketmaster"
+    assert event["event_type"] == "concerts"
     assert "classifications" not in event
     assert "images" not in event
 

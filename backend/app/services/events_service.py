@@ -17,6 +17,10 @@ from app.utils.event_impact import (
 )
 from app.utils.geo_utils import calculate_distance_km
 from app.utils.geo_utils import create_geopoint
+from app.services.additional_events_service import (
+    fetch_bandsintown_events,
+    fetch_sportsdb_events,
+)
 
 
 DEFAULT_EVENTS_CACHE_TTL_SECONDS = 21600
@@ -96,6 +100,11 @@ def load_events_configuration():
     )
     locale = os.getenv("TICKETMASTER_LOCALE", DEFAULT_TICKETMASTER_LOCALE).strip()
     locale = locale or DEFAULT_TICKETMASTER_LOCALE
+    bandsintown_artists = [
+        artist.strip()
+        for artist in os.getenv("BANDSINTOWN_ARTISTS", "").split(",")
+        if artist.strip()
+    ][:10]
 
     try:
         geo_point = create_geopoint(latitude, longitude)
@@ -114,6 +123,11 @@ def load_events_configuration():
         "max_results": max_results,
         "locale": locale,
         "geo_point": geo_point,
+        "bandsintown_app_id": os.getenv("BANDSINTOWN_APP_ID", "").strip(),
+        "bandsintown_artists": bandsintown_artists,
+        "sportsdb_enabled": os.getenv("SPORTSDB_ENABLED", "true").strip().casefold()
+        in {"1", "true", "yes", "on"},
+        "sportsdb_api_key": os.getenv("SPORTSDB_API_KEY", "123").strip() or "123",
     }
 
 
@@ -374,6 +388,11 @@ def normalise_ticketmaster_events(raw_data, configuration, validated_range):
         )
         category = _nested_name(classification.get("segment"), "Other")
         genre = _nested_name(classification.get("genre"), "Unspecified")
+        event_type = (
+            "concerts" if category.casefold() == "music"
+            else "sports" if category.casefold() == "sports"
+            else "general"
+        )
 
         event_embedded = raw_event.get("_embedded") or {}
         venues = event_embedded.get("venues", []) if isinstance(event_embedded, dict) else []
@@ -416,6 +435,8 @@ def normalise_ticketmaster_events(raw_data, configuration, validated_range):
                 "url": _safe_https_url(raw_event.get("url")),
                 "impact_score": impact["score"],
                 "impact_level": impact["level"],
+                "provider": "Ticketmaster",
+                "event_type": event_type,
             }
         )
         seen_ids.add(event_id)
@@ -524,6 +545,10 @@ def _events_cache_key(configuration, validated_range):
         validated_range["start_date"],
         validated_range["end_date"],
         configuration["max_results"],
+        configuration["bandsintown_app_id"],
+        tuple(configuration["bandsintown_artists"]),
+        configuration["sportsdb_enabled"],
+        configuration["sportsdb_api_key"],
     )
 
 
@@ -552,6 +577,7 @@ def _final_event_context(configuration, validated_range, normalised):
         "fetched_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "stale": False,
         "warning": None,
+        "provider_warnings": [],
     }
 
 
@@ -582,7 +608,31 @@ def get_local_events(start_date=None, end_date=None):
             configuration,
             validated_range,
         )
-        data = _final_event_context(configuration, validated_range, normalised)
+        combined_events = list(normalised["events"])
+        provider_warnings = []
+        for provider_fetch in (fetch_bandsintown_events, fetch_sportsdb_events):
+            extra_events, warning = provider_fetch(configuration, validated_range)
+            combined_events.extend(extra_events)
+            if warning:
+                provider_warnings.append(warning)
+
+        deduplicated = {}
+        for event in combined_events:
+            key = (
+                event.get("name", "").casefold(), event.get("local_date"),
+                event.get("venue", {}).get("name", "").casefold(),
+            )
+            deduplicated.setdefault(key, event)
+        combined_events = sorted(
+            deduplicated.values(),
+            key=lambda event: (event["local_date"], event.get("local_time") or "99:99:99", event["name"].casefold()),
+        )
+        data = _final_event_context(
+            configuration,
+            validated_range,
+            {"events": combined_events, "results_truncated": normalised["results_truncated"]},
+        )
+        data["provider_warnings"] = provider_warnings
     except EventsProviderError:
         with _events_cache_lock:
             cached_entry = _events_cache.get(cache_key)

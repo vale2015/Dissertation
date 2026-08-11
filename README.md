@@ -17,7 +17,7 @@ flowchart LR
     S --> D[(Supabase PostgreSQL)]
     S --> M[Random Forest pipeline]
     S --> W[Open-Meteo weather API]
-    S --> T[Ticketmaster Discovery API]
+    S --> T[Ticketmaster, Bandsintown and TheSportsDB APIs]
     M --> X[demand_model.pkl]
 ```
 
@@ -174,6 +174,10 @@ RESTAURANT_COUNTRY_CODE=GB
 EVENT_SEARCH_RADIUS_KM=10
 EVENTS_CACHE_TTL_SECONDS=21600
 EVENTS_MAX_RESULTS=100
+SPORTSDB_ENABLED=true
+SPORTSDB_API_KEY=123
+BANDSINTOWN_APP_ID=your-app-identifier
+BANDSINTOWN_ARTISTS=Artist One,Artist Two
 TICKETMASTER_LOCALE=en-gb
 ```
 
@@ -271,12 +275,14 @@ Flask listens at `http://127.0.0.1:5000`. Except for health and authentication, 
 | `GET` | `/api/staff-cost/` | List saved staff-cost forecast rows |
 | `GET` | `/api/staff-cost/date/<date>` | Staff-cost rows for one date |
 | `GET` | `/api/staffing-rules/` | Staffing rules and role information |
-| `GET` | `/api/events/` | Monthly Ticketmaster events near the restaurant |
+| `GET` | `/api/events/` | Monthly concerts, general events and sports near the restaurant |
 | `GET` | `/api/weather/` | Current and forecast restaurant weather |
 
 Demand forecasting accepts `days_ahead=7|10` and an optional `selected_date=YYYY-MM-DD`. The aliases `days` and `date` are also supported. Staff-cost forecasting accepts `days_ahead` and optional `selected_date` parameters.
 
-Local-event searches accept `start_date` and `end_date` in `YYYY-MM-DD` format for ranges of up to 31 days. The Local Events dashboard page converts the selected calendar month into its exact first and last dates. Ticketmaster is called only by Flask; results are cached and filtered to the configured restaurant radius.
+Local-event searches accept `start_date` and `end_date` in `YYYY-MM-DD` format for ranges of up to 31 days. The Local Events dashboard page converts the selected calendar month into its exact first and last dates and offers Concerts, General events and Sports filters. Flask combines Ticketmaster with optional Bandsintown artist results and TheSportsDB schedules; credentials are never exposed to the browser. Results are normalised, deduplicated and cached. Ticketmaster and Bandsintown rows are filtered to the configured restaurant radius. TheSportsDB's free schedule feed frequently omits venue coordinates, so the backend applies a small London venue-coordinate lookup and safely excludes unknown venues.
+
+Bandsintown does not provide a location-wide public discovery search. Set `BANDSINTOWN_APP_ID` and a comma-separated `BANDSINTOWN_ARTISTS` list (up to ten artists) to enable it. TheSportsDB can use its documented free v1 key `123`; set `SPORTSDB_ENABLED=false` to disable that source. Each optional provider fails independently, so its outage does not remove results from the other services.
 
 ### Next.js server endpoints
 

@@ -52,6 +52,9 @@ export default function NearbyEventsPanel({
           Only the first available Ticketmaster results are shown.
         </p>
       ) : null}
+      {(eventContext?.provider_warnings || []).map((warning) => (
+        <p className="events-warning" role="status" key={warning}>{warning}</p>
+      ))}
 
       {summary ? (
         <>
@@ -66,13 +69,15 @@ export default function NearbyEventsPanel({
           </dl>
           {summary.total_events === 0 ? (
             <p className="events-warning">
-              No Ticketmaster events were found for this location and period. Other
-              local events may still exist.
+              No events were found for this location and period. Other local events
+              may still exist.
             </p>
           ) : null}
         </>
       ) : null}
-      <p className="events-attribution">Event information provided by Ticketmaster.</p>
+      <p className="events-attribution">
+        Event information provided by Ticketmaster, Bandsintown and TheSportsDB.
+      </p>
     </section>
   );
 }
