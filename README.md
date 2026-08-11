@@ -16,6 +16,8 @@ flowchart LR
     F --> S[Controllers and services]
     S --> D[(Supabase PostgreSQL)]
     S --> M[Random Forest pipeline]
+    S --> W[Open-Meteo weather API]
+    S --> T[Ticketmaster Discovery API]
     M --> X[demand_model.pkl]
 ```
 
@@ -40,6 +42,8 @@ The proxy rejects cross-origin state-changing requests and removes an expired se
 - configurable forecast start dates and Monday closure handling;
 - staffing recommendations and labour-cost forecasts;
 - staffing-rule and staff-role views;
+- standalone monthly local-event searches within the configured restaurant radius;
+- local weather in the authenticated dashboard top bar;
 - booking, demand, staffing, and report screens;
 - model retraining from historical restaurant demand data;
 - application and database health checks.
@@ -267,8 +271,12 @@ Flask listens at `http://127.0.0.1:5000`. Except for health and authentication, 
 | `GET` | `/api/staff-cost/` | List saved staff-cost forecast rows |
 | `GET` | `/api/staff-cost/date/<date>` | Staff-cost rows for one date |
 | `GET` | `/api/staffing-rules/` | Staffing rules and role information |
+| `GET` | `/api/events/` | Monthly Ticketmaster events near the restaurant |
+| `GET` | `/api/weather/` | Current and forecast restaurant weather |
 
 Demand forecasting accepts `days_ahead=7|10` and an optional `selected_date=YYYY-MM-DD`. The aliases `days` and `date` are also supported. Staff-cost forecasting accepts `days_ahead` and optional `selected_date` parameters.
+
+Local-event searches accept `start_date` and `end_date` in `YYYY-MM-DD` format for ranges of up to 31 days. The Local Events dashboard page converts the selected calendar month into its exact first and last dates. Ticketmaster is called only by Flask; results are cached and filtered to the configured restaurant radius.
 
 ### Next.js server endpoints
 

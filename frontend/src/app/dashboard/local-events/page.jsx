@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 import EventDetailsModal from "@/components/events/EventDetailsModal";
 import NearbyEventsPanel from "@/components/events/NearbyEventsPanel";
@@ -10,43 +10,41 @@ import useLocalEvents from "@/hooks/useLocalEvents";
 import { formatEventCount, formatEventDate } from "@/utils/EventFormat";
 
 
-const SEARCH_DAYS = 10;
-
-
-function formatDateInput(date) {
+function formatMonthInput(date) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
+  return `${year}-${month}`;
 }
 
 
-function defaultDates() {
-  const start = new Date();
-  const end = new Date(start);
-  end.setDate(end.getDate() + SEARCH_DAYS - 1);
-  return { start: formatDateInput(start), end: formatDateInput(end) };
+function monthRange(monthValue) {
+  const match = /^(\d{4})-(\d{2})$/.exec(monthValue || "");
+  if (!match) return null;
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const lastDay = new Date(year, month, 0).getDate();
+  return {
+    start: `${monthValue}-01`,
+    end: `${monthValue}-${String(lastDay).padStart(2, "0")}`,
+  };
+}
+
+
+function currentMonth() {
+  return formatMonthInput(new Date());
 }
 
 
 export default function LocalEventsPage() {
-  const [draftRange, setDraftRange] = useState(defaultDates);
-  const [searchRange, setSearchRange] = useState(defaultDates);
+  const [selectedMonth, setSelectedMonth] = useState(currentMonth);
+  const [searchRange, setSearchRange] = useState(() => monthRange(currentMonth()));
   const [selectedDay, setSelectedDay] = useState(null);
   const triggerRef = useRef(null);
 
   const { eventContext, loading, refreshing, error, refreshEvents } =
     useLocalEvents(searchRange.start, searchRange.end);
 
-  const rangeError = useMemo(() => {
-    if (!draftRange.start || !draftRange.end) return "Choose both dates.";
-    const start = new Date(`${draftRange.start}T00:00:00`);
-    const end = new Date(`${draftRange.end}T00:00:00`);
-    const days = Math.round((end - start) / 86400000) + 1;
-    if (days < 1) return "The end date must be on or after the start date.";
-    if (days > SEARCH_DAYS) return "Choose a period of no more than 10 days.";
-    return null;
-  }, [draftRange.end, draftRange.start]);
+  const monthError = monthRange(selectedMonth) ? null : "Choose a valid month.";
 
   const eventDays = (eventContext?.days || []).filter(
     (day) => Number(day?.event_count) > 0
@@ -54,7 +52,8 @@ export default function LocalEventsPage() {
 
   const handleSearch = (event) => {
     event.preventDefault();
-    if (!rangeError) setSearchRange(draftRange);
+    const nextRange = monthRange(selectedMonth);
+    if (nextRange) setSearchRange(nextRange);
   };
 
   const openDay = useCallback((day, trigger) => {
@@ -73,22 +72,18 @@ export default function LocalEventsPage() {
               <section className="dashboard-hero">
                 <h1 className="dashboard-title">Local Events</h1>
                 <p className="dashboard-text">
-                  Find Ticketmaster events within 10 km of the restaurant.
+                  Find Ticketmaster events for a full calendar month within 10 km of the restaurant.
                 </p>
                 <form className="events-search-form" onSubmit={handleSearch}>
                   <label>
-                    Start date
-                    <input type="date" value={draftRange.start} onChange={(event) => setDraftRange((current) => ({ ...current, start: event.target.value }))} />
+                    Month
+                    <input type="month" value={selectedMonth} onChange={(event) => setSelectedMonth(event.target.value)} />
                   </label>
-                  <label>
-                    End date
-                    <input type="date" value={draftRange.end} onChange={(event) => setDraftRange((current) => ({ ...current, end: event.target.value }))} />
-                  </label>
-                  <button type="submit" className="events-refresh-button" disabled={Boolean(rangeError) || loading}>
+                  <button type="submit" className="events-refresh-button" disabled={Boolean(monthError) || loading}>
                     Search events
                   </button>
                 </form>
-                {rangeError ? <p className="events-error" role="alert">{rangeError}</p> : null}
+                {monthError ? <p className="events-error" role="alert">{monthError}</p> : null}
               </section>
 
               <NearbyEventsPanel

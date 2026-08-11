@@ -133,12 +133,20 @@ def _utc_boundary(local_date, restaurant_zone):
     return local_datetime.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
+def _last_day_of_month(value):
+    if value.month == 12:
+        next_month = date(value.year + 1, 1, 1)
+    else:
+        next_month = date(value.year, value.month + 1, 1)
+    return next_month - timedelta(days=1)
+
+
 def validate_event_date_range(
     start_date_value,
     end_date_value,
     restaurant_timezone,
 ):
-    """Validate a maximum ten-day local range and derive UTC search bounds."""
+    """Validate a maximum 31-day local range and derive UTC search bounds."""
 
     try:
         restaurant_zone = ZoneInfo(restaurant_timezone)
@@ -147,15 +155,15 @@ def validate_event_date_range(
 
     today = datetime.now(restaurant_zone).date()
     if start_date_value is None and end_date_value is None:
-        start_date = today
-        end_date = today + timedelta(days=6)
+        start_date = today.replace(day=1)
+        end_date = _last_day_of_month(today)
     elif start_date_value is None or end_date_value is None:
         raise EventsRequestError("A valid event date range is required.")
     else:
         start_date = _parse_request_date(start_date_value)
         end_date = _parse_request_date(end_date_value)
 
-    if start_date > end_date or (end_date - start_date).days + 1 > 10:
+    if start_date > end_date or (end_date - start_date).days + 1 > 31:
         raise EventsRequestError("A valid event date range is required.")
 
     requested_dates = [

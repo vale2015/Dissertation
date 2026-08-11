@@ -90,13 +90,15 @@ def _london_today():
     return datetime.now(ZoneInfo("Europe/London")).date()
 
 
-def test_default_range_contains_seven_days():
+def test_default_range_contains_current_calendar_month():
     result = validate_event_date_range(None, None, "Europe/London")
-    assert len(result["requested_dates"]) == 7
-    assert result["start_date"] == _london_today().isoformat()
+    today = _london_today()
+    assert result["start_date"] == today.replace(day=1).isoformat()
+    assert result["end_date"].startswith(f"{today.year:04d}-{today.month:02d}-")
+    assert len(result["requested_dates"]) in (28, 29, 30, 31)
 
 
-@pytest.mark.parametrize("length", [7, 10])
+@pytest.mark.parametrize("length", [7, 10, 28, 31])
 def test_supported_range_lengths(length):
     start = _london_today() + timedelta(days=1)
     end = start + timedelta(days=length - 1)
@@ -118,12 +120,12 @@ def test_invalid_or_incomplete_ranges_are_rejected(start, end):
         validate_event_date_range(start, end, "Europe/London")
 
 
-def test_eleven_day_range_is_rejected():
+def test_thirty_two_day_range_is_rejected():
     start = _london_today() + timedelta(days=1)
     with pytest.raises(EventsRequestError):
         validate_event_date_range(
             start.isoformat(),
-            (start + timedelta(days=10)).isoformat(),
+            (start + timedelta(days=31)).isoformat(),
             "Europe/London",
         )
 
