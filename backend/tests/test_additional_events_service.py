@@ -86,7 +86,11 @@ def test_sportsdb_normalises_known_london_venue_without_feed_coordinates(monkeyp
     assert warning is None
     assert events[0]["provider"] == "TheSportsDB"
     assert events[0]["event_type"] == "sports"
-    assert captured["l"] == "4328"
+    assert captured["id"] == "4328"
+    expected_year = int(date_range["supported_dates"][0][:4])
+    expected_month = int(date_range["supported_dates"][0][5:7])
+    start_year = expected_year if expected_month >= 7 else expected_year - 1
+    assert captured["s"] == f"{start_year}-{start_year + 1}"
 
 
 def test_optional_providers_are_disabled_without_configuration():

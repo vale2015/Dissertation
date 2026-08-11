@@ -1,6 +1,6 @@
 """Optional Skiddle and TheSportsDB event providers."""
 
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from datetime import date
 from math import ceil
 
 import requests
@@ -10,7 +10,7 @@ from app.utils.geo_utils import calculate_distance_km
 
 
 SKIDDLE_URL = "https://www.skiddle.com/api/v1/events/search/"
-SPORTSDB_URL = "https://www.thesportsdb.com/api/v1/json/{key}/eventsday.php"
+SPORTSDB_URL = "https://www.thesportsdb.com/api/v1/json/{key}/eventsseason.php"
 PROVIDER_TIMEOUT = (3, 7)
 # The free schedule feed exposes venue names but not venue coordinates. This
 # small London lookup lets the shared radius rule remain exact; unknown venues
@@ -160,10 +160,16 @@ def fetch_skiddle_events(configuration, validated_range):
     return events, None
 
 
-def _fetch_sports_day(configuration, day, league_id):
+def _sports_season(date_value):
+    parsed = date.fromisoformat(date_value)
+    start_year = parsed.year if parsed.month >= 7 else parsed.year - 1
+    return f"{start_year}-{start_year + 1}"
+
+
+def _fetch_sports_season(configuration, league_id, season):
     response = requests.get(
         SPORTSDB_URL.format(key=configuration["sportsdb_api_key"]),
-        params={"d": day, "l": league_id}, timeout=PROVIDER_TIMEOUT,
+        params={"id": league_id, "s": season}, timeout=PROVIDER_TIMEOUT,
     )
     if response.status_code != 200:
         return [], True
@@ -184,17 +190,15 @@ def fetch_sportsdb_events(configuration, validated_range):
 
     raw_events = []
     failed = False
-    searches = [(day, league_id) for day in dates for league_id in league_ids]
-    with ThreadPoolExecutor(max_workers=min(8, len(searches))) as executor:
-        futures = {
-            executor.submit(_fetch_sports_day, configuration, day, league_id): (day, league_id)
-            for day, league_id in searches
-        }
-        for future in as_completed(futures):
+    seasons = sorted({_sports_season(day) for day in dates})
+    for league_id in league_ids:
+        for season in seasons:
             try:
-                items, day_failed = future.result()
+                items, request_failed = _fetch_sports_season(
+                    configuration, league_id, season
+                )
                 raw_events.extend(items)
-                failed = failed or day_failed
+                failed = failed or request_failed
             except (requests.RequestException, ValueError):
                 failed = True
 
