@@ -160,10 +160,10 @@ def fetch_skiddle_events(configuration, validated_range):
     return events, None
 
 
-def _fetch_sports_day(configuration, day):
+def _fetch_sports_day(configuration, day, league_id):
     response = requests.get(
         SPORTSDB_URL.format(key=configuration["sportsdb_api_key"]),
-        params={"d": day}, timeout=PROVIDER_TIMEOUT,
+        params={"d": day, "l": league_id}, timeout=PROVIDER_TIMEOUT,
     )
     if response.status_code != 200:
         return [], True
@@ -178,13 +178,18 @@ def fetch_sportsdb_events(configuration, validated_range):
     if not configuration.get("sportsdb_enabled"):
         return [], None
     dates = validated_range["supported_dates"]
-    if not dates:
+    league_ids = configuration.get("sportsdb_league_ids", [])
+    if not dates or not league_ids:
         return [], None
 
     raw_events = []
     failed = False
-    with ThreadPoolExecutor(max_workers=min(8, len(dates))) as executor:
-        futures = {executor.submit(_fetch_sports_day, configuration, day): day for day in dates}
+    searches = [(day, league_id) for day in dates for league_id in league_ids]
+    with ThreadPoolExecutor(max_workers=min(8, len(searches))) as executor:
+        futures = {
+            executor.submit(_fetch_sports_day, configuration, day, league_id): (day, league_id)
+            for day, league_id in searches
+        }
         for future in as_completed(futures):
             try:
                 items, day_failed = future.result()

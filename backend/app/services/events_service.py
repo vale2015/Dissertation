@@ -100,6 +100,11 @@ def load_events_configuration():
     )
     locale = os.getenv("TICKETMASTER_LOCALE", DEFAULT_TICKETMASTER_LOCALE).strip()
     locale = locale or DEFAULT_TICKETMASTER_LOCALE
+    sportsdb_league_ids = [
+        value.strip()
+        for value in os.getenv("SPORTSDB_LEAGUE_IDS", "4328").split(",")
+        if value.strip().isdigit()
+    ][:3]
     try:
         geo_point = create_geopoint(latitude, longitude)
     except ValueError as error:
@@ -121,6 +126,7 @@ def load_events_configuration():
         "sportsdb_enabled": os.getenv("SPORTSDB_ENABLED", "true").strip().casefold()
         in {"1", "true", "yes", "on"},
         "sportsdb_api_key": os.getenv("SPORTSDB_API_KEY", "123").strip() or "123",
+        "sportsdb_league_ids": sportsdb_league_ids,
     }
 
 
@@ -541,6 +547,7 @@ def _events_cache_key(configuration, validated_range):
         configuration["skiddle_api_key"],
         configuration["sportsdb_enabled"],
         configuration["sportsdb_api_key"],
+        tuple(configuration["sportsdb_league_ids"]),
     )
 
 

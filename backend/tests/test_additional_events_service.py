@@ -28,6 +28,7 @@ def _inputs():
         "skiddle_api_key": "private-skiddle-key",
         "sportsdb_enabled": True,
         "sportsdb_api_key": "123",
+        "sportsdb_league_ids": ["4328"],
     }
     return configuration, {"supported_dates": [today]}
 
@@ -67,18 +68,25 @@ def test_skiddle_normalises_all_nearby_events(monkeypatch):
 
 def test_sportsdb_normalises_known_london_venue_without_feed_coordinates(monkeypatch):
     configuration, date_range = _inputs()
+    captured = {}
+
+    def fake_get(*args, **kwargs):
+        captured.update(kwargs["params"])
+        return FakeResponse({"events": [{
+                "idEvent": "sport-1", "strEvent": "London A vs London B",
+                "dateEvent": date_range["supported_dates"][0], "strTime": "15:00:00",
+                "strVenue": "Stamford Bridge", "strSport": "Soccer",
+            }]})
+
     monkeypatch.setattr(
         "app.services.additional_events_service.requests.get",
-        lambda *args, **kwargs: FakeResponse({"events": [{
-            "idEvent": "sport-1", "strEvent": "London A vs London B",
-            "dateEvent": date_range["supported_dates"][0], "strTime": "15:00:00",
-            "strVenue": "Stamford Bridge", "strSport": "Soccer",
-        }]}),
+        fake_get,
     )
     events, warning = fetch_sportsdb_events(configuration, date_range)
     assert warning is None
     assert events[0]["provider"] == "TheSportsDB"
     assert events[0]["event_type"] == "sports"
+    assert captured["l"] == "4328"
 
 
 def test_optional_providers_are_disabled_without_configuration():
