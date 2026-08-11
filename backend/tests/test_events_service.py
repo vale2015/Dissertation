@@ -190,9 +190,32 @@ def test_provider_request_uses_geopoint_and_exact_range(event_environment, monke
     assert result == {"_embedded": {"events": []}}
     assert captured["url"].startswith("https://")
     assert captured["params"]["geoPoint"] == "gcpus7duz"
+    assert captured["params"]["radius"] == "10"
     assert "latlong" not in captured["params"]
     assert captured["params"]["startDateTime"] == date_range["search_start_datetime"]
     assert captured["params"]["size"] == 100
+
+
+def test_provider_retries_a_rejected_geo_query_by_city(
+    event_environment, monkeypatch
+):
+    configuration, date_range = _provider_inputs(event_environment)
+    captured = []
+
+    def fake_get(url, **kwargs):
+        captured.append(kwargs["params"])
+        if len(captured) == 1:
+            return FakeResponse(status_code=400)
+        return FakeResponse(payload={"_embedded": {"events": []}})
+
+    monkeypatch.setattr("app.services.events_service.requests.get", fake_get)
+    result = fetch_ticketmaster_events(configuration, date_range)
+
+    assert len(captured) == 2
+    assert captured[0]["geoPoint"] == "gcpus7duz"
+    assert "geoPoint" not in captured[1]
+    assert captured[1]["city"] == "London"
+    assert result["_local_radius_filter_required"] is True
 
 
 @pytest.mark.parametrize(
@@ -298,6 +321,24 @@ def test_valid_event_is_normalised_without_provider_internals(event_environment)
     assert event["impact_level"] == "High"
     assert "classifications" not in event
     assert "images" not in event
+
+
+def test_city_fallback_excludes_event_without_verifiable_distance(
+    event_environment,
+):
+    configuration, date_range = _provider_inputs(event_environment)
+    raw_event = _raw_event()
+    raw_event.pop("distance", None)
+    raw_event["_embedded"]["venues"][0].pop("location", None)
+    result = normalise_ticketmaster_events(
+        {
+            "_embedded": {"events": [raw_event]},
+            "_local_radius_filter_required": True,
+        },
+        configuration,
+        date_range,
+    )
+    assert result["events"] == []
 
 
 def test_missing_embedded_events_is_empty(event_environment):

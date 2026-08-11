@@ -191,10 +191,11 @@ def fetch_ticketmaster_events(configuration, validated_range):
     if validated_range["entirely_historical"]:
         return {}
 
+    radius = configuration["radius_km"]
     parameters = {
         "apikey": configuration["api_key"],
         "geoPoint": configuration["geo_point"],
-        "radius": configuration["radius_km"],
+        "radius": f"{radius:g}",
         "unit": "km",
         "countryCode": configuration["country_code"],
         "startDateTime": validated_range["search_start_datetime"],
@@ -208,22 +209,44 @@ def fetch_ticketmaster_events(configuration, validated_range):
         "locale": configuration["locale"],
     }
 
-    try:
-        response = requests.get(
-            TICKETMASTER_EVENTS_URL,
-            params=parameters,
-            timeout=TICKETMASTER_TIMEOUT,
-        )
-    except (requests.Timeout, requests.ConnectionError):
-        raise EventsProviderError(
-            "The local-event provider is temporarily unavailable.",
-            reason="provider_timeout",
-        ) from None
-    except requests.RequestException:
-        raise EventsProviderError(
-            "The local-event provider request failed.",
-            reason="provider_request_failed",
-        ) from None
+    def send_request(request_parameters):
+        try:
+            return requests.get(
+                TICKETMASTER_EVENTS_URL,
+                params=request_parameters,
+                timeout=TICKETMASTER_TIMEOUT,
+            )
+        except (requests.Timeout, requests.ConnectionError):
+            raise EventsProviderError(
+                "The local-event provider is temporarily unavailable.",
+                reason="provider_timeout",
+            ) from None
+        except requests.RequestException:
+            raise EventsProviderError(
+                "The local-event provider request failed.",
+                reason="provider_request_failed",
+            ) from None
+
+    response = send_request(parameters)
+    radius_filter_required = False
+
+    # Some Ticketmaster gateways reject combined geo filters with HTTP 400.
+    # Retry using the restaurant city, then enforce the radius from venue
+    # coordinates during normalisation.
+    if response.status_code == 400:
+        fallback_parameters = {
+            "apikey": configuration["api_key"],
+            "city": configuration["city"],
+            "countryCode": configuration["country_code"],
+            "startDateTime": validated_range["search_start_datetime"],
+            "endDateTime": validated_range["search_end_datetime"],
+            "size": configuration["max_results"],
+            "page": 0,
+            "sort": "date,asc",
+            "locale": configuration["locale"],
+        }
+        response = send_request(fallback_parameters)
+        radius_filter_required = True
 
     if response.status_code == 401:
         raise EventsProviderError(
@@ -263,6 +286,8 @@ def fetch_ticketmaster_events(configuration, validated_range):
             "The local-event provider returned an invalid response.",
             reason="invalid_response",
         )
+    if radius_filter_required:
+        raw_data["_local_radius_filter_required"] = True
     return raw_data
 
 
@@ -296,6 +321,10 @@ def _safe_https_url(value):
 def normalise_ticketmaster_events(raw_data, configuration, validated_range):
     """Return a stable, minimal event list from Ticketmaster's nested data."""
 
+    radius_filter_required = bool(
+        isinstance(raw_data, dict)
+        and raw_data.get("_local_radius_filter_required") is True
+    )
     embedded = raw_data.get("_embedded") if isinstance(raw_data, dict) else None
     raw_events = embedded.get("events", []) if isinstance(embedded, dict) else []
     if not isinstance(raw_events, list):
@@ -357,6 +386,8 @@ def normalise_ticketmaster_events(raw_data, configuration, validated_range):
             distance_km = round(distance_km, 1)
             if distance_km > configuration["radius_km"]:
                 continue
+        elif radius_filter_required:
+            continue
 
         impact = calculate_event_impact(distance_km, category, local_time)
         city = venue.get("city") if isinstance(venue, dict) else None
