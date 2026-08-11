@@ -18,7 +18,7 @@ from app.utils.event_impact import (
 from app.utils.geo_utils import calculate_distance_km
 from app.utils.geo_utils import create_geopoint
 from app.services.additional_events_service import (
-    fetch_bandsintown_events,
+    fetch_skiddle_events,
     fetch_sportsdb_events,
 )
 
@@ -100,12 +100,6 @@ def load_events_configuration():
     )
     locale = os.getenv("TICKETMASTER_LOCALE", DEFAULT_TICKETMASTER_LOCALE).strip()
     locale = locale or DEFAULT_TICKETMASTER_LOCALE
-    bandsintown_artists = [
-        artist.strip()
-        for artist in os.getenv("BANDSINTOWN_ARTISTS", "").split(",")
-        if artist.strip()
-    ][:10]
-
     try:
         geo_point = create_geopoint(latitude, longitude)
     except ValueError as error:
@@ -123,8 +117,7 @@ def load_events_configuration():
         "max_results": max_results,
         "locale": locale,
         "geo_point": geo_point,
-        "bandsintown_app_id": os.getenv("BANDSINTOWN_APP_ID", "").strip(),
-        "bandsintown_artists": bandsintown_artists,
+        "skiddle_api_key": os.getenv("SKIDDLE_API_KEY", "").strip(),
         "sportsdb_enabled": os.getenv("SPORTSDB_ENABLED", "true").strip().casefold()
         in {"1", "true", "yes", "on"},
         "sportsdb_api_key": os.getenv("SPORTSDB_API_KEY", "123").strip() or "123",
@@ -545,8 +538,7 @@ def _events_cache_key(configuration, validated_range):
         validated_range["start_date"],
         validated_range["end_date"],
         configuration["max_results"],
-        configuration["bandsintown_app_id"],
-        tuple(configuration["bandsintown_artists"]),
+        configuration["skiddle_api_key"],
         configuration["sportsdb_enabled"],
         configuration["sportsdb_api_key"],
     )
@@ -610,7 +602,7 @@ def get_local_events(start_date=None, end_date=None):
         )
         combined_events = list(normalised["events"])
         provider_warnings = []
-        for provider_fetch in (fetch_bandsintown_events, fetch_sportsdb_events):
+        for provider_fetch in (fetch_skiddle_events, fetch_sportsdb_events):
             extra_events, warning = provider_fetch(configuration, validated_range)
             combined_events.extend(extra_events)
             if warning:

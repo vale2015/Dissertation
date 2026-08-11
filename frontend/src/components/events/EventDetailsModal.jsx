@@ -136,7 +136,7 @@ export default function EventDetailsModal({
             </article>
           ))}
         </div>
-        <p className="events-attribution">Event information provided by Ticketmaster, Bandsintown and TheSportsDB.</p>
+        <p className="events-attribution">Event information provided by Ticketmaster, Skiddle and TheSportsDB.</p>
       </section>
     </div>
   );

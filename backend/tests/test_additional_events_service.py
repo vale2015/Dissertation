@@ -2,7 +2,7 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 
 from app.services.additional_events_service import (
-    fetch_bandsintown_events,
+    fetch_skiddle_events,
     fetch_sportsdb_events,
 )
 
@@ -24,35 +24,45 @@ def _inputs():
         "radius_km": 10,
         "city": "London",
         "timezone": "Europe/London",
-        "bandsintown_app_id": "rfs-test",
-        "bandsintown_artists": ["Example Artist"],
+        "max_results": 100,
+        "skiddle_api_key": "private-skiddle-key",
         "sportsdb_enabled": True,
         "sportsdb_api_key": "123",
     }
     return configuration, {"supported_dates": [today]}
 
 
-def test_bandsintown_normalises_a_configured_artist(monkeypatch):
+def test_skiddle_normalises_all_nearby_events(monkeypatch):
     configuration, date_range = _inputs()
+    captured = {}
+
+    def fake_get(*args, **kwargs):
+        captured.update(kwargs["params"])
+        return FakeResponse({"results": [
+                {
+                    "id": "show-1", "date": date_range["supported_dates"][0],
+                    "eventname": "Example Concert", "eventcode": "LIVE",
+                    "link": "https://www.skiddle.com/e/show-1",
+                    "openingtimes": {"doorsopen": "19:30:00"},
+                    "venue": {
+                        "name": "Local Hall", "city": "London",
+                        "latitude": "51.45", "longitude": "-0.15",
+                    },
+                }
+            ]})
+
     monkeypatch.setattr(
         "app.services.additional_events_service.requests.get",
-        lambda *args, **kwargs: FakeResponse([
-            {
-                "id": "show-1",
-                "datetime": f'{date_range["supported_dates"][0]}T19:30:00',
-                "url": "https://www.bandsintown.com/e/show-1",
-                "lineup": ["Example Artist"],
-                "venue": {
-                    "name": "Local Hall", "city": "London",
-                    "latitude": "51.45", "longitude": "-0.15",
-                },
-            }
-        ]),
+        fake_get,
     )
-    events, warning = fetch_bandsintown_events(configuration, date_range)
+    events, warning = fetch_skiddle_events(configuration, date_range)
     assert warning is None
-    assert events[0]["provider"] == "Bandsintown"
+    assert events[0]["provider"] == "Skiddle"
     assert events[0]["event_type"] == "concerts"
+    assert captured["minDate"] == date_range["supported_dates"][0]
+    assert captured["maxDate"] == date_range["supported_dates"][0]
+    assert "a" not in captured
+    assert "keyword" not in captured
 
 
 def test_sportsdb_normalises_known_london_venue_without_feed_coordinates(monkeypatch):
@@ -73,7 +83,7 @@ def test_sportsdb_normalises_known_london_venue_without_feed_coordinates(monkeyp
 
 def test_optional_providers_are_disabled_without_configuration():
     configuration, date_range = _inputs()
-    configuration["bandsintown_app_id"] = ""
+    configuration["skiddle_api_key"] = ""
     configuration["sportsdb_enabled"] = False
-    assert fetch_bandsintown_events(configuration, date_range) == ([], None)
+    assert fetch_skiddle_events(configuration, date_range) == ([], None)
     assert fetch_sportsdb_events(configuration, date_range) == ([], None)

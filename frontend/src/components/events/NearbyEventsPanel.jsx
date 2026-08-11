@@ -76,7 +76,7 @@ export default function NearbyEventsPanel({
         </>
       ) : null}
       <p className="events-attribution">
-        Event information provided by Ticketmaster, Bandsintown and TheSportsDB.
+        Event information provided by Ticketmaster, Skiddle and TheSportsDB.
       </p>
     </section>
   );

@@ -1,8 +1,7 @@
-"""Optional Bandsintown and TheSportsDB event providers."""
+"""Optional Skiddle and TheSportsDB event providers."""
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from datetime import datetime
-from urllib.parse import quote
+from math import ceil
 
 import requests
 
@@ -10,7 +9,7 @@ from app.utils.event_impact import calculate_event_impact
 from app.utils.geo_utils import calculate_distance_km
 
 
-BANDSINTOWN_URL = "https://rest.bandsintown.com/artists/{artist}/events"
+SKIDDLE_URL = "https://www.skiddle.com/api/v1/events/search/"
 SPORTSDB_URL = "https://www.thesportsdb.com/api/v1/json/{key}/eventsday.php"
 PROVIDER_TIMEOUT = (3, 7)
 # The free schedule feed exposes venue names but not venue coordinates. This
@@ -73,66 +72,92 @@ def _provider_event(
     }
 
 
-def fetch_bandsintown_events(configuration, validated_range):
-    """Fetch configured artists. Bandsintown has no location-wide discovery API."""
+def fetch_skiddle_events(configuration, validated_range):
+    """Fetch all nearby Skiddle events for the exact requested date range."""
 
-    app_id = configuration.get("bandsintown_app_id")
-    artists = configuration.get("bandsintown_artists", [])
-    if not app_id or not artists:
+    api_key = configuration.get("skiddle_api_key")
+    if not api_key or not validated_range["supported_dates"]:
         return [], None
+    try:
+        response = requests.get(
+            SKIDDLE_URL,
+            params={
+                "api_key": api_key,
+                "latitude": configuration["latitude"],
+                "longitude": configuration["longitude"],
+                # Skiddle accepts an integer radius in miles. Query outwards,
+                # then apply the exact kilometre boundary below.
+                "radius": ceil(configuration["radius_km"] / 1.609344),
+                "getdistance": 1,
+                "minDate": validated_range["supported_dates"][0],
+                "maxDate": validated_range["supported_dates"][-1],
+                "description": 1,
+                "order": "distance",
+                "limit": min(configuration["max_results"], 100),
+                "offset": 0,
+            },
+            timeout=PROVIDER_TIMEOUT,
+        )
+        if response.status_code != 200:
+            return [], "Skiddle event results are unavailable."
+        payload = response.json()
+    except (requests.RequestException, ValueError):
+        return [], "Skiddle event results are unavailable."
 
+    raw_events = payload.get("results", []) if isinstance(payload, dict) else []
+    if not isinstance(raw_events, list):
+        return [], "Skiddle event results are unavailable."
     requested_dates = set(validated_range["supported_dates"])
     events = []
-    failed = False
-    for artist in artists:
-        try:
-            response = requests.get(
-                BANDSINTOWN_URL.format(artist=quote(artist, safe="")),
-                params={
-                    "app_id": app_id,
-                    "date": (
-                        f'{validated_range["supported_dates"][0]},'
-                        f'{validated_range["supported_dates"][-1]}'
-                    ),
-                },
-                timeout=PROVIDER_TIMEOUT,
-            )
-            if response.status_code != 200:
-                failed = True
-                continue
-            payload = response.json()
-        except (requests.RequestException, ValueError):
-            failed = True
+    for item in raw_events:
+        if not isinstance(item, dict):
             continue
-        if not isinstance(payload, list):
-            failed = True
+        event_id = str(item.get("id") or item.get("eventid") or "").strip()
+        local_date = str(item.get("date") or item.get("startdate") or "")[:10]
+        if not event_id or local_date not in requested_dates:
             continue
-        for item in payload:
-            if not isinstance(item, dict):
-                continue
-            try:
-                starts_at = datetime.fromisoformat(str(item.get("datetime", "")).replace("Z", "+00:00"))
-            except ValueError:
-                continue
-            local_date = starts_at.date().isoformat()
-            if local_date not in requested_dates:
-                continue
-            venue = item.get("venue") if isinstance(item.get("venue"), dict) else {}
-            distance = _distance(configuration, venue.get("latitude"), venue.get("longitude"))
-            if distance is None or distance > configuration["radius_km"]:
-                continue
-            lineup = item.get("lineup") if isinstance(item.get("lineup"), list) else []
-            events.append(_provider_event(
-                event_id=str(item.get("id") or f"{artist}-{starts_at.isoformat()}"),
-                name=" & ".join(str(value) for value in lineup if value) or artist,
-                category="Music", genre="Concert", local_date=local_date,
-                local_time=starts_at.time().replace(microsecond=0).isoformat(),
-                venue_name=venue.get("name"), venue_city=venue.get("city"),
-                distance_km=distance, url=item.get("url"), provider="Bandsintown",
-                event_type="concerts", timezone=configuration["timezone"],
-            ))
-    warning = "Some Bandsintown artist results are unavailable." if failed else None
-    return events, warning
+        venue = item.get("venue") if isinstance(item.get("venue"), dict) else {}
+        distance = _distance(
+            configuration,
+            venue.get("latitude") or item.get("latitude"),
+            venue.get("longitude") or item.get("longitude"),
+        )
+        if distance is None:
+            provider_distance = _number(item.get("distance"))
+            distance = round(provider_distance * 1.609344, 1) if provider_distance is not None else None
+        if distance is None or distance > configuration["radius_km"]:
+            continue
+        event_code = str(item.get("EventCode") or item.get("eventcode") or "").upper()
+        event_type = (
+            "concerts" if event_code in {"LIVE", "CLUB", "FEST"}
+            else "sports" if event_code == "SPORT"
+            else "general"
+        )
+        category = (
+            "Music" if event_type == "concerts"
+            else "Sports" if event_type == "sports"
+            else "General"
+        )
+        genres = item.get("genres") if isinstance(item.get("genres"), list) else []
+        genre_names = [
+            str(value.get("name") if isinstance(value, dict) else value).strip()
+            for value in genres
+            if value
+        ]
+        raw_time = str(item.get("openingtimes", {}).get("doorsopen", "")) if isinstance(item.get("openingtimes"), dict) else ""
+        raw_time = raw_time or str(item.get("starttime") or item.get("time") or "")
+        events.append(_provider_event(
+            event_id=event_id,
+            name=str(item.get("eventname") or item.get("name") or "Skiddle event").strip(),
+            category=category, genre=", ".join(genre_names) or event_code or "Event",
+            local_date=local_date, local_time=raw_time[:8] or None,
+            venue_name=venue.get("name"),
+            venue_city=venue.get("town") or venue.get("city") or configuration["city"],
+            distance_km=distance, url=item.get("link") or item.get("url"),
+            provider="Skiddle", event_type=event_type,
+            timezone=configuration["timezone"],
+        ))
+    return events, None
 
 
 def _fetch_sports_day(configuration, day):
