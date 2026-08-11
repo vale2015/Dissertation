@@ -8,6 +8,16 @@ import { API_BASE } from "@/lib/api";
 const CACHE_PREFIX = "rfs_local_events_v1";
 const CACHE_TTL_MS = 6 * 60 * 60 * 1000;
 const SAFE_ERROR_MESSAGE = "Local-event information is temporarily unavailable.";
+const PROVIDER_ERRORS = {
+  access_denied: "Ticketmaster denied this application's API access.",
+  credentials_invalid: "Ticketmaster rejected the configured Consumer Key.",
+  invalid_request: "Ticketmaster rejected the event search parameters.",
+  invalid_response: "Ticketmaster returned an invalid response.",
+  provider_timeout: "The Ticketmaster request timed out. Please try again.",
+  provider_unavailable: "Ticketmaster is temporarily unavailable.",
+  quota_unavailable: "The Ticketmaster API request limit has been reached.",
+};
+const SAFE_PROVIDER_MESSAGES = new Set(Object.values(PROVIDER_ERRORS));
 
 
 function cacheKey(startDate, endDate) {
@@ -102,7 +112,8 @@ export default function useLocalEvents(startDate, endDate) {
       });
       const payload = await response.json().catch(() => null);
       if (!response.ok || payload?.success !== true || !isEventContext(payload.data)) {
-        throw new Error("Invalid local-event response");
+        const safeMessage = PROVIDER_ERRORS[payload?.reason] || SAFE_ERROR_MESSAGE;
+        throw new Error(safeMessage);
       }
       if (requestRef.current.sequence !== sequence || controller.signal.aborted) return;
       storeCachedContext(startDate, endDate, payload.data);
@@ -113,7 +124,11 @@ export default function useLocalEvents(startDate, endDate) {
         && requestRef.current.sequence === sequence
         && !controller.signal.aborted
       ) {
-        setError(SAFE_ERROR_MESSAGE);
+        setError(
+          SAFE_PROVIDER_MESSAGES.has(requestError?.message)
+            ? requestError.message
+            : SAFE_ERROR_MESSAGE
+        );
       }
     } finally {
       if (requestRef.current.sequence === sequence && !controller.signal.aborted) {

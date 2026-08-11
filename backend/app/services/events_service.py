@@ -38,6 +38,10 @@ class EventsConfigurationError(Exception):
 class EventsProviderError(Exception):
     """Raised when Ticketmaster cannot provide a usable response."""
 
+    def __init__(self, message, *, reason="provider_request_failed"):
+        super().__init__(message)
+        self.reason = reason
+
 
 class EventsRequestError(Exception):
     """Raised for an unsupported client date range."""
@@ -212,31 +216,52 @@ def fetch_ticketmaster_events(configuration, validated_range):
         )
     except (requests.Timeout, requests.ConnectionError):
         raise EventsProviderError(
-            "The local-event provider is temporarily unavailable."
+            "The local-event provider is temporarily unavailable.",
+            reason="provider_timeout",
         ) from None
     except requests.RequestException:
         raise EventsProviderError(
-            "The local-event provider request failed."
+            "The local-event provider request failed.",
+            reason="provider_request_failed",
         ) from None
 
     if response.status_code == 401:
-        raise EventsProviderError("The local-event provider credentials are invalid.")
+        raise EventsProviderError(
+            "The local-event provider credentials are invalid.",
+            reason="credentials_invalid",
+        )
+    if response.status_code == 403:
+        raise EventsProviderError(
+            "The local-event provider denied access.",
+            reason="access_denied",
+        )
     if response.status_code == 429:
-        raise EventsProviderError("The local-event provider quota is unavailable.")
+        raise EventsProviderError(
+            "The local-event provider quota is unavailable.",
+            reason="quota_unavailable",
+        )
     if response.status_code >= 500:
-        raise EventsProviderError("The local-event provider is temporarily unavailable.")
+        raise EventsProviderError(
+            "The local-event provider is temporarily unavailable.",
+            reason="provider_unavailable",
+        )
     if not 200 <= response.status_code < 300:
-        raise EventsProviderError("The local-event provider request failed.")
+        raise EventsProviderError(
+            "The local-event provider request failed.",
+            reason="invalid_request",
+        )
 
     try:
         raw_data = response.json()
     except ValueError:
         raise EventsProviderError(
-            "The local-event provider returned an invalid response."
+            "The local-event provider returned an invalid response.",
+            reason="invalid_response",
         ) from None
     if not isinstance(raw_data, dict):
         raise EventsProviderError(
-            "The local-event provider returned an invalid response."
+            "The local-event provider returned an invalid response.",
+            reason="invalid_response",
         )
     return raw_data
 
