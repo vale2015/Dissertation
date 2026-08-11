@@ -45,6 +45,7 @@ The proxy rejects cross-origin state-changing requests and removes an expired se
 - standalone monthly local-event searches within the configured restaurant radius;
 - local weather in the authenticated dashboard top bar;
 - booking, demand, staffing, and report screens;
+- on-screen management reports with matching PDF and Excel-compatible CSV downloads;
 - model retraining from historical restaurant demand data;
 - application and database health checks.
 
@@ -57,7 +58,24 @@ The proxy rejects cross-origin state-changing requests and removes an expired se
 | Authentication | Werkzeug password hashes, PyJWT, HttpOnly cookies |
 | Database | Supabase-hosted PostgreSQL, SQLAlchemy, psycopg2 |
 | Forecasting | pandas, scikit-learn Random Forest, joblib, `holidays` |
+| Report exports | ReportLab (A4 landscape PDF), Python standard-library CSV |
 | Local orchestration | npm and Concurrently |
+
+## Downloadable management reports
+
+Authenticated managers open **Dashboard > Reports** after selecting a dashboard date. The page requests one canonical backend report for either 7 or 10 forecast days; the first forecast row is the day after the selected historical base date. The preview, PDF and CSV use the same calculations and totals.
+
+Protected Flask endpoints (accessed by the browser through `/api/backend/*`) are:
+
+- `GET /api/reports/management?selected_date=YYYY-MM-DD&days_ahead=7|10`
+- `GET /api/reports/management/pdf?selected_date=YYYY-MM-DD&days_ahead=7|10`
+- `GET /api/reports/management/csv?selected_date=YYYY-MM-DD&days_ahead=7|10`
+
+Reports are generated on demand in memory and are not stored in the database or filesystem. They contain aggregated operational information only—no customer names, contact information, booking notes, authentication data or provider payloads.
+
+Optional, non-secret metadata can be configured with `REPORT_CURRENCY` (default `GBP`), `REPORT_RESTAURANT_NAME` and `REPORT_RESTAURANT_CITY`. The name and city fall back to the existing restaurant variables, then to local development defaults. ReportLab is pinned in `backend/requirements.txt`; no new API key is needed.
+
+Demand prediction is required. Weather and local-event context are optional: provider failures add visible warnings but do not block core staffing and financial reporting. Weather appears only when an exact forecast date is available, so historical or later report dates may show **Unavailable**. Financial figures are estimates based on the latest business settings and are intended for management planning, not accounting statements.
 
 ## Repository structure
 

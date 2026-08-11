@@ -1,0 +1,1 @@
+export default function ReportInsights({items}){return <section className="report-section"><h2>Operational insights</h2>{items.length?<ul>{items.map(item=><li key={item}>{item}</li>)}</ul>:<p>No additional insights for this period.</p>}</section>}

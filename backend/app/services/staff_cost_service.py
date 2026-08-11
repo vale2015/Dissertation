@@ -263,8 +263,6 @@ def generate_staff_cost_forecast(days_ahead=7, selected_date=None):
         "daily_totals": daily_totals,
         "results": generated_rows,
     }
-
-
 def get_all_staff_cost_forecast_records():
     with SessionLocal() as db:
         result = db.execute(

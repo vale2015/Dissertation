@@ -114,6 +114,13 @@ async function proxyRequest(request, context) {
       responseHeaders.set("Content-Type", responseContentType);
     }
 
+    const contentDisposition = backendResponse.headers.get(
+      "content-disposition"
+    );
+    if (contentDisposition) {
+      responseHeaders.set("Content-Disposition", contentDisposition);
+    }
+
     responseHeaders.set(
       "Cache-Control",
       "no-store, no-cache, must-revalidate"

@@ -1,0 +1,1 @@
+export default function ReportWarnings({warnings}){return <section className="report-section report-warning-section"><h2>Data notes and warnings</h2>{warnings.length?<ul>{warnings.map(item=><li key={item.code}>{item.message}</li>)}</ul>:<p>No report warnings.</p>}</section>}

@@ -12,6 +12,7 @@ from app.api.health_route import health_bp
 from app.api.staff_cost_route import staff_cost_bp
 from app.api.staffing_rules_route import staffing_rules_bp
 from app.api.weather_route import weather_bp
+from app.api.report_route import reports_bp
 from app.middleware.auth_middleware import require_authenticated_request
 
 
@@ -24,6 +25,7 @@ PROTECTED_BLUEPRINTS = {
     staffing_rules_bp.name,
     weather_bp.name,
     events_bp.name,
+    reports_bp.name,
 }
 
 
@@ -141,5 +143,7 @@ def create_app():
         events_bp,
         url_prefix="/api/events",
     )
+
+    app.register_blueprint(reports_bp, url_prefix="/api/reports")
 
     return app
