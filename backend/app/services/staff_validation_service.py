@@ -16,6 +16,10 @@ def validate_invitation(data):
     except (TypeError,ValueError):fields["staff_role_id"]="Must be a valid role identifier."
     if fields:raise StaffValidationError(fields)
     return {"full_name":name,"email":email,"application_role":role,"staff_role_id":staff_role_id}
+def validate_registration(data):
+    result=validate_invitation(data)
+    result["password"]=validate_password(data)
+    return result
 def validate_update(data):
     data=data or {};result={};fields={}
     if "full_name" in data:

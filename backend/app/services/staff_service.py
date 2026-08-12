@@ -57,6 +57,16 @@ def invite_staff(values,actor_id,reissue_user_id=None):
         return {"staff":get_staff_by_id(user_id),"activation_link":f"{frontend}/activate-account?token={raw}","expires_at":expires}
       except IntegrityError as error:db.rollback();raise DuplicateStaff("An account already uses this email address.") from error
       except Exception:db.rollback();raise
+def register_staff(values,actor_id):
+    with SessionLocal() as db:
+      try:
+        _validate_operational_role(db,values["staff_role_id"])
+        row=db.execute(text("""INSERT INTO public.users(full_name,email,password_hash,role,status,staff_role_id,invited_by,invited_at,activated_at,session_version,updated_at)
+          VALUES(:name,:email,:password,:role,'active',:staff_role,:actor,now(),now(),1,now()) RETURNING id"""),{"name":values["full_name"],"email":values["email"],"password":generate_password_hash(values["password"]),"role":values["application_role"],"staff_role":values["staff_role_id"],"actor":actor_id}).first()
+        user_id=row[0];_audit(db,actor_id,user_id,"staff_registered");db.commit()
+        return {"staff":get_staff_by_id(user_id)}
+      except IntegrityError as error:db.rollback();raise DuplicateStaff("An account already uses this email address.") from error
+      except Exception:db.rollback();raise
 def update_staff(user_id,values,actor_id):
     with SessionLocal() as db:
       try:

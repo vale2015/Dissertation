@@ -1,5 +1,5 @@
 from flask import Blueprint
-from app.controllers.staff_controller import list_controller,roles_controller,detail_controller,invite_controller,reissue_controller,update_controller,status_controller,reset_controller
+from app.controllers.staff_controller import list_controller,roles_controller,detail_controller,register_controller,update_controller,status_controller,reset_controller
 from app.middleware.authorization_middleware import require_permission
 from app.services.permission_service import MANAGE_STAFF_ACCOUNTS
 staff_bp=Blueprint("staff",__name__)
@@ -9,12 +9,9 @@ def staff_list():return list_controller()
 @staff_bp.get("/roles")
 @require_permission(MANAGE_STAFF_ACCOUNTS)
 def roles():return roles_controller()
-@staff_bp.post("/invitations")
+@staff_bp.post("/registrations")
 @require_permission(MANAGE_STAFF_ACCOUNTS)
-def invite():return invite_controller()
-@staff_bp.post("/<int:user_id>/invitations")
-@require_permission(MANAGE_STAFF_ACCOUNTS)
-def reissue(user_id):return reissue_controller(user_id)
+def register():return register_controller()
 @staff_bp.post("/<int:user_id>/password-reset")
 @require_permission(MANAGE_STAFF_ACCOUNTS)
 def reset(user_id):return reset_controller(user_id)

@@ -79,13 +79,13 @@ Demand prediction is required. Weather and local-event context are optional: pro
 
 ## Staff accounts and role-based access
 
-Staff registration is manager-invitation only; there is no public registration endpoint. Application access roles are separate from operational restaurant roles:
+Staff registration is manager-controlled; there is no public registration endpoint. A manager registers a staff member with an initial password and the account is active immediately. Application access roles are separate from operational restaurant roles:
 
 - `manager`: dashboard, bookings, forecasts, reports, staffing rules, staff administration and own profile;
 - `supervisor`: dashboard, bookings, forecasts, reports and own profile;
 - `staff`: own profile and future personal shifts only.
 
-Operational roles continue to come from `public.staff_roles` (for example Kitchen Assistant in Kitchen) and remain the source for staffing and labour-cost calculations. Account states are `invited`, `active`, `suspended` and `inactive`. Flask enforces every permission even when the frontend hides a page or navigation item.
+Operational roles continue to come from `public.staff_roles` (for example Kitchen Assistant in Kitchen) and remain the source for staffing and labour-cost calculations. New registrations use the `active` state; legacy accounts may still have the `invited` state. Other states are `suspended` and `inactive`. Flask enforces every permission even when the frontend hides a page or navigation item.
 
 ### Database migration
 
@@ -93,9 +93,9 @@ Before deploying the staff-account code, back up the database and run the inspec
 
 ### Invitation and recovery lifecycle
 
-Managers open **Dashboard > Staff Management**, create an account, and copy the activation link shown once. The raw token is never stored: PostgreSQL receives only its SHA-256 hash. Activation links expire after 24 hours. The employee opens `/activate-account`, creates a 12–128 character password, then signs in normally; activation does not create a session automatically.
+Managers open **Dashboard > Staff Management**, select **Register staff member**, enter the employee's details and a 12–128 character initial password, and create an immediately active account. The password is hashed by Flask before storage and is never returned by the API.
 
-Managers may reissue an invitation or create a one-hour password-reset link. Resetting a password, suspending an account or deactivating it increments `session_version`, invalidating existing sessions on their next Flask request. Accounts are soft-deactivated, never deleted. A manager cannot suspend/deactivate themselves or demote, suspend or deactivate the final active manager. Audit metadata excludes passwords, password hashes, raw tokens, JWTs and API keys.
+Managers may create a one-hour password-reset link. Resetting a password, suspending an account or deactivating it increments `session_version`, invalidating existing sessions on their next Flask request. Accounts are soft-deactivated, never deleted. A manager cannot suspend/deactivate themselves or demote, suspend or deactivate the final active manager. Audit metadata excludes passwords, password hashes, raw tokens, JWTs and API keys.
 
 Invitation and reset links are copyable only; email delivery is not included. `FRONTEND_URL` determines the public link origin. Never commit real links or test passwords.
 

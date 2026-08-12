@@ -1,8 +1,8 @@
 import logging
 from flask import g,jsonify,request
 from app.services.permission_service import normalize_role,normalize_status
-from app.services.staff_validation_service import validate_invitation,validate_update,validate_status,StaffValidationError
-from app.services.staff_service import list_staff,get_staff_by_id,list_operational_roles,invite_staff,update_staff,change_staff_status,create_password_reset,StaffNotFound,StaffConflict,DuplicateStaff
+from app.services.staff_validation_service import validate_registration,validate_update,validate_status,StaffValidationError
+from app.services.staff_service import list_staff,get_staff_by_id,list_operational_roles,register_staff,update_staff,change_staff_status,create_password_reset,StaffNotFound,StaffConflict,DuplicateStaff
 logger=logging.getLogger(__name__)
 def _respond(function,success=200):
     try:
@@ -23,8 +23,7 @@ def list_controller():
     return _respond(action)
 def roles_controller():return _respond(lambda:{"roles":list_operational_roles()})
 def detail_controller(user_id):return _respond(lambda:{"staff":get_staff_by_id(user_id)})
-def invite_controller():return _respond(lambda:invite_staff(validate_invitation(request.get_json(silent=True)),g.current_user["id"]),201)
-def reissue_controller(user_id):return _respond(lambda:invite_staff({},g.current_user["id"],user_id),200)
+def register_controller():return _respond(lambda:register_staff(validate_registration(request.get_json(silent=True)),g.current_user["id"]),201)
 def update_controller(user_id):return _respond(lambda:{"staff":update_staff(user_id,validate_update(request.get_json(silent=True)),g.current_user["id"])})
 def status_controller(user_id):return _respond(lambda:{"staff":change_staff_status(user_id,validate_status(request.get_json(silent=True)),g.current_user["id"])})
 def reset_controller(user_id):return _respond(lambda:create_password_reset(user_id,g.current_user["id"]))

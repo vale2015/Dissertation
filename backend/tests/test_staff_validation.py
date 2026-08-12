@@ -6,6 +6,9 @@ def test_invitation_normalizes_identity():
 def test_staff_requires_operational_role():
     with pytest.raises(StaffValidationError) as error:validate_invitation({"full_name":"Sam Cook","email":"sam@example.com","application_role":"staff"})
     assert "staff_role_id" in error.value.fields
+def test_registration_includes_validated_password():
+    result=validate_registration({"full_name":"Sam Cook","email":"sam@example.com","application_role":"staff","staff_role_id":"2","password":"a secure password","password_confirmation":"a secure password"})
+    assert result["password"]=="a secure password"
 @pytest.mark.parametrize("password",["short","            ","x"*129])
 def test_password_policy(password):
     with pytest.raises(StaffValidationError):validate_password({"password":password,"password_confirmation":password})
