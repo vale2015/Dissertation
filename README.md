@@ -28,7 +28,7 @@ flowchart LR
 3. Flask verifies the password stored in `public.users` and signs an eight-hour HS256 JWT.
 4. Next.js stores the JWT in the `rfs_session` HttpOnly, `SameSite=Lax` cookie. It is also marked `Secure` in production.
 5. Browser requests for application data go to `/api/backend/*`. The Next.js proxy reads the cookie server-side, attaches `Authorization: Bearer <token>`, and forwards the request to Flask.
-6. Flask middleware protects the demand, dashboard, booking, staff-cost, and staffing-rules blueprints. Health and authentication routes remain public.
+6. Flask authenticates protected requests and applies role permissions to the dashboard, booking, forecasting, staffing, report, weather, event, and staff-administration blueprints. Health and account-entry routes remain public; profile and current-user routes still require a valid session.
 
 The proxy rejects cross-origin state-changing requests and removes an expired session cookie when Flask returns `401`. Flask restricts CORS origins and adds CSP, frame, content-type, and referrer-policy response headers.
 
@@ -46,6 +46,8 @@ The proxy rejects cross-origin state-changing requests and removes an expired se
 - local weather in the authenticated dashboard top bar;
 - booking, demand, staffing, and report screens;
 - on-screen management reports with matching PDF and Excel-compatible CSV downloads;
+- manager-controlled staff registration, account status management, password recovery, and user profiles;
+- backend-enforced permissions for manager, supervisor, and staff roles;
 - model retraining from historical restaurant demand data;
 - application and database health checks.
 
@@ -59,11 +61,13 @@ The proxy rejects cross-origin state-changing requests and removes an expired se
 | Database | Supabase-hosted PostgreSQL, SQLAlchemy, psycopg2 |
 | Forecasting | pandas, scikit-learn Random Forest, joblib, `holidays` |
 | Report exports | ReportLab (A4 landscape PDF), Python standard-library CSV |
+| External context | Open-Meteo, Ticketmaster, Skiddle, TheSportsDB, Requests, pygeohash |
+| Testing | pytest, Responses, ESLint, Next.js production builds |
 | Local orchestration | npm and Concurrently |
 
 ## Downloadable management reports
 
-Authenticated managers open **Dashboard > Reports** after selecting a dashboard date. The page requests one canonical backend report for either 7 or 10 forecast days; the first forecast row is the day after the selected historical base date. The preview, PDF and CSV use the same calculations and totals.
+Authenticated managers and supervisors open **Dashboard > Reports** after selecting a dashboard date. The page requests one canonical backend report for either 7 or 10 forecast days; the first forecast row is the day after the selected historical base date. The preview, PDF and CSV use the same calculations and totals.
 
 Protected Flask endpoints (accessed by the browser through `/api/backend/*`) are:
 
@@ -83,21 +87,21 @@ Staff registration is manager-controlled; there is no public registration endpoi
 
 - `manager`: dashboard, bookings, forecasts, reports, staffing rules, staff administration and own profile;
 - `supervisor`: dashboard, bookings, forecasts, reports and own profile;
-- `staff`: own profile and future personal shifts only.
+- `staff`: own profile only; personal shift viewing is reserved for future development.
 
 Operational roles continue to come from `public.staff_roles` (for example Kitchen Assistant in Kitchen) and remain the source for staffing and labour-cost calculations. New registrations use the `active` state; legacy accounts may still have the `invited` state. Other states are `suspended` and `inactive`. Flask enforces every permission even when the frontend hides a page or navigation item.
 
 ### Database migration
 
-Before deploying the staff-account code, back up the database and run the inspection queries at the top of `backend/migrations/001_staff_accounts.sql`. Resolve any duplicate emails differing only by case, then apply that migration through the Supabase SQL editor or an approved migration workflow. The script preserves existing users, marks them active, adds a case-insensitive email constraint, and creates token/audit tables. It is idempotent for repeat application. The rollback file removes account columns and token storage but deliberately retains audit history; review its comments before use.
+The forward-only database history is in `supabase/migrations/`. It now includes the original application tables, both staff-account changes, and the demand-date primary key. See `supabase/README.md` for fresh-database setup, live-project reconciliation, and verification. The older `backend/migrations/001_staff_accounts.sql` is a combined manual script retained for reference; do not apply it alongside the timestamped migrations. Its rollback remains manual and retains audit history.
 
 ### Invitation and recovery lifecycle
 
 Managers open **Dashboard > Staff Management**, select **Register staff member**, enter the employee's details and a 12–128 character initial password, and create an immediately active account. The password is hashed by Flask before storage and is never returned by the API.
 
-Managers may create a one-hour password-reset link. Resetting a password, suspending an account or deactivating it increments `session_version`, invalidating existing sessions on their next Flask request. Accounts are soft-deactivated, never deleted. A manager cannot suspend/deactivate themselves or demote, suspend or deactivate the final active manager. Audit metadata excludes passwords, password hashes, raw tokens, JWTs and API keys.
+Managers may create a one-hour password-reset link for an active account. Resetting a password, suspending an account or deactivating it increments `session_version`, invalidating existing sessions on their next Flask request. Accounts are soft-deactivated, never deleted. A manager cannot suspend/deactivate themselves or demote, suspend or deactivate the final active manager. Audit metadata excludes passwords, password hashes, raw tokens, JWTs and API keys.
 
-Invitation and reset links are copyable only; email delivery is not included. `FRONTEND_URL` determines the public link origin. Never commit real links or test passwords.
+The current manager interface creates active accounts directly and does not email credentials. The backend and public activation page retain support for one-time invitation tokens for invited accounts, while the active workflow exposes copyable password-reset links only. Email delivery is not included. `FRONTEND_URL` determines the public link origin. Never commit real links, initial passwords, or test passwords.
 
 ## Repository structure
 
@@ -112,9 +116,15 @@ DissertationApp/
 │   │   ├── ml/
 │   │   │   ├── artifacts/   # Serialized Random Forest model
 │   │   │   └── pipelines/   # Training and prediction pipelines
-│   │   └── services/        # Database and domain logic
+│   │   ├── services/        # Database, reporting, provider, and domain logic
+│   │   └── utils/           # Event, geographic, and weather helpers
+│   ├── migrations/          # Legacy staff-account SQL and rollback reference
+│   ├── tests/               # pytest service, controller, export, and permission tests
+│   ├── .env.example         # Backend configuration template
+│   ├── requirements-dev.txt
 │   ├── requirements.txt
-│   └── run.py               # Local Flask entry point
+│   ├── main.py              # Deployment entry point
+│   └── run.py               # Local development entry point
 ├── frontend/
 │   ├── public/
 │   └── src/
@@ -127,7 +137,8 @@ DissertationApp/
 │       ├── lib/
 │       └── utils/
 ├── Additional Documentation/ # Research material and architecture diagrams
-├── docs/
+├── docs/                     # Product requirements and project documentation
+├── supabase/                 # Versioned PostgreSQL migrations and setup guide
 ├── package.json              # Root development commands
 └── README.md
 ```
@@ -138,13 +149,15 @@ The application uses PostgreSQL tables including:
 
 | Table | Purpose |
 |---|---|
-| `public.users` | Manager identity, password hash, and role |
+| `public.users` | User identity, password hash, application role, account status, operational role, and session version |
 | `bookings` | Individual restaurant bookings |
 | `restaurant_demand_features` | Daily booking aggregates and forecasting features |
 | `public.business_settings` | Average spend and food-cost inputs |
 | `public.staffing_rules` | Cover bands and required staffing levels |
 | `public.staff_roles` | Roles, departments, hourly rates, and shift hours |
 | `public.staff_cost_forecast` | Generated staffing and cost forecast rows |
+| `public.user_account_tokens` | Hashed, expiring, single-use activation and password-reset tokens |
+| `public.staff_account_audit` | Non-secret audit history for staff-account actions |
 
 Creating, updating, or deleting a booking rebuilds the affected daily aggregate in `restaurant_demand_features`. Mondays are treated as closed days and cannot accept bookings.
 
@@ -209,6 +222,7 @@ RESTAURANT_LATITUDE=
 RESTAURANT_LONGITUDE=
 RESTAURANT_TIMEZONE=Europe/London
 WEATHER_CACHE_TTL_SECONDS=1800
+
 TICKETMASTER_API_KEY=replace-with-your-consumer-key
 RESTAURANT_COUNTRY_CODE=GB
 EVENT_SEARCH_RADIUS_KM=10
@@ -217,9 +231,13 @@ EVENTS_MAX_RESULTS=100
 SPORTSDB_LEAGUE_IDS=4328
 SKIDDLE_API_KEY=replace-with-your-skiddle-api-key
 TICKETMASTER_LOCALE=en-gb
+
+REPORT_CURRENCY=GBP
+REPORT_RESTAURANT_NAME=Your Restaurant
+REPORT_RESTAURANT_CITY=Your City
 ```
 
-The name, city, and timezone must not be empty. Latitude must be between `-90` and `90`, longitude between `-180` and `180`, and the cache duration must be a positive integer. Weather uses Open-Meteo and does not require an API key.
+The name, city, and timezone must not be empty. Latitude must be between `-90` and `90`, longitude between `-180` and `180`, and cache durations must be positive integers. Weather uses Open-Meteo and does not require an API key. `TICKETMASTER_API_KEY` and `SKIDDLE_API_KEY` enable their respective event providers; TheSportsDB uses its documented public free API key internally. Copy `backend/.env.example` as a starting template rather than committing a real `.env` file.
 
 ### Frontend: `frontend/.env`
 
@@ -252,6 +270,8 @@ python -m pip install -r requirements.txt
 Set-Location ..
 ```
 
+To run the backend test suite, also install `backend/requirements-dev.txt` in the activated virtual environment.
+
 ## Running locally
 
 Start both applications from the repository root:
@@ -280,6 +300,13 @@ npm run lint
 npm run build
 ```
 
+Backend tests can be run from `backend/` after installing both requirement files and configuring `backend/.env` as described above:
+
+```powershell
+python -m pip install -r requirements-dev.txt
+python -m pytest
+```
+
 ## HTTP API
 
 Flask listens at `http://127.0.0.1:5000`. Except for health and authentication, direct Flask requests require an `Authorization: Bearer <token>` header. The web application normally accesses protected endpoints through the same-origin Next.js path `/api/backend/<resource>`.
@@ -292,13 +319,18 @@ Flask listens at `http://127.0.0.1:5000`. Except for health and authentication, 
 | `GET` | `/api/health/database` | Database connectivity |
 | `POST` | `/api/auth/login` | Verify credentials and issue a JWT |
 | `POST` | `/api/auth/logout` | Stateless logout acknowledgement |
-| `GET` | `/api/auth/me` | Validate a bearer token and return its user |
+| `POST` | `/api/auth/invitations/validate` | Validate an account-activation token |
+| `POST` | `/api/auth/activate` | Activate an invited account and set its password |
+| `POST` | `/api/auth/password-reset/validate` | Validate a password-reset token |
+| `POST` | `/api/auth/password-reset` | Complete a password reset |
 
 ### Protected Flask endpoints
 
 | Method | Endpoint | Purpose |
 |---|---|---|
 | `GET` | `/api/dashboard/` | Demand and financial dashboard summary |
+| `GET` | `/api/auth/me` | Validate a bearer token and return the current user |
+| `GET`, `PATCH` | `/api/auth/profile` | Read or update the current user's profile |
 | `GET`, `POST` | `/api/demand/` | List or create demand records |
 | `GET` | `/api/demand/latest` | Latest demand record |
 | `GET` | `/api/demand/stats` | Aggregate demand statistics |
@@ -315,6 +347,15 @@ Flask listens at `http://127.0.0.1:5000`. Except for health and authentication, 
 | `GET` | `/api/staffing-rules/` | Staffing rules and role information |
 | `GET` | `/api/events/` | Monthly concerts, general events and sports near the restaurant |
 | `GET` | `/api/weather/` | Current and forecast restaurant weather |
+| `GET` | `/api/reports/management` | Generate the canonical management-report data |
+| `GET` | `/api/reports/management/pdf` | Download the management report as PDF |
+| `GET` | `/api/reports/management/csv` | Download the management report as CSV |
+| `GET` | `/api/staff/` | Search and filter staff accounts (manager only) |
+| `GET` | `/api/staff/roles` | List operational restaurant roles (manager only) |
+| `POST` | `/api/staff/registrations` | Register an immediately active staff account (manager only) |
+| `GET`, `PATCH` | `/api/staff/<user_id>` | Read or update a staff account (manager only) |
+| `PATCH` | `/api/staff/<user_id>/status` | Suspend, reactivate, or deactivate an account (manager only) |
+| `POST` | `/api/staff/<user_id>/password-reset` | Create a one-hour reset link (manager only) |
 
 Demand forecasting accepts `days_ahead=7|10` and an optional `selected_date=YYYY-MM-DD`. The aliases `days` and `date` are also supported. Staff-cost forecasting accepts `days_ahead` and optional `selected_date` parameters.
 
@@ -329,6 +370,9 @@ Set `SKIDDLE_API_KEY` to enable location-wide Skiddle discovery; no artist list 
 | `POST` | `/api/auth/login` | Authenticate and create the HttpOnly session cookie |
 | `GET` | `/api/auth/session` | Return the current session user |
 | `POST` | `/api/auth/logout` | Expire the session cookie |
+| `POST` | `/api/auth/invitation` | Proxy invitation-token validation to Flask |
+| `POST` | `/api/auth/activate` | Proxy account activation to Flask |
+| `POST` | `/api/auth/reset-password` | Validate or complete password reset through Flask |
 | `GET`, `POST`, `PUT`, `PATCH`, `DELETE` | `/api/backend/[...path]` | Authenticated proxy to Flask |
 
 ## Example booking request
@@ -355,11 +399,11 @@ Valid booking types are `advance`, `same_day`, and `walk_in`.
 
 ## Further documentation
 
-Research artifacts, contextual interviews, source datasets, notebooks, sequence diagrams, database diagrams, and architecture diagrams are stored in `Additional Documentation/`.
+Research artifacts, contextual interviews, source datasets, notebooks, sequence diagrams, database diagrams, and architecture diagrams are stored in `Additional Documentation/`. The current product requirements document is available at `docs/PRD.md`.
 
 ## Project status and limitations
 
-RFS is an academic prototype intended for local development and dissertation evaluation. Forecast quality depends on the quantity and representativeness of the restaurant's historical data. A production deployment would also require operational monitoring, managed secret rotation, database migrations, rate limiting, backup procedures, and broader automated test coverage.
+RFS is an academic prototype intended for dissertation evaluation and controlled deployment. Forecast quality depends on the quantity and representativeness of the restaurant's historical data. Reports are generated on demand rather than archived, staff members do not yet have personal shift views, and model retraining is exposed through an authenticated API route rather than a scheduled pipeline. Broader commercial use would require production observability, managed secret rotation, formal migration and backup procedures, rate limiting, retention policies, security testing, and wider end-to-end coverage.
 
 ## Author
 
