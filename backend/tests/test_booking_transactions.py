@@ -109,11 +109,21 @@ def test_update_locks_booking_and_rebuilds_both_dates_in_one_transaction(
         call(connection, "2026-10-22"),
         call(connection, "2026-10-23"),
     ]
+    assert [entry.args[1]["booking_date"] for entry in connection.execute.call_args_list[:2]] == [
+        "2026-10-22",
+        "2026-10-23",
+    ]
+    assert "UPDATE bookings" in str(connection.execute.call_args_list[2].args[0])
     connection.commit.assert_not_called()
 
 
 def test_delete_uses_returned_date_for_atomic_demand_rebuild(monkeypatch):
     connection, _ = transaction_connection(monkeypatch)
+    monkeypatch.setattr(
+        booking_service,
+        "_fetch_booking_by_id",
+        MagicMock(return_value={"booking_date": "2026-10-22"}),
+    )
     connection.execute.return_value.fetchone.return_value = SimpleNamespace(
         booking_date="2026-10-22"
     )
@@ -127,12 +137,19 @@ def test_delete_uses_returned_date_for_atomic_demand_rebuild(monkeypatch):
     result = booking_service.delete_booking_and_sync_features(17)
 
     assert result is True
+    assert "pg_advisory_xact_lock" in str(connection.execute.call_args_list[0].args[0])
+    assert "DELETE FROM bookings" in str(connection.execute.call_args_list[1].args[0])
     rebuild.assert_called_once_with(connection, "2026-10-22")
     connection.commit.assert_not_called()
 
 
 def test_delete_missing_booking_does_not_rebuild_demand(monkeypatch):
     connection, _ = transaction_connection(monkeypatch)
+    monkeypatch.setattr(
+        booking_service,
+        "_fetch_booking_by_id",
+        MagicMock(return_value=None),
+    )
     connection.execute.return_value.fetchone.return_value = None
     rebuild = MagicMock()
     monkeypatch.setattr(
@@ -145,4 +162,53 @@ def test_delete_missing_booking_does_not_rebuild_demand(monkeypatch):
 
     assert result is False
     rebuild.assert_not_called()
+    connection.execute.assert_not_called()
+
+
+def test_demand_date_locks_use_stable_order_without_duplicates():
+    connection = MagicMock()
+
+    booking_service._lock_demand_dates(
+        connection,
+        "2026-10-23",
+        "2026-10-22",
+        "2026-10-23",
+    )
+
+    assert [entry.args[1]["booking_date"] for entry in connection.execute.call_args_list] == [
+        "2026-10-22",
+        "2026-10-23",
+    ]
+    assert all(
+        "pg_advisory_xact_lock" in str(entry.args[0])
+        for entry in connection.execute.call_args_list
+    )
+
+
+def test_insert_locks_date_before_writing_booking():
+    connection = MagicMock()
+    connection.execute.return_value.fetchone.return_value = SimpleNamespace(
+        _mapping={"id": 17, "booking_date": "2026-10-22"}
+    )
+
+    booking_service._insert_booking(connection, {
+        "booking_date": "2026-10-22",
+        "booking_time": "18:30",
+        "party_size": 4,
+        "booking_type": "advance",
+    })
+
+    assert "pg_advisory_xact_lock" in str(connection.execute.call_args_list[0].args[0])
+    assert "INSERT INTO bookings" in str(connection.execute.call_args_list[1].args[0])
+
+
+def test_demand_row_creation_is_idempotent():
+    connection = MagicMock()
+
+    booking_service._ensure_demand_row_exists(connection, "2026-10-22")
+
+    connection.execute.assert_called_once()
+    assert "ON CONFLICT (date) DO NOTHING" in str(
+        connection.execute.call_args.args[0]
+    )
 

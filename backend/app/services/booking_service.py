@@ -50,6 +50,19 @@ def normalize_booking_type(value):
     return mapping.get(value, value)
 
 
+def _lock_demand_dates(conn, *booking_dates):
+    # Transaction-scoped locks serialize aggregates for each date across
+    # separate Flask instances. Sorting prevents opposite date moves from
+    # taking the same locks in reverse order.
+    for booking_date in sorted({str(value) for value in booking_dates}):
+        conn.execute(text("""
+            SELECT pg_advisory_xact_lock(
+                hashtext('restaurant_booking_demand'),
+                hashtext(CAST(:booking_date AS text))
+            )
+        """), {"booking_date": booking_date})
+
+
 # Fetches all bookings.
 def fetch_all_bookings_service():
     query = text("""
@@ -117,6 +130,8 @@ def _insert_booking(conn, data):
     customer_name = sanitize_text(data.get("customer_name"), max_length=100)
     notes = sanitize_text(data.get("notes"), max_length=500)
 
+    _lock_demand_dates(conn, booking_date)
+
     result = conn.execute(query, {
         "booking_date": booking_date,
         "booking_time": booking_time,
@@ -137,18 +152,6 @@ def insert_booking(data):
 
 # Ensures that restaurant_demand_features has a row for the booking date.
 def _ensure_demand_row_exists(conn, booking_date):
-    check_query = text("""
-        SELECT date
-        FROM restaurant_demand_features
-        WHERE date = :booking_date
-    """)
-
-    result = conn.execute(check_query, {"booking_date": booking_date})
-    existing_row = result.fetchone()
-
-    if existing_row:
-        return
-
     dt = datetime.strptime(str(booking_date), "%Y-%m-%d")
 
     day_of_week = dt.weekday()
@@ -194,6 +197,7 @@ def _ensure_demand_row_exists(conn, booking_date):
             :day_of_month,
             :is_weekend
         )
+        ON CONFLICT (date) DO NOTHING
     """)
 
     conn.execute(insert_query, {
@@ -208,11 +212,13 @@ def _ensure_demand_row_exists(conn, booking_date):
 
 def ensure_demand_row_exists(booking_date):
     with engine.begin() as conn:
+        _lock_demand_dates(conn, booking_date)
         _ensure_demand_row_exists(conn, booking_date)
 
 
 # Rebuilds the demand feature totals for one date.
 def _rebuild_demand_features_for_date(conn, booking_date):
+    _lock_demand_dates(conn, booking_date)
     _ensure_demand_row_exists(conn, booking_date)
 
     aggregate_query = text("""
@@ -336,6 +342,12 @@ def update_booking_and_sync_features(booking_id, data):
             ),
         }
 
+        _lock_demand_dates(
+            conn,
+            old_booking_date,
+            updated_data["booking_date"],
+        )
+
         result = conn.execute(update_query, {
             "booking_id": booking_id,
             "booking_date": updated_data["booking_date"],
@@ -366,6 +378,15 @@ def delete_booking_and_sync_features(booking_id):
     """)
 
     with engine.begin() as conn:
+        existing_booking = _fetch_booking_by_id(
+            conn,
+            booking_id,
+            for_update=True,
+        )
+        if not existing_booking:
+            return False
+
+        _lock_demand_dates(conn, existing_booking["booking_date"])
         result = conn.execute(delete_query, {"booking_id": booking_id})
         deleted_row = result.fetchone()
 
