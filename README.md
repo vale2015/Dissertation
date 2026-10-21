@@ -2,6 +2,8 @@
 
 RFS is a full-stack dissertation project for small independent restaurants. It combines booking data, demand forecasting, staffing rules, and labour-cost estimates in a manager-facing dashboard.
 
+The living checklist for the original architecture-improvement plan is [docs/IMPROVEMENT_TRACKER.md](docs/IMPROVEMENT_TRACKER.md). Update it as each improvement is verified.
+
 The current application uses a Next.js backend-for-frontend (BFF) in front of a Flask API. The browser never receives the authentication token: Next.js stores it in an HttpOnly cookie and adds it as a bearer token when forwarding protected requests to Flask.
 
 ## Current architecture
