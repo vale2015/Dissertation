@@ -67,24 +67,29 @@ def fetch_all_bookings_service():
 
 # Fetches one booking by ID.
 def fetch_booking_by_id_service(booking_id):
+    with engine.connect() as conn:
+        return _fetch_booking_by_id(conn, booking_id)
+
+
+def _fetch_booking_by_id(conn, booking_id, for_update=False):
+    lock_clause = " FOR UPDATE" if for_update else ""
     query = text("""
         SELECT *
         FROM bookings
         WHERE id = :booking_id
-    """)
+    """ + lock_clause)
 
-    with engine.connect() as conn:
-        result = conn.execute(query, {"booking_id": booking_id})
-        row = result.fetchone()
+    result = conn.execute(query, {"booking_id": booking_id})
+    row = result.fetchone()
 
-        if not row:
-            return None
+    if not row:
+        return None
 
-        return serialize_booking_row(dict(row._mapping))
+    return serialize_booking_row(dict(row._mapping))
 
 
 # Inserts a booking into the bookings table.
-def insert_booking(data):
+def _insert_booking(conn, data):
     query = text("""
         INSERT INTO bookings (
             booking_date,
@@ -112,36 +117,37 @@ def insert_booking(data):
     customer_name = sanitize_text(data.get("customer_name"), max_length=100)
     notes = sanitize_text(data.get("notes"), max_length=500)
 
-    with engine.connect() as conn:
-        result = conn.execute(query, {
-            "booking_date": booking_date,
-            "booking_time": booking_time,
-            "party_size": party_size,
-            "booking_type": booking_type,
-            "customer_name": customer_name,
-            "notes": notes
-        })
+    result = conn.execute(query, {
+        "booking_date": booking_date,
+        "booking_time": booking_time,
+        "party_size": party_size,
+        "booking_type": booking_type,
+        "customer_name": customer_name,
+        "notes": notes
+    })
 
-        inserted_row = result.fetchone()
-        conn.commit()
+    inserted_row = result.fetchone()
+    return serialize_booking_row(dict(inserted_row._mapping))
 
-        return serialize_booking_row(dict(inserted_row._mapping))
+
+def insert_booking(data):
+    with engine.begin() as conn:
+        return _insert_booking(conn, data)
 
 
 # Ensures that restaurant_demand_features has a row for the booking date.
-def ensure_demand_row_exists(booking_date):
+def _ensure_demand_row_exists(conn, booking_date):
     check_query = text("""
         SELECT date
         FROM restaurant_demand_features
         WHERE date = :booking_date
     """)
 
-    with engine.connect() as conn:
-        result = conn.execute(check_query, {"booking_date": booking_date})
-        existing_row = result.fetchone()
+    result = conn.execute(check_query, {"booking_date": booking_date})
+    existing_row = result.fetchone()
 
-        if existing_row:
-            return
+    if existing_row:
+        return
 
     dt = datetime.strptime(str(booking_date), "%Y-%m-%d")
 
@@ -190,22 +196,24 @@ def ensure_demand_row_exists(booking_date):
         )
     """)
 
-    with engine.connect() as conn:
-        conn.execute(insert_query, {
-            "date": booking_date,
-            "day_of_week": day_of_week,
-            "month": month,
-            "week_of_year": week_of_year,
-            "day_of_month": day_of_month,
-            "is_weekend": is_weekend
-        })
+    conn.execute(insert_query, {
+        "date": booking_date,
+        "day_of_week": day_of_week,
+        "month": month,
+        "week_of_year": week_of_year,
+        "day_of_month": day_of_month,
+        "is_weekend": is_weekend
+    })
 
-        conn.commit()
+
+def ensure_demand_row_exists(booking_date):
+    with engine.begin() as conn:
+        _ensure_demand_row_exists(conn, booking_date)
 
 
 # Rebuilds the demand feature totals for one date.
-def rebuild_demand_features_for_date(booking_date):
-    ensure_demand_row_exists(booking_date)
+def _rebuild_demand_features_for_date(conn, booking_date):
+    _ensure_demand_row_exists(conn, booking_date)
 
     aggregate_query = text("""
         SELECT
@@ -235,70 +243,49 @@ def rebuild_demand_features_for_date(booking_date):
         WHERE date = :booking_date
     """)
 
-    with engine.connect() as conn:
-        result = conn.execute(aggregate_query, {"booking_date": booking_date})
-        row = result.fetchone()
+    result = conn.execute(aggregate_query, {"booking_date": booking_date})
+    row = result.fetchone()
 
-        same_day_covers = row.same_day_covers or 0
-        walk_in_covers = row.walk_in_covers or 0
-        advance_covers = row.advance_covers or 0
+    same_day_covers = row.same_day_covers or 0
+    walk_in_covers = row.walk_in_covers or 0
+    advance_covers = row.advance_covers or 0
 
-        same_day_bookings = row.same_day_bookings or 0
-        walk_in_bookings = row.walk_in_bookings or 0
-        advance_bookings = row.advance_bookings or 0
+    same_day_bookings = row.same_day_bookings or 0
+    walk_in_bookings = row.walk_in_bookings or 0
+    advance_bookings = row.advance_bookings or 0
 
-        total_covers = same_day_covers + walk_in_covers + advance_covers
-        total_bookings = same_day_bookings + walk_in_bookings + advance_bookings
+    total_covers = same_day_covers + walk_in_covers + advance_covers
+    total_bookings = same_day_bookings + walk_in_bookings + advance_bookings
 
-        conn.execute(update_query, {
-            "same_day_covers": same_day_covers,
-            "walk_in_covers": walk_in_covers,
-            "advance_covers": advance_covers,
-            "total_covers": total_covers,
-            "same_day_bookings": same_day_bookings,
-            "walk_in_bookings": walk_in_bookings,
-            "advance_bookings": advance_bookings,
-            "total_bookings": total_bookings,
-            "booking_date": booking_date
-        })
+    conn.execute(update_query, {
+        "same_day_covers": same_day_covers,
+        "walk_in_covers": walk_in_covers,
+        "advance_covers": advance_covers,
+        "total_covers": total_covers,
+        "same_day_bookings": same_day_bookings,
+        "walk_in_bookings": walk_in_bookings,
+        "advance_bookings": advance_bookings,
+        "total_bookings": total_bookings,
+        "booking_date": booking_date
+    })
 
-        conn.commit()
+
+def rebuild_demand_features_for_date(booking_date):
+    with engine.begin() as conn:
+        _rebuild_demand_features_for_date(conn, booking_date)
 
 
 # Creates a booking and syncs the forecasting dataset.
 def create_booking_and_sync_features(data):
-    booking = insert_booking(data)
-    rebuild_demand_features_for_date(data["booking_date"])
+    with engine.begin() as conn:
+        booking = _insert_booking(conn, data)
+        _rebuild_demand_features_for_date(conn, data["booking_date"])
 
     return booking
 
 
 # Updates an existing booking and syncs the forecasting dataset.
 def update_booking_and_sync_features(booking_id, data):
-    existing_booking = fetch_booking_by_id_service(booking_id)
-
-    if not existing_booking:
-        return None
-
-    old_booking_date = str(existing_booking["booking_date"])
-
-    updated_data = {
-        "booking_date": data.get("booking_date", str(existing_booking["booking_date"])),
-        "booking_time": data.get("booking_time", existing_booking.get("booking_time")),
-        "party_size": int(data.get("party_size", existing_booking["party_size"])),
-        "booking_type": normalize_booking_type(
-            data.get("booking_type", existing_booking["booking_type"])
-        ),
-        "customer_name": sanitize_text(
-            data.get("customer_name", existing_booking.get("customer_name")),
-            max_length=100
-        ),
-        "notes": sanitize_text(
-            data.get("notes", existing_booking.get("notes")),
-            max_length=500
-        )
-    }
-
     update_query = text("""
         UPDATE bookings
         SET
@@ -312,7 +299,43 @@ def update_booking_and_sync_features(booking_id, data):
         RETURNING *
     """)
 
-    with engine.connect() as conn:
+    with engine.begin() as conn:
+        existing_booking = _fetch_booking_by_id(
+            conn,
+            booking_id,
+            for_update=True,
+        )
+
+        if not existing_booking:
+            return None
+
+        old_booking_date = str(existing_booking["booking_date"])
+
+        updated_data = {
+            "booking_date": data.get(
+                "booking_date",
+                str(existing_booking["booking_date"]),
+            ),
+            "booking_time": data.get(
+                "booking_time",
+                existing_booking.get("booking_time"),
+            ),
+            "party_size": int(
+                data.get("party_size", existing_booking["party_size"])
+            ),
+            "booking_type": normalize_booking_type(
+                data.get("booking_type", existing_booking["booking_type"])
+            ),
+            "customer_name": sanitize_text(
+                data.get("customer_name", existing_booking.get("customer_name")),
+                max_length=100,
+            ),
+            "notes": sanitize_text(
+                data.get("notes", existing_booking.get("notes")),
+                max_length=500,
+            ),
+        }
+
         result = conn.execute(update_query, {
             "booking_id": booking_id,
             "booking_date": updated_data["booking_date"],
@@ -324,37 +347,33 @@ def update_booking_and_sync_features(booking_id, data):
         })
 
         updated_row = result.fetchone()
-        conn.commit()
+        new_booking_date = str(updated_data["booking_date"])
 
-    new_booking_date = str(updated_data["booking_date"])
+        _rebuild_demand_features_for_date(conn, old_booking_date)
 
-    rebuild_demand_features_for_date(old_booking_date)
-
-    if new_booking_date != old_booking_date:
-        rebuild_demand_features_for_date(new_booking_date)
+        if new_booking_date != old_booking_date:
+            _rebuild_demand_features_for_date(conn, new_booking_date)
 
     return serialize_booking_row(dict(updated_row._mapping))
 
 
 # Deletes a booking and syncs the forecasting dataset.
 def delete_booking_and_sync_features(booking_id):
-    existing_booking = fetch_booking_by_id_service(booking_id)
-
-    if not existing_booking:
-        return False
-
-    booking_date = str(existing_booking["booking_date"])
-
     delete_query = text("""
         DELETE FROM bookings
         WHERE id = :booking_id
+        RETURNING booking_date
     """)
 
-    with engine.connect() as conn:
-        conn.execute(delete_query, {"booking_id": booking_id})
-        conn.commit()
+    with engine.begin() as conn:
+        result = conn.execute(delete_query, {"booking_id": booking_id})
+        deleted_row = result.fetchone()
 
-    rebuild_demand_features_for_date(booking_date)
+        if not deleted_row:
+            return False
+
+        booking_date = str(deleted_row.booking_date)
+        _rebuild_demand_features_for_date(conn, booking_date)
 
     return True
 
