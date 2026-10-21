@@ -1,6 +1,6 @@
 # Dissertation architecture improvement tracker
 
-This is the project's living improvement backlog, seeded from the original 50-item architecture plan in this chat. Keep the original numbers and order so that “continue with the improvements” has an unambiguous meaning; append any new improvements with new numbers. Last reviewed: 2026-10-21.
+This is the project's canonical living improvement backlog, seeded from the original 50-item architecture plan in this chat. Keep the original numbers and order so that “continue with the improvements” has an unambiguous meaning; append any new improvements with new numbers. Any focused improvement lists also live in `docs/` and are indexed in [README.md](README.md). Last reviewed: 2026-10-21.
 
 ## How to use this file
 
