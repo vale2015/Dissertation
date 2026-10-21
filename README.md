@@ -25,12 +25,14 @@ flowchart LR
 
 1. The user submits credentials to `POST /api/auth/login` on Next.js.
 2. Next.js forwards the credentials to Flask at `POST /api/auth/login`.
-3. Flask verifies the password stored in `public.users` and signs an eight-hour HS256 JWT.
+3. Flask applies shared PostgreSQL login limits, verifies the password stored in `public.users`, and signs an eight-hour HS256 JWT.
 4. Next.js stores the JWT in the `rfs_session` HttpOnly, `SameSite=Lax` cookie. It is also marked `Secure` in production.
 5. Browser requests for application data go to `/api/backend/*`. The Next.js proxy reads the cookie server-side, attaches `Authorization: Bearer <token>`, and forwards the request to Flask.
 6. Flask authenticates protected requests and applies role permissions to the dashboard, booking, forecasting, staffing, report, weather, event, and staff-administration blueprints. Health and account-entry routes remain public; profile and current-user routes still require a valid session.
 
 The proxy rejects cross-origin state-changing requests and removes an expired session cookie when Flask returns `401`. Flask restricts CORS origins and adds CSP, frame, content-type, and referrer-policy response headers.
+
+Login is limited by normalized email (five attempts in 15 minutes) and by the backend-observed source IP (1,000 attempts in 10 minutes). Public activation and password-reset token endpoints have a separate 1,000-attempt IP limit. Excess attempts receive `429` with `Retry-After`; email locks start at 30 seconds and grow to a 15-minute cap. Successful login clears that email's counter. Counters are shared across Flask instances, contain only HMAC key hashes, and expire through opportunistic cleanup. The high IP threshold reflects that Vercel's Next.js server-side proxy may share an outbound address; a verified client-IP forwarding mechanism would be needed for finer per-visitor limits.
 
 ## Features
 
@@ -93,7 +95,7 @@ Operational roles continue to come from `public.staff_roles` (for example Kitche
 
 ### Database migration
 
-The forward-only database history is in `supabase/migrations/`. It includes the original application tables, both staff-account changes, the demand-date primary key, and server-only access protection for bookings. See `supabase/README.md` for fresh-database setup, live-project reconciliation, and verification. The older `backend/migrations/001_staff_accounts.sql` is a combined manual script retained for reference; do not apply it alongside the timestamped migrations. Its rollback remains manual and retains audit history.
+The forward-only database history is in `supabase/migrations/`. It includes the original application tables, both staff-account changes, the demand-date primary key, server-only access protection for bookings, and shared authentication rate-limit counters. See `supabase/README.md` for fresh-database setup, live-project reconciliation, and verification. The older `backend/migrations/001_staff_accounts.sql` is a combined manual script retained for reference; do not apply it alongside the timestamped migrations. Its rollback remains manual and retains audit history.
 
 ### Invitation and recovery lifecycle
 
@@ -158,6 +160,7 @@ The application uses PostgreSQL tables including:
 | `public.staff_cost_forecast` | Generated staffing and cost forecast rows |
 | `public.user_account_tokens` | Hashed, expiring, single-use activation and password-reset tokens |
 | `public.staff_account_audit` | Non-secret audit history for staff-account actions |
+| `public.auth_rate_limits` | Server-only, HMAC-keyed login and public account-token throttling counters |
 
 Creating, updating, or deleting a booking rebuilds the affected daily aggregate in `restaurant_demand_features`. Mondays are treated as closed days and cannot accept bookings.
 
@@ -403,7 +406,7 @@ Research artifacts, contextual interviews, source datasets, notebooks, sequence 
 
 ## Project status and limitations
 
-RFS is an academic prototype intended for dissertation evaluation and controlled deployment. Forecast quality depends on the quantity and representativeness of the restaurant's historical data. Reports are generated on demand rather than archived, staff members do not yet have personal shift views, and model retraining is exposed through an authenticated API route rather than a scheduled pipeline. Broader commercial use would require production observability, managed secret rotation, formal migration and backup procedures, rate limiting, retention policies, security testing, and wider end-to-end coverage.
+RFS is an academic prototype intended for dissertation evaluation and controlled deployment. Forecast quality depends on the quantity and representativeness of the restaurant's historical data. Reports are generated on demand rather than archived, staff members do not yet have personal shift views, and model retraining is exposed through an authenticated API route rather than a scheduled pipeline. Broader commercial use would require production observability, managed secret rotation, formal migration and backup procedures, finer verified-client-IP rate limiting, retention policies, security testing, and wider end-to-end coverage.
 
 ## Author
 

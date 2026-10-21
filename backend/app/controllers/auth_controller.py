@@ -3,31 +3,55 @@ from flask import jsonify, request, g
 import jwt
 
 from app.services.auth_service import authenticate_user, decode_user_token, update_own_profile
+from app.services.auth_rate_limit_service import (
+    clear_login_email,
+    reserve_account_token_attempt,
+    reserve_login_attempt,
+)
 from app.services.account_activation_service import validate_account_token,complete_account_token,InvalidAccountToken
 from app.services.account_token_service import PURPOSE_ACTIVATION,PURPOSE_RESET
 from app.services.staff_validation_service import StaffValidationError
 logger=logging.getLogger(__name__)
 
+
+def _throttled_response(structured=False, retry_after=60):
+    message = "Too many attempts. Please try again later."
+    error = {"code": "AUTH_THROTTLED", "message": message} if structured else message
+    response = jsonify({"error": error})
+    response.status_code = 429
+    response.headers["Retry-After"] = str(retry_after)
+    response.headers["Cache-Control"] = "no-store"
+    return response
+
 # Validate login details and return a JWT token if authentication succeeds
 def login_user():
     try:
-        data = request.get_json()
+        data = request.get_json(silent=True)
 
-        if not data:
+        if not isinstance(data, dict):
             return jsonify({"error": "Request body must be JSON"}), 400
 
         email = data.get("email")
         password = data.get("password")
 
         # Ensure both email and password are provided.
-        if not email or not password:
+        if not isinstance(email, str) or not isinstance(password, str) or not email.strip() or not password:
             return jsonify({"error": "Email and password are required"}), 400
+
+        if len(email) > 320 or len(password) > 1024:
+            return jsonify({"error": "Invalid email or password"}), 401
+
+        retry_after = reserve_login_attempt(email, request.remote_addr)
+        if retry_after:
+            return _throttled_response(retry_after=retry_after)
         
         # Check the user credentials through the authentication service.
         result = authenticate_user(email, password)
 
         if not result:
             return jsonify({"error": "Invalid email or password"}), 401
+
+        clear_login_email(email)
 
         return jsonify(result), 200
 
@@ -75,7 +99,13 @@ def patch_profile():
 
 def account_token_controller(purpose,complete=False):
     try:
-        data=request.get_json(silent=True) or {};token=data.get("token")
+        retry_after = reserve_account_token_attempt(request.remote_addr)
+        if retry_after:
+            return _throttled_response(structured=True, retry_after=retry_after)
+        data=request.get_json(silent=True)
+        if not isinstance(data, dict):
+            data = {}
+        token=data.get("token")
         result=complete_account_token(token,purpose,data) if complete else validate_account_token(token,purpose)
         response=jsonify(result);response.headers["Cache-Control"]="no-store";return response,200
     except (InvalidAccountToken,StaffValidationError) as error:

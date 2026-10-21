@@ -6,6 +6,9 @@ from werkzeug.security import check_password_hash
 from app.db.dbcon import SessionLocal
 from app.services.permission_service import STATUS_ACTIVE,permissions_for_role
 TOKEN_DURATION_HOURS=8;TOKEN_ISSUER="rfs-backend"
+# A fixed, non-secret Werkzeug hash makes unknown-user checks do comparable
+# password work to known-user checks, limiting account enumeration by timing.
+DUMMY_PASSWORD_HASH="scrypt:32768:8:1$0I4RzDu0AnRqMlRs$3be1138ec3f8f3de73b68b62223959fc9eec3645ed9f5aee1a52d085403069020d4d9f3861c8278bcc14c61ea5416c33f2db15fa186e2e7eaf006c7b0e22cd"
 USER_QUERY="""SELECT u.id,u.full_name,u.email,u.password_hash,u.role,u.status,u.session_version,u.staff_role_id,u.last_login_at,
 sr.role_name AS staff_role,sr.department FROM public.users u LEFT JOIN public.staff_roles sr ON sr.id=u.staff_role_id"""
 def get_secret_key():
@@ -23,7 +26,9 @@ def authenticate_user(email,password):
     normalized=str(email).strip().lower()
     with SessionLocal() as db:
         row=db.execute(text(USER_QUERY+" WHERE lower(u.email)=:email LIMIT 1"),{"email":normalized}).mappings().first()
-        if not row or row["status"]!=STATUS_ACTIVE or not check_password_hash(row["password_hash"],password):return None
+        password_hash=row["password_hash"] if row else DUMMY_PASSWORD_HASH
+        password_matches=check_password_hash(password_hash,password)
+        if not row or row["status"]!=STATUS_ACTIVE or not password_matches:return None
         db.execute(text("UPDATE public.users SET last_login_at=now(),updated_at=now() WHERE id=:id"),{"id":row["id"]});db.commit()
         user=dict(row);user["last_login_at"]=datetime.now(timezone.utc)
     return {"message":"Login successful","token":create_token(user),"user":_safe_user(user)}

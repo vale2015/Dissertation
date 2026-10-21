@@ -56,14 +56,23 @@ export async function POST(request) {
 
     if (!backendResponse.ok) {
       const safeMessage =
-        backendResponse.status === 400 ||
-        backendResponse.status === 401
-          ? data?.error || "Invalid email or password."
-          : "Authentication service is temporarily unavailable.";
+        backendResponse.status === 429
+          ? "Too many attempts. Please try again later."
+          : backendResponse.status === 400 || backendResponse.status === 401
+            ? typeof data?.error === "string"
+              ? data.error
+              : "Invalid email or password."
+            : "Authentication service is temporarily unavailable.";
+
+      const retryAfter = backendResponse.headers.get("retry-after");
+      const headers = { "Cache-Control": "no-store" };
+      if (backendResponse.status === 429 && /^\d+$/.test(retryAfter || "")) {
+        headers["Retry-After"] = retryAfter;
+      }
 
       return NextResponse.json(
         { error: safeMessage },
-        { status: backendResponse.status }
+        { status: backendResponse.status, headers }
       );
     }
 
