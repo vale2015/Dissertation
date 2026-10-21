@@ -93,7 +93,7 @@ Operational roles continue to come from `public.staff_roles` (for example Kitche
 
 ### Database migration
 
-The forward-only database history is in `supabase/migrations/`. It now includes the original application tables, both staff-account changes, and the demand-date primary key. See `supabase/README.md` for fresh-database setup, live-project reconciliation, and verification. The older `backend/migrations/001_staff_accounts.sql` is a combined manual script retained for reference; do not apply it alongside the timestamped migrations. Its rollback remains manual and retains audit history.
+The forward-only database history is in `supabase/migrations/`. It includes the original application tables, both staff-account changes, the demand-date primary key, and server-only access protection for bookings. See `supabase/README.md` for fresh-database setup, live-project reconciliation, and verification. The older `backend/migrations/001_staff_accounts.sql` is a combined manual script retained for reference; do not apply it alongside the timestamped migrations. Its rollback remains manual and retains audit history.
 
 ### Invitation and recovery lifecycle
 

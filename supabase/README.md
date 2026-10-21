@@ -1,8 +1,8 @@
 # Database migrations
 
 `migrations/` is the ordered, forward-only schema history for the application.
-It reconstructs the seven original tables, the two staff-account changes, and
-the demand-date primary key already recorded in the live Supabase project.
+It reconstructs the seven original tables, the two staff-account changes, the
+demand-date primary key, and the server-only access control for bookings.
 The older `backend/migrations/001_staff_accounts.sql` is a combined manual
 script kept for historical reference; do **not** run it in addition to these
 timestamped migrations. Its rollback is also manual and is not part of the
@@ -20,7 +20,7 @@ included in these schema migrations.
 ## Existing Dissertation Supabase project
 
 The live project already records migrations `20260811153624`,
-`20260811153749`, and `20261021151713`, but its original tables were created
+`20260811153749`, `20261021151713`, and `20261021155305`, but its original tables were created
 before migration tracking. First verify the live schema against the baseline.
 Then use `supabase migration repair --status applied 20260811000000` to record
 that baseline **without re-running its SQL**. Confirm the local and remote
@@ -35,7 +35,7 @@ to a shared database.
 
 ```sql
 -- Read-only checks: expect 9 application tables, 1 demand-date primary key,
--- and 8 RLS-enabled tables on the current live project.
+-- and 9 RLS-enabled tables on the current live project.
 SELECT count(*) AS application_tables
 FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace
 WHERE n.nspname = 'public' AND c.relkind = 'r'
@@ -54,11 +54,19 @@ SELECT c.relname, c.relrowsecurity
 FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace
 WHERE n.nspname = 'public' AND c.relkind = 'r'
 ORDER BY c.relname;
+
+-- Expect false for both client roles, true for the server role.
+SELECT
+  has_table_privilege('anon', 'public.bookings', 'SELECT') AS anon_can_read,
+  has_table_privilege('authenticated', 'public.bookings', 'SELECT') AS authenticated_can_read,
+  has_table_privilege('postgres', 'public.bookings', 'SELECT') AS server_can_read,
+  has_sequence_privilege('anon', 'public.bookings_id_seq', 'USAGE') AS anon_sequence_usage;
 ```
 
-The live `public.bookings` table currently has RLS disabled, unlike the other
-eight tables. This is a security issue for an exposed Supabase schema and
-needs a separately reviewed migration after confirming its access pattern.
-The baseline mirrors production rather than quietly changing its behavior.
+The historical baseline mirrors the earlier database state. The final
+`secure_bookings_server_only_access` migration enables RLS and revokes direct
+`anon`/`authenticated` table and sequence privileges while retaining the
+server-side `postgres` role's access. No Data API policies are needed because
+the browser accesses bookings only through Flask.
 The live database also has an unused `set_guest_minutes()` function with no
 trigger; it is not part of the app schema or migration chain.
