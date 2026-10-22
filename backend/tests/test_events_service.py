@@ -12,6 +12,7 @@ from app.services.events_service import (
     _clear_events_cache,
     _events_cache,
     fetch_ticketmaster_events,
+    get_cached_local_events,
     load_events_configuration,
     get_local_events,
     normalise_ticketmaster_events,
@@ -466,6 +467,35 @@ def test_cache_hit_avoids_second_provider_request(event_environment, monkeypatch
     assert len(calls) == 1
     assert first == second
     assert first["summary"]["total_events"] == 0
+
+
+def test_report_events_use_only_cached_data(event_environment, monkeypatch):
+    today = _london_today().isoformat()
+    with pytest.raises(EventsProviderError):
+        get_cached_local_events(today, today)
+
+    monkeypatch.setattr(
+        "app.services.events_service.fetch_ticketmaster_events", lambda *_: {}
+    )
+    monkeypatch.setattr(
+        "app.services.events_service.fetch_skiddle_events", lambda *_: ([], None)
+    )
+    monkeypatch.setattr(
+        "app.services.events_service.fetch_sportsdb_events", lambda *_: ([], None)
+    )
+    get_local_events(today, today)
+    monkeypatch.setattr(
+        "app.services.events_service.fetch_ticketmaster_events",
+        lambda *_: pytest.fail("Cached report lookup must not fetch events"),
+    )
+
+    fresh = get_cached_local_events(today, today)
+    assert fresh["stale"] is False
+    for entry in _events_cache.values():
+        entry["expires_at"] = 0
+    stale = get_cached_local_events(today, today)
+    assert stale["stale"] is True
+    assert stale["warning"] == "Local-event information may be out of date."
 
 
 def test_force_refresh_bypasses_a_fresh_backend_cache(event_environment, monkeypatch):

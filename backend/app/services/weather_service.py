@@ -277,6 +277,24 @@ def _clear_weather_cache():
         _weather_cache["expires_at"] = 0.0
 
 
+def get_cached_weather_forecast():
+    """Return optional report weather without making a provider request."""
+
+    configuration_key = _configuration_cache_key(load_weather_configuration())
+    with _weather_cache_lock:
+        if (
+            _weather_cache["configuration_key"] != configuration_key
+            or _weather_cache["data"] is None
+        ):
+            raise WeatherProviderError("Weather information is not cached.")
+
+        cached_data = deepcopy(_weather_cache["data"])
+        if time.monotonic() >= _weather_cache["expires_at"]:
+            cached_data["stale"] = True
+            cached_data["warning"] = "Weather information may be out of date."
+        return cached_data
+
+
 def get_weather_forecast():
     """Return cached or newly fetched weather with stale-data fallback."""
 

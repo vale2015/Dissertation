@@ -584,6 +584,29 @@ def _final_event_context(configuration, validated_range, normalised):
     }
 
 
+def get_cached_local_events(start_date=None, end_date=None):
+    """Return optional report events without contacting external providers."""
+
+    configuration = load_events_configuration()
+    validated_range = validate_event_date_range(
+        start_date, end_date, configuration["timezone"]
+    )
+    if validated_range["entirely_historical"]:
+        return _final_event_context(configuration, validated_range, [])
+
+    cache_key = _events_cache_key(configuration, validated_range)
+    with _events_cache_lock:
+        cached_entry = _events_cache.get(cache_key)
+        if not cached_entry:
+            raise EventsProviderError("Local-event information is not cached.")
+
+        cached_data = deepcopy(cached_entry["data"])
+        if time.monotonic() >= cached_entry["expires_at"]:
+            cached_data["stale"] = True
+            cached_data["warning"] = "Local-event information may be out of date."
+        return cached_data
+
+
 def get_local_events(start_date=None, end_date=None, *, force_refresh=False):
     """Return cached or freshly normalised local-event context."""
 
