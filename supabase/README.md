@@ -52,10 +52,12 @@ GitHub [migration replay workflow](../.github/workflows/migration-replay.yml)
 is committed as `4365f46` on `codex/migration-replay-check`. Its first
 [run](https://github.com/vale2015/Dissertation/actions/runs/39799268212)
 never started a runner: GitHub reports that the account is locked due to a
-billing issue. The local Supabase CLI/Docker stack and a CLI `db push
---dry-run` remain unavailable here. Do not mistake the embedded PostgreSQL
-check for a full Supabase-stack reset, and do not push future migrations until
-the workflow and dry run have been verified.
+billing issue. On 2026-10-22, the CLI migration list matched all seven applied
+versions and `db push --dry-run --skip-vault --project-ref szvihzuaybmqkxwkoyli`
+reported only `20261022161025_report_history.sql` pending, without applying it.
+The local Supabase CLI/Docker stack remains unavailable here. Do not mistake
+the embedded PostgreSQL check for a full Supabase-stack reset, and do not push
+future migrations until the workflow and dry run have been verified.
 
 For an official full-stack verification when Docker and the CLI are available:
 run **local** `supabase db reset` (never `--linked`), compare the resulting
