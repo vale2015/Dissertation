@@ -7,12 +7,12 @@ from sqlalchemy import text
 from app.config import get_report_configuration
 from app.db.dbcon import SessionLocal
 from app.ml.pipelines.predict_pipeline import prediction_demand
-from app.services.events_service import get_local_events
+from app.services.events_service import get_cached_local_events
 from app.services.report_contract import empty_management_report
 from app.services.report_insight_service import deduplicate_warnings, generate_report_insights
 from app.services.staff_cost_service import _get_all_staffing_rules, _get_all_staff_roles
 from app.services.staffing_calculation_service import calculate_staffing
-from app.services.weather_service import get_weather_forecast
+from app.services.weather_service import get_cached_weather_forecast
 
 
 class ReportGenerationError(RuntimeError): pass
@@ -49,8 +49,8 @@ def _financial_values(covers, labour, settings):
 
 def generate_management_report(selected_date, days_ahead, *, predictor=prediction_demand,
                                internal_loader=_load_internal_data,
-                               weather_loader=get_weather_forecast,
-                               events_loader=get_local_events):
+                               weather_loader=get_cached_weather_forecast,
+                               events_loader=get_cached_local_events):
     prediction = predictor(days_ahead=days_ahead, selected_date=selected_date)
     forecast = prediction.get("forecast") if isinstance(prediction, dict) else None
     if not forecast:
@@ -72,12 +72,16 @@ def generate_management_report(selected_date, days_ahead, *, predictor=predictio
     try:
         weather_data = weather_loader(); weather_by_date = {d["date"]: d for d in weather_data.get("daily_forecast", [])}
         report["data_sources"]["weather"] = {"available": True, "message": weather_data.get("warning")}
+        if weather_data.get("stale"):
+            warnings.append({"code":"WEATHER_STALE","message":"Weather information may be out of date."})
     except Exception:
         weather_by_date = {}; report["data_sources"]["weather"] = {"available": False, "message":"Weather information is unavailable."}
         warnings.append({"code":"WEATHER_UNAVAILABLE","message":"Weather information is unavailable for this report."})
     try:
         event_data = events_loader(rows[0]["date"], rows[-1]["date"]); event_by_date = {d["date"]:d for d in event_data.get("days",[])}
         report["data_sources"]["events"] = {"available": True, "message": event_data.get("warning")}
+        if event_data.get("stale"):
+            warnings.append({"code":"EVENTS_STALE","message":"Local-event information may be out of date."})
     except Exception:
         event_by_date = {}; report["data_sources"]["events"] = {"available": False, "message":"Local events are unavailable."}
         warnings.append({"code":"EVENTS_UNAVAILABLE","message":"Local-event information is unavailable for this report."})

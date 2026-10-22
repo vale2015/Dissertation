@@ -12,10 +12,39 @@ from app.services.weather_service import (
     WeatherConfigurationError,
     WeatherProviderError,
     fetch_open_meteo_weather,
+    get_cached_weather_forecast,
     get_weather_forecast,
     load_weather_configuration,
     normalise_weather_response,
 )
+
+
+def test_report_weather_uses_only_cached_data(monkeypatch, weather_environment):
+    for name, value in weather_environment.items():
+        monkeypatch.setenv(name, value)
+
+    with pytest.raises(WeatherProviderError):
+        get_cached_weather_forecast()
+
+    monkeypatch.setattr(weather_service, "fetch_open_meteo_weather", lambda *_: {})
+    monkeypatch.setattr(
+        weather_service,
+        "normalise_weather_response",
+        lambda *_: {"daily_forecast": [], "stale": False, "warning": None},
+    )
+    get_weather_forecast()
+    monkeypatch.setattr(
+        weather_service,
+        "fetch_open_meteo_weather",
+        lambda *_: pytest.fail("Cached report lookup must not fetch weather"),
+    )
+
+    fresh = get_cached_weather_forecast()
+    assert fresh["stale"] is False
+    weather_service._weather_cache["expires_at"] = 0
+    stale = get_cached_weather_forecast()
+    assert stale["stale"] is True
+    assert stale["warning"] == "Weather information may be out of date."
 
 
 def test_valid_configuration(monkeypatch, weather_environment):

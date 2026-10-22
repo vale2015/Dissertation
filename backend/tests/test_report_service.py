@@ -1,6 +1,9 @@
 import json
+from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 import pytest
 from app.services.report_service import generate_management_report
+from app.services.events_service import _clear_events_cache
 
 
 def forecast(days=7):
@@ -34,3 +37,51 @@ def test_optional_provider_failures_do_not_block_report():
     def fail(*args): raise RuntimeError
     report=generate_management_report("2026-08-11",7,predictor=lambda **kw:forecast(),internal_loader=internal,weather_loader=fail,events_loader=fail)
     assert {w["code"] for w in report["warnings"]}>={"WEATHER_UNAVAILABLE","EVENTS_UNAVAILABLE"}
+
+
+def test_stale_optional_context_is_visible_in_report_warnings():
+    report = generate_management_report(
+        "2026-08-11", 7,
+        predictor=lambda **_: forecast(),
+        internal_loader=internal,
+        weather_loader=lambda: {"daily_forecast": [], "stale": True,
+                                "warning": "Weather information may be out of date."},
+        events_loader=lambda *_: {"days": [], "stale": True,
+                                 "warning": "Local-event information may be out of date."},
+    )
+    assert {warning["code"] for warning in report["warnings"]} >= {
+        "WEATHER_STALE", "EVENTS_STALE"
+    }
+
+
+def test_report_cache_miss_never_calls_optional_providers(monkeypatch, weather_environment):
+    for name, value in weather_environment.items():
+        monkeypatch.setenv(name, value)
+    monkeypatch.setenv("TICKETMASTER_API_KEY", "test-key")
+    monkeypatch.setenv("RESTAURANT_COUNTRY_CODE", "GB")
+    _clear_events_cache()
+    monkeypatch.setattr(
+        "app.services.weather_service.fetch_open_meteo_weather",
+        lambda *_: pytest.fail("Report must not fetch weather"),
+    )
+    monkeypatch.setattr(
+        "app.services.events_service.fetch_ticketmaster_events",
+        lambda *_: pytest.fail("Report must not fetch events"),
+    )
+
+    today = datetime.now(ZoneInfo("Europe/London")).date()
+    rows = forecast()["forecast"]
+    for index, row in enumerate(rows):
+        row["date"] = (today + timedelta(days=index + 1)).isoformat()
+    report = generate_management_report(
+        today.isoformat(), 7,
+        predictor=lambda **_: {"forecast": rows},
+        internal_loader=internal,
+    )
+
+    assert report["summary"]["forecasted_covers"] > 0
+    assert report["data_sources"]["weather"]["available"] is False
+    assert report["data_sources"]["events"]["available"] is False
+    assert {warning["code"] for warning in report["warnings"]} >= {
+        "WEATHER_UNAVAILABLE", "EVENTS_UNAVAILABLE"
+    }

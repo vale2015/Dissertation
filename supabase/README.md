@@ -20,14 +20,44 @@ included in these schema migrations.
 
 ## Existing Dissertation Supabase project
 
-The live project already records migrations `20260811153624`,
-`20260811153749`, `20261021151713`, `20261021155305`, and `20261021160211`, but its original tables were created
-before migration tracking. First verify the live schema against the baseline.
-Then use `supabase migration repair --status applied 20260811000000` to record
-that baseline **without re-running its SQL**. Confirm the local and remote
-versions match with `supabase migration list` and inspect
-`supabase db push --dry-run` before any future push. Migration repair changes
-history only; it must not be used to conceal a real schema mismatch.
+The live project's original tables were created before migration tracking.
+On 2026-10-22, the missing baseline version `20260811000000` was recorded in
+`supabase_migrations.schema_migrations` after the application-table schema
+fingerprint matched a fresh replay of all six migration files. No baseline SQL
+was rerun on the live database. The live history now records all six versions.
+Before any future push, confirm the local and remote versions match with
+`supabase migration list` and inspect `supabase db push --dry-run`.
+
+### Baseline reconciliation evidence (2026-10-22)
+
+A disposable PGlite/PostgreSQL 17.5 runtime replayed the six SQL files from an
+empty database; a separate PostgreSQL 18 replay also passed. The PostgreSQL 17
+replay produced all ten application tables with RLS enabled. The
+read-only [schema snapshot](schema_snapshot.sql) produced the same normalized
+fingerprint on the replay database and the live PostgreSQL 17 project:
+`04d4ff8e7f049068d9f4acb0b4312c5f`. This covers application-table
+columns, defaults, constraints, indexes, RLS, policies, and triggers; it
+excludes role grants and unrelated Supabase-managed objects. A separate live
+privilege check confirmed that `bookings` and `auth_rate_limits` have no
+`anon`/`authenticated` SELECT privilege. The other eight tables retain client
+grants behind RLS; restricting those grants is tracked separately as item 4.
+
+The migration-history insert was conditional on that live fingerprint, all ten
+application tables, all five later migration versions, and absence of the
+baseline row. A subsequent read confirmed all six ordered versions. The
+GitHub [migration replay workflow](../.github/workflows/migration-replay.yml)
+is committed as `4365f46` on `codex/migration-replay-check`. Its first
+[run](https://github.com/vale2015/Dissertation/actions/runs/39799268212)
+never started a runner: GitHub reports that the account is locked due to a
+billing issue. The local Supabase CLI/Docker stack and a CLI `db push
+--dry-run` remain unavailable here. Do not mistake the embedded PostgreSQL
+check for a full Supabase-stack reset, and do not push future migrations until
+the workflow and dry run have been verified.
+
+For an official full-stack verification when Docker and the CLI are available:
+run **local** `supabase db reset` (never `--linked`), compare the resulting
+schema, inspect `supabase migration list`, and run `supabase db push --dry-run`.
+Never run `db reset --linked` against the live project.
 
 For future changes, generate a new migration with `supabase migration new`,
 test on a disposable/local database with `supabase db reset`, review the

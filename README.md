@@ -83,7 +83,7 @@ Reports are generated on demand in memory and are not stored in the database or 
 
 Optional, non-secret metadata can be configured with `REPORT_CURRENCY` (default `GBP`), `REPORT_RESTAURANT_NAME` and `REPORT_RESTAURANT_CITY`. The name and city fall back to the existing restaurant variables, then to local development defaults. ReportLab is pinned in `backend/requirements.txt`; no new API key is needed.
 
-Demand prediction is required. Weather and local-event context are optional: provider failures add visible warnings but do not block core staffing and financial reporting. Weather appears only when an exact forecast date is available, so historical or later report dates may show **Unavailable**. Financial figures are estimates based on the latest business settings and are intended for management planning, not accounting statements.
+Demand prediction is required. Weather and local-event context are optional: report generation uses only context already cached in the current backend instance and never waits for those external providers. A cache miss adds a visible warning and leaves core staffing and financial reporting available; expired cached context is labelled as possibly out of date. Because instance memory is not shared across Vercel functions, optional context may be unavailable on a cold instance until a separate weather or events request has warmed that instance. Weather also appears only when an exact forecast date is available, so historical or later report dates may show **Unavailable**. Financial figures are estimates based on the latest business settings and are intended for management planning, not accounting statements.
 
 ## Staff accounts and role-based access
 
