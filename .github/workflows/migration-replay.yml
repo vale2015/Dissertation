@@ -1,0 +1,87 @@
+name: Migration replay
+
+on:
+  push:
+    paths:
+      - .github/workflows/migration-replay.yml
+      - supabase/migrations/**
+      - supabase/schema_snapshot.sql
+  pull_request:
+    paths:
+      - .github/workflows/migration-replay.yml
+      - supabase/migrations/**
+      - supabase/schema_snapshot.sql
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    container: postgres:17
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      PGHOST: postgres
+      PGPORT: "5432"
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      PGDATABASE: postgres
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare Supabase-style client roles
+        run: |
+          psql -v ON_ERROR_STOP=1 <<'SQL'
+          CREATE ROLE anon NOLOGIN;
+          CREATE ROLE authenticated NOLOGIN;
+          ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO anon, authenticated;
+          ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO anon, authenticated;
+          SQL
+      - name: Replay every migration on an empty database
+        run: |
+          set -eu
+          for migration in supabase/migrations/*.sql; do
+            echo "Applying $migration"
+            psql -v ON_ERROR_STOP=1 -f "$migration"
+          done
+      - name: Check application tables and protected access
+        run: |
+          psql -v ON_ERROR_STOP=1 <<'SQL'
+          DO $$
+          BEGIN
+            IF (SELECT count(*) FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace
+                WHERE n.nspname = 'public' AND c.relkind = 'r'
+                  AND c.relname IN ('users', 'bookings', 'restaurant_demand_features',
+                    'staff_roles', 'staffing_rules', 'staff_cost_forecast',
+                    'business_settings', 'user_account_tokens', 'staff_account_audit',
+                    'auth_rate_limits')) <> 10 THEN
+              RAISE EXCEPTION 'Expected all 10 application tables';
+            END IF;
+            IF (SELECT count(*) FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace
+                WHERE n.nspname = 'public' AND c.relkind = 'r' AND c.relrowsecurity
+                  AND c.relname IN ('users', 'bookings', 'restaurant_demand_features',
+                    'staff_roles', 'staffing_rules', 'staff_cost_forecast',
+                    'business_settings', 'user_account_tokens', 'staff_account_audit',
+                    'auth_rate_limits')) <> 10 THEN
+              RAISE EXCEPTION 'Expected RLS on all 10 application tables';
+            END IF;
+            IF has_table_privilege('anon', 'public.bookings', 'SELECT')
+              OR has_table_privilege('authenticated', 'public.bookings', 'SELECT')
+              OR has_table_privilege('anon', 'public.auth_rate_limits', 'SELECT')
+              OR has_table_privilege('authenticated', 'public.auth_rate_limits', 'SELECT')
+              OR has_sequence_privilege('anon', 'public.bookings_id_seq', 'USAGE') THEN
+              RAISE EXCEPTION 'Server-only objects grant client access';
+            END IF;
+          END $$;
+          SQL
+      - name: Print application-schema fingerprint
+        run: psql -v ON_ERROR_STOP=1 -At -f supabase/schema_snapshot.sql
