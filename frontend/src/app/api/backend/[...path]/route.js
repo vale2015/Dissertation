@@ -121,6 +121,11 @@ async function proxyRequest(request, context) {
       responseHeaders.set("Content-Disposition", contentDisposition);
     }
 
+    const serverTiming = backendResponse.headers.get("server-timing");
+    if (serverTiming) {
+      responseHeaders.set("Server-Timing", serverTiming);
+    }
+
     responseHeaders.set(
       "Cache-Control",
       "no-store, no-cache, must-revalidate"
