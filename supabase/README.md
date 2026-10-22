@@ -59,6 +59,10 @@ The local Supabase CLI/Docker stack remains unavailable here. Do not mistake
 the embedded PostgreSQL check for a full Supabase-stack reset, and do not push
 future migrations until the workflow and dry run have been verified.
 
+A rerun of [workflow 39803299668](https://github.com/vale2015/Dissertation/actions/runs/39803299668)
+on 2026-10-22 again failed before a runner started; GitHub still reported an
+account billing lock. The CLI dry-run passed, but the workflow gate did not.
+
 For an official full-stack verification when Docker and the CLI are available:
 run **local** `supabase db reset` (never `--linked`), compare the resulting
 schema, inspect `supabase migration list`, and run `supabase db push --dry-run`.
