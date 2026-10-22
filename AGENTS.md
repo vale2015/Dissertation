@@ -6,3 +6,8 @@
 - Update the tracker in the same work session when an item is finished. Record implementation and verification evidence; mark it **Done** only when its acceptance criteria are met. Otherwise keep its accurate **Partial**, **Verify release**, or **Open** status. Do not start the next item before updating the one just worked on.
 - Keep Git, Supabase, and Vercel status distinct. Written code, a Git push, an applied migration, and a live deployment are different states.
 - The user asked to see proposed changes before commits. Explain the implementation and any incomplete verification before committing or pushing improvement work.
+
+## Board coordination
+
+- Use `.agents/skills/move-board-cards/SKILL.md` whenever work requires moving a Dissertation project card on the connected board. Add future project skills as sibling folders under `.agents/skills/`.
+- Board statuses mean: **READY** = not picked up; **IN PROGRESS** = actively being worked on; **DONE** = fully tested. Do not treat a commit, Git push, migration, or deployment alone as proof of DONE.
