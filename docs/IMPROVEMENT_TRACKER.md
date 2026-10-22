@@ -4,7 +4,7 @@ This is the project's canonical living improvement backlog, seeded from the orig
 
 ## How to use this file
 
-1. Read this backlog before starting **every** project improvement. Take the first unfinished item unless the user chooses a different one; add new improvement requests here before implementing them.
+1. Read this backlog and [MOSCOW_PRIORITIZATION.md](MOSCOW_PRIORITIZATION.md) before starting **every** project improvement. Select work by expected user/product value and necessary safety dependencies, not the lowest unfinished number, unless the user chooses a specific item. Add new improvement requests here before implementing them.
 2. Before committing, tell the user exactly what changed and what remains unverified, as requested in this project chat.
 3. In the same work session, update the item with the commit, test, database, and deployment evidence. Mark it **Done** as soon as its acceptance criteria are verified; otherwise leave its accurate unfinished status. Do not start another backlog item until this update is made.
 4. Keep database, GitHub, and Vercel states separate. A migration applied to Supabase does not prove the app was deployed; a Git push does not prove the migration was applied.
@@ -18,7 +18,20 @@ Status key: **Done** = acceptance criteria verified; **Verify release** = implem
 - **Partial:** 3–4.
 - **Verify release:** 5.
 - **Open:** 6–50 (45 items).
-- **Next implementation item:** 6, after checking the release status of 5 and deciding whether to finish 3–4 first.
+- **Next work:** finish the already-started 3–5, then prioritize the manager-facing report archive (25–26) and forecast evaluation (20–21). Complete the remaining Must security and verification items before releasing those increments. This is the user's value-first reprioritization of the original numeric order.
+
+## MoSCoW priority
+
+Priority is separate from implementation status. This provisional, **value-first** ranking assumes the current single-restaurant dissertation prototype and the goals in [PRD.md](PRD.md). It favors manager-facing benefits (retrieving past reports and measuring forecast quality) while retaining data protection and release checks as non-negotiable gates. The per-item rationale and recommended sequence are in [MOSCOW_PRIORITIZATION.md](MOSCOW_PRIORITIZATION.md). Keep original item numbers as stable identifiers; prioritize by value and dependency rather than number where they differ.
+
+| Priority | Item numbers |
+|---|---|
+| **Must** | 1, 2, 3, 4, 5, 7, 8, 20, 21, 25, 26, 35, 37, 39, 41, 43 |
+| **Should** | 6, 9, 10, 11, 12, 13, 15, 17, 18, 23, 29, 32, 33, 34, 36, 38, 40, 42, 45, 46, 47, 48, 49, 50 |
+| **Could** | 14, 16, 19, 22, 24, 27, 30, 31, 44 |
+| **Won't for now** | 28 |
+
+**Done** items 1–2 remain Must because priority describes their importance, not whether they still need work. Revisit this ranking if manager research, usage data, a second restaurant, or release criteria change the expected value.
 
 ## Phase 1 — Data correctness and security
 
