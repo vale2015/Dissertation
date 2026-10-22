@@ -4,24 +4,26 @@ RFS is a full-stack dissertation project for small independent restaurants. It c
 
 The living checklist for the original architecture-improvement plan is [docs/IMPROVEMENT_TRACKER.md](docs/IMPROVEMENT_TRACKER.md). Update it as each improvement is verified.
 
-The current application uses a Next.js backend-for-frontend (BFF) in front of a Flask API. The browser never receives the authentication token: Next.js stores it in an HttpOnly cookie and adds it as a bearer token when forwarding protected requests to Flask.
+The current application uses a Next.js backend-for-frontend (BFF) in front of a Flask API. The JWT is carried in an HttpOnly cookie that browser JavaScript cannot read; Next.js reads it server-side and adds it as a bearer token when forwarding protected requests to Flask. The browser does not connect directly to PostgreSQL or the Supabase Data API.
 
 ## Current architecture
 
 ```mermaid
 flowchart LR
-    U[Restaurant manager] --> N[Next.js 16 / React 19]
-    N --> A[Next.js auth routes]
-    N --> P[Next.js API proxy]
-    A -->|login and session checks| F[Flask 3 REST API]
-    P -->|JWT bearer token| F
-    F --> S[Controllers and services]
-    S --> D[(Supabase PostgreSQL)]
-    S --> M[Random Forest pipeline]
-    S --> W[Open-Meteo weather API]
-    S --> T[Ticketmaster, Skiddle and TheSportsDB APIs]
-    M --> X[demand_model.pkl]
+    B["Manager's browser"] -->|"HTTPS and HttpOnly session cookie"| N
+    subgraph V["Vercel - two projects"]
+        N["Next.js 16 / React 19<br/>pages, auth routes and API proxy"]
+        F["Flask 3 API<br/>controllers and services"]
+        C["Per-instance weather and events cache"]
+    end
+    N -->|"Server-side JWT bearer token"| F
+    F -->|"SQLAlchemy / psycopg2"| D[("Supabase PostgreSQL")]
+    F -->|"Predict and retrain"| M["Random Forest model artifact"]
+    F -->|"Weather and events routes"| P["Open-Meteo, Ticketmaster,<br/>Skiddle and TheSportsDB"]
+    F -->|"Cache optional provider context"| C
 ```
+
+The frontend and backend are separate Vercel projects. Management reports are assembled by Flask on demand from forecast and database data; they read optional weather and event context from the current instance's cache instead of calling providers during report generation.
 
 ### Request and authentication flow
 
@@ -97,7 +99,9 @@ Operational roles continue to come from `public.staff_roles` (for example Kitche
 
 ### Database migration
 
-The forward-only database history is in `supabase/migrations/`. It includes the original application tables, both staff-account changes, the demand-date primary key, server-only access protection for bookings, and shared authentication rate-limit counters. See `supabase/README.md` for fresh-database setup, live-project reconciliation, and verification. The older `backend/migrations/001_staff_accounts.sql` is a combined manual script retained for reference; do not apply it alongside the timestamped migrations. Its rollback remains manual and retains audit history.
+The seven forward-only migrations in [`supabase/migrations/`](supabase/migrations/) cover the original application tables, both staff-account changes, the demand-date primary key, shared authentication rate-limit counters, and server-only access to all application tables and sequences. Flask connects directly to PostgreSQL through SQLAlchemy; it does not use Supabase Auth or the browser-facing Data API. All ten application tables have RLS enabled, and the existing `anon` and `authenticated` table/sequence grants have been revoked. Future Supabase-managed default grants still need verification before access-control item 4 can be marked complete; see the [improvement tracker](docs/IMPROVEMENT_TRACKER.md).
+
+See [`supabase/README.md`](supabase/README.md) for fresh-database setup, live-project reconciliation, and the read-only [`verify_access.sql`](supabase/verify_access.sql) check. The older `backend/migrations/001_staff_accounts.sql` is a combined manual script retained for reference; do not apply it alongside the timestamped migrations. Its rollback remains manual and retains audit history. The [migration replay workflow](.github/workflows/migration-replay.yml) replays the SQL against PostgreSQL 17 and checks table access, but a passing GitHub Actions run has not yet been observed because the account's billing lock prevents its runner from starting.
 
 ### Invitation and recovery lifecycle
 
@@ -111,6 +115,8 @@ The current manager interface creates active accounts directly and does not emai
 
 ```text
 DissertationApp/
+├── .agents/skills/          # Project skills, including board-card status moves
+├── .github/workflows/       # PostgreSQL migration replay check
 ├── backend/
 │   ├── app/
 │   │   ├── api/             # Flask blueprints and route definitions
@@ -142,7 +148,12 @@ DissertationApp/
 │       └── utils/
 ├── Additional Documentation/ # Research material and architecture diagrams
 ├── docs/                     # Product requirements and project documentation
-├── supabase/                 # Versioned PostgreSQL migrations and setup guide
+├── supabase/
+│   ├── migrations/          # Seven forward-only PostgreSQL migrations
+│   ├── schema_snapshot.sql  # Read-only schema fingerprint
+│   ├── verify_access.sql    # Read-only role and grant assertions
+│   └── README.md            # Migration and verification guide
+├── AGENTS.md                # Improvement and backlog coordination rules
 ├── package.json              # Root development commands
 └── README.md
 ```
@@ -165,6 +176,8 @@ The application uses PostgreSQL tables including:
 | `public.auth_rate_limits` | Server-only, HMAC-keyed login and public account-token throttling counters |
 
 Creating, updating, or deleting a booking rebuilds the affected daily aggregate in `restaurant_demand_features`. Mondays are treated as closed days and cannot accept bookings.
+
+Booking mutation and aggregate rebuilding share a transaction. Date-scoped transaction locks prevent concurrent rebuilds for the same day from conflicting, and `restaurant_demand_features` has a demand-date primary key.
 
 ## Machine-learning pipeline
 
@@ -312,6 +325,19 @@ python -m pip install -r requirements-dev.txt
 python -m pytest
 ```
 
+## Deployment
+
+The `main` branch is connected to two Vercel projects. A push to `main` builds and deploys the frontend and backend independently; it does **not** apply Supabase migrations. Apply and verify any new database migration separately before releasing code that depends on it.
+
+| Project | Source directory | Production address |
+|---|---|---|
+| Next.js frontend and BFF | `frontend/` | [dissertation-valeriogerardi-5538s-projects.vercel.app](https://dissertation-valeriogerardi-5538s-projects.vercel.app/) |
+| Flask API | `backend/` | [dissertation-backend-coral.vercel.app](https://dissertation-backend-coral.vercel.app/) |
+
+Configure `BACKEND_API_URL` in the frontend project's server-side environment with the backend's `/api` URL. Configure the backend project's JWT key, PostgreSQL connection, `FRONTEND_URL`, restaurant location, and any optional event-provider keys in its own environment. Keep database credentials and API keys out of the repository and all `NEXT_PUBLIC_` variables.
+
+After a release, check the frontend home page, backend `/api/health/`, and backend `/api/health/database`. A `200` from these endpoints confirms basic availability and database connectivity, not that every authenticated workflow works. As of 22 October 2026, both production projects were `READY` for Git commit `fa4fd77`, and these three checks returned `200`. The separate GitHub migration replay check was still blocked by an account billing issue; consult the tracker for the current verification state.
+
 ## HTTP API
 
 Flask listens at `http://127.0.0.1:5000`. Except for health and authentication, direct Flask requests require an `Authorization: Bearer <token>` header. The web application normally accesses protected endpoints through the same-origin Next.js path `/api/backend/<resource>`.
@@ -408,7 +434,7 @@ Research artifacts, contextual interviews, source datasets, notebooks, sequence 
 
 ## Project status and limitations
 
-RFS is an academic prototype intended for dissertation evaluation and controlled deployment. Forecast quality depends on the quantity and representativeness of the restaurant's historical data. Reports are generated on demand rather than archived, staff members do not yet have personal shift views, and model retraining is exposed through an authenticated API route rather than a scheduled pipeline. Broader commercial use would require production observability, managed secret rotation, formal migration and backup procedures, finer verified-client-IP rate limiting, retention policies, security testing, and wider end-to-end coverage.
+RFS is an academic prototype intended for dissertation evaluation and controlled deployment. Forecast quality depends on the quantity and representativeness of the restaurant's historical data. Reports are generated on demand rather than archived, staff members do not yet have personal shift views, and model retraining is exposed through an authenticated API route rather than a scheduled pipeline. Broader commercial use would require production observability, managed secret rotation, verified migration replay and backup/restore procedures, finer verified-client-IP rate limiting, retention policies, security testing, and wider end-to-end coverage.
 
 ## Author
 
