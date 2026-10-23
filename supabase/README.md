@@ -49,19 +49,31 @@ The migration-history insert was conditional on that live fingerprint, all ten
 application tables, all five later migration versions, and absence of the
 baseline row. A subsequent read confirmed all six ordered versions. The
 GitHub [migration replay workflow](../.github/workflows/migration-replay.yml)
-is committed as `4365f46` on `codex/migration-replay-check`. Its first
+was introduced in `4365f46`. Its first
 [run](https://github.com/vale2015/Dissertation/actions/runs/39799268212)
-never started a runner: GitHub reports that the account is locked due to a
-billing issue. On 2026-10-22, the CLI migration list matched all seven applied
+never started a runner because of a GitHub account billing lock. On 2026-10-22,
+the CLI migration list matched all seven applied
 versions and `db push --dry-run --skip-vault --project-ref szvihzuaybmqkxwkoyli`
 reported only `20261022161025_report_history.sql` pending, without applying it.
 The local Supabase CLI/Docker stack remains unavailable here. Do not mistake
-the embedded PostgreSQL check for a full Supabase-stack reset, and do not push
-future migrations until the workflow and dry run have been verified.
+the embedded PostgreSQL check or GitHub's PostgreSQL-container replay for a
+full Supabase-stack reset. Before future migrations, run both the replay and
+dry-run gates again against the proposed change.
 
 A rerun of [workflow 39803299668](https://github.com/vale2015/Dissertation/actions/runs/39803299668)
 on 2026-10-22 again failed before a runner started; GitHub still reported an
 account billing lock. The CLI dry-run passed, but the workflow gate did not.
+
+On 2026-10-23, [main replay 39816288254](https://github.com/vale2015/Dissertation/actions/runs/39816288254)
+passed on its third attempt. The report-history branch's
+[replay 39930072476](https://github.com/vale2015/Dissertation/actions/runs/39930072476)
+passed with the eighth migration and expanded privilege checks. A repeat CLI
+list and dry-run showed seven matching applied versions and only that migration
+pending. A later read-only live check found version `20261022161025` recorded
+and `public.report_history` present; this work session did not run `db push`.
+Live checks confirmed RLS enabled, no client policies, no effective
+`anon`/`authenticated` table DML or sequence usage, and retained `postgres`
+table access. The official local Supabase-stack reset is still outstanding.
 
 For an official full-stack verification when Docker and the CLI are available:
 run **local** `supabase db reset` (never `--linked`), compare the resulting
@@ -137,8 +149,9 @@ cannot change those defaults. Before treating item 4 as complete, verify and
 disable the project's “Automatically expose new tables/functions” Data API
 setting in Supabase, or otherwise remove those platform grants, then create a
 disposable object to verify it has no client privileges. This is distinct from
-the already-restricted existing application objects. The GitHub replay job is
-also unverified while account billing prevents Actions runners from starting.
+the already-restricted existing application objects. The GitHub replay job
+passed on 2026-10-23; that does not resolve the platform-managed future-object
+default-grant issue.
 
 `auth_rate_limit_counters` creates a server-only table for hashed login-email,
 login-IP, and public token-endpoint counters. It has no browser/Data API policy.
