@@ -15,3 +15,9 @@ The staffing page sends POST to create a run; generating a run is no longer a GE
 Do not call item 20 Done until the new migration replays successfully, the live Supabase privileges and snapshot immutability are checked, and the production staffing page creates and reads a complete run without losing an earlier run. Confirm the dashboard points at the new active run and an incomplete/failed run leaves the prior one active. The official local Supabase reset and the future-object default-grant issue remain separately tracked under items 3 and 4; this migration explicitly revokes client access from its new objects.
 
 The page currently creates a new run on load or horizon change. A later UX increment can make generation explicit to avoid duplicate runs from refreshes, but no old run is overwritten by those duplicates.
+
+## Verification state — 2026-10-23
+
+Feature commit `82b43b7` passed all 197 backend tests, frontend lint and build, and [GitHub migration replay](https://github.com/vale2015/Dissertation/actions/runs/39935073350). A Supabase CLI dry-run showed only this migration pending; the CLI then applied it. Read-only live checks confirmed all 212 legacy staffing rows remain, all three new tables have RLS, all three immutability triggers exist, and client roles have no table, sequence, or trigger-function access. No forecast run was created by the preview attempt.
+
+Both Vercel previews built, but the frontend preview's backend proxy still targets the old production backend, so the new run request returned an HTML 404 rather than reaching the new backend preview. The new backend preview is behind Vercel protection. A temporary-bypass fetch was rejected by auto-review; do not change protection or claim end-to-end verification on this evidence. Item 20 remains **Partial**, and the production application code is unchanged.
