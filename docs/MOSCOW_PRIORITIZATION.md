@@ -1,21 +1,20 @@
 # MoSCoW prioritization of architecture improvements
 
-This is a **value-first** product-priority view of all 50 items in the canonical [improvement tracker](IMPROVEMENT_TRACKER.md), not a second backlog. It reflects the [PRD](PRD.md): a single-restaurant dissertation prototype focused on helping managers prepare services, reuse reports, and judge whether forecasts are accurate. Last reviewed: 2026-10-22.
+This is a **value-first** product-priority view of all 50 items in the canonical [improvement tracker](IMPROVEMENT_TRACKER.md), not a second backlog. It reflects the [PRD](PRD.md): a single-restaurant dissertation prototype focused on helping managers prepare services, reuse reports, and judge whether forecasts are accurate. Last reviewed: 2026-10-23.
 
-**Must** = direct, high-value product outcomes or the minimum safeguards and tests required to deliver them safely. **Should** = meaningful usability, scalability, or operational benefit that can follow the next product increment. **Could** = lower-evidence optimization or structural work. **Won't for now** = outside current single-restaurant scope; reconsider if the product direction changes.
+**Must** = direct, high-value product outcomes or the minimum safeguards and tests required to deliver them safely. **Should** = meaningful usability, scalability, or operational benefit that can follow the next product increment. **Could** = lower-evidence optimization or structural work. **Won't for now** = explicitly deferred or outside current single-restaurant scope; reconsider if the user or product direction changes.
 
-Priority is independent of delivery state. A Must can already be **Done**, and a Could can be **Open**. Trello's **READY / IN PROGRESS / DONE** lists describe work state, not MoSCoW priority. Original numbers remain stable identifiers, but this ranking is an explicit user-directed departure from numeric implementation order. These priorities are provisional because there are no measured traffic, error-budget, or delivery-deadline constraints yet.
+Priority is independent of delivery state. A Must can already be **Done**, and a Could can be **Open**. The [tracker](IMPROVEMENT_TRACKER.md) alone records work state; Trello is not used. Original numbers remain stable identifiers, but this ranking is an explicit user-directed departure from numeric implementation order. These priorities are provisional because there are no measured traffic, error-budget, or delivery-deadline constraints yet.
 
 ## Recommended value-first sequence
 
-1. **Finish commitments already in flight:** close the migration/access work in 3–4 and verify the release of 5. This protects existing user data and avoids building on uncertain deployment state.
-2. **Deliver reusable reports:** tackle 25 and 26 together so managers can generate reports without optional provider delays and download past reports. Add relevant security, database, and browser tests before calling the feature Done.
-3. **Prove forecast usefulness:** implement immutable runs in 20, then forecast-versus-actual tracking in 21. This enables the PRD's accuracy metrics rather than merely producing predictions.
-4. **Apply release gates throughout, not as a late phase:** complete 7–8 and the relevant portions of 35, 37, 39, 41, and 43 before shipping the affected flows. The remaining Should items follow measured bottlenecks and user feedback.
+1. **Prove forecast usefulness next:** item 20 is Done; implement forecast-versus-actual tracking in 21 so managers can judge prediction accuracy. The report foundations in 25–26 are also Done.
+2. **Maintain the remaining safety gates:** close the migration/access work in 3–4 while delivering new features. Item 5's implemented login safeguards remain in place, but the user deferred their live verification on 2026-10-23.
+3. **Apply release gates throughout, not as a late phase:** complete 7–8 and the relevant portions of 35, 37, 39, 41, and 43 before shipping the affected flows. The remaining Should items follow measured bottlenecks and user feedback.
 
 The direct product-value leaders are **26 (past reports)** and **21 (forecast accuracy tracking)**. Items 25 and 20 are their respective dependencies. Security and test work remains Must because a feature that risks customer data or cannot be verified is not ready for users.
 
-## Must — user value and minimum safe-delivery gates (16)
+## Must — user value and minimum safe-delivery gates (15)
 
 | # | Improvement | Why Must |
 |---|---|---|
@@ -23,7 +22,6 @@ The direct product-value leaders are **26 (past reports)** and **21 (forecast ac
 | 2 | Prevent concurrent demand recalculation conflicts | Prevent lost or conflicting aggregates. Already Done. |
 | 3 | Introduce complete database migrations | Complete work already started so new features have reproducible schema changes. |
 | 4 | Verify and restrict Supabase table access | Protect customer and staff data before adding more stored reports. |
-| 5 | Add login throttling and account protection | Finish release verification for the public sign-in safeguard. |
 | 7 | Strengthen browser security headers | Protect authenticated user sessions and downloads. |
 | 8 | Add API request limits and validation | Keep booking and report inputs safe and predictable. |
 | 20 | Create immutable forecast runs | Required to compare a prediction with the eventual actual without rewriting history. |
@@ -79,10 +77,11 @@ The direct product-value leaders are **26 (past reports)** and **21 (forecast ac
 | 31 | Introduce TypeScript incrementally | Reduce type errors after API contracts are stabilized. |
 | 44 | Align deployment regions | Revisit when measured cross-region latency warrants a move. |
 
-## Won't for now — outside the current product scope (1)
+## Won't for now — explicitly deferred or outside current scope (2)
 
 | # | Improvement | Why not now / revisit trigger |
 |---|---|---|
+| 5 | Verify login throttling and account protection in production | The user declined further work on this item on 2026-10-23. Existing protections remain deployed; live `429`/`Retry-After` and recovery are unverified. Reopen if requested or if login issues appear. |
 | 28 | Separate global identity from restaurant membership | Multi-restaurant administration is outside the current PRD. Revisit only if item 27 changes the tenancy decision. |
 
-This classification does **not** mark item 28 Deferred or Done in the tracker: it remains an Open, conditional architecture item. No Trello cards or lists are moved by this document.
+Item 5 is Deferred in the tracker; item 28 remains Open because its trigger is conditional rather than a user decision to stop work. No board is used.
