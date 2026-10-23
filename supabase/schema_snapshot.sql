@@ -9,7 +9,9 @@ WITH application_tables AS (
       AND c.relname IN (
           'users', 'bookings', 'restaurant_demand_features', 'staff_roles',
           'staffing_rules', 'staff_cost_forecast', 'business_settings',
-          'user_account_tokens', 'staff_account_audit', 'auth_rate_limits'
+          'user_account_tokens', 'staff_account_audit', 'auth_rate_limits',
+          'report_history', 'forecast_runs', 'forecast_run_days',
+          'active_forecast_run'
       )
 ), snapshot AS (
     SELECT jsonb_agg(jsonb_build_object(

@@ -1,4 +1,5 @@
-from datetime import datetime
+import json
+from datetime import date, timedelta
 from sqlalchemy import text
 
 from app.db.dbcon import SessionLocal
@@ -59,19 +60,74 @@ def _get_all_staff_roles(db):
         for row in rows
     }
 
-# Remove existing forecast rows for the same date to prevent duplicates.
-def _delete_existing_forecast_for_date(db, forecast_date):
-    db.execute(
-        text("""
-            DELETE FROM public.staff_cost_forecast
-            WHERE forecast_date = :forecast_date
-        """),
-        {"forecast_date": forecast_date}
-    )
+class ForecastRunError(ValueError):
+    pass
+
+
+def _validated_forecast_days(forecast_result, days_ahead):
+    if days_ahead not in (7, 10) or not isinstance(forecast_result, dict):
+        raise ForecastRunError("A complete 7- or 10-day forecast is required.")
+    try:
+        base_date = date.fromisoformat(forecast_result["selected_date"])
+        days = forecast_result["forecast"]
+        if not isinstance(days, list) or len(days) != days_ahead:
+            raise ValueError
+        if not isinstance(forecast_result["model_version"], str) or not forecast_result["model_version"]:
+            raise ValueError
+        for index, day in enumerate(days, 1):
+            if date.fromisoformat(day["date"]) != base_date + timedelta(days=index):
+                raise ValueError
+            covers = day["predicted_total_covers"]
+            if isinstance(covers, bool) or not isinstance(covers, int) or covers < 0:
+                raise ValueError
+            if day.get("closed") and covers != 0:
+                raise ValueError
+    except (KeyError, TypeError, ValueError) as error:
+        raise ForecastRunError("The prediction is incomplete; the active run was not changed.") from error
+    return days
+
+
+def _insert_forecast_run(db, result, days_ahead):
+    return db.execute(text("""
+        INSERT INTO public.forecast_runs (
+            selected_date, days_ahead, model_name, model_version, prediction
+        ) VALUES (
+            :selected_date, :days_ahead, :model_name, :model_version,
+            CAST(:prediction AS jsonb)
+        ) RETURNING id
+    """), {
+        "selected_date": result["selected_date"],
+        "days_ahead": days_ahead,
+        "model_name": result["model"],
+        "model_version": result["model_version"],
+        "prediction": json.dumps(result, separators=(",", ":"), allow_nan=False),
+    }).scalar_one()
+
+
+def _insert_forecast_day(db, run_id, index, day):
+    db.execute(text("""
+        INSERT INTO public.forecast_run_days (
+            run_id, day_index, forecast_date, predicted_covers, closed
+        ) VALUES (:run_id, :day_index, :forecast_date, :predicted_covers, :closed)
+    """), {
+        "run_id": run_id, "day_index": index, "forecast_date": day["date"],
+        "predicted_covers": day["predicted_total_covers"],
+        "closed": bool(day.get("closed", False)),
+    })
+
+
+def _activate_forecast_run(db, run_id):
+    db.execute(text("""
+        INSERT INTO public.active_forecast_run (singleton_id, run_id)
+        VALUES (1, :run_id)
+        ON CONFLICT (singleton_id) DO UPDATE SET
+            run_id = EXCLUDED.run_id, activated_at = now()
+    """), {"run_id": run_id})
 
 # Insert one staff-cost forecast row into the database.
 def _insert_staff_cost_forecast_row(
     db,
+    run_id,
     forecast_date,
     predicted_covers,
     department,
@@ -84,6 +140,7 @@ def _insert_staff_cost_forecast_row(
     db.execute(
         text("""
             INSERT INTO public.staff_cost_forecast (
+                run_id,
                 forecast_date,
                 predicted_covers,
                 department,
@@ -95,6 +152,7 @@ def _insert_staff_cost_forecast_row(
                 generated_at
             )
             VALUES (
+                :run_id,
                 :forecast_date,
                 :predicted_covers,
                 :department,
@@ -103,10 +161,11 @@ def _insert_staff_cost_forecast_row(
                 :hourly_rate,
                 :shift_hours,
                 :estimated_cost,
-                :generated_at
+                now()
             )
         """),
         {
+            "run_id": run_id,
             "forecast_date": forecast_date,
             "predicted_covers": predicted_covers,
             "department": department,
@@ -115,7 +174,6 @@ def _insert_staff_cost_forecast_row(
             "hourly_rate": hourly_rate,
             "shift_hours": shift_hours,
             "estimated_cost": estimated_cost,
-            "generated_at": datetime.utcnow(),
         }
     )
 
@@ -132,10 +190,7 @@ def generate_staff_cost_forecast(days_ahead=7, selected_date=None):
         selected_date=selected_date,
     )
 
-    if "forecast" not in forecast_result:
-        return forecast_result
-
-    forecast_days = forecast_result.get("forecast", [])
+    forecast_days = _validated_forecast_days(forecast_result, days_ahead)
     generated_rows = []
     daily_totals = []
 
@@ -143,14 +198,15 @@ def generate_staff_cost_forecast(days_ahead=7, selected_date=None):
         try:
             staffing_rules = _get_all_staffing_rules(db)
             staff_roles = _get_all_staff_roles(db)
+            run_id = _insert_forecast_run(db, forecast_result, days_ahead)
 
-            for day in forecast_days:
+            for index, day in enumerate(forecast_days, 1):
                 forecast_date = day["date"]
                 predicted_covers = int(day.get("predicted_total_covers", 0) or 0)
                 is_closed = bool(day.get("closed", False))
                 closure_reason = day.get("closure_reason")
 
-                _delete_existing_forecast_for_date(db, forecast_date)
+                _insert_forecast_day(db, run_id, index, day)
 
                 if is_closed:
                     daily_totals.append({
@@ -168,18 +224,9 @@ def generate_staff_cost_forecast(days_ahead=7, selected_date=None):
                 rule = _get_staffing_rule_for_covers(staffing_rules, predicted_covers)
 
                 if not rule:
-                    daily_totals.append({
-                        "forecast_date": forecast_date,
-                        "predicted_covers": predicted_covers,
-                        "total_estimated_cost": 0.0,
-                        "closed": False,
-                        "closure_reason": None,
-                        "demand_level": None,
-                        "message": "No staffing rule found for this demand level",
-                        "rule_applied": None,
-                        "operational_roles": [],
-                    })
-                    continue
+                    raise ForecastRunError(
+                        "No staffing rule covers every forecast day; the active run was not changed."
+                    )
 
                 day_total_cost = 0.0
                 day_roles = []
@@ -195,7 +242,9 @@ def generate_staff_cost_forecast(days_ahead=7, selected_date=None):
                     )
 
                     if not role:
-                        continue
+                        raise ForecastRunError(
+                            "A required staff role is missing; the active run was not changed."
+                        )
 
                     hourly_rate = float(role.get("hourly_rate", 0) or 0)
                     shift_hours = float(role.get("standard_shift_hours", 0) or 0)
@@ -206,6 +255,7 @@ def generate_staff_cost_forecast(days_ahead=7, selected_date=None):
 
                     _insert_staff_cost_forecast_row(
                         db=db,
+                        run_id=run_id,
                         forecast_date=forecast_date,
                         predicted_covers=predicted_covers,
                         department=role["department"],
@@ -250,6 +300,7 @@ def generate_staff_cost_forecast(days_ahead=7, selected_date=None):
                     "operational_roles": day_roles,
                 })
 
+            _activate_forecast_run(db, run_id)
             db.commit()
 
         except Exception:
@@ -258,8 +309,10 @@ def generate_staff_cost_forecast(days_ahead=7, selected_date=None):
 
     return {
         "message": "Staff cost forecast generated successfully",
+        "run_id": run_id,
+        "model_version": forecast_result["model_version"],
         "days_ahead": days_ahead,
-        "selected_date": selected_date,
+        "selected_date": forecast_result["selected_date"],
         "daily_totals": daily_totals,
         "results": generated_rows,
     }
@@ -279,11 +332,56 @@ def get_all_staff_cost_forecast_records():
                     estimated_cost,
                     generated_at
                 FROM public.staff_cost_forecast
+                WHERE run_id = (SELECT run_id FROM public.active_forecast_run WHERE singleton_id = 1)
+                   OR (run_id IS NULL AND NOT EXISTS (SELECT 1 FROM public.active_forecast_run))
                 ORDER BY forecast_date ASC, department ASC, role_name ASC
             """)
         ).mappings().all()
 
         return [dict(row) for row in result]
+
+
+def list_forecast_runs():
+    with SessionLocal() as db:
+        rows = db.execute(text("""
+            SELECT r.id, r.selected_date, r.days_ahead, r.model_name,
+                   r.model_version, r.generated_at,
+                   COALESCE(a.run_id = r.id, false) AS active
+            FROM public.forecast_runs r
+            LEFT JOIN public.active_forecast_run a ON a.singleton_id = 1
+            ORDER BY r.id DESC LIMIT 20
+        """)).mappings().all()
+    return [_serializable_run_row(row) for row in rows]
+
+
+def _serializable_run_row(row):
+    return {
+        key: value.isoformat() if hasattr(value, "isoformat") else value
+        for key, value in row.items()
+    }
+
+
+def get_forecast_run(run_id):
+    with SessionLocal() as db:
+        row = db.execute(text("""
+            SELECT r.id, r.selected_date, r.days_ahead, r.model_name,
+                   r.model_version, r.generated_at, r.prediction,
+                   COALESCE(a.run_id = r.id, false) AS active
+            FROM public.forecast_runs r
+            LEFT JOIN public.active_forecast_run a ON a.singleton_id = 1
+            WHERE r.id = :run_id
+        """), {"run_id": run_id}).mappings().first()
+        if row is None:
+            return None
+        staff_rows = db.execute(text("""
+            SELECT forecast_date, predicted_covers, department, role_name,
+                   required_staff, hourly_rate, shift_hours, estimated_cost
+            FROM public.staff_cost_forecast
+            WHERE run_id = :run_id
+            ORDER BY forecast_date, department, role_name
+        """), {"run_id": run_id}).mappings().all()
+    return {**_serializable_run_row(row),
+            "staffing": [_serializable_run_row(staff) for staff in staff_rows]}
 
 # Retrieves staff-cost forecast records for a selected forecast date.
 def get_staff_cost_forecast_by_date_service(forecast_date):
@@ -303,6 +401,8 @@ def get_staff_cost_forecast_by_date_service(forecast_date):
                     generated_at
                 FROM public.staff_cost_forecast
                 WHERE forecast_date = :forecast_date
+                  AND (run_id = (SELECT run_id FROM public.active_forecast_run WHERE singleton_id = 1)
+                    OR (run_id IS NULL AND NOT EXISTS (SELECT 1 FROM public.active_forecast_run)))
                 ORDER BY department ASC, role_name ASC
             """),
             {"forecast_date": forecast_date}

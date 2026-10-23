@@ -15,10 +15,10 @@ Status key: **Done** = acceptance criteria verified; **Verify release** = implem
 ## Current position
 
 - **Done:** 1–2, 25–26.
-- **Partial:** 3–4.
+- **Partial:** 3–4, 20.
 - **Verify release:** 5.
-- **Open:** 6–24 and 27–50 (43 items).
-- **Selected work:** item 26 is complete. The next value-first feature is item 20, immutable forecast runs, followed by item 21, forecast-versus-actual tracking. Complete the relevant Must security and verification gates before releasing those increments.
+- **Open:** 6–19, 21–24, and 27–50 (42 items).
+- **Selected work:** item 26 is complete. Item 20, immutable forecast runs, is in progress, followed by item 21, forecast-versus-actual tracking. Complete the relevant Must security and verification gates before releasing those increments.
 
 ## MoSCoW priority
 
@@ -60,7 +60,7 @@ Priority is separate from implementation status. This provisional, **value-first
 - [ ] **17. Move training out of web requests — Open.** Use a manager-only POST to enqueue one durable training job, expose status, and keep CPU work out of interactive requests.
 - [ ] **18. Store model files in durable object storage — Open.** Save immutable model artifacts privately with checksums, metadata, an active pointer, and rollback support.
 - [ ] **19. Add a model registry — Open.** Record model version, training window, features, parameters, metrics, creator, and active/retired state.
-- [ ] **20. Create immutable forecast runs — Open.** Build and validate a complete run, then atomically activate it without deleting earlier runs.
+- [ ] **20. Create immutable forecast runs — Partial.** The implementation branch `codex/immutable-forecast-runs` adds a run/day schema, model-artifact fingerprint, complete-run validation, transactional insert/activation, protected historical run reads, and active-run staffing/dashboard queries without deleting earlier runs. The staffing page changes generation from GET to POST and shows the saved run ID. Snapshot rows reject UPDATE/DELETE; the migration explicitly revokes client access to its new objects. See [FORECAST_RUNS.md](FORECAST_RUNS.md). The new unit tests and full backend suite passed (197 tests); frontend lint passed with one pre-existing warning and the webpack production build passed after a Windows/OneDrive `EPERM` retry. A Supabase CLI dry-run reported only `20261023104500_immutable_forecast_runs.sql` pending; it did not apply the migration. **Remaining:** replay the migration, verify it in live Supabase, test the released creation/read/rollback behavior and dashboard, and confirm both deployments before Done. No migration has been applied to live Supabase for this item.
 - [ ] **21. Add prediction-versus-actual tracking — Open.** Preserve forecasts, compare with actual demand, segment accuracy, and expose trends.
 - [ ] **22. Optimize prediction requests — Open.** Query only required history, cache a versioned model per warm instance, and measure cold/warm latency.
 
