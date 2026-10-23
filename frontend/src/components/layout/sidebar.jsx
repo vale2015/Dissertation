@@ -109,7 +109,8 @@ function SidebarContent() {
   const isDashboardPage = pathname === "/dashboard";
   const isLocalEventsPage = pathname === "/dashboard/local-events";
   const isAccountPage = pathname === "/dashboard/staff" || pathname === "/dashboard/profile";
-  const isDateIndependentPage = isDashboardPage || isLocalEventsPage || isAccountPage;
+  const isReportHistoryPage = pathname.startsWith("/dashboard/reports/history");
+  const isDateIndependentPage = isDashboardPage || isLocalEventsPage || isAccountPage || isReportHistoryPage;
 
   /**
    * Synchronise selectedDate with the URL query string.
@@ -254,7 +255,7 @@ function SidebarContent() {
    * single-day pages.
    */
   const withDate = (href) => {
-    if (["/dashboard","/dashboard/local-events","/dashboard/staff","/dashboard/profile"].includes(href)) {
+    if (["/dashboard","/dashboard/local-events","/dashboard/staff","/dashboard/profile","/dashboard/reports/history"].includes(href)) {
       return href;
     }
 
@@ -316,6 +317,11 @@ function SidebarContent() {
         permission: PERMISSIONS.VIEW_REPORTS,
       },
       {
+        label: "Past Reports",
+        href: "/dashboard/reports/history",
+        permission: PERMISSIONS.VIEW_REPORTS,
+      },
+      {
         label: "Staff Management",
         href: "/dashboard/staff",
         permission: PERMISSIONS.MANAGE_STAFF_ACCOUNTS,
@@ -351,8 +357,8 @@ function SidebarContent() {
                   available data
                 </p>
               </>
-            ) : isAccountPage ? (
-              <><label className="sidebar-calendar-label">Account</label><div className="sidebar-range-box"><span className="sidebar-range-value">No forecast date required</span></div></>
+            ) : isAccountPage || isReportHistoryPage ? (
+              <><label className="sidebar-calendar-label">{isReportHistoryPage ? "Report archive" : "Account"}</label><div className="sidebar-range-box"><span className="sidebar-range-value">No forecast date required</span></div></>
             ) : isLocalEventsPage ? (
               <>
                 <label className="sidebar-calendar-label">
@@ -396,7 +402,7 @@ function SidebarContent() {
 
           <nav className="sidebar-nav">
             {menuItems.filter(item => hasPermission(user, item.permission)).map((item) => {
-              const isActive = pathname === item.href;
+              const isActive = pathname === item.href || (item.href === "/dashboard/reports/history" && isReportHistoryPage);
 
               return (
                 <Link

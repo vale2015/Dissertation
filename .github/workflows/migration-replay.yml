@@ -68,16 +68,16 @@ jobs:
                   AND c.relname IN ('users', 'bookings', 'restaurant_demand_features',
                     'staff_roles', 'staffing_rules', 'staff_cost_forecast',
                     'business_settings', 'user_account_tokens', 'staff_account_audit',
-                    'auth_rate_limits')) <> 10 THEN
-              RAISE EXCEPTION 'Expected all 10 application tables';
+                    'auth_rate_limits', 'report_history')) <> 11 THEN
+              RAISE EXCEPTION 'Expected all 11 application tables';
             END IF;
             IF (SELECT count(*) FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace
                 WHERE n.nspname = 'public' AND c.relkind = 'r' AND c.relrowsecurity
                   AND c.relname IN ('users', 'bookings', 'restaurant_demand_features',
                     'staff_roles', 'staffing_rules', 'staff_cost_forecast',
                     'business_settings', 'user_account_tokens', 'staff_account_audit',
-                    'auth_rate_limits')) <> 10 THEN
-              RAISE EXCEPTION 'Expected RLS on all 10 application tables';
+                    'auth_rate_limits', 'report_history')) <> 11 THEN
+              RAISE EXCEPTION 'Expected RLS on all 11 application tables';
             END IF;
             IF has_table_privilege('anon', 'public.bookings', 'SELECT')
               OR has_table_privilege('authenticated', 'public.bookings', 'SELECT')
