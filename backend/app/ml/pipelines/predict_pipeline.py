@@ -1,4 +1,6 @@
 from datetime import timedelta, date
+import hashlib
+import io
 import os
 import joblib
 import pandas as pd
@@ -110,7 +112,10 @@ def prediction_demand(days_ahead=7, selected_date=None):
         if not os.path.exists(model_path):
             return {"message": "Model file not found. Train the model first."}
         # Load the trained model and the feature columns used during training.
-        saved_artifact = joblib.load(model_path)
+        with open(model_path, "rb") as model_file:
+            model_bytes = model_file.read()
+        model_version = hashlib.sha256(model_bytes).hexdigest()
+        saved_artifact = joblib.load(io.BytesIO(model_bytes))
         model = saved_artifact["model"]
         feature_columns = saved_artifact["feature_columns"]
 
@@ -330,6 +335,7 @@ def prediction_demand(days_ahead=7, selected_date=None):
 
         return {
             "model": "random_forest",
+            "model_version": model_version,
             "forecast_days": days_ahead,
             "based_on_recent_rows": int(len(history_df)),
             "historical_window_used": HISTORICAL_WINDOW_DAYS,

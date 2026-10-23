@@ -75,6 +75,16 @@ Live checks confirmed RLS enabled, no client policies, no effective
 `anon`/`authenticated` table DML or sequence usage, and retained `postgres`
 table access. The official local Supabase-stack reset is still outstanding.
 
+On 2026-10-23, a CLI `db push --dry-run --skip-vault --project-ref
+szvihzuaybmqkxwkoyli` reported only `20261023104500_immutable_forecast_runs.sql`
+pending. [GitHub replay 39935073350](https://github.com/vale2015/Dissertation/actions/runs/39935073350)
+then passed, and the CLI applied that migration to the live project. Read-only
+checks confirmed three new RLS tables and immutability triggers, no client
+table/sequence/function privileges, server access, and all 212 legacy staffing
+rows intact. No new run was created. The production application code has not
+been updated; item 20 remains Partial until the manager-facing release flow is
+verified.
+
 For an official full-stack verification when Docker and the CLI are available:
 run **local** `supabase db reset` (never `--linked`), compare the resulting
 schema, inspect `supabase migration list`, and run `supabase db push --dry-run`.

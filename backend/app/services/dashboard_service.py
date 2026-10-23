@@ -56,6 +56,8 @@ def get_dashboard_summary():
                 SELECT
                     SUM(estimated_cost) AS total_labour_cost
                 FROM public.staff_cost_forecast
+                WHERE run_id = (SELECT run_id FROM public.active_forecast_run WHERE singleton_id = 1)
+                   OR (run_id IS NULL AND NOT EXISTS (SELECT 1 FROM public.active_forecast_run))
             """)
         ).fetchone()
 
@@ -66,6 +68,8 @@ def get_dashboard_summary():
                     forecast_date,
                     SUM(estimated_cost) AS total_day_labour_cost
                 FROM public.staff_cost_forecast
+                WHERE run_id = (SELECT run_id FROM public.active_forecast_run WHERE singleton_id = 1)
+                   OR (run_id IS NULL AND NOT EXISTS (SELECT 1 FROM public.active_forecast_run))
                 GROUP BY forecast_date
                 ORDER BY total_day_labour_cost DESC
                 LIMIT 1

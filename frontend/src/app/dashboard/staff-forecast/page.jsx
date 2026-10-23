@@ -216,6 +216,9 @@ function StaffForecastContent() {
   const [forecastRows, setForecastRows] =
     useState([]);
 
+  const [forecastRunId, setForecastRunId] =
+    useState(null);
+
   const [loading, setLoading] =
     useState(true);
 
@@ -241,7 +244,7 @@ function StaffForecastContent() {
           `&selected_date=${queryDate}`;
 
         const response = await fetch(requestUrl, {
-          method: "GET",
+          method: "POST",
           cache: "no-store",
         });
 
@@ -277,6 +280,7 @@ function StaffForecastContent() {
         }
 
         setForecastRows(mappedRows);
+        setForecastRunId(json?.run_id ?? null);
         setClickedRowDate("");
       } catch (requestError) {
         if (!isMounted) {
@@ -294,6 +298,7 @@ function StaffForecastContent() {
         );
 
         setForecastRows([]);
+        setForecastRunId(null);
         setClickedRowDate("");
       } finally {
         if (isMounted) {
@@ -475,6 +480,9 @@ function StaffForecastContent() {
                   recommendations and cost forecast by
                   department
                 </p>
+                {forecastRunId && (
+                  <p className="dashboard-text">Saved forecast run #{forecastRunId}</p>
+                )}
 
                 <div className="forecast-toggle">
                   <button

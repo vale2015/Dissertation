@@ -68,16 +68,18 @@ jobs:
                   AND c.relname IN ('users', 'bookings', 'restaurant_demand_features',
                     'staff_roles', 'staffing_rules', 'staff_cost_forecast',
                     'business_settings', 'user_account_tokens', 'staff_account_audit',
-                    'auth_rate_limits', 'report_history')) <> 11 THEN
-              RAISE EXCEPTION 'Expected all 11 application tables';
+                    'auth_rate_limits', 'report_history', 'forecast_runs',
+                    'forecast_run_days', 'active_forecast_run')) <> 14 THEN
+              RAISE EXCEPTION 'Expected all 14 application tables';
             END IF;
             IF (SELECT count(*) FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace
                 WHERE n.nspname = 'public' AND c.relkind = 'r' AND c.relrowsecurity
                   AND c.relname IN ('users', 'bookings', 'restaurant_demand_features',
                     'staff_roles', 'staffing_rules', 'staff_cost_forecast',
                     'business_settings', 'user_account_tokens', 'staff_account_audit',
-                    'auth_rate_limits', 'report_history')) <> 11 THEN
-              RAISE EXCEPTION 'Expected RLS on all 11 application tables';
+                    'auth_rate_limits', 'report_history', 'forecast_runs',
+                    'forecast_run_days', 'active_forecast_run')) <> 14 THEN
+              RAISE EXCEPTION 'Expected RLS on all 14 application tables';
             END IF;
             IF has_table_privilege('anon', 'public.bookings', 'SELECT')
               OR has_table_privilege('authenticated', 'public.bookings', 'SELECT')
@@ -92,3 +94,42 @@ jobs:
         run: psql -v ON_ERROR_STOP=1 -At -f supabase/schema_snapshot.sql
       - name: Verify least-privilege access
         run: psql -v ON_ERROR_STOP=1 -f supabase/verify_access.sql
+      - name: Verify forecast snapshots cannot be rewritten
+        run: |
+          psql -v ON_ERROR_STOP=1 <<'SQL'
+          DO $$
+          DECLARE saved_run_id bigint;
+          BEGIN
+            INSERT INTO public.forecast_runs
+              (selected_date, days_ahead, model_name, model_version, prediction)
+            VALUES ('2026-10-22', 7, 'test', 'test-sha', '{}'::jsonb)
+            RETURNING id INTO saved_run_id;
+            INSERT INTO public.forecast_run_days
+              (run_id, day_index, forecast_date, predicted_covers, closed)
+            VALUES (saved_run_id, 1, '2026-10-23', 1, false);
+            INSERT INTO public.staff_cost_forecast
+              (run_id, forecast_date, predicted_covers, department, role_name,
+               required_staff, hourly_rate, shift_hours, estimated_cost)
+            VALUES (saved_run_id, '2026-10-23', 1, 'Kitchen', 'Chef', 1, 12, 8, 96);
+            BEGIN
+              UPDATE public.forecast_runs SET model_version = 'rewritten'
+              WHERE id = saved_run_id;
+              RAISE EXCEPTION 'Expected run update rejection';
+            EXCEPTION WHEN others THEN
+              IF SQLERRM <> 'Forecast snapshots are immutable' THEN RAISE; END IF;
+            END;
+            BEGIN
+              DELETE FROM public.forecast_run_days WHERE run_id = saved_run_id;
+              RAISE EXCEPTION 'Expected day deletion rejection';
+            EXCEPTION WHEN others THEN
+              IF SQLERRM <> 'Forecast snapshots are immutable' THEN RAISE; END IF;
+            END;
+            BEGIN
+              UPDATE public.staff_cost_forecast SET estimated_cost = 1
+              WHERE run_id = saved_run_id;
+              RAISE EXCEPTION 'Expected staffing update rejection';
+            EXCEPTION WHEN others THEN
+              IF SQLERRM <> 'Forecast snapshots are immutable' THEN RAISE; END IF;
+            END;
+          END $$;
+          SQL
