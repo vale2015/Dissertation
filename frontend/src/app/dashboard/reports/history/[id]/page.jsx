@@ -11,6 +11,7 @@ import ReportBookingMix from "@/components/reports/report-booking-mix";
 import ReportDailyTable from "@/components/reports/report-daily-table";
 import ReportInsights from "@/components/reports/report-insights";
 import ReportWarnings from "@/components/reports/report-warnings";
+import ReportAiExplanation from "@/components/reports/report-ai-explanation";
 import {API_BASE} from "@/lib/api";
 import {downloadSavedReport} from "@/lib/report-download";
 import {formatDate} from "@/lib/report-formatters";
@@ -24,6 +25,6 @@ export default function SavedReportPage(){
     <p><Link href="/dashboard/reports/history">← Past reports</Link></p>
     {loading&&<p className="report-state" role="status">Loading saved report…</p>}
     {error&&<p className="report-state report-error" role="alert">{error}</p>}
-    {report&&<div className="management-report"><div className="report-toolbar"><p><strong>Selected date:</strong> {formatDate(report.metadata.selected_date)} · <strong>Forecast period:</strong> {formatDate(report.metadata.start_date)} to {formatDate(report.metadata.end_date)}</p><div className="report-toolbar-actions">{["pdf","csv"].map(format=><button type="button" key={format} disabled={Boolean(busy)} onClick={()=>download(format)}>{busy===format?"Downloading…":`Download ${format.toUpperCase()}`}</button>)}</div></div><ReportSummary report={report}/><ReportFinancials report={report}/><ReportBookingMix reference={report.booking_mix_reference}/><ReportDailyTable report={report}/><ReportInsights items={report.operational_insights}/><ReportWarnings warnings={report.warnings}/></div>}
+    {report&&<div className="management-report"><div className="report-toolbar"><p><strong>Selected date:</strong> {formatDate(report.metadata.selected_date)} · <strong>Forecast period:</strong> {formatDate(report.metadata.start_date)} to {formatDate(report.metadata.end_date)}</p><div className="report-toolbar-actions">{["pdf","csv"].map(format=><button type="button" key={format} disabled={Boolean(busy)} onClick={()=>download(format)}>{busy===format?"Downloading…":`Download ${format.toUpperCase()}`}</button>)}</div></div><ReportAiExplanation reportId={id}/><ReportSummary report={report}/><ReportFinancials report={report}/><ReportBookingMix reference={report.booking_mix_reference}/><ReportDailyTable report={report}/><ReportInsights items={report.operational_insights}/><ReportWarnings warnings={report.warnings}/></div>}
   </div></main></div></div></div>;
 }

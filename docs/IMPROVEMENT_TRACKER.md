@@ -15,11 +15,11 @@ Status key: **Done** = acceptance criteria verified; **Verify release** = implem
 ## Current position
 
 - **Done:** 1–2, 20, 25–26.
-- **Partial:** 3–4.
+- **Partial:** 3–4, 52.
 - **Verify release:** none.
 - **Deferred:** 5.
-- **Open:** 6–19, 21–24, and 27–50 (42 items).
-- **Selected work:** item 20, immutable forecast runs, is complete. Item 21, forecast-versus-actual tracking, is next by product value, subject to the relevant Must security and verification gates.
+- **Open:** 6–19, 21–24, 27–51, and 53 (44 items).
+- **Selected work:** item 52, AI-assisted saved-report explanation, is the user-directed modernization priority. Its local pilot is Partial; item 21 remains the next major forecasting capability once this pilot is evaluated and released.
 
 ## MoSCoW priority
 
@@ -29,7 +29,7 @@ Priority is separate from implementation status. This provisional, **value-first
 |---|---|
 | **Must** | 1, 2, 3, 4, 7, 8, 20, 21, 25, 26, 35, 37, 39, 41, 43 |
 | **Should** | 6, 9, 10, 11, 12, 13, 15, 17, 18, 23, 29, 32, 33, 34, 36, 38, 40, 42, 45, 46, 47, 48, 49, 50 |
-| **Could** | 14, 16, 19, 22, 24, 27, 30, 31, 44 |
+| **Could** | 14, 16, 19, 22, 24, 27, 30, 31, 44, 51, 52, 53 |
 | **Won't for now** | 5, 28 |
 
 **Done** items 1–2 remain Must because priority describes their importance, not whether they still need work. Revisit this ranking if manager research, usage data, a second restaurant, or release criteria change the expected value.
@@ -110,6 +110,14 @@ Priority is separate from implementation status. This provisional, **value-first
 - [ ] **48. Add technical and business metrics — Open.** Track latency, database load, provider health, cache effectiveness, forecast quality, and report duration.
 - [ ] **49. Add health and readiness endpoints — Open.** Separate liveness from dependency readiness and test their deployment use.
 - [ ] **50. Add provider circuit breakers — Open.** Stop repeatedly calling failing integrations, recover after cooldown, and preserve partial results.
+
+## Optional modernization and automation
+
+These are modernization candidates. The user selected #52 as the first local pilot. See [MODERNIZATION_OPTIONS.md](MODERNIZATION_OPTIONS.md) for design boundaries and trade-offs; #21 remains the next major forecasting capability.
+
+- [ ] **51. Automate manager briefings and alerts — Open.** After #21, evaluate opt-in daily/weekly demand, forecast-error, and staffing-gap summaries. Use a scheduled, idempotent delivery flow with preferences, source figures, audit records, retries, and failure monitoring. Acceptance: useful messages match source data, duplicates are suppressed, opt-out works, and failed delivery is visible.
+- [ ] **52. Add AI-assisted report explanations — Partial.** A local, on-demand saved-report pilot now uses the AI SDK and Vercel AI Gateway model selection to draft up to three manager checks. The server fetches the protected immutable report, sends only allowlisted aggregate facts, validates structured output and evidence IDs, rejects unsupported figures/links in model prose, and displays exact source values and the report ID beside each draft observation. It is read-only, off by default, and unavailable without server configuration; the saved report remains usable. Four focused unit tests, frontend lint (one pre-existing warning), and a production webpack build passed on 2026-10-23. A GitHub main push and Vercel deployment were requested; record their actual status separately after release verification. No Supabase change was made. The local development server started, but the built-in browser could not access its loopback URL, so no browser walkthrough was completed. **Remaining:** approve model/data handling and spend limit, configure Gateway/model and feature flag, create an evaluation set for incorrect or unhelpful interpretations, add cost/usage monitoring and abuse limits, and verify authenticated/signed-out, success/failure, and fallback journeys in a live release. Forecast-run comparisons await #21. See [AI_REPORT_EXPLANATIONS.md](AI_REPORT_EXPLANATIONS.md).
+- [ ] **53. Pilot a low-code external integration — Open.** Only after a concrete email/chat/business-tool need is confirmed, compare a scoped low-code webhook workflow with a small in-app job. Send minimal data through authenticated webhooks; never expose database credentials or allow direct booking/permission writes. Acceptance: security, retry, monitoring, owner, cost, and failure-path checks pass before adoption.
 
 ## Verification notes
 

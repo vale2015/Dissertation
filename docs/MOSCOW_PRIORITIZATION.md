@@ -1,6 +1,6 @@
 # MoSCoW prioritization of architecture improvements
 
-This is a **value-first** product-priority view of all 50 items in the canonical [improvement tracker](IMPROVEMENT_TRACKER.md), not a second backlog. It reflects the [PRD](PRD.md): a single-restaurant dissertation prototype focused on helping managers prepare services, reuse reports, and judge whether forecasts are accurate. Last reviewed: 2026-10-23.
+This is a **value-first** product-priority view of all 53 items in the canonical [improvement tracker](IMPROVEMENT_TRACKER.md), not a second backlog. It reflects the [PRD](PRD.md): a single-restaurant dissertation prototype focused on helping managers prepare services, reuse reports, and judge whether forecasts are accurate. Last reviewed: 2026-10-23.
 
 **Must** = direct, high-value product outcomes or the minimum safeguards and tests required to deliver them safely. **Should** = meaningful usability, scalability, or operational benefit that can follow the next product increment. **Could** = lower-evidence optimization or structural work. **Won't for now** = explicitly deferred or outside current single-restaurant scope; reconsider if the user or product direction changes.
 
@@ -8,11 +8,12 @@ Priority is independent of delivery state. A Must can already be **Done**, and a
 
 ## Recommended value-first sequence
 
-1. **Prove forecast usefulness next:** item 20 is Done; implement forecast-versus-actual tracking in 21 so managers can judge prediction accuracy. The report foundations in 25–26 are also Done.
-2. **Maintain the remaining safety gates:** close the migration/access work in 3–4 while delivering new features. Item 5's implemented login safeguards remain in place, but the user deferred their live verification on 2026-10-23.
-3. **Apply release gates throughout, not as a late phase:** complete 7–8 and the relevant portions of 35, 37, 39, 41, and 43 before shipping the affected flows. The remaining Should items follow measured bottlenecks and user feedback.
+1. **Pilot useful AI on saved reports:** the user chose this as the immediate modernization goal. Item 52 starts with completed report history (#26); it does not need forecast-versus-actual (#21) for its first, read-only saved-report explanation. Keep it gated until privacy, quality, cost, and release checks pass.
+2. **Prove forecast usefulness:** item 20 is Done; implement forecast-versus-actual tracking in 21 so managers can judge prediction accuracy and later enrich AI explanations.
+3. **Maintain the remaining safety gates:** close the migration/access work in 3–4 while delivering new features. Item 5's implemented login safeguards remain in place, but the user deferred their live verification on 2026-10-23.
+4. **Apply release gates throughout, not as a late phase:** complete 7–8 and the relevant portions of 35, 37, 39, 41, and 43 before shipping the affected flows. The remaining Should items follow measured bottlenecks and user feedback.
 
-The direct product-value leaders are **26 (past reports)** and **21 (forecast accuracy tracking)**. Items 25 and 20 are their respective dependencies. Security and test work remains Must because a feature that risks customer data or cannot be verified is not ready for users.
+The current user-directed product-value leader is **52 (AI assistance on saved reports)**, grounded in completed #26. Item 21 remains a high-value independent forecasting feature. Security and test work remains Must because a feature that risks customer data or cannot be verified is not ready for users.
 
 ## Must — user value and minimum safe-delivery gates (15)
 
@@ -34,7 +35,7 @@ The direct product-value leaders are **26 (past reports)** and **21 (forecast ac
 | 41 | Add continuous integration | Keep the essential tests running on each change. |
 | 43 | Add deployment smoke tests | Confirm the new manager-facing flows work after release. |
 
-## Should — meaningful next benefits (24)
+## Should — meaningful next benefits (25)
 
 | # | Improvement | Why Should |
 |---|---|---|
@@ -62,8 +63,9 @@ The direct product-value leaders are **26 (past reports)** and **21 (forecast ac
 | 48 | Add technical and business metrics | Measure report use, forecast quality, and actual bottlenecks. |
 | 49 | Add health and readiness endpoints | Improve diagnosis of unavailable services. |
 | 50 | Add provider circuit breakers | Keep optional external failures from spreading. |
+| 52 | Add AI-assisted report explanations | The user explicitly prioritized useful manager-facing AI; release still requires grounding, privacy, cost, and quality evaluation. |
 
-## Could — lower-evidence optimization and structure (9)
+## Could — lower-evidence optimization and structure (11)
 
 | # | Improvement | Why Could |
 |---|---|---|
@@ -76,6 +78,8 @@ The direct product-value leaders are **26 (past reports)** and **21 (forecast ac
 | 30 | Break large frontend files into focused components | Improve maintainability without changing behavior. |
 | 31 | Introduce TypeScript incrementally | Reduce type errors after API contracts are stabilized. |
 | 44 | Align deployment regions | Revisit when measured cross-region latency warrants a move. |
+| 51 | Automate manager briefings and alerts | Useful after forecast-versus-actual exists and managers confirm notification needs. |
+| 53 | Pilot a low-code external integration | Could remove custom integration code when a specific external workflow is requested. |
 
 ## Won't for now — explicitly deferred or outside current scope (2)
 

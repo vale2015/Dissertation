@@ -6,13 +6,16 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:unit": "node --test src/lib/report-ai.test.mjs"
   },
   "dependencies": {
+    "ai": "^7.0.150",
     "next": "16.2.1",
     "react": "19.2.4",
     "react-datepicker": "^9.1.0",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "babel-plugin-react-compiler": "1.0.0",
