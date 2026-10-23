@@ -1,6 +1,6 @@
 # AI-assisted saved-report explanations (#52)
 
-Status: **Partial**, feature-gated pilot (2026-10-23). The [tracker](IMPROVEMENT_TRACKER.md) owns the actionable status and records GitHub/Vercel release evidence separately. No Supabase change was made.
+Status: **Partial**, feature-gated pilot (2026-10-23). Feature commit `5b32c7d` reached GitHub `main`; the frontend and backend production deployments reached READY on that SHA. AI generation remains disabled in production because no `AI_` variables are configured. The [tracker](IMPROVEMENT_TRACKER.md) owns the actionable status and exact release evidence. No Supabase change was made.
 
 ## Manager experience
 
