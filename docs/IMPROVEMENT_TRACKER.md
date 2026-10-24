@@ -15,11 +15,11 @@ Status key: **Done** = acceptance criteria verified; **Verify release** = implem
 ## Current position
 
 - **Done:** 1–2, 20, 25–26.
-- **Partial:** 3–4, 52.
+- **Partial:** 3–4, 29, 52.
 - **Verify release:** 21.
 - **Deferred:** 5.
-- **Open:** 6–19, 22–24, 27–51, and 53–55 (45 items).
-- **Selected direction:** #21 is released but awaits an authenticated live flow and the first genuinely completed forecasted service, so it remains Verify release. The manager chatbot (#54) and skeleton (#55) remain medium priority, with no chatbot implementation started. If the user chooses Phase 6 afterward, begin with #29 shared dashboard layout. Item 52 remains Partial and disabled in production.
+- **Open:** 6–19, 22–24, 27–28, 30–51, and 53–55 (44 items).
+- **Selected direction:** #21 is released but awaits an authenticated live flow and the first genuinely completed forecasted service, so it remains Verify release. The manager chatbot (#54) and skeleton (#55) remain medium priority, with no chatbot implementation started. Item #29 is in progress as the first Phase 6 improvement; item 52 remains Partial and disabled in production.
 
 ## MoSCoW priority
 
@@ -79,7 +79,7 @@ Priority is separate from implementation status. This provisional, **value-first
 
 ## Phase 6 — Frontend maintainability
 
-- [ ] **29. Create a shared dashboard layout — Open.** Move repeated shell/navigation into one layout while preserving authorization.
+- [ ] **29. Create a shared dashboard layout — Partial.** The shared App Router layout now owns the top bar, sidebar, and page container, replacing repeated wrappers across dashboard pages. Route permission mapping remains in the layout guard, including saved-report detail URLs; the unused legacy dashboard wrapper was removed. Six frontend unit tests pass, including new route-permission checks; lint has no errors (one pre-existing hook warning). The local full build compiled and type-checked but static page generation stopped on a Windows filesystem `EPERM` error, so a clean deployment build and authenticated dashboard/permission smoke tests are still required. No Supabase change was made; Git and Vercel release status remain pending.
 - [ ] **30. Break large frontend files into focused components — Open.** Separate page orchestration, data hooks, charts, tables, and forms without changing behaviour.
 - [ ] **31. Introduce TypeScript incrementally — Open.** Type shared API contracts and migrate high-change frontend modules in manageable steps.
 - [ ] **32. Add runtime response validation — Open.** Validate critical Flask responses at the Next.js boundary and handle schema mismatches safely.

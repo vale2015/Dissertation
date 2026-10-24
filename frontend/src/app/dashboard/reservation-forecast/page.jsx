@@ -7,8 +7,6 @@ import {
   useState,
 } from "react";
 import { useSearchParams } from "next/navigation";
-import Sidebar from "@/components/layout/sidebar";
-import Topbar from "@/components/layout/topbar";
 import SummaryCard from "@/components/dashboard/summaryCard";
 import { formatDateDDMMYYYY } from "@/utils/DateFormat";
 import { API_BASE } from "@/lib/api";
@@ -180,15 +178,7 @@ function ReservationForecastContent() {
 
 
   return (
-    <div className="dashboard-app">
-      <Topbar />
-
-      <div className="dashboard-shell">
-        <Sidebar />
-
-        <div className="dashboard-main-area">
-          <main className="dashboard-page">
-            <div className="dashboard-container">
+    <>
               <section className="dashboard-hero">
                 <h1 className="dashboard-title">
                   Reservation Forecast
@@ -368,11 +358,7 @@ function ReservationForecastContent() {
                   </section>
                 </>
               )}
-            </div>
-          </main>
-        </div>
-      </div>
-    </div>
+    </>
   );
 }
 

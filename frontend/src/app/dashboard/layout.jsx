@@ -1,1 +1,21 @@
-import DashboardAccessGuard from"@/components/auth/DashboardAccessGuard";export default function DashboardLayout({children}){return <DashboardAccessGuard>{children}</DashboardAccessGuard>}
+import DashboardAccessGuard from "@/components/auth/DashboardAccessGuard";
+import Sidebar from "@/components/layout/sidebar";
+import Topbar from "@/components/layout/topbar";
+
+export default function DashboardLayout({ children }) {
+  return (
+    <DashboardAccessGuard>
+      <div className="dashboard-app">
+        <Topbar />
+        <div className="dashboard-shell">
+          <Sidebar />
+          <div className="dashboard-main-area">
+            <main className="dashboard-page">
+              <div className="dashboard-container">{children}</div>
+            </main>
+          </div>
+        </div>
+      </div>
+    </DashboardAccessGuard>
+  );
+}

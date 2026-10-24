@@ -7,8 +7,6 @@ import {
   useState,
 } from "react";
 import { useSearchParams } from "next/navigation";
-import Sidebar from "@/components/layout/sidebar";
-import Topbar from "@/components/layout/topbar";
 import { formatDateDDMMYYYY } from "@/utils/DateFormat";
 import { API_BASE } from "@/lib/api";
 
@@ -461,15 +459,7 @@ function StaffForecastContent() {
   ]);
 
   return (
-    <div className="dashboard-app">
-      <Topbar />
-
-      <div className="dashboard-shell">
-        <Sidebar />
-
-        <div className="dashboard-main-area">
-          <main className="dashboard-page">
-            <div className="dashboard-container">
+    <>
               <section className="dashboard-hero">
                 <h1 className="dashboard-title">
                   Staff Forecast
@@ -896,11 +886,7 @@ function StaffForecastContent() {
                   </aside>
                 </div>
               )}
-            </div>
-          </main>
-        </div>
-      </div>
-    </div>
+    </>
   );
 }
 

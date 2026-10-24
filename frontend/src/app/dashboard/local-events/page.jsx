@@ -4,8 +4,6 @@ import { useCallback, useRef, useState } from "react";
 
 import EventDetailsModal from "@/components/events/EventDetailsModal";
 import NearbyEventsPanel from "@/components/events/NearbyEventsPanel";
-import Sidebar from "@/components/layout/sidebar";
-import Topbar from "@/components/layout/topbar";
 import useLocalEvents from "@/hooks/useLocalEvents";
 import { formatEventCount, formatEventDate } from "@/utils/EventFormat";
 
@@ -72,13 +70,7 @@ export default function LocalEventsPage() {
   }, []);
 
   return (
-    <div className="dashboard-app">
-      <Topbar />
-      <div className="dashboard-shell">
-        <Sidebar />
-        <div className="dashboard-main-area">
-          <main className="dashboard-page">
-            <div className="dashboard-container">
+    <>
               <section className="dashboard-hero">
                 <h1 className="dashboard-title">Local Events</h1>
                 <p className="dashboard-text">
@@ -136,17 +128,12 @@ export default function LocalEventsPage() {
                   ))}
                 </div>
               </section>
-            </div>
-          </main>
-        </div>
-      </div>
-
       <EventDetailsModal
         dayContext={selectedDay}
         isOpen={Boolean(selectedDay)}
         onClose={() => setSelectedDay(null)}
         triggerRef={triggerRef}
       />
-    </div>
+    </>
   );
 }

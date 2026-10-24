@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import DashboardLayout from "@/components/dashboard/dashboardLayout";
 import { API_BASE } from "@/lib/api";
 
 
@@ -74,19 +73,16 @@ export default function StaffingRulesPage() {
 
   if (loading) {
     return (
-      <DashboardLayout>
-        <main className="dashboard-main">
-          <h1>Staffing Rules by Department</h1>
-          <p>Loading staffing rules...</p>
-        </main>
-      </DashboardLayout>
+      <div className="dashboard-main">
+        <h1>Staffing Rules by Department</h1>
+        <p>Loading staffing rules...</p>
+      </div>
     );
   }
 
 
   return (
-    <DashboardLayout>
-      <main className="dashboard-main">
+    <div className="dashboard-main">
         <section className="staffing-rules-header">
           <h1>Staffing Rules by Department</h1>
 
@@ -189,7 +185,6 @@ export default function StaffingRulesPage() {
             </>
           )}
         </section>
-      </main>
-    </DashboardLayout>
+    </div>
   );
 }

@@ -1,8 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import Sidebar from "@/components/layout/sidebar";
-import Topbar from "@/components/layout/topbar";
 import useSession from "@/hooks/useSession";
 import { API_BASE } from "@/lib/api";
 import { hasPermission, PERMISSIONS } from "@/lib/permissions";
@@ -105,13 +103,7 @@ export default function ForecastAccuracyPage() {
   }
 
   return (
-    <div className="dashboard-app">
-      <Topbar />
-      <div className="dashboard-shell">
-        <Sidebar />
-        <div className="dashboard-main-area">
-          <main className="dashboard-page">
-            <div className="dashboard-container">
+    <>
               <section className="dashboard-hero">
                 <h1 className="dashboard-title">Forecast accuracy</h1>
                 <p className="dashboard-text">
@@ -228,10 +220,6 @@ export default function ForecastAccuracyPage() {
                   </div>
                 </>}
               </>}
-            </div>
-          </main>
-        </div>
-      </div>
-    </div>
+    </>
   );
 }
