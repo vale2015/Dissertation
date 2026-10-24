@@ -1,6 +1,6 @@
 # RFS chatbot architecture design
 
-Status: engineering-reviewed design. The #55 skeleton is committed locally on a feature branch but awaits preview and browser verification; #54 business capabilities remain open. The [improvement tracker](IMPROVEMENT_TRACKER.md) owns delivery status. This document supersedes the preliminary tool schema and deployment suggestions in the first draft.
+Status: engineering-reviewed design. The #55 skeleton is on a pushed feature branch with a READY frontend preview, but awaits signed-in browser verification; #54 business capabilities remain open. The [improvement tracker](IMPROVEMENT_TRACKER.md) owns delivery status. This document supersedes the preliminary tool schema and deployment suggestions in the first draft.
 
 ## 1. Product intent and release boundary
 
