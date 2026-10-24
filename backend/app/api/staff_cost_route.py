@@ -6,6 +6,11 @@ from app.controllers.staff_cost_controller import (
     list_saved_forecast_runs,
     get_saved_forecast_run,
 )
+from app.controllers.forecast_accuracy_controller import (
+    accuracy_report,
+    create_actual,
+    update_actual,
+)
 
 staff_cost_bp = Blueprint("staff_cost", __name__)
 
@@ -25,6 +30,18 @@ def get_runs():
 @staff_cost_bp.get("/runs/<int:run_id>")
 def get_run(run_id):
     return get_saved_forecast_run(run_id)
+
+@staff_cost_bp.get("/accuracy")
+def get_accuracy():
+    return accuracy_report()
+
+@staff_cost_bp.post("/actuals")
+def post_actual():
+    return create_actual()
+
+@staff_cost_bp.patch("/actuals/<service_date>")
+def patch_actual(service_date):
+    return update_actual(service_date)
 
 @staff_cost_bp.get("/date/<forecast_date>")
 def get_staff_cost_by_date(forecast_date):
