@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test:unit": "node --test src/lib/*.test.mjs"
+    "test:unit": "node --test src/lib/*.test.mjs",
+    "test:components": "vitest run src/components/chatbot/ChatbotShell.test.jsx"
   },
   "dependencies": {
     "ai": "^7.0.150",
@@ -18,8 +19,14 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.8",
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
-    "eslint-config-next": "16.2.1"
+    "eslint-config-next": "16.2.1",
+    "jsdom": "^29.1.1",
+    "vitest": "^5.0.5"
   }
 }
