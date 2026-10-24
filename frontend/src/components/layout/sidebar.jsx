@@ -110,7 +110,7 @@ function SidebarContent() {
   const isLocalEventsPage = pathname === "/dashboard/local-events";
   const isAccountPage = pathname === "/dashboard/staff" || pathname === "/dashboard/profile";
   const isReportHistoryPage = pathname.startsWith("/dashboard/reports/history");
-  const isDateIndependentPage = isDashboardPage || isLocalEventsPage || isAccountPage || isReportHistoryPage;
+  const isDateIndependentPage = isDashboardPage || isLocalEventsPage || isAccountPage || isReportHistoryPage || pathname === "/dashboard/forecast-accuracy";
 
   /**
    * Synchronise selectedDate with the URL query string.
@@ -255,7 +255,7 @@ function SidebarContent() {
    * single-day pages.
    */
   const withDate = (href) => {
-    if (["/dashboard","/dashboard/local-events","/dashboard/staff","/dashboard/profile","/dashboard/reports/history"].includes(href)) {
+    if (["/dashboard","/dashboard/local-events","/dashboard/forecast-accuracy","/dashboard/staff","/dashboard/profile","/dashboard/reports/history"].includes(href)) {
       return href;
     }
 
@@ -304,6 +304,11 @@ function SidebarContent() {
       {
         label: "Staff Forecast",
         href: "/dashboard/staff-forecast",
+        permission: PERMISSIONS.VIEW_FORECASTS,
+      },
+      {
+        label: "Forecast Accuracy",
+        href: "/dashboard/forecast-accuracy",
         permission: PERMISSIONS.VIEW_FORECASTS,
       },
       {

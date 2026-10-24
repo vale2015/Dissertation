@@ -6,25 +6,26 @@ DECLARE
         'staffing_rules', 'staff_cost_forecast', 'business_settings',
         'user_account_tokens', 'staff_account_audit', 'auth_rate_limits',
         'report_history', 'forecast_runs', 'forecast_run_days',
-        'active_forecast_run'
+        'active_forecast_run', 'service_actual_covers',
+        'service_actual_corrections'
     ];
     application_sequences text[] := ARRAY[
         'users_id_seq', 'bookings_id_seq', 'staff_roles_id_seq',
         'staffing_rules_id_seq', 'staff_cost_forecast_id_seq',
         'business_settings_id_seq', 'user_account_tokens_id_seq',
         'staff_account_audit_id_seq', 'report_history_id_seq',
-        'forecast_runs_id_seq'
+        'forecast_runs_id_seq', 'service_actual_corrections_id_seq'
     ];
 BEGIN
     IF (SELECT count(*) FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace
         WHERE n.nspname = 'public' AND c.relkind = 'r'
-          AND c.relname = ANY(application_tables)) <> 14 THEN
-        RAISE EXCEPTION 'Expected fourteen application tables';
+          AND c.relname = ANY(application_tables)) <> 16 THEN
+        RAISE EXCEPTION 'Expected sixteen application tables';
     END IF;
     IF (SELECT count(*) FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace
         WHERE n.nspname = 'public' AND c.relkind = 'S'
-          AND c.relname = ANY(application_sequences)) <> 10 THEN
-        RAISE EXCEPTION 'Expected ten application sequences';
+          AND c.relname = ANY(application_sequences)) <> 11 THEN
+        RAISE EXCEPTION 'Expected eleven application sequences';
     END IF;
     IF EXISTS (
         SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace

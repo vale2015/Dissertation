@@ -69,8 +69,9 @@ jobs:
                     'staff_roles', 'staffing_rules', 'staff_cost_forecast',
                     'business_settings', 'user_account_tokens', 'staff_account_audit',
                     'auth_rate_limits', 'report_history', 'forecast_runs',
-                    'forecast_run_days', 'active_forecast_run')) <> 14 THEN
-              RAISE EXCEPTION 'Expected all 14 application tables';
+                    'forecast_run_days', 'active_forecast_run',
+                    'service_actual_covers', 'service_actual_corrections')) <> 16 THEN
+              RAISE EXCEPTION 'Expected all 16 application tables';
             END IF;
             IF (SELECT count(*) FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace
                 WHERE n.nspname = 'public' AND c.relkind = 'r' AND c.relrowsecurity
@@ -78,8 +79,9 @@ jobs:
                     'staff_roles', 'staffing_rules', 'staff_cost_forecast',
                     'business_settings', 'user_account_tokens', 'staff_account_audit',
                     'auth_rate_limits', 'report_history', 'forecast_runs',
-                    'forecast_run_days', 'active_forecast_run')) <> 14 THEN
-              RAISE EXCEPTION 'Expected RLS on all 14 application tables';
+                    'forecast_run_days', 'active_forecast_run',
+                    'service_actual_covers', 'service_actual_corrections')) <> 16 THEN
+              RAISE EXCEPTION 'Expected RLS on all 16 application tables';
             END IF;
             IF has_table_privilege('anon', 'public.bookings', 'SELECT')
               OR has_table_privilege('authenticated', 'public.bookings', 'SELECT')
@@ -130,6 +132,38 @@ jobs:
               RAISE EXCEPTION 'Expected staffing update rejection';
             EXCEPTION WHEN others THEN
               IF SQLERRM <> 'Forecast snapshots are immutable' THEN RAISE; END IF;
+            END;
+          END $$;
+          SQL
+      - name: Verify served-cover correction history cannot be rewritten
+        run: |
+          psql -v ON_ERROR_STOP=1 <<'SQL'
+          DO $$
+          DECLARE saved_user_id bigint;
+          DECLARE saved_correction_id bigint;
+          BEGIN
+            INSERT INTO public.users (full_name, email, password_hash)
+            VALUES ('Migration tester', 'migration-test@example.invalid', 'not-a-login')
+            RETURNING id INTO saved_user_id;
+            INSERT INTO public.service_actual_covers
+              (service_date, actual_covers, recorded_by)
+            VALUES ('2026-10-23', 40, saved_user_id);
+            INSERT INTO public.service_actual_corrections
+              (service_date, previous_covers, corrected_covers, reason, corrected_by)
+            VALUES ('2026-10-23', 40, 41, 'Count corrected', saved_user_id)
+            RETURNING id INTO saved_correction_id;
+            BEGIN
+              UPDATE public.service_actual_corrections SET corrected_covers = 42
+              WHERE id = saved_correction_id;
+              RAISE EXCEPTION 'Expected correction update rejection';
+            EXCEPTION WHEN others THEN
+              IF SQLERRM <> 'Actual-cover correction history is immutable' THEN RAISE; END IF;
+            END;
+            BEGIN
+              DELETE FROM public.service_actual_corrections WHERE id = saved_correction_id;
+              RAISE EXCEPTION 'Expected correction deletion rejection';
+            EXCEPTION WHEN others THEN
+              IF SQLERRM <> 'Actual-cover correction history is immutable' THEN RAISE; END IF;
             END;
           END $$;
           SQL
