@@ -1,6 +1,8 @@
 # Restaurant manager chatbot — proposed scope (#54–55)
 
-Status: **Proposed / Open**, medium priority (Should), not implemented or deployed. Last reviewed: 2026-10-23. The [improvement tracker](IMPROVEMENT_TRACKER.md) owns the actionable status. #55 is the first, skeleton-only item; #54 holds the subsequent manager capabilities. Neither item is started.
+Status: **#55 in local implementation; #54 Open**, medium priority (Should), not committed or deployed. Last reviewed: 2026-10-24. The [improvement tracker](IMPROVEMENT_TRACKER.md) owns the actionable status. #55 is the first, skeleton-only item; #54 holds the subsequent manager capabilities.
+
+The reviewed engineering and UI/UX design is in [RFS Chatbot Architecture Design](RFS%20Chatbot%20Architecture%20Design.md). It supersedes the preliminary Flask-orchestrator and tool-schema ideas; this scope document remains the product brief.
 
 ## Intended manager experience
 
