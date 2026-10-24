@@ -1,6 +1,6 @@
 # Forecast accuracy (improvement 21)
 
-This is an implementation note for [tracker item 21](IMPROVEMENT_TRACKER.md), not a second backlog. Status: **Partial** as of 2026-10-24. The code and migration are local and uncommitted; the migration has not been applied to Supabase and the feature has not been deployed.
+This is an implementation note for [tracker item 21](IMPROVEMENT_TRACKER.md), not a second backlog. Status: **Verify release** as of 2026-10-24. The feature is merged and both production services are READY, but a real completed-service comparison and authenticated production flow have not yet been verified.
 
 ## What is measured
 
@@ -14,8 +14,10 @@ MAE is the average absolute difference in covers. Mean bias is forecast minus ac
 
 ## Release and verification gate
 
-Local evidence: all 202 backend tests passed; frontend lint passed (one pre-existing warning); an isolated webpack production build passed and included `/dashboard/forecast-accuracy`. A read-only `EXPLAIN` against the live forecast tables accepted the pre-service query and used `forecast_run_days_date_idx`. The normal `.next` build path was blocked by a OneDrive file-lock error, so a temporary alternate output directory was used and then removed; no build-config change remains. The migration now enforces the same numeric bounds as the API, makes correction history immutable, and is included in the repository's RLS/privilege replay checks. These new SQL checks still need a PostgreSQL replay.
+Local evidence: all 202 backend tests passed; frontend lint passed (one pre-existing warning); an isolated webpack production build passed and included `/dashboard/forecast-accuracy`. A read-only `EXPLAIN` against the live forecast tables accepted the pre-service query and used `forecast_run_days_date_idx`. The normal `.next` build path was blocked by a OneDrive file-lock error, so a temporary alternate output directory was used and then removed; no build-config change remains. The migration enforces the same numeric bounds as the API and makes correction history immutable. [GitHub migration replay 40077356251](https://github.com/vale2015/Dissertation/actions/runs/40077356251) passed all PostgreSQL 17 schema, privilege, and immutability checks.
+
+The feature commit `f0a0438` was pushed on `codex/forecast-accuracy`; [PR #4](https://github.com/vale2015/Dissertation/pull/4) was subsequently merged into `main` as `454a42e` by another actor. The new migration version also appeared in Supabase without this session applying it. Read-only verification found the expected tables, bounds, indexes, trigger, RLS enabled, no `anon`/`authenticated` table read, sequence usage, or trigger-function execution, and zero actual/correction rows. Vercel production frontend `dpl_CKqD3n1u3AEbuQnY9hhiqAsP5Du9` and backend `dpl_CxPbB8qMQRMwZ84z3rqTurFeXyDr` both reached READY on `454a42e`; neither project had a runtime error in the one-hour scan. A READY deployment is not an end-to-end test.
 
 A read-only live check on 2026-10-24 found the existing saved forecast dates run from **2026-11-30 through 2026-12-09**, with zero eligible completed open-day rows. The page therefore cannot display a genuine live accuracy metric yet. Do not backdate a forecast or substitute bookings for served covers to manufacture a verification sample.
 
-Before marking Done: replay the new migration in an isolated PostgreSQL database and check table privileges; review and apply it to Supabase; deploy matching frontend/backend builds; verify authenticated read, manager/supervisor record and correction, staff/signed-out denial, no duplicate actuals, live metrics, and a completed service with a genuinely pre-service forecast. Keep deployment and database state separate. Until then, the feature is **Partial**, not live.
+Before marking Done: verify authenticated read, manager/supervisor record and correction, staff/signed-out denial, no duplicate actuals, live metrics, and a completed service with a genuinely pre-service forecast. Keep deployment and database state separate. Until then, the feature is **Verify release**, not Done.
