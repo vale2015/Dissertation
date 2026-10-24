@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test:unit": "node --test src/lib/report-ai.test.mjs"
+    "test:unit": "node --test src/lib/*.test.mjs"
   },
   "dependencies": {
     "ai": "^7.0.150",

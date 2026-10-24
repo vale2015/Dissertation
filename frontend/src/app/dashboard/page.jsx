@@ -1,8 +1,6 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-import Sidebar from "@/components/layout/sidebar";
-import Topbar from "@/components/layout/topbar";
 import DashboardContent from "@/components/dashboard/dashboardContent";
 
 
@@ -66,21 +64,5 @@ export default async function DashboardPage() {
     redirect("/dashboard/profile");
   }
 
-  return (
-    <div className="dashboard-app">
-      <Topbar user={user} />
-
-      <div className="dashboard-shell">
-        <Sidebar />
-
-        <div className="dashboard-main-area">
-          <main className="dashboard-page">
-            <div className="dashboard-container">
-              <DashboardContent user={user} />
-            </div>
-          </main>
-        </div>
-      </div>
-    </div>
-  );
+  return <DashboardContent user={user} />;
 }

@@ -2,8 +2,6 @@
 
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import Sidebar from "@/components/layout/sidebar";
-import Topbar from "@/components/layout/topbar";
 import SummaryCard from "@/components/dashboard/summaryCard";
 import BookingsTrend from "@/components/charts/BookingsTrend";
 import StaffingOverviewChart from "@/components/charts/StaffingOverviewChart";
@@ -264,15 +262,7 @@ function BookingsContent() {
   }, [visibleRows]);
 {/* Page header and description. */}
   return (
-    <div className="dashboard-app">
-      <Topbar />
-
-      <div className="dashboard-shell">
-        <Sidebar />
-
-        <div className="dashboard-main-area">
-          <main className="dashboard-page">
-            <div className="dashboard-container">
+    <>
               <section className="dashboard-hero">
                 <h1 className="dashboard-title">Bookings Overview</h1>
                 <p className="dashboard-text">
@@ -357,11 +347,7 @@ function BookingsContent() {
                   )}
                 </>
               )}
-            </div>
-          </main>
-        </div>
-      </div>
-    </div>
+    </>
   );
 }
 

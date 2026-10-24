@@ -2,8 +2,6 @@
 
 import { Suspense, useState } from "react";
 import { useRouter } from "next/navigation";
-import Sidebar from "@/components/layout/sidebar";
-import Topbar from "@/components/layout/topbar";
 import AddNewBooking from "@/components/dashboard/addNewBooking";
 import { API_BASE } from "@/lib/api";
 
@@ -131,29 +129,15 @@ export default function CreateBookingPage() {
         <p className="dashboard-text">Loading booking form...</p>
       }
     >
-      <div className="dashboard-app">
-        <Topbar />
-
-        <div className="dashboard-shell">
-          <Sidebar />
-
-          <div className="dashboard-main-area">
-            <main className="dashboard-page">
-              <div className="dashboard-container">
-                <AddNewBooking
-                  formData={formData}
-                  loading={loading}
-                  successMessage={successMessage}
-                  errorMessage={errorMessage}
-                  onChange={handleChange}
-                  onSubmit={handleSubmit}
-                  onCancel={handleCancel}
-                />
-              </div>
-            </main>
-          </div>
-        </div>
-      </div>
+      <AddNewBooking
+        formData={formData}
+        loading={loading}
+        successMessage={successMessage}
+        errorMessage={errorMessage}
+        onChange={handleChange}
+        onSubmit={handleSubmit}
+        onCancel={handleCancel}
+      />
     </Suspense>
   );
 }
