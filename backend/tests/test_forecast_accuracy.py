@@ -78,6 +78,10 @@ def test_accuracy_uses_original_preservice_open_snapshot_and_real_actuals(monkey
     assert "d.closed = false" in sql
     assert "r.generated_at < (d.forecast_date::timestamp AT TIME ZONE 'Europe/London')" in sql
     assert params["today"] == date(2026, 10, 24)
+    assert params["dataset"] == "real"
+    assert params["demo_model_name"] == service.DEMO_MODEL_NAME
+    assert "r.model_name <> :demo_model_name" in sql
+    assert report["dataset"] == "real"
     assert report["summary"] == {
         "evaluated_days": 2, "mean_absolute_error": 15.0,
         "mean_absolute_percentage_error": 25.0, "mean_bias": 15.0,
@@ -89,6 +93,19 @@ def test_accuracy_uses_original_preservice_open_snapshot_and_real_actuals(monkey
     assert report["by_lead_days"][1]["lead_days"] == 2
 
 
+def test_demo_accuracy_is_separate_from_real_accuracy(monkeypatch):
+    monkeypatch.setattr(service, "_today", lambda: date(2026, 10, 24))
+    db = FakeDB([])
+    monkeypatch.setattr(service, "SessionLocal", lambda: db)
+    report = service.get_accuracy_report(30, "demo")
+    sql, params = db.statements[0]
+    assert report["dataset"] == "demo"
+    assert params["dataset"] == "demo"
+    assert "r.model_name = :demo_model_name" in sql
+    with pytest.raises(service.AccuracyInputError, match="dataset"):
+        service.get_accuracy_report(30, "unknown")
+
+
 def test_record_actual_requires_eligible_forecast_and_does_not_overwrite(monkeypatch):
     monkeypatch.setattr(service, "_today", lambda: date(2026, 10, 24))
     db = FakeDB()
@@ -97,10 +114,17 @@ def test_record_actual_requires_eligible_forecast_and_does_not_overwrite(monkeyp
     with pytest.raises(service.AccuracyInputError, match="eligible"):
         service.record_actual("2026-10-23", 38, 7)
     assert not db.statements
-    monkeypatch.setattr(service, "_eligible_forecast", lambda *_args: {"run_id": 3})
+    monkeypatch.setattr(service, "_eligible_forecast",
+                        lambda *_args: {"run_id": 3, "model_name": "random_forest"})
     assert service.record_actual("2026-10-23", 38, 7)["actual_covers"] == 38
     assert db.committed
     assert "ON CONFLICT (service_date) DO NOTHING" in db.statements[0][0]
+    assert db.statements[0][1]["source"] == "manager"
+    db.statements.clear()
+    monkeypatch.setattr(service, "_eligible_forecast",
+                        lambda *_args: {"run_id": 4, "model_name": service.DEMO_MODEL_NAME})
+    assert service.record_actual("2026-10-23", 38, 7)["source"] == "demo"
+    assert db.statements[0][1]["source"] == "demo"
 
 
 def test_correction_keeps_audit_record_in_same_transaction(monkeypatch):
@@ -124,7 +148,7 @@ def test_accuracy_routes_require_auth_and_booking_permission(monkeypatch):
     monkeypatch.setattr("app.middleware.auth_middleware.decode_user_token",
                         lambda _token: {"user": {"id": 7, "role": "manager"}})
     monkeypatch.setattr("app.controllers.forecast_accuracy_controller.get_accuracy_report",
-                        lambda days: {"window_days": days, "days": []})
+                        lambda days, dataset: {"window_days": days, "dataset": dataset, "days": []})
     monkeypatch.setattr("app.controllers.forecast_accuracy_controller.record_actual",
                         lambda *_args: {"service_date": "2026-10-23", "actual_covers": 38})
     headers = {"Authorization": "Bearer valid"}
@@ -132,7 +156,12 @@ def test_accuracy_routes_require_auth_and_booking_permission(monkeypatch):
     assert response.status_code == 200
     assert response.headers["Cache-Control"] == "no-store"
     assert response.get_json()["window_days"] == 30
+    assert response.get_json()["dataset"] == "real"
+    demo_response = client.get("/api/staff-cost/accuracy?days=30&dataset=demo", headers=headers)
+    assert demo_response.status_code == 200
+    assert demo_response.get_json()["dataset"] == "demo"
     assert client.get("/api/staff-cost/accuracy?days=999", headers=headers).status_code == 400
+    assert client.get("/api/staff-cost/accuracy?dataset=unknown", headers=headers).status_code == 400
     assert client.post("/api/staff-cost/actuals", headers=headers,
                        json={"service_date": "2026-10-23", "actual_covers": 38}).status_code == 201
     monkeypatch.setattr("app.middleware.auth_middleware.decode_user_token",

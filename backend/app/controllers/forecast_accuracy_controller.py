@@ -25,7 +25,10 @@ def accuracy_report():
         days = request.args.get("days", "90")
         if days not in ("30", "90", "180"):
             raise AccuracyInputError("days must be 30, 90, or 180.")
-        return _no_store(get_accuracy_report(int(days)))
+        dataset = request.args.get("dataset", "real")
+        if dataset not in ("real", "demo"):
+            raise AccuracyInputError("dataset must be real or demo.")
+        return _no_store(get_accuracy_report(int(days), dataset))
     except AccuracyInputError as error:
         return _no_store({"error": str(error)}, 400)
     except Exception:

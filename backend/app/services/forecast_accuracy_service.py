@@ -12,6 +12,8 @@ from app.db.dbcon import SessionLocal
 
 RESTAURANT_TIMEZONE = ZoneInfo("Europe/London")
 ALLOWED_WINDOWS = (30, 90, 180)
+DEMO_MODEL_NAME = "accuracy_demo_fixture"
+ALLOWED_DATASETS = ("real", "demo")
 
 
 class AccuracyInputError(ValueError):
@@ -28,15 +30,16 @@ def _today():
 
 def _eligible_forecast(db, service_date):
     return db.execute(text("""
-        SELECT d.run_id
+        SELECT d.run_id, r.model_name
         FROM public.forecast_run_days d
         JOIN public.forecast_runs r ON r.id = d.run_id
         WHERE d.forecast_date = :service_date
           AND d.closed = false
-          AND r.generated_at < (d.forecast_date::timestamp AT TIME ZONE 'Europe/London')
+          AND (r.generated_at < (d.forecast_date::timestamp AT TIME ZONE 'Europe/London')
+               OR r.model_name = :demo_model_name)
         ORDER BY r.generated_at, r.id
         LIMIT 1
-    """), {"service_date": service_date}).mappings().first()
+    """), {"service_date": service_date, "demo_model_name": DEMO_MODEL_NAME}).mappings().first()
 
 
 def _validate_actual(service_date, covers):
@@ -56,18 +59,21 @@ def _validate_actual(service_date, covers):
 def record_actual(service_date, covers, user_id):
     parsed_date = _validate_actual(service_date, covers)
     with SessionLocal() as db:
-        if _eligible_forecast(db, parsed_date) is None:
+        forecast = _eligible_forecast(db, parsed_date)
+        if forecast is None:
             raise AccuracyInputError("No eligible open-day forecast was saved before this service.")
+        source = "demo" if forecast["model_name"] == DEMO_MODEL_NAME else "manager"
         row = db.execute(text("""
-            INSERT INTO public.service_actual_covers (service_date, actual_covers, recorded_by)
-            VALUES (:service_date, :covers, :user_id)
+            INSERT INTO public.service_actual_covers (service_date, actual_covers, recorded_by, source)
+            VALUES (:service_date, :covers, :user_id, :source)
             ON CONFLICT (service_date) DO NOTHING
             RETURNING service_date
-        """), {"service_date": parsed_date, "covers": covers, "user_id": user_id}).first()
+        """), {"service_date": parsed_date, "covers": covers,
+               "user_id": user_id, "source": source}).first()
         if row is None:
             raise AccuracyConflictError("Actual covers already exist; use a correction with a reason.")
         db.commit()
-    return {"service_date": parsed_date.isoformat(), "actual_covers": covers}
+    return {"service_date": parsed_date.isoformat(), "actual_covers": covers, "source": source}
 
 
 def correct_actual(service_date, covers, reason, user_id):
@@ -118,9 +124,11 @@ def _metrics(rows):
     }
 
 
-def get_accuracy_report(window_days=90):
+def get_accuracy_report(window_days=90, dataset="real"):
     if window_days not in ALLOWED_WINDOWS:
         raise AccuracyInputError("days must be 30, 90, or 180.")
+    if dataset not in ALLOWED_DATASETS:
+        raise AccuracyInputError("dataset must be real or demo.")
     today = _today()
     start = today - timedelta(days=window_days)
     with SessionLocal() as db:
@@ -134,18 +142,23 @@ def get_accuracy_report(window_days=90):
                 WHERE d.forecast_date >= :start_date
                   AND d.forecast_date < :today
                   AND d.closed = false
-                  AND r.generated_at < (d.forecast_date::timestamp AT TIME ZONE 'Europe/London')
+                  AND ((:dataset = 'demo' AND r.model_name = :demo_model_name)
+                       OR (:dataset = 'real' AND r.model_name <> :demo_model_name
+                           AND r.generated_at < (d.forecast_date::timestamp AT TIME ZONE 'Europe/London')))
                 ORDER BY d.forecast_date, r.generated_at, r.id
             )
             SELECT o.forecast_date, o.predicted_covers, o.day_index, o.run_id,
                    o.generated_at, o.model_version, a.actual_covers,
-                   f.total_covers AS booked_covers
+                   CASE WHEN :dataset = 'demo' THEN NULL ELSE f.total_covers END AS booked_covers
             FROM original o
-            LEFT JOIN public.service_actual_covers a ON a.service_date = o.forecast_date
+            LEFT JOIN public.service_actual_covers a
+              ON a.service_date = o.forecast_date
+             AND a.source = CASE WHEN :dataset = 'demo' THEN 'demo' ELSE 'manager' END
             LEFT JOIN public.restaurant_demand_features f ON f.date = o.forecast_date
             ORDER BY o.forecast_date DESC
             LIMIT :window_days
-        """), {"start_date": start, "today": today,
+        """), {"start_date": start, "today": today, "dataset": dataset,
+               "demo_model_name": DEMO_MODEL_NAME,
                "window_days": window_days}).mappings().all()
 
     rows = []
@@ -173,6 +186,7 @@ def get_accuracy_report(window_days=90):
             by_weekday[row["weekday"]].append(row)
             by_lead_days[row["lead_days"]].append(row)
     return {
+        "dataset": dataset,
         "window_days": window_days,
         "eligible_days": len(rows),
         "awaiting_actual_days": sum(row["actual_covers"] is None for row in rows),

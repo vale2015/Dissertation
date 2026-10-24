@@ -19,6 +19,7 @@ export default function ForecastAccuracyPage() {
   const { user } = useSession();
   const canRecord = hasPermission(user, PERMISSIONS.MANAGE_BOOKINGS);
   const [windowDays, setWindowDays] = useState(90);
+  const [dataset, setDataset] = useState("real");
   const [report, setReport] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -32,7 +33,7 @@ export default function ForecastAccuracyPage() {
     setLoading(true);
     setError("");
     try {
-      const response = await fetch(`${API_BASE}/staff-cost/accuracy?days=${windowDays}`, {
+      const response = await fetch(`${API_BASE}/staff-cost/accuracy?days=${windowDays}&dataset=${dataset}`, {
         cache: "no-store",
         signal,
       });
@@ -49,7 +50,7 @@ export default function ForecastAccuracyPage() {
     } finally {
       if (!signal?.aborted) setLoading(false);
     }
-  }, [windowDays]);
+  }, [windowDays, dataset]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -114,9 +115,19 @@ export default function ForecastAccuracyPage() {
               <section className="dashboard-hero">
                 <h1 className="dashboard-title">Forecast accuracy</h1>
                 <p className="dashboard-text">
-                  Compare the first forecast saved before each open service with the covers actually served.
-                  Booking totals are shown for context, not counted as actuals.
+                  {dataset === "demo"
+                    ? "Explore an illustrative forecast-versus-served comparison. All values on this tab are invented for testing."
+                    : "Compare the first forecast saved before each open service with the covers actually served. Booking totals are shown for context, not counted as actuals."}
                 </p>
+                <label className="accuracy-window">
+                  Data <select value={dataset} onChange={(event) => {
+                    chooseDate("");
+                    setDataset(event.target.value);
+                  }}>
+                    <option value="real">Real records</option>
+                    <option value="demo">Demo sample</option>
+                  </select>
+                </label>
                 <label className="accuracy-window">
                   Show the last <select value={windowDays} onChange={(event) => {
                     chooseDate("");
@@ -134,6 +145,10 @@ export default function ForecastAccuracyPage() {
               {loading && <p className="report-state" role="status">Loading forecast accuracy…</p>}
 
               {report && !loading && <>
+                {report.dataset === "demo" && <p className="report-state" role="status">
+                  Demo sample: forecasts and served-cover figures on this tab are invented for testing.
+                  They are excluded from real accuracy figures. Changes you make here update the demo sample only.
+                </p>}
                 <section className="report-card-grid accuracy-summary" aria-label="Accuracy summary">
                   <article className="report-metric"><span>Days with actuals</span><strong>{report.summary.evaluated_days} of {report.eligible_days}</strong></article>
                   <article className="report-metric"><span>Mean absolute error</span><strong>{metric(report.summary.mean_absolute_error, " covers")}</strong></article>
@@ -143,7 +158,7 @@ export default function ForecastAccuracyPage() {
                 <p className="accuracy-note">
                   Positive bias means the forecast was too high. Days with zero actual covers count toward absolute
                   error but not percentage error ({report.summary.zero_actual_days_excluded_from_mape} excluded).
-                  Future days, closed days, and predictions saved after the service began are excluded.
+                  Future and closed days are excluded. Real records also exclude predictions saved after service began.
                 </p>
 
                 {canRecord && report.days.length > 0 && <section className="report-section accuracy-entry">
@@ -171,8 +186,9 @@ export default function ForecastAccuracyPage() {
                 </section>}
 
                 {report.days.length === 0 ? <p className="report-state">
-                  No eligible completed services yet. Generate a forecast before a future service; once that day
-                  has passed, it will appear here.
+                  {dataset === "demo"
+                    ? "No demo sample is available yet."
+                    : "No eligible completed services yet. Generate a forecast before a future service; once that day has passed, it will appear here. Select Demo sample to explore an illustrative comparison now."}
                 </p> : <>
                   {recent.length > 0 && <section className="report-section">
                     <h2>Recent daily error</h2>

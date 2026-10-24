@@ -349,6 +349,7 @@ def list_forecast_runs():
                    COALESCE(a.run_id = r.id, false) AS active
             FROM public.forecast_runs r
             LEFT JOIN public.active_forecast_run a ON a.singleton_id = 1
+            WHERE r.model_name <> 'accuracy_demo_fixture'
             ORDER BY r.id DESC LIMIT 20
         """)).mappings().all()
     return [_serializable_run_row(row) for row in rows]
