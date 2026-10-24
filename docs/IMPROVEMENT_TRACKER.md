@@ -15,11 +15,11 @@ Status key: **Done** = acceptance criteria verified; **Verify release** = implem
 ## Current position
 
 - **Done:** 1–2, 20, 25–26.
-- **Partial:** 3–4, 29, 52.
-- **Verify release:** 21.
+- **Partial:** 3–4, 52.
+- **Verify release:** 21, 29.
 - **Deferred:** 5.
 - **Open:** 6–19, 22–24, 27–28, 30–51, and 53–55 (44 items).
-- **Selected direction:** #21 is released but awaits an authenticated live flow and the first genuinely completed forecasted service, so it remains Verify release. The manager chatbot (#54) and skeleton (#55) remain medium priority, with no chatbot implementation started. Item #29 is in progress as the first Phase 6 improvement; item 52 remains Partial and disabled in production.
+- **Selected direction:** #21 is released but awaits an authenticated live flow and the first genuinely completed forecasted service, so it remains Verify release. The manager chatbot (#54) and skeleton (#55) remain medium priority, with no chatbot implementation started. Item #29 is released but awaits signed-in dashboard and permission smoke tests; item 52 remains Partial and disabled in production.
 
 ## MoSCoW priority
 
@@ -79,7 +79,7 @@ Priority is separate from implementation status. This provisional, **value-first
 
 ## Phase 6 — Frontend maintainability
 
-- [ ] **29. Create a shared dashboard layout — Partial.** The shared App Router layout now owns the top bar, sidebar, and page container, replacing repeated wrappers across dashboard pages. Route permission mapping remains in the layout guard, including saved-report detail URLs; the unused legacy dashboard wrapper was removed. Six frontend unit tests pass, including new route-permission checks; lint has no errors (one pre-existing hook warning). The local full build compiled and type-checked but static page generation stopped on a Windows filesystem `EPERM` error, so a clean deployment build and authenticated dashboard/permission smoke tests are still required. No Supabase change was made; Git and Vercel release status remain pending.
+- [ ] **29. Create a shared dashboard layout — Verify release.** The shared App Router layout owns the top bar, sidebar, and page container, replacing repeated wrappers across dashboard pages. Route permission mapping remains in the layout guard, including saved-report detail URLs; the unused legacy dashboard wrapper was removed. Six frontend unit tests passed, including route-permission checks; lint had no errors (one pre-existing hook warning). The local full build compiled and type-checked but static page generation stopped on a Windows filesystem `EPERM` error. Feature commit `4dd45d6` was pushed and merged as [PR #5](https://github.com/vale2015/Dissertation/pull/5) into GitHub `main` at `df871c7`. Vercel frontend preview `dpl_7F6bSjX1VGiEM8NF1NgDDjVRnEK9` and production `dpl_CAoRSVnzXubUzjbZfxvV7jTBtBC7` both reached READY on their corresponding commits. A signed-out browser visit to the production dashboard returned “Authentication required” without exposing the shell. **Remaining:** visually check representative dashboard pages and staff/report permission boundaries with signed-in manager and restricted-role accounts; this browser session has no authenticated app session. No Supabase change was made.
 - [ ] **30. Break large frontend files into focused components — Open.** Separate page orchestration, data hooks, charts, tables, and forms without changing behaviour.
 - [ ] **31. Introduce TypeScript incrementally — Open.** Type shared API contracts and migrate high-change frontend modules in manageable steps.
 - [ ] **32. Add runtime response validation — Open.** Validate critical Flask responses at the Next.js boundary and handle schema mismatches safely.
