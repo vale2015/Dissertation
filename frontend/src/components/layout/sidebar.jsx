@@ -297,11 +297,6 @@ function SidebarContent() {
         permission: PERMISSIONS.VIEW_FORECASTS,
       },
       {
-        label: "Local Events",
-        href: "/dashboard/local-events",
-        permission: PERMISSIONS.VIEW_FORECASTS,
-      },
-      {
         label: "Staff Forecast",
         href: "/dashboard/staff-forecast",
         permission: PERMISSIONS.VIEW_FORECASTS,
@@ -320,16 +315,6 @@ function SidebarContent() {
         label: "Reports",
         href: "/dashboard/reports",
         permission: PERMISSIONS.VIEW_REPORTS,
-      },
-      {
-        label: "Past Reports",
-        href: "/dashboard/reports/history",
-        permission: PERMISSIONS.VIEW_REPORTS,
-      },
-      {
-        label: "Staff Management",
-        href: "/dashboard/staff",
-        permission: PERMISSIONS.MANAGE_STAFF_ACCOUNTS,
       },
       {
         label: "My Profile",

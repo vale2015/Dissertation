@@ -1,5 +1,4 @@
 import DashboardAccessGuard from "@/components/auth/DashboardAccessGuard";
-import ChatbotShell from "@/components/chatbot/ChatbotShell";
 import Sidebar from "@/components/layout/sidebar";
 import Topbar from "@/components/layout/topbar";
 
@@ -16,7 +15,6 @@ export default function DashboardLayout({ children }) {
             </main>
           </div>
         </div>
-        <ChatbotShell />
       </div>
     </DashboardAccessGuard>
   );

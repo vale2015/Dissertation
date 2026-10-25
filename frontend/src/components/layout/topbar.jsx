@@ -1,8 +1,7 @@
 "use client";
 
-import WeatherWidget from "@/components/weather/WeatherWidget";
+import ManagerChat from "@/components/chatbot/ManagerChat";
 import useSession from "@/hooks/useSession";
-import {hasPermission,PERMISSIONS} from "@/lib/permissions";
 
 export default function Topbar({ user }) {
   const session = useSession();
@@ -15,7 +14,7 @@ export default function Topbar({ user }) {
       </div>
 
       <div className="topbar-right">
-        {hasPermission(currentUser,PERMISSIONS.VIEW_FORECASTS) && <WeatherWidget />}
+        <ManagerChat />
 
         <div className="topbar-user-icon">👤</div>
 

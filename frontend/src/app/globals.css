@@ -3073,3 +3073,71 @@ button.event-impact-badge:hover {
   .chatbot-launcher { right: 14px; bottom: 14px; }
   .chatbot-panel { right: 14px; bottom: 78px; max-height: calc(100dvh - 92px); }
 }
+
+/* Typed manager assistant in the top bar. Results stay in this panel. */
+.manager-chat { position: relative; z-index: 1300; }
+.manager-chat-launcher {
+  min-height: 40px;
+  padding: 6px 15px;
+  border: 1px solid #a31520;
+  border-radius: 999px;
+  background: #a31520;
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.manager-chat-launcher span { margin-right: 5px; }
+.manager-chat-panel {
+  position: fixed;
+  top: 92px;
+  right: 20px;
+  z-index: 1301;
+  display: flex;
+  flex-direction: column;
+  width: min(720px, calc(100vw - 32px));
+  height: min(720px, calc(100dvh - 108px));
+  overflow: hidden;
+  border: 1px solid #ded9d3;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 22px 60px rgba(16, 24, 40, .24);
+  color: #17243a;
+}
+.manager-chat-header { display: flex; justify-content: space-between; gap: 16px; padding: 16px 20px; border-bottom: 1px solid #e5e7eb; }
+.manager-chat-header h2 { margin: 0; font-size: 19px; }
+.manager-chat-header p { margin: 3px 0 0; color: #667085; font-size: 12px; }
+.manager-chat-header button { align-self: start; border: 0; background: transparent; color: #475467; font-size: 28px; cursor: pointer; }
+.manager-chat-messages { flex: 1; min-height: 0; overflow-y: auto; padding: 18px 20px; background: #f8f7f5; }
+.manager-chat-message { max-width: 88%; margin: 0 0 13px; padding: 10px 13px; border: 1px solid #e7e2dc; border-radius: 12px; background: #fff; }
+.manager-chat-message span { font-size: 11px; font-weight: 800; color: #a31520; }
+.manager-chat-message p { margin: 4px 0 0; white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.5; font-size: 14px; }
+.manager-chat-user { margin-left: auto; border-color: #a31520; background: #a31520; color: #fff; }
+.manager-chat-user span { color: #fff; }
+.manager-chat-pending,.manager-chat-error { font-size: 13px; }
+.manager-chat-error { color: #a31520; }
+.manager-chat-composer { padding: 12px 16px 14px; border-top: 1px solid #e5e7eb; }
+.manager-chat-composer label { display: block; margin-bottom: 6px; font-size: 12px; font-weight: 700; }
+.manager-chat-composer > div { display: flex; gap: 8px; }
+.manager-chat-composer input { flex: 1; min-width: 0; min-height: 44px; padding: 9px 12px; border: 1px solid #aeb7c2; border-radius: 8px; font: inherit; }
+.manager-chat-composer button { min-width: 66px; border: 0; border-radius: 8px; background: #a31520; color: #fff; font: inherit; font-weight: 700; cursor: pointer; }
+.manager-chat-composer button:disabled { opacity: .55; cursor: not-allowed; }
+.manager-chat-composer small { display: block; margin-top: 7px; color: #667085; font-size: 11px; }
+.manager-chat-workspace { margin-top: 16px; padding: 15px; border: 1px solid #e5e7eb; border-radius: 10px; background: #fff; }
+.manager-chat-workspace .staff-page-header h1 { margin: 0; font-size: 18px; }
+.manager-chat-workspace .staff-page-header p { font-size: 12px; }
+.manager-chat-workspace .staff-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.manager-chat :is(button,input,select):focus-visible { outline: 3px solid #2563eb; outline-offset: 2px; }
+.report-view-period { display: flex; align-items: center; gap: 8px; margin: 0 0 18px; padding: 10px 14px; border: 1px solid #d5d7dc; border-radius: 9px; }
+.report-view-period legend { font-weight: 700; }
+.report-view-period button { min-height: 38px; padding: 6px 13px; border: 1px solid #a31520; border-radius: 7px; background: #fff; color: #a31520; font: inherit; cursor: pointer; }
+.report-view-period button.is-active { background: #a31520; color: #fff; }
+.report-view-period button:focus-visible { outline: 3px solid #2563eb; outline-offset: 2px; }
+.staff-review { padding: 10px 14px; border: 1px solid #d5d7dc; border-radius: 8px; background: #f8fafc; }
+.staff-review p { margin: 6px 0; overflow-wrap: anywhere; }
+@media (max-width: 560px) {
+  .manager-chat-panel { inset: 8px; width: auto; height: auto; max-height: calc(100dvh - 16px); }
+  .manager-chat-message { max-width: 96%; }
+  .manager-chat-workspace .staff-filters { grid-template-columns: 1fr; }
+}

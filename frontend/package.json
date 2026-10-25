@@ -8,9 +8,11 @@
     "start": "next start",
     "lint": "eslint",
     "test:unit": "node --test src/lib/*.test.mjs",
-    "test:components": "vitest run src/components/chatbot/ChatbotShell.test.jsx"
+    "test:components": "vitest run src/components/chatbot src/components/staff/StaffManagement.test.jsx",
+    "test:routes": "vitest run src/app/api/chatbot/route.test.js"
   },
   "dependencies": {
+    "@ai-sdk/openai-compatible": "^3.0.77",
     "ai": "^7.0.150",
     "next": "16.2.1",
     "react": "19.2.4",
