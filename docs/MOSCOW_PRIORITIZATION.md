@@ -1,6 +1,6 @@
 # MoSCoW prioritization of architecture improvements
 
-This is a **value-first** product-priority view of all 55 items in the canonical [improvement tracker](IMPROVEMENT_TRACKER.md), not a second backlog. It reflects the [PRD](PRD.md): a single-restaurant dissertation prototype focused on helping managers prepare services, reuse reports, and judge whether forecasts are accurate. Last reviewed: 2026-10-24.
+This is a **value-first** product-priority view of all 56 items in the canonical [improvement tracker](IMPROVEMENT_TRACKER.md), not a second backlog. It reflects the [PRD](PRD.md): a single-restaurant dissertation prototype focused on helping managers prepare services, reuse reports, and judge whether forecasts are accurate. Last reviewed: 2026-10-24.
 
 **Must** = direct, high-value product outcomes or the minimum safeguards and tests required to deliver them safely. **Should** = meaningful usability, scalability, or operational benefit that can follow the next product increment. **Could** = lower-evidence optimization or structural work. **Won't for now** = explicitly deferred or outside current single-restaurant scope; reconsider if the user or product direction changes.
 
@@ -12,11 +12,11 @@ Priority is independent of delivery state. A Must can already be **Done**, and a
 2. **If moving into Phase 6, start with #29:** a shared dashboard layout removes repeated shell/navigation from 11 pages and gives the later chatbot a single mount point. Do not treat every Phase 6 item as one release.
 3. **Keep the chatbot medium priority:** #55 designs/builds the safe skeleton first; #54 adds weather, events, reports, and staff tools afterward. The disabled #52 report-note pilot does not block this work.
 4. **Maintain the remaining safety gates:** close the migration/access work in 3–4 while delivering new features. Item 5's implemented login safeguards remain in place, but the user deferred their live verification on 2026-10-23.
-5. **Apply release gates throughout, not as a late phase:** complete 7–8 and the relevant portions of 35, 37, 39, 41, and 43 before shipping the affected flows. The remaining Should items follow measured bottlenecks and user feedback.
+5. **Apply release gates throughout, not as a late phase:** complete 7–8, 56, and the relevant portions of 35, 37, 39, 41, and 43 before shipping the affected flows. The remaining Should items follow measured bottlenecks and user feedback.
 
 The current value-first product leader is **21 (forecast-versus-actual)**. The user explicitly set the chatbot (#54–55) to medium priority and wants its skeleton before capabilities. Item 52 remains Partial and disabled in production. Security and test work remains Must because a feature that risks customer data or cannot be verified is not ready for users.
 
-## Must — user value and minimum safe-delivery gates (15)
+## Must — user value and minimum safe-delivery gates (16)
 
 | # | Improvement | Why Must |
 |---|---|---|
@@ -35,6 +35,7 @@ The current value-first product leader is **21 (forecast-versus-actual)**. The u
 | 39 | Repair dependency reproducibility | Ensure value-bearing changes can be built and tested from a clean environment. |
 | 41 | Add continuous integration | Keep the essential tests running on each change. |
 | 43 | Add deployment smoke tests | Confirm the new manager-facing flows work after release. |
+| 56 | Remediate audited frontend dependency vulnerabilities | A production dependency audit now reports high/critical findings; patch and regression-test before release. |
 
 ## Should — meaningful next benefits (26)
 

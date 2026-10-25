@@ -1,12 +1,12 @@
 # RFS chatbot architecture design
 
-Status: engineering-reviewed design. The #55 skeleton is committed locally on a feature branch but awaits preview and browser verification; #54 business capabilities remain open. The [improvement tracker](IMPROVEMENT_TRACKER.md) owns delivery status. This document supersedes the preliminary tool schema and deployment suggestions in the first draft.
+Status: revised engineering and UI/UX design. #54 and #55 are Partial on a local feature branch, not released. Last revised 2026-10-25. The [improvement tracker](IMPROVEMENT_TRACKER.md) owns delivery status. The user's later top-bar, typed-only, chat-complete workflow decision supersedes the original bottom-right preview design below where noted.
 
 ## 1. Product intent and release boundary
 
-RFS should let a restaurant manager ask for weather, nearby events, and a fresh management report, then eventually complete existing Staff Management actions through a guided conversation. The chatbot is another interface to the same protected capabilities, not a second source of truth. The sidebar and existing screens stay available.
+RFS lets a restaurant manager type requests for weather, nearby events, fresh and past management reports, report save/download, and current Staff Management actions. The chatbot is another interface to the same protected capabilities, not a second source of truth. Its launcher replaces the top-bar weather widget. The sidebar removes Local Events, Past Reports, and Staff Management; the Reports entry becomes view-only. Existing direct routes stay available for recovery until the replacement is fully verified.
 
-The first release is deliberately a **skeleton** (#55): one responsive launcher and panel in the shared dashboard layout, manager-only access, a protected availability endpoint, clear loading/error/empty states, and disabled message submission. It does **not** call a model, read business data, execute tools, or write to Supabase. The later #54 release adds capabilities one by one.
+The first published branch had an inert **skeleton** (#55), but the user's revised acceptance requires a usable typed composer and no shortcut cards. Current local #54 work adds protected read flows and an embedded staff workspace; it does not write to Supabase directly. It is not yet a verified release.
 
 ## 2. Architecture decision
 
@@ -17,27 +17,26 @@ flowchart LR
   M[Manager] --> UI[Dashboard chat panel]
   UI --> BFF[Next.js /api/chatbot]
   BFF --> AUTH[Flask /auth/me]
-  BFF -. later: validated tool calls .-> API[Protected Flask APIs]
-  BFF -. later: AI SDK + Gateway .-> LLM[Configured model]
+  BFF --> API[Protected Flask APIs]
+  BFF -. ambiguous intent only .-> LLM[Cloudflare Workers AI / Qwen 3.8]
   API --> DB[(Supabase PostgreSQL)]
   API --> EXT[Weather and event providers]
 ```
 
 - **Browser:** renders the panel and source-linked results. It never receives the session JWT, model credential, or database connection.
-- **Next.js route:** reads the HttpOnly cookie, verifies identity with Flask, checks manager access, validates each request, and will eventually orchestrate model/tool calls using the installed AI SDK. It does not trust a role, tool name, or confirmation flag supplied by the browser.
+- **Next.js route:** reads the HttpOnly cookie, verifies identity with Flask, checks manager access, validates each request, and orchestrates bounded model classification and allowlisted backend requests. It does not trust a role, tool name, or confirmation flag supplied by the browser.
 - **Flask:** remains authoritative for permissions, business validation, staff audits, report calculations, weather, and events. Every future tool request must pass through protected Flask endpoints or the same service boundary.
 - **Supabase:** remains behind Flask. The skeleton adds no table or migration.
 
-The model/provider will be selected by reviewed server configuration through the AI Gateway. Do not hard-code a remembered model ID or call provider APIs directly. No separate agent framework, durable workflow, WebSocket, or Redis is required for this bounded interactive first release.
+The user selected Cloudflare Workers AI and its documented `@cf/qwen/qwen3.8-27b` model to avoid a funded account for the prototype. The Next.js server uses the installed AI SDK OpenAI-compatible provider with `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN` stored as private Vercel Preview variables. The model only classifies ambiguous text into allowlisted intents; it never receives backend records or executes tools. Direct, explicit requests work without a model. No separate agent framework, durable workflow, WebSocket, or Redis is needed for read-only work; durable idempotency is still required before staff writes meet the final acceptance criteria. See [Cloudflare model](https://developers.cloudflare.com/workers-ai/models/qwen3.8-27b/), [compatible endpoint](https://developers.cloudflare.com/workers-ai/configuration/open-ai-compatibility/), and [pricing](https://developers.cloudflare.com/workers-ai/platform/pricing/).
 
-## 3. Current skeleton contract (#55)
+## 3. Current local chat contract (#54–55)
 
-- GET /api/chatbot: requires a valid manager session verified against Flask /auth/me; returns phase=skeleton, conversation_enabled=false, business_tools_enabled=false. Responses are no-store.
-- POST /api/chatbot: checks origin and manager session, then returns 501. It does not parse the message body, call a model, or dispatch a business tool.
-- The launcher appears only to managers inside the shared dashboard layout. The panel labels itself as a preview, offers links to existing permitted screens, and has a disabled composer.
-- Opening the panel checks endpoint availability; a failed check shows a retryable error. Escape and the close control close the non-modal dialog and restore focus to the launcher.
+- GET /api/chatbot: requires a valid manager session verified against Flask /auth/me; fetches protected weather without a model call, and returns no-store status plus a weather or unavailable message.
+- POST /api/chatbot: checks origin, manager session, bounded JSON message, optional validated report context, and a local intent parser. Ambiguous non-sensitive requests may use Cloudflare for intent classification. It calls only fixed protected Flask routes or returns a staff-workspace instruction; model output is never an authorization decision.
+- The manager-only launcher appears in the top bar. The panel has an enabled typed composer, short capability greeting, no starter cards/options, and in-chat results or secure staff forms. Escape and Close restore focus to the launcher.
 
-This is an honest foundation rather than a simulated AI conversation. An unavailable backend must fail closed, not display a working chat.
+An unavailable backend must fail closed for requests. Weather failure does not disable the rest of the chat; model unavailability falls back to explicit typed commands.
 
 ## 4. Future capability contract (#54)
 
@@ -45,7 +44,7 @@ This is an honest foundation rather than a simulated AI conversation. An unavail
 | --- | --- | --- | --- |
 | Weather on open | GET /api/weather/ | view_forecasts | Deterministic card, fetched when chat opens; no model call needed. Show observation time and stale/unavailable state. |
 | Local events | GET /api/events/?start_date=&end_date= | view_forecasts | Bound and validate dates; show provider, date, source link, and unavailable state. |
-| Fresh management report | GET /api/reports/management?selected_date=&days_ahead= | view_reports | Generate on demand from the existing calculation, summarize exact source figures, and link to the full report screen. Saving/downloading in chat is a separate decision. |
+| Fresh and saved management reports | GET /api/reports/management?selected_date=&days_ahead=, report-history endpoints, and protected downloads | view_reports | Generate, summarize exact source figures, save, list, view, and download in chat without page navigation. The Reports sidebar entry is a read-only view. |
 | Staff search/detail | GET /api/staff/ and GET /api/staff/{id} | manage_staff_accounts | Return minimum needed fields; do not send raw records or secret links to the model. |
 | Staff registration/edit/status/reset | Existing POST/PATCH staff routes | manage_staff_accounts | Require a reviewed proposal card, explicit confirmation, fresh authorization, and idempotent execution. Never pass passwords or activation/reset links through model context. |
 
@@ -78,7 +77,7 @@ No write action is safe with only an in-memory pending card or a browser-generat
 
 ## 6. UI/UX design
 
-The panel is a non-modal dashboard companion: a persistent bottom-right launcher, clear title and preview state, readable source cards, and an unchanged sidebar. On mobile it fits within the viewport without covering the close control. Keyboard users can open it with Enter/Space, close with Escape or the labelled button, and return focus to the launcher. Links and buttons have visible focus states; status and errors use appropriate live regions. Reduced-motion preferences should be respected as animation is added.
+The panel is a non-modal dashboard companion launched from the top bar, with no starter cards or shortcut options. On mobile it fits within the viewport without covering the close control. Keyboard users can open it with Enter/Space, close with Escape or the labelled button, and return focus to the launcher. Buttons and inputs have visible focus states; status and errors use appropriate live regions. Reduced-motion preferences should be respected as animation is added.
 
 Future conversation design should distinguish user messages, AI interpretation, verified source results, and proposed actions. Weather should appear automatically on open, not wait for a greeting. Reports and events need timestamps and links to the original screen/source. Every proposed staff change needs a separate confirmation card; never hide confirmation inside ordinary prose. Errors should name what failed and provide a safe retry without duplicating writes.
 
@@ -97,16 +96,16 @@ The preliminary pronouns-column proposal is **deferred**. The assistant can addr
 
 ## 8. Delivery and acceptance
 
-1. **#55 skeleton (current slice):** manager-only launcher/panel, authenticated GET and inert POST, responsive and keyboard design, error handling, unit/build/access tests. No AI request, tool call, or database change.
-2. **#54 read-only:** weather on open; then bounded event lookup and fresh report generation with source cards. Add model only after privacy, model choice, rate/cost limits, and evaluation tests are agreed.
-3. **#54 staff reads and writes:** staff lookup first; then registration, edit, status, and reset flows one at a time with durable confirmation, idempotency, audit, and permission tests.
+1. **#55 revised shell:** manager-only top-bar launcher/panel, authenticated GET and typed POST, responsive and keyboard design, error handling, unit/build/access tests, automatic weather, no option blocks.
+2. **#54 read-only and reports:** bounded event lookup and fresh/saved report generation, save and download in chat. Model classifies only ambiguous requests after privacy/usage checks; source figures remain deterministic.
+3. **#54 staff reads and writes:** embedded protected staff workspace with review/confirmation, followed by durable idempotency, audit, and permission tests for registration, edit, status, and reset.
 4. **Release quality:** authenticated manager and restricted-role browser journeys, end-to-end success/failure tests, runtime monitoring, and rollback evidence. Git push, migration, and Vercel READY are separate milestones.
 
 For #55, “Done” requires the panel to open/close by mouse and keyboard on representative dashboard pages, deny signed-out and non-manager access, leave POST and business actions inert, and pass focused tests plus a clean build. A deployment alone does not satisfy this.
 
 ## 9. Decisions still needed before #54
 
-- Does chat report generation only show a report with a link, or must it save/download PDF and CSV inside chat?
+- Resolved: chat report generation includes save, history, view, and PDF/CSV download without navigating to another page.
 - For staff registration, should chat use the current active-account/password form or a future invitation flow?
 - Which minimal staff fields may enter model context, if any, and what conversation retention is acceptable?
-- Which Gateway model, cost ceiling, and evaluation threshold justify enabling model calls?
+- Resolved provider/model for the prototype: Cloudflare Workers AI/Qwen 3.8 on the free account. Remaining: verify the free allowance, Preview credentials, privacy/usage limits, and evaluation threshold before release.
