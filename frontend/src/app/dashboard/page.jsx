@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import DashboardContent from "@/components/dashboard/dashboardContent";
+import { getISODateInTimeZone } from "@/utils/DateFormat";
 
 
 // Ensure the authenticated dashboard is never statically cached.
@@ -64,5 +65,5 @@ export default async function DashboardPage() {
     redirect("/dashboard/profile");
   }
 
-  return <DashboardContent user={user} />;
+  return <DashboardContent user={user} today={getISODateInTimeZone()} />;
 }

@@ -1,3 +1,17 @@
+// Return the calendar day in the restaurant's timezone, not the server's UTC day.
+export function getISODateInTimeZone(now = new Date(), timeZone = "Europe/London") {
+  const parts = Object.fromEntries(
+    new Intl.DateTimeFormat("en-GB", {
+      timeZone,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).formatToParts(now).map(({ type, value }) => [type, value])
+  );
+
+  return `${parts.year}-${parts.month}-${parts.day}`;
+}
+
 // Converts a date value into DD/MM/YYYY format for display.
 export function formatDateDDMMYYYY(dateString) {
   if (!dateString) return "-";

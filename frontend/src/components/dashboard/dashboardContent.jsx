@@ -12,7 +12,7 @@ const currency = (value) => Number.isFinite(Number(value))
   ? new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(Number(value))
   : "Unavailable";
 
-function DashboardContentInner({ user }) {
+function DashboardContentInner({ user, today }) {
   const router = useRouter();
   const {
     loading, error, selectedDate, selectedMode, selectedHistoricalRecord,
@@ -22,7 +22,7 @@ function DashboardContentInner({ user }) {
   } = useDashboardData();
   const firstName = user?.full_name?.trim().split(/\s+/)[0] || "there";
   const [draftSelection, setDraftSelection] = useState(null);
-  const draftDate = draftSelection?.baseDate === selectedDate ? draftSelection.value : (selectedDate || "");
+  const draftDate = draftSelection?.baseDate === selectedDate ? draftSelection.value : (selectedDate || today);
   const history = weeklyData.slice(-7);
   const forecast = forecastData.slice(0, 7).map((row) => ({
     date: row.date, label: row.day_of_week || row.date,
@@ -39,16 +39,20 @@ function DashboardContentInner({ user }) {
   function applyDate(event) {
     event.preventDefault();
     if (draftDate && draftDate !== selectedDate) {
+      setDraftSelection(null);
       router.push(`/dashboard?date=${encodeURIComponent(draftDate)}`);
-    } else if (!draftDate && selectedDate) {
-      router.push("/dashboard");
     }
+  }
+
+  function showOverview() {
+    setDraftSelection(null);
+    router.push("/dashboard");
   }
 
   return <>
     <section className="rfs-dashboard-heading">
-      <div><h1>Good morning, {firstName}! <span aria-hidden="true">👋</span></h1><p>Here’s what’s happening at your restaurant{selectedDate ? ` on ${formatDateDDMMYYYY(selectedDate)}` : " today"}.</p></div>
-      <form className="rfs-dashboard-date" onSubmit={applyDate}><label htmlFor="dashboard-date">View a day</label><div className="rfs-dashboard-date-controls"><input id="dashboard-date" type="date" value={draftDate} onChange={(event) => setDraftSelection({ baseDate: selectedDate, value: event.target.value })} /><button type="submit" disabled={!draftDate || draftDate === selectedDate}>Apply</button></div>{selectedDate && <button type="button" onClick={() => router.push("/dashboard")}>Show overview</button>}</form>
+      <div><h1>Good morning, {firstName}! <span aria-hidden="true">👋</span></h1><p>{selectedDate ? `Here’s your restaurant data for ${formatDateDDMMYYYY(selectedDate)}.` : "Here’s your restaurant overview."}</p></div>
+      <form className="rfs-dashboard-date" onSubmit={applyDate}><label htmlFor="dashboard-date">View a day</label><div className="rfs-dashboard-date-controls"><input id="dashboard-date" type="date" value={draftDate} onChange={(event) => setDraftSelection({ baseDate: selectedDate, value: event.target.value })} /><button type="submit" disabled={!draftDate || draftDate === selectedDate}>Apply</button></div>{selectedDate && <button type="button" onClick={showOverview}>Show overview</button>}</form>
     </section>
 
     {loading && <p className="dashboard-panel rfs-dashboard-state" role="status">Loading restaurant data…</p>}
@@ -80,6 +84,6 @@ function DashboardContentInner({ user }) {
   </>;
 }
 
-export default function DashboardContent({ user }) {
-  return <Suspense fallback={<p className="dashboard-panel rfs-dashboard-state">Loading restaurant data…</p>}><DashboardContentInner user={user} /></Suspense>;
+export default function DashboardContent({ user, today }) {
+  return <Suspense fallback={<p className="dashboard-panel rfs-dashboard-state">Loading restaurant data…</p>}><DashboardContentInner user={user} today={today} /></Suspense>;
 }
