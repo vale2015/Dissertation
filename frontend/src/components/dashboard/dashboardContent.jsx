@@ -1,7 +1,6 @@
 "use client";
 
 import { Suspense } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import SummaryCard from "@/components/dashboard/summaryCard";
 import BookingsTrend from "@/components/charts/BookingsTrend";
@@ -18,7 +17,7 @@ function DashboardContentInner({ user }) {
   const {
     loading, error, selectedDate, selectedMode, selectedHistoricalRecord,
     selectedForecastRecord, predictedCoversNext7Days, staffNeededTomorrow,
-    peakDemandDay, weeklyData, forecastData, latestRecord, financialSummary,
+    peakDemandDay, weeklyData, forecastData, financialSummary,
     getStaffFromCovers,
   } = useDashboardData();
   const firstName = user?.full_name?.trim().split(/\s+/)[0] || "there";
@@ -71,17 +70,6 @@ function DashboardContentInner({ user }) {
         <div className="dashboard-panel"><BookingsTrend data={cumulativeForecast} title="Cumulative demand" description="Running total of predicted covers across the available forecast days." variant="line" seriesLabel="Cumulative covers" /></div>
       </section>
 
-      <section className="rfs-dashboard-context" aria-label="Operational context">
-        <div className="dashboard-panel"><h2>Latest operational snapshot</h2>{latestRecord.date ? <p>{formatDateDDMMYYYY(latestRecord.date)} · {latestRecord.total_covers ?? "Unavailable"} recorded covers</p> : <p>No recorded operational snapshot is available.</p>}</div>
-        <div className="dashboard-panel"><h2>Financial context</h2><p>Past 30-day modelled food revenue: {financialSummary.estimated_food_revenue == null ? "Unavailable" : currency(financialSummary.estimated_food_revenue)}</p><p>Active future staffing forecast labour: {financialSummary.total_labour_cost == null ? "Unavailable" : currency(financialSummary.total_labour_cost)}</p><small>Different periods; these figures should not be subtracted to claim a margin.</small></div>
-      </section>
-
-      <nav className="rfs-dashboard-actions" aria-label="Quick actions">
-        <Link href="/dashboard/bookings"><strong>Manage bookings</strong><span>Review covers and reservations</span></Link>
-        <Link href="/dashboard/reservation-forecast"><strong>View forecasts</strong><span>Explore predicted demand</span></Link>
-        <Link href="/dashboard/staff-forecast"><strong>Staff planning</strong><span>Review recommended levels</span></Link>
-        <Link href="/dashboard/reports"><strong>View reports</strong><span>Read saved management reports</span></Link>
-      </nav>
     </>}
   </>;
 }

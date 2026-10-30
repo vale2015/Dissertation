@@ -33,8 +33,7 @@ export default function Topbar({ user }) {
   }
 
   return <>
-    <header className="topbar">
-      <div className="topbar-left" aria-hidden="true" />
+    <header className="topbar" aria-label="Notifications and account">
       <div className="topbar-right">
         <ManagerChat />
         <NotificationBell key={currentUser?.id || "signed-out"} userId={currentUser?.id} />

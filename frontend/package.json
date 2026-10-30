@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "test:unit": "node --test src/lib/*.test.mjs",
-    "test:components": "vitest run src/components/chatbot src/components/charts/DataChart.test.jsx src/components/layout/NotificationBell.test.jsx src/components/staff/StaffManagement.test.jsx src/app/dashboard/settings/page.test.jsx src/app/dashboard/reports/page.test.jsx",
+    "test:components": "vitest run src/components/chatbot src/components/charts/DataChart.test.jsx src/components/dashboard/dashboardContent.test.jsx src/components/layout/NotificationBell.test.jsx src/components/staff/StaffManagement.test.jsx src/app/dashboard/settings/page.test.jsx src/app/dashboard/reports/page.test.jsx",
     "test:routes": "vitest run src/app/api/chatbot/route.test.js"
   },
   "dependencies": {

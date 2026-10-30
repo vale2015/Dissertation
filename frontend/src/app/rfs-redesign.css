@@ -1,8 +1,8 @@
 /* RFS redesign: shared shell and assistant. Keep page-specific legacy styles in globals.css until migrated. */
 .dashboard-app { background: #fafbfc; color: #101828; }
-.dashboard-shell { display: block; min-height: calc(100vh - 60px); background: #fafbfc; }
-.dashboard-main-area { margin-left: 240px; min-height: calc(100vh - 60px); }
-.dashboard-page { padding: 30px 20px 64px; background: #fafbfc; }
+.dashboard-shell { display: block; min-height: 100vh; background: #fafbfc; }
+.dashboard-main-area { position: relative; display: flex; flex-direction: column; margin-left: 240px; min-height: 100vh; }
+.dashboard-page { padding: 18px 20px 56px; background: #fafbfc; }
 .dashboard-container { max-width: 1440px; margin: 0 auto; gap: 18px; }
 .dashboard-hero { margin-bottom: 10px; }
 .dashboard-title { color: #101828; font-size: clamp(27px, 2.2vw, 36px); letter-spacing: -.035em; }
@@ -35,9 +35,10 @@
 .sidebar-calendar-note { font-size: 11px; }
 
 .topbar {
-  height: 60px; margin-left: 240px; padding: 0 24px; border: 0;
-  border-bottom: 1px solid #e9ebef; background: #fff;
+  z-index: 200; align-self: flex-end; width: max-content; height: auto; min-height: 44px;
+  margin: 12px 20px 0; padding: 0; border: 0; background: transparent;
 }
+.dashboard-main-area:has(.rfs-dashboard-heading) .topbar { position: absolute; top: 12px; right: 20px; margin: 0; }
 .topbar-right { gap: 12px; }
 .notification-root { position: relative; }
 .notification-bell { position: relative; display: grid; place-items: center; width: 43px; height: 43px; border: 0; border-radius: 50%; background: transparent; color: #202938; cursor: pointer; }
@@ -79,32 +80,24 @@
 .dashboard-panel-title { color: #101828; }
 
 /* Dashboard: match the approved spacious card/chart composition using live data. */
-.rfs-dashboard-heading { display: flex; align-items: start; justify-content: space-between; gap: 20px; margin-bottom: 26px; }
+.rfs-dashboard-heading { display: flex; align-items: start; justify-content: space-between; gap: 20px; margin-bottom: 0; }
+.rfs-dashboard-heading > div:first-child { max-width: calc(100% - 255px); }
 .rfs-dashboard-heading h1 { margin: 0 0 5px; color: #101828; font-size: clamp(26px, 2.4vw, 36px); letter-spacing: -.035em; }
 .rfs-dashboard-heading p { margin: 0; color: #505a69; font-size: 16px; }
-.rfs-dashboard-date { display: grid; gap: 3px; min-width: 186px; padding: 9px 14px; border: 1px solid #e1e4e8; border-radius: 10px; background: #fff; box-shadow: 0 4px 15px rgba(16,24,40,.04); }
+.rfs-dashboard-date { display: grid; gap: 3px; min-width: 186px; margin-top: 44px; padding: 9px 14px; border: 1px solid #e1e4e8; border-radius: 10px; background: #fff; box-shadow: 0 4px 15px rgba(16,24,40,.04); }
 .rfs-dashboard-date label { color: #586171; font-size: 11px; font-weight: 700; }
 .rfs-dashboard-date input { width: 100%; border: 0; background: transparent; color: #182235; font: inherit; font-size: 14px; }
 .rfs-dashboard-date button,.rfs-dashboard-state button { width: fit-content; border: 0; background: transparent; color: #a7141c; font: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
 .rfs-kpi-grid { margin-bottom: 14px; }
 .rfs-kpi-grid .summary-card { min-height: 140px; padding: 20px; }
 .rfs-kpi-grid .summary-card-value { margin: 3px 0 7px; font-size: clamp(23px, 2vw, 31px); }
-.rfs-dashboard-charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-bottom: 14px; }
+.rfs-dashboard-charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
 .rfs-dashboard-charts > .dashboard-panel { min-width: 0; min-height: 300px; padding: 20px; }
 .rfs-dashboard-charts .dashboard-panel-title { margin-bottom: 7px; font-size: 16px; }
 .rfs-dashboard-charts .simple-line-chart-svg { height: 185px; }
 .rfs-dashboard-charts .staffing-overview-chart { height: 210px; }
 .rfs-dashboard-charts .staffing-overview-bar-wrap { height: 145px; }
 .rfs-dashboard-charts .chart-tooltip { border-color: #e5e7eb; }
-.rfs-dashboard-context { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-bottom: 14px; }
-.rfs-dashboard-context h2 { margin: 0 0 10px; font-size: 16px; }
-.rfs-dashboard-context p { margin: 0 0 6px; color: #293548; font-size: 14px; }
-.rfs-dashboard-context small { color: #667085; }
-.rfs-dashboard-actions { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
-.rfs-dashboard-actions a { display: flex; flex-direction: column; gap: 5px; min-height: 90px; padding: 18px; border: 1px solid #eceef1; border-radius: 12px; background: #fff; box-shadow: 0 5px 22px rgba(16,24,40,.045); color: #101828; text-decoration: none; }
-.rfs-dashboard-actions a:hover { border-color: #d89499; background: #fffafa; }
-.rfs-dashboard-actions strong { font-size: 14px; }
-.rfs-dashboard-actions span { color: #667085; font-size: 12px; }
 .rfs-dashboard-state { padding: 25px; }
 .rfs-dashboard-state h2 { margin: 0 0 6px; font-size: 18px; }
 .rfs-dashboard-state p { color: #586171; }
@@ -151,13 +144,13 @@
 @media (max-width: 1050px) {
   .dashboard-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .dashboard-bottom-grid { grid-template-columns: 1fr; }
-  .rfs-dashboard-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 700px) {
   .rfs-dashboard-heading { flex-direction: column; }
-  .rfs-dashboard-date { width: 100%; }
-  .rfs-dashboard-charts,.rfs-dashboard-context { grid-template-columns: 1fr; }
-  .topbar { margin-left: 0; padding: 0 16px; }
+  .rfs-dashboard-heading > div:first-child { max-width: 100%; }
+  .rfs-dashboard-date { width: 100%; margin-top: 0; }
+  .rfs-dashboard-charts { grid-template-columns: 1fr; }
+  .topbar,.dashboard-main-area:has(.rfs-dashboard-heading) .topbar { position: static; margin: 8px 14px 0; }
   .dashboard-shell { display: flex; flex-direction: column; }
   .sidebar { position: static; width: 100%; overflow: visible; border-right: 0; border-bottom: 1px solid #e9ebef; }
   .sidebar-brand { min-height: 68px; padding: 8px 15px; }
@@ -169,52 +162,18 @@
   .sidebar-icon { width: 17px; height: 17px; }
   .sidebar-calendar { display: none; }
   .dashboard-main-area { margin-left: 0; }
-  .dashboard-page { padding: 20px 14px 80px; }
+  .dashboard-page { padding: 12px 14px 80px; }
   .topbar-user-name { max-width: 130px; }
   .manager-chat-launcher { right: 12px; bottom: 10px; }
   .manager-chat-panel { inset: 6px; width: auto; height: auto; max-height: calc(100dvh - 12px); }
 }
 @media (max-width: 480px) {
   .dashboard-summary-grid { grid-template-columns: 1fr; }
-  .rfs-dashboard-actions { grid-template-columns: 1fr; }
   .topbar-user-name { max-width: 100px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .dashboard-app *, .dashboard-app *::before, .dashboard-app *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
 }
-
-/* Dashboard composition, backed by the current API rather than mockup numbers. */
-.rfs-dashboard-heading { display: flex; align-items: start; justify-content: space-between; gap: 20px; margin-bottom: 26px; }
-.rfs-dashboard-heading h1 { margin: 0 0 5px; color: #101828; font-size: clamp(26px, 2.4vw, 36px); letter-spacing: -.035em; }
-.rfs-dashboard-heading p { margin: 0; color: #505a69; font-size: 16px; }
-.rfs-dashboard-date { display: grid; gap: 3px; min-width: 186px; padding: 9px 14px; border: 1px solid #e1e4e8; border-radius: 10px; background: #fff; box-shadow: 0 4px 15px rgba(16,24,40,.04); }
-.rfs-dashboard-date label { color: #586171; font-size: 11px; font-weight: 700; }
-.rfs-dashboard-date input { width: 100%; border: 0; background: transparent; color: #182235; font: inherit; font-size: 14px; }
-.rfs-dashboard-date button,.rfs-dashboard-state button { width: fit-content; border: 0; background: transparent; color: #a7141c; font: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
-.rfs-kpi-grid { margin-bottom: 14px; }
-.rfs-kpi-grid .summary-card { min-height: 140px; padding: 20px; }
-.rfs-kpi-grid .summary-card-value { margin: 3px 0 7px; font-size: clamp(23px, 2vw, 31px); }
-.rfs-dashboard-charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-bottom: 14px; }
-.rfs-dashboard-charts > .dashboard-panel { min-width: 0; min-height: 300px; padding: 20px; }
-.rfs-dashboard-charts .dashboard-panel-title { margin-bottom: 7px; font-size: 16px; }
-.rfs-dashboard-charts .simple-line-chart-svg { height: 185px; }
-.rfs-dashboard-charts .staffing-overview-chart { height: 210px; }
-.rfs-dashboard-charts .staffing-overview-bar-wrap { height: 145px; }
-.rfs-dashboard-context { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-bottom: 14px; }
-.rfs-dashboard-context h2 { margin: 0 0 10px; font-size: 16px; }
-.rfs-dashboard-context p { margin: 0 0 6px; color: #293548; font-size: 14px; }
-.rfs-dashboard-context small { color: #667085; }
-.rfs-dashboard-actions { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
-.rfs-dashboard-actions a { display: flex; flex-direction: column; gap: 5px; min-height: 90px; padding: 18px; border: 1px solid #eceef1; border-radius: 12px; background: #fff; box-shadow: 0 5px 22px rgba(16,24,40,.045); color: #101828; text-decoration: none; }
-.rfs-dashboard-actions a:hover { border-color: #d89499; background: #fffafa; }
-.rfs-dashboard-actions strong { font-size: 14px; }
-.rfs-dashboard-actions span { color: #667085; font-size: 12px; }
-.rfs-dashboard-state { padding: 25px; }
-.rfs-dashboard-state h2 { margin: 0 0 6px; font-size: 18px; }
-.rfs-dashboard-state p { color: #586171; }
-@media (max-width: 1050px) { .rfs-dashboard-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 700px) { .rfs-dashboard-heading { flex-direction: column; } .rfs-dashboard-date { width: 100%; } .rfs-dashboard-charts,.rfs-dashboard-context { grid-template-columns: 1fr; } }
-@media (max-width: 480px) { .rfs-dashboard-actions { grid-template-columns: 1fr; } }
 
 /* Shared, accessible data visualisation for historical demand and forecasts. */
 .rfs-data-chart { --rfs-chart-color: #db3347; color: #18243a; }

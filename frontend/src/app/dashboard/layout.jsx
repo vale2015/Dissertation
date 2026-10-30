@@ -6,10 +6,10 @@ export default function DashboardLayout({ children }) {
   return (
     <DashboardAccessGuard>
       <div className="dashboard-app">
-        <Topbar />
         <div className="dashboard-shell">
           <Sidebar />
           <div className="dashboard-main-area">
+            <Topbar />
             <main className="dashboard-page">
               <div className="dashboard-container">{children}</div>
             </main>
