@@ -4,7 +4,7 @@ Status: **Partial**, feature-gated pilot (2026-10-23). Feature commit `5b32c7d` 
 
 ## Manager experience
 
-On a saved report, a manager can request up to three draft observations and practical checks. Each appears beside an exact source figure taken from that immutable report and its report ID. The draft is labelled for manager review. It cannot alter bookings, staffing, forecasts, or report totals. When AI is disabled or fails, the normal report and downloads remain available.
+This is a gated API pilot, **not a visible action on the current view-only Reports page**. If a future reviewed interface enables it, a manager could request up to three draft observations and practical checks from a saved report. Each would appear beside an exact source figure taken from that immutable report and its report ID, labelled for manager review. It cannot alter bookings, staffing, forecasts, or report totals. When AI is disabled or fails, the normal report and downloads remain available. The current product workflow is defined in the [PRD](PRD.md).
 
 ## Boundary and data handling
 
@@ -12,7 +12,7 @@ On a saved report, a manager can request up to three draft observations and prac
 - A strict allowlist extracts aggregate covers, staffing-assignment count, selected estimated financial totals, and missing-data indicators. Names, contact details, booking notes, raw daily rows, and staff records are not sent to the model.
 - The model returns a structured list of evidence IDs, interpretations, and manager checks. Unknown or duplicate evidence IDs, and model prose containing figures or links, are rejected. Exact evidence is rendered from the saved report, not copied from model text.
 - The model is instructed to treat evidence as data, avoid causal claims, and present suggestions rather than automatic actions. This does not prove its interpretations are correct; human review and an evaluation set are still required.
-- The request runs only after the manager clicks the button. It has a 20-second model deadline and returns a safe error if the backend or model is unavailable. Responses are not cached or written to the report history.
+- If a reviewed interface is added, the request must run only after the manager explicitly invokes it. The existing route has a 20-second model deadline and returns a safe error if the backend or model is unavailable. Responses are not cached or written to the report history.
 
 ## Configuration and release gates
 

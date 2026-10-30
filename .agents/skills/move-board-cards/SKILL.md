@@ -1,9 +1,11 @@
 ---
 name: move-board-cards
-description: Move Dissertation project cards between READY, IN PROGRESS, and DONE on the connected board. Use when the user asks to pick up, start, progress, complete, or move a card, or when a tracked improvement changes work state.
+description: Dormant legacy Trello card-moving skill for Dissertation. Do not use while AGENTS.md says Trello is disabled; use only if the PM explicitly re-enables Trello and requests a board move.
 ---
 
 # Move board cards
+
+This skill is inactive under the repository's current no-Trello instruction in `AGENTS.md`. Do not open, query, or change the board for ordinary task handoffs. Use `backlog-handoff` and `docs/IMPROVEMENT_TRACKER.md` instead. The procedure below applies only if the PM explicitly reverses that instruction and asks for a board move.
 
 Use the connected Trello board for the Dissertation project. This skill changes card status by moving the existing card to the corresponding list; it does not create cards, lists, or labels.
 

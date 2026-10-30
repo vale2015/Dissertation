@@ -3,9 +3,9 @@
 | Field | Value |
 |---|---|
 | Product | RFS — Restaurant Forecasting System |
-| Document status | Working baseline |
-| Version | 1.0 |
-| Date | 21 October 2026 |
+| Document status | Living product baseline; implementation status and release evidence live in the [improvement tracker](IMPROVEMENT_TRACKER.md) |
+| Version | 1.1 |
+| Date | 30 October 2026 |
 | Product owner | Valerio Gerardi |
 | Primary users | Independent restaurant managers, supervisors, and staff |
 | Platforms | Responsive web application; separate Next.js and Flask services |
@@ -16,7 +16,7 @@ RFS is a decision-support application for small independent restaurants. It cons
 
 The product addresses a common operational problem: restaurant managers must make staffing and purchasing decisions using fragmented booking information, personal judgement, and limited visibility of factors that affect demand. RFS converts historical and upcoming booking data into actionable forecasts and staffing guidance while preserving a clear human decision point.
 
-The current product is an academic prototype and dissertation deliverable. This PRD defines the existing MVP, its expected behaviour, and the next product increments required to make it more useful and measurable in real restaurant operations.
+The current product is an academic prototype and dissertation deliverable. This PRD defines its product intent and requirements; the [tracker](IMPROVEMENT_TRACKER.md) distinguishes implemented, deployed, verified, and still-open work. The current interface includes a left-docked manager assistant, view-only saved Reports, real in-app notifications, and a Settings hub. It has no POS integration, so genuine served covers must be entered after service rather than inferred from bookings.
 
 ## 2. Product vision
 
@@ -121,15 +121,17 @@ Key needs:
 - configurable staffing rules and operational staff roles;
 - current and forecast weather for the configured restaurant location;
 - nearby concerts, general events, and sports discovery;
-- management report preview and PDF/CSV downloads;
+- immutable saved report history, with report generation, saving, retrieval, and PDF/CSV downloads in the manager assistant; the Reports page itself is view-only;
+- immutable forecast runs and a forecast-accuracy view with clearly separated demo data; genuine completed-service comparison remains to be verified;
+- manager-only assistant for weather, local events, reports, and protected staff workflows; a recipient-scoped in-app notification inbox;
 - application and database health endpoints.
 
 ### 7.2 Recommended next scope
 
-1. Historical report archive and period comparison.
-2. Forecast-versus-actual accuracy monitoring.
-3. Configurable operational alerts and recommendations.
-4. Scenario planning for covers, wage rates, opening hours, and staffing choices.
+1. Verify genuine pre-service forecast-versus-served-actual comparisons and the authenticated accuracy journey; demo values are not real evidence.
+2. Add period comparison for saved reports and forecasts.
+3. Complete the assistant's authenticated, privacy, rate-limit, and staff-write safety checks.
+4. Evaluate opt-in operational briefings, scenarios, and recommendations after the current flows are reliable.
 5. Personal shift viewing and staff availability.
 
 ### 7.3 Out of scope for the current product
@@ -142,6 +144,14 @@ Key needs:
 - automated purchasing from suppliers;
 - multi-restaurant or franchise administration;
 - replacing the manager's judgement with fully autonomous decisions.
+
+### 7.4 Current manager experience and approved interface decisions
+
+The visible sidebar contains Dashboard, Bookings, Reservation Forecast, Staffing Forecast, Staff Management (manager only), Reports, and Settings, filtered by role permissions. Bookings exposes Add Booking; Forecast Accuracy is reached from the forecast experience. Settings combines personal account fields with Staffing Rules for managers. A real notification bell sits with the account controls. The dashboard shows live-data cards and charts; it does not show the old white top strip or the former cards beneath the charts.
+
+RFS AI is manager-only. Its launcher is below the left navigation. On desktop, the conversation opens as a left dock and moves the page aside rather than obscuring it; at smaller widths it stays in normal flow. It greets the manager, shows current restaurant weather on open, and accepts typed requests. Suggested prompts may prefill the composer but never submit or mutate data automatically. The assistant can retrieve local events, bookings/forecast summaries, and fresh or saved reports; report generation, saving, history retrieval, and PDF/CSV downloads happen in chat. The Reports page only lists and displays saved snapshots. Staff Management remains both a sidebar page and a protected workspace inside chat; account changes are completed through secure forms and confirmation, not autonomous model actions.
+
+The application remains a single-restaurant prototype. Currency, dates, observed versus estimated values, missing data, and demo forecast-accuracy fixtures must be labelled honestly. The [redesign plan](RFS_UI_UX_REDESIGN_PLAN.md) records implementation decisions; the [tracker](IMPROVEMENT_TRACKER.md) records what remains unverified.
 
 ## 8. Functional requirements
 
@@ -173,8 +183,8 @@ Priority definitions: **Must** is necessary for the product's core purpose, **Sh
 |---|---|---|---|
 | DASH-01 | Must | The dashboard summarises recent demand and financial indicators. | Cards and charts use current backend data and expose loading, empty, and failure states. |
 | DASH-02 | Must | Users can select a planning date used across relevant dashboard views. | Navigation preserves the selected date where required. |
-| DASH-03 | Should | The dashboard shows weather for the configured restaurant location. | Weather is labelled by date/location and a provider failure does not block other dashboard content. |
-| DASH-04 | Should | Users can inspect nearby events for a selected month and category. | Results are normalised, deduplicated, linked to their source, and limited to the configured radius when coordinates are available. |
+| DASH-03 | Should | Managers can check weather for the configured restaurant location through RFS AI. | Weather is labelled by date/location and a provider failure does not block other dashboard content. |
+| DASH-04 | Should | Managers can retrieve nearby events through RFS AI. | Results are normalised, deduplicated, linked to their source, and limited to the configured radius when coordinates are available. |
 
 ### 8.4 Demand forecasting
 
@@ -199,10 +209,10 @@ Priority definitions: **Must** is necessary for the product's core purpose, **Sh
 
 | ID | Priority | Requirement | Acceptance criteria |
 |---|---|---|---|
-| RPT-01 | Must | Managers and supervisors can generate a management report for a selected date and forecast horizon. | The preview includes summary, financials, booking mix, daily forecasts, insights, and warnings. |
+| RPT-01 | Must | Managers can generate a management report through RFS AI for a selected date and forecast horizon. | The in-chat result includes summary, financials, booking mix, daily forecasts, insights, and warnings; the Reports page remains view-only. |
 | RPT-02 | Must | Reports can be downloaded as PDF and Excel-compatible CSV. | Downloaded figures match the on-screen canonical report; files contain no customer names, notes, passwords, tokens, or provider payloads. |
 | RPT-03 | Must | Optional provider failures do not prevent report generation. | Weather or event failures produce a visible warning while core forecast and financial sections remain available. |
-| RPT-04 | Should | Users can access previous generated reports or regenerate historical periods. | A report archive records period, generation time, creator, format, and calculation/model version without duplicating sensitive raw data. |
+| RPT-04 | Should | Authorised users can view previously saved immutable reports. | The view-only Reports page lists and opens stored snapshots; the manager assistant handles save, retrieval, and download without duplicating sensitive raw data. |
 | RPT-05 | Should | Users can compare two periods. | The product shows changes in covers, booking mix, labour cost, revenue estimate, and forecast accuracy using consistent definitions. |
 
 ### 8.7 Alerts and recommendations
@@ -213,16 +223,28 @@ Priority definitions: **Must** is necessary for the product's core purpose, **Sh
 | ALERT-02 | Should | The dashboard highlights triggered operational alerts. | Every alert states the triggering data, threshold, affected date, severity, and recommended action. |
 | ALERT-03 | Could | Users can opt into email or other delivery channels. | Consent and channel preferences are recorded; repeated alerts are deduplicated; delivery failure does not block the dashboard. |
 
+### 8.8 Manager assistant, notifications, and Settings
+
+| ID | Priority | Requirement | Acceptance criteria |
+|---|---|---|---|
+| CHAT-01 | Should | Managers can use RFS AI from the left sidebar without losing sight of the page. | Typed requests, weather-on-open, focus/close behaviour, responsive layout, and role denial work; suggested prompts only prefill. |
+| CHAT-02 | Should | The assistant can retrieve events, bookings/forecasts, and generate, save, find, view, or download reports through protected APIs. | Results come from application data, state date/source and unavailable conditions, and do not navigate away or fabricate totals. |
+| CHAT-03 | Must for staff writes | Staff actions use the existing protected workspace. | A manager reviews the exact account/action, confirms writes, receives failure feedback, and cannot repeat a mutation unintentionally; durable idempotency and complete live testing remain open. |
+| CHAT-04 | Must for model use | AI may classify ambiguous intent but cannot authorize or execute a write. | The Next.js server sends only bounded non-secret text to Cloudflare Workers AI; allowlisted routing and Flask permissions remain authoritative. Privacy, usage limits, and live-model evaluation are required before declaring the pilot complete. |
+| CHAT-05 | Must for staff writes | All existing Staff Management actions are available inside the protected chat workspace. | Managers can search/filter/view, register, edit permitted identity or role fields, suspend, deactivate, reactivate, and issue reset links without leaving chat; each write shows the exact target and values for explicit review, rechecks permissions, and is safe under retries. There is no delete or rota/time-attendance action. |
+| NOTIF-01 | Should | Users receive recipient-scoped in-app notifications for completed report saves. | Persisted unread/read states and counts work; only the intended recipient can view or mark an item read; the real event is tested end to end. |
+| SET-01 | Should | Settings combines personal account information and manager-authorized Staffing Rules. | Users can edit only their own permitted fields; non-managers do not see or access rule management. |
+
 ## 9. Key user journeys
 
 ### 9.1 Prepare for next week's services
 
 1. The manager signs in and selects a planning date.
-2. They review the dashboard summary, booking trend, weather, and local events.
+2. They review the dashboard summary and booking trend, and can ask RFS AI for weather and local events.
 3. They open the reservation forecast and review expected covers and closure days.
 4. They open the staff forecast and review department, role, and cost recommendations.
 5. They apply judgement to any event, weather, or business context not captured by the model.
-6. They download the management report for discussion or record-keeping.
+6. They ask RFS AI to generate, save, or download a management report; the Reports page displays saved reports without modifying them.
 
 ### 9.2 Maintain accurate booking data
 
@@ -234,7 +256,7 @@ Priority definitions: **Must** is necessary for the product's core purpose, **Sh
 ### 9.3 Review performance after service
 
 1. The manager selects a completed service date.
-2. The system displays the original forecast alongside actual covers and staffing cost.
+2. After service, an authorised manager or supervisor records served covers because the app has no POS feed. The system compares them with an eligible immutable pre-service forecast.
 3. The manager sees absolute error, percentage error, and whether the model over- or under-predicted.
 4. They compare performance by weekday and forecast horizon.
 5. When enough new data exists, an authorised manager can initiate controlled retraining and review the new metrics before adoption.
@@ -251,7 +273,10 @@ Priority definitions: **Must** is necessary for the product's core purpose, **Sh
 - staffing rules;
 - staff-cost forecasts;
 - password/invitation tokens and audit events;
-- future: immutable forecast snapshots, actual results, report metadata, alert rules, and alert events.
+- immutable forecast runs and daily predictions;
+- manually recorded served-cover actuals and correction audit;
+- immutable saved report snapshots and recipient-scoped notifications;
+- future: optional alert rules, delivery preferences, and period comparisons.
 
 ### 10.2 Data handling rules
 
@@ -315,6 +340,7 @@ Priority definitions: **Must** is necessary for the product's core purpose, **Sh
 | Ticketmaster | Nearby events | Preserve results from other providers and show warning if appropriate |
 | Skiddle | Nearby events | Preserve results from other providers and show warning if appropriate |
 | TheSportsDB | Sports fixtures | Preserve results from other providers and show warning if appropriate |
+| Cloudflare Workers AI | Optional classification of ambiguous manager-chat requests | Explicit supported requests still work deterministically; model failure returns a safe fallback |
 
 ## 13. Analytics and instrumentation
 
@@ -345,11 +371,9 @@ Each event should include timestamp, authorised user identifier where appropriat
 
 ### Phase 2 — Measurement and historical reporting
 
-- persist immutable forecast snapshots before their service dates;
-- capture actual results and calculate forecast accuracy;
-- add historical report metadata and regeneration;
-- add period comparison and trend views;
-- define accuracy baselines and product KPI dashboards.
+- **Delivered foundation:** immutable forecast-run snapshots, a served-cover actuals path (including explicitly labelled demo fixtures), a forecast-accuracy view, and immutable saved report history with retrieval/download.
+- **Still to verify:** genuine pre-service forecast versus completed-service actual journeys, role checks, and defensible accuracy baselines; demo fixtures are not proof of model performance.
+- **Future product work:** period comparison, trend views, and product KPI dashboards using consistent definitions and real operating data.
 
 ### Phase 3 — Proactive planning
 
@@ -386,17 +410,21 @@ Each event should include timestamp, authorised user identifier where appropriat
 - The deployed database contains the required schema and migrations.
 - Reports are operational estimates rather than accounting statements.
 - Internet access is available for hosted services and optional external context.
+- There is no POS feed; a recorded served-cover actual is not interchangeable with booking totals.
 
-## 17. Open product decisions
+## 17. Product decisions and open questions
 
-1. Should historical reports be stored as generated files, stored as structured snapshots and regenerated, or both?
-2. What forecast accuracy threshold is acceptable for staffing decisions after a valid baseline is collected?
+1. **Resolved:** saved management reports store immutable JSON and PDF/CSV snapshots for 90 days; see [report history](REPORT_HISTORY.md).
+2. What forecast accuracy threshold is acceptable for staffing decisions after a valid baseline is collected? The current demo sample is illustrative, not that baseline.
 3. Which alert channels are justified: in-app only, email, SMS, or messaging integrations?
 4. Should managers be able to override a forecast, and how should the original prediction and reason be preserved?
 5. Which fields may supervisors edit compared with managers?
 6. Should staffing plans become saved rotas, or remain recommendations exported to another system?
 7. What retention period applies to customer booking details, reports, audit history, and forecast snapshots?
 8. Is multi-restaurant support a genuine user need or outside the intended product boundary?
+9. Should supervisors have a separate report-generation interface? They can view saved reports, while the current in-app assistant is manager-only and Reports is view-only.
+10. Should staff registration keep the current active-account and secure-password form, or move to an invitation flow after a supported API and UI exist?
+11. What limited user-typed text may be sent to the model for ambiguous intent classification, and what conversation retention and per-user usage limits should apply? Raw staff records, passwords, reset links, and session tokens must remain outside model context.
 
 ## 18. Definition of done
 

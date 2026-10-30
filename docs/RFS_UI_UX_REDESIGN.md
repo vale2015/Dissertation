@@ -1,8 +1,7 @@
 # RFS — Complete UI/UX Redesign Specification
 
-> **Status:** Proposed / not implemented
+> **Status:** Original approved design brief; substantially implemented but still Partial under [tracker #57](IMPROVEMENT_TRACKER.md). Its checklists record the initial target, not current release status. Later PM decisions removed the white top strip and cards below the charts and moved RFS AI to a left dock. See the [implementation plan](RFS_UI_UX_REDESIGN_PLAN.md) for the current contract.
 > **Design reference:** Approved RFS dashboard and RFS AI mockup (26 October 2026)
-> **Intended repository location:** `frontend/src/components/chatbot/RFS_UI_UX_REDESIGN.md`
 
 ## 1. Objective
 
