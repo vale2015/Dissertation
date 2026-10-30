@@ -34,6 +34,16 @@ export function classifyChatbotMessage(message, context = null) {
     if (context?.last_report_date) return { intent: "report_download_fresh", date: context.last_report_date, days: context.last_report_days, format };
   }
 
+  if (/\b(booking|bookings|reservation|reservations)\b/.test(lower) && /\b(today|tonight|current day)\b/.test(lower) && !/\bforecast\b/.test(lower)) {
+    return { intent: "bookings_today" };
+  }
+  if (/\b(staffing|staff)\b/.test(lower) && /\b(forecast|suggest|recommend|required|need)\b/.test(lower)) {
+    return { intent: "staffing_forecast" };
+  }
+  if (/\b(forecast|predict|predicted)\b/.test(lower) && /\b(reservation|reservations|demand|covers|booking|bookings)\b/.test(lower)) {
+    return { intent: "reservation_forecast" };
+  }
+
   if (/\b(staff|employee|employees|team members?|register|suspend|deactivate|reactivate|password reset|reset password)\b/.test(lower)) {
     const search = text.match(/^(?:find|show|search(?: for)?|look up)\s+(?:staff|employee|team member)\s+(.{1,80})$/i)?.[1]?.trim();
     return { intent: "staff", ...(search ? { search } : {}) };
@@ -70,6 +80,9 @@ function calendarMonth(now) {
 
 export function chatbotReadTarget(intent, now = new Date()) {
   switch (intent.intent) {
+    case "bookings_today": return { path: "/booking/today-summary", method: "GET" };
+    case "reservation_forecast": return { path: "/demand/forecast?days=7", method: "GET" };
+    case "staffing_forecast": return { path: "/staff-cost/", method: "GET" };
     case "weather": return { path: "/weather/", method: "GET" };
     case "events": {
       const [start, end] = intent.dates?.length ? intent.dates : calendarMonth(now);
@@ -93,6 +106,26 @@ export function chatbotReadTarget(intent, now = new Date()) {
 }
 
 export function summarizeChatbotResult(intent, payload) {
+  if (intent.intent === "bookings_today") {
+    if (!Number.isInteger(payload?.booking_count) || !Number.isInteger(payload?.booked_covers) || !Array.isArray(payload?.bookings)) throw new Error("Today's bookings are unavailable.");
+    const entries = payload.bookings.slice(0, 10).map((item) => `• ${item.booking_time?.slice(0, 5) || "Time unavailable"}: ${item.party_size} covers (${item.booking_type || "booking"})`);
+    return { text: `For ${payload.date}, there are ${payload.booking_count} booking${payload.booking_count === 1 ? "" : "s"} for ${payload.booked_covers} booked covers.${entries.length ? `\n${entries.join("\n")}` : ""}${payload.booking_count > entries.length ? "\nShowing the first 10 by time." : ""}`, source: "bookings_today" };
+  }
+  if (intent.intent === "reservation_forecast") {
+    if (!Array.isArray(payload?.forecast)) throw new Error("The reservation forecast is unavailable.");
+    const days = payload.forecast.slice(0, 7);
+    return { text: days.length ? `Predicted covers for the next ${days.length} forecast days:\n${days.map((item) => `• ${item.date}: ${item.predicted_total_covers ?? "unavailable"} covers${item.closed ? " (closed)" : ""}`).join("\n")}` : "No forecast is available yet.", source: "reservation_forecast" };
+  }
+  if (intent.intent === "staffing_forecast") {
+    if (!Array.isArray(payload)) throw new Error("The staffing forecast is unavailable.");
+    const totals = new Map();
+    for (const row of payload) {
+      if (!row.forecast_date) continue;
+      totals.set(row.forecast_date, (totals.get(row.forecast_date) || 0) + Number(row.required_staff || 0));
+    }
+    const days = [...totals].slice(0, 7);
+    return { text: days.length ? `Recommended staff from the active saved forecast (not scheduled shifts):\n${days.map(([date, count]) => `• ${date}: ${count} staff`).join("\n")}` : "No saved staffing forecast is available yet.", source: "staffing_forecast" };
+  }
   if (intent.intent === "weather") {
     const weather = payload?.data;
     if (payload?.success !== true || !weather?.current) throw new Error("Weather is unavailable right now.");

@@ -7,6 +7,7 @@ import {
   useState,
 } from "react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 import SummaryCard from "@/components/dashboard/summaryCard";
 import { formatDateDDMMYYYY } from "@/utils/DateFormat";
 import { API_BASE } from "@/lib/api";
@@ -193,6 +194,7 @@ function ReservationForecastContent() {
                       )}`
                     : ""}
                 </p>
+                <Link className="rfs-page-action rfs-page-action-secondary" href="/dashboard/forecast-accuracy">View forecast accuracy</Link>
 
                 <div className="forecast-toggle">
                   <button

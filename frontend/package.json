@@ -8,13 +8,13 @@
     "start": "next start",
     "lint": "eslint",
     "test:unit": "node --test src/lib/*.test.mjs",
-    "test:components": "vitest run src/components/chatbot src/components/staff/StaffManagement.test.jsx",
+    "test:components": "vitest run src/components/chatbot src/components/layout/NotificationBell.test.jsx src/components/staff/StaffManagement.test.jsx src/app/dashboard/settings/page.test.jsx src/app/dashboard/reports/page.test.jsx",
     "test:routes": "vitest run src/app/api/chatbot/route.test.js"
   },
   "dependencies": {
     "@ai-sdk/openai-compatible": "^3.0.77",
     "ai": "^7.0.150",
-    "next": "16.2.1",
+    "next": "16.4.3",
     "react": "19.2.4",
     "react-datepicker": "^9.1.0",
     "react-dom": "19.2.4",
@@ -27,8 +27,11 @@
     "@testing-library/user-event": "^14.6.8",
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
-    "eslint-config-next": "16.2.1",
+    "eslint-config-next": "16.4.3",
     "jsdom": "^29.1.1",
     "vitest": "^5.0.5"
+  },
+  "overrides": {
+    "eslint-plugin-react-hooks": "7.0.1"
   }
 }

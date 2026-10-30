@@ -1,47 +1,61 @@
 "use client";
 
-import { Suspense, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import useManagementReport from "@/hooks/useManagementReport";
+import { useCallback, useEffect, useState } from "react";
+import { API_BASE } from "@/lib/api";
+import { formatDate } from "@/lib/report-formatters";
 import ReportSummary from "@/components/reports/report-summary";
 import ReportFinancials from "@/components/reports/report-financials";
 import ReportBookingMix from "@/components/reports/report-booking-mix";
 import ReportDailyTable from "@/components/reports/report-daily-table";
 import ReportInsights from "@/components/reports/report-insights";
 import ReportWarnings from "@/components/reports/report-warnings";
-import { formatDate } from "@/lib/report-formatters";
-
-function ReportContent() {
-  const params = useSearchParams();
-  const selectedDate = params.get("date") || "";
-  const [daysAhead, setDaysAhead] = useState(7);
-  const { report, isLoading, error } = useManagementReport(selectedDate, daysAhead);
-
-  return <>
-    <section className="dashboard-hero">
-      <h1 className="dashboard-title">Management Reports</h1>
-      <p className="dashboard-text">View the operational report here. Ask RFS in the top bar to generate, save, find, or download reports.</p>
-    </section>
-    <fieldset className="report-view-period">
-      <legend>View period</legend>
-      {[7, 10].map((days) => <button type="button" className={daysAhead === days ? "is-active" : ""} aria-pressed={daysAhead === days} onClick={() => setDaysAhead(days)} key={days}>{days} days</button>)}
-    </fieldset>
-    <div aria-live="polite">
-      {isLoading && <section className="report-state">Loading management report…</section>}
-      {error && !isLoading && <section className="report-state report-error" role="alert"><h2>Report unavailable</h2><p>{error}</p></section>}
-    </div>
-    {report && !isLoading && <div className="management-report">
-      <p className="report-period"><strong>Selected date:</strong> {formatDate(report.metadata.selected_date)} · <strong>Forecast period:</strong> {formatDate(report.metadata.start_date)} to {formatDate(report.metadata.end_date)}</p>
-      <ReportSummary report={report} />
-      <ReportFinancials report={report} />
-      <ReportBookingMix reference={report.booking_mix_reference} />
-      <ReportDailyTable report={report} />
-      <ReportInsights items={report.operational_insights} />
-      <ReportWarnings warnings={report.warnings} />
-    </div>}
-  </>;
-}
 
 export default function ReportsPage() {
-  return <Suspense fallback={<p className="report-state">Loading report view…</p>}><ReportContent /></Suspense>;
+  const [reports, setReports] = useState([]);
+  const [cursor, setCursor] = useState(null);
+  const [selected, setSelected] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [detailLoading, setDetailLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const load = useCallback(async (nextCursor = null, signal) => {
+    setLoading(true); setError("");
+    try {
+      const query = nextCursor ? `?${new URLSearchParams({ cursor: nextCursor })}` : "";
+      const response = await fetch(`${API_BASE}/reports/history${query}`, { cache: "no-store", signal });
+      const body = await response.json();
+      if (!response.ok || !Array.isArray(body?.reports)) throw new Error(body?.error?.message || "Saved reports could not be loaded.");
+      setReports((current) => nextCursor ? [...current, ...body.reports] : body.reports);
+      setCursor(body.next_cursor || null);
+    } catch (caught) {
+      if (caught.name !== "AbortError") setError(caught.message || "Saved reports could not be loaded.");
+    } finally { if (!signal?.aborted) setLoading(false); }
+  }, []);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    load(null, controller.signal);
+    return () => controller.abort();
+  }, [load]);
+
+  async function viewReport(id) {
+    setDetailLoading(true); setError("");
+    try {
+      const response = await fetch(`${API_BASE}/reports/history/${id}`, { cache: "no-store" });
+      const body = await response.json();
+      if (!response.ok || !body?.metadata || !body?.summary) throw new Error(body?.error?.message || "Saved report could not be opened.");
+      setSelected(body);
+    } catch (caught) { setError(caught.message || "Saved report could not be opened."); }
+    finally { setDetailLoading(false); }
+  }
+
+  return <>
+    <section className="dashboard-hero"><h1 className="dashboard-title">Reports</h1><p className="dashboard-text">View saved management reports here. Ask RFS AI to generate, save, find, or download a report.</p></section>
+    {error && <div className="report-state report-error" role="alert"><p>{error}</p><button type="button" onClick={() => load()}>Retry list</button></div>}
+    {loading && <p className="report-state" role="status">Loading saved reports…</p>}
+    {!loading && !error && reports.length === 0 && <p className="report-state">No saved reports yet. Ask RFS AI to generate and save one.</p>}
+    {reports.length > 0 && <section className="report-section" aria-label="Saved reports"><h2>Saved reports</h2><div className="report-table-scroll"><table className="report-table"><thead><tr><th scope="col">Date</th><th scope="col">Period</th><th scope="col">Saved by</th><th scope="col">Action</th></tr></thead><tbody>{reports.map((item) => <tr key={item.id}><td>{formatDate(item.selected_date)}</td><td>{item.days_ahead} days</td><td>{item.creator_name}</td><td><button type="button" onClick={() => viewReport(item.id)}>View report #{item.id}</button></td></tr>)}</tbody></table></div>{cursor && !loading && <button className="report-history-more" type="button" onClick={() => load(cursor)}>Load more</button>}</section>}
+    {detailLoading && <p className="report-state" role="status">Opening saved report…</p>}
+    {selected && !detailLoading && <section className="management-report" aria-label="Selected saved report"><div className="report-period"><strong>Selected date:</strong> {formatDate(selected.metadata.selected_date)} · <strong>Forecast period:</strong> {formatDate(selected.metadata.start_date)} to {formatDate(selected.metadata.end_date)}</div><ReportSummary report={selected} /><ReportFinancials report={selected} /><ReportBookingMix reference={selected.booking_mix_reference} /><ReportDailyTable report={selected} /><ReportInsights items={selected.operational_insights} /><ReportWarnings warnings={selected.warnings} /></section>}
+  </>;
 }

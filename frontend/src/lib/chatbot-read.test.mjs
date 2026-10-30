@@ -11,6 +11,9 @@ test("typed requests route to allowlisted restaurant operations", () => {
   assert.deepEqual(classifyChatbotMessage("save report for 2026-11-29"), { intent: "report_save", date: "2026-11-29", days: 7 });
   assert.equal(classifyChatbotMessage("suspend staff member").intent, "staff");
   assert.equal(classifyChatbotMessage("show report for 2026-11-29").intent, "report");
+  assert.equal(classifyChatbotMessage("Check today's bookings").intent, "bookings_today");
+  assert.equal(classifyChatbotMessage("Show reservation forecast").intent, "reservation_forecast");
+  assert.equal(classifyChatbotMessage("Suggest staffing for this week").intent, "staffing_forecast");
 });
 
 test("invalid dates and excessive input are rejected", () => {
@@ -28,6 +31,9 @@ test("follow-up report requests use only validated client context", () => {
 
 test("backend targets are fixed to known protected routes", () => {
   assert.deepEqual(chatbotReadTarget({ intent: "weather" }), { path: "/weather/", method: "GET" });
+  assert.deepEqual(chatbotReadTarget({ intent: "bookings_today" }), { path: "/booking/today-summary", method: "GET" });
+  assert.deepEqual(chatbotReadTarget({ intent: "reservation_forecast" }), { path: "/demand/forecast?days=7", method: "GET" });
+  assert.deepEqual(chatbotReadTarget({ intent: "staffing_forecast" }), { path: "/staff-cost/", method: "GET" });
   assert.deepEqual(chatbotReadTarget({ intent: "staff" }), { workspace: "staff", search: "" });
   assert.deepEqual(classifyChatbotMessage("find staff Alex Example"), { intent: "staff", search: "Alex Example" });
   assert.deepEqual(chatbotReadTarget({ intent: "report_download", reportId: 4, format: "pdf" }), { download: "saved", reportId: 4, format: "pdf" });
@@ -43,4 +49,10 @@ test("answers use source values and label unavailable events", () => {
   assert.match(events.text, /unavailable/);
   const saved = summarizeChatbotResult({ intent: "report_save", date: "2026-11-29" }, { report: { id: 9 } });
   assert.match(saved.text, /2026-11-29/);
+  const bookings = summarizeChatbotResult({ intent: "bookings_today" }, { date: "2026-10-30", booking_count: 1, booked_covers: 3, bookings: [{ booking_time: "18:00:00", party_size: 3, booking_type: "advance" }] });
+  assert.match(bookings.text, /1 booking for 3 booked covers/);
+  const forecast = summarizeChatbotResult({ intent: "reservation_forecast" }, { forecast: [{ date: "2026-10-31", predicted_total_covers: 42 }] });
+  assert.match(forecast.text, /42 covers/);
+  const staffing = summarizeChatbotResult({ intent: "staffing_forecast" }, [{ forecast_date: "2026-10-31", required_staff: 2 }, { forecast_date: "2026-10-31", required_staff: 3 }]);
+  assert.match(staffing.text, /5 staff/);
 });

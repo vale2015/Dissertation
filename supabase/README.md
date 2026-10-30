@@ -95,6 +95,19 @@ test on a disposable/local database with `supabase db reset`, review the
 advisors, then deploy the migration. Do not edit a migration already applied
 to a shared database.
 
+### In-app notifications rollout (pending)
+
+`20261030104654_in_app_notifications.sql` adds a private, RLS-enabled,
+server-only inbox table with explicit client-role revocations. The Flask code
+in this worktree writes a notification in the same transaction as a saved
+report, so **apply and verify this migration before deploying that backend
+code**. Verify that `anon` and `authenticated` have no table or sequence
+privileges and that `postgres` can insert/select. A CLI dry-run on 2026-10-30
+against project `szvihzuaybmqkxwkoyli` listed this migration alone; it did
+not apply it. The local CLI is not linked and Docker/PostgreSQL are unavailable
+here, so a fresh local replay still needs the CI migration-replay gate before
+the migration is applied. No live database change was made in this session.
+
 ```sql
 -- Read-only checks: expect 10 application tables, 1 demand-date primary key,
 -- and 10 RLS-enabled tables on the current live project.

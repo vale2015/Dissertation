@@ -1,4 +1,5 @@
 import "./globals.css";
+import "./rfs-redesign.css";
 // Metadata used by Next.js for the browser tab title.
 export const metadata = {
   title: "RFS-Restaurant Forecasting System",

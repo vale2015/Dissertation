@@ -1,688 +1,87 @@
 "use client";
 
 import { Suspense } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import SummaryCard from "@/components/dashboard/summaryCard";
 import BookingsTrend from "@/components/charts/BookingsTrend";
 import StaffingOverviewChart from "@/components/charts/StaffingOverviewChart";
 import { formatDateDDMMYYYY } from "@/utils/DateFormat";
 import useDashboardData from "@/hooks/useDashboardData";
 
+const currency = (value) => Number.isFinite(Number(value))
+  ? new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(Number(value))
+  : "Unavailable";
 
-// Formats numeric values as GBP currency.
-function formatCurrency(value) {
-  return `£${Number(value || 0).toFixed(2)}`;
-}
-
-
-// Contains the dashboard logic that depends on useDashboardData().
 function DashboardContentInner({ user }) {
+  const router = useRouter();
   const {
-    loading,
-    selectedDate,
-    selectedMode,
-    selectedHistoricalRecord,
-    selectedForecastRecord,
-    selectedHistoricalType,
-    selectedForecastType,
-    predictedCoversNext7Days,
-    staffNeededTomorrow,
-    peakDemandDay,
-    totalRecords,
-    weeklyData,
-    latestRecord,
-    summary,
-    financialSummary,
+    loading, error, selectedDate, selectedMode, selectedHistoricalRecord,
+    selectedForecastRecord, predictedCoversNext7Days, staffNeededTomorrow,
+    peakDemandDay, weeklyData, forecastData, latestRecord, financialSummary,
     getStaffFromCovers,
   } = useDashboardData();
-
-  // Prepare staffing chart data for a selected historical date.
-  const historicalStaffData = selectedHistoricalRecord
-    ? [
-        {
-          label: formatDateDDMMYYYY(selectedDate),
-          value: getStaffFromCovers(
-            selectedHistoricalRecord.total_covers || 0
-          ),
-        },
-      ]
-    : [];
-
-  // Prepare staffing chart data for a selected forecast date.
-  const forecastStaffData = selectedForecastRecord
-    ? [
-        {
-          label: formatDateDDMMYYYY(selectedDate),
-          value: getStaffFromCovers(
-            selectedForecastRecord.predicted_total_covers || 0
-          ),
-        },
-      ]
-    : [];
-
-  // Prepare weekly staffing chart data.
-  const weeklyStaffingData = weeklyData.map((item) => ({
-    label: item.label,
-    value: Number(
-      item.staff ||
-        getStaffFromCovers(item.value || 0)
-    ),
+  const firstName = user?.full_name?.trim().split(/\s+/)[0] || "there";
+  const history = weeklyData.slice(-7);
+  const forecast = forecastData.slice(0, 7).map((row) => ({
+    date: row.date, label: row.day_of_week || row.date,
+    value: Number(row.predicted_total_covers || 0),
   }));
+  const staffing = forecast.map((row, index) => ({ ...row, value: forecastData[index]?.closed ? 0 : getStaffFromCovers(row.value) }));
+  const selected = selectedMode === "historical" ? selectedHistoricalRecord : selectedForecastRecord;
+  const selectedCovers = selectedMode === "historical" ? selected?.total_covers : selected?.predicted_total_covers;
 
-  return (
-    <>
-      <section className="dashboard-hero">
-        <h1 className="dashboard-title">
-          Dashboard
-        </h1>
+  function changeDate(event) {
+    const date = event.target.value;
+    router.push(date ? `/dashboard?date=${encodeURIComponent(date)}` : "/dashboard");
+  }
 
-        <p className="dashboard-text">
-          Welcome
-          {user?.full_name
-            ? `, ${user.full_name}`
-            : ""}
-        </p>
+  return <>
+    <section className="rfs-dashboard-heading">
+      <div><h1>Good morning, {firstName}! <span aria-hidden="true">👋</span></h1><p>Here’s what’s happening at your restaurant{selectedDate ? ` on ${formatDateDDMMYYYY(selectedDate)}` : " today"}.</p></div>
+      <div className="rfs-dashboard-date"><label htmlFor="dashboard-date">View a day</label><input id="dashboard-date" type="date" value={selectedDate || ""} onChange={changeDate} />{selectedDate && <button type="button" onClick={() => router.push("/dashboard")}>Show overview</button>}</div>
+    </section>
 
-        {selectedDate && (
-          <p className="dashboard-text">
-            Selected date:{" "}
-            {formatDateDDMMYYYY(selectedDate)}
-          </p>
-        )}
+    {loading && <p className="dashboard-panel rfs-dashboard-state" role="status">Loading restaurant data…</p>}
+    {!loading && error && <section className="dashboard-panel rfs-dashboard-state" role="alert"><h2>Dashboard unavailable</h2><p>{error}</p><button type="button" onClick={() => window.location.reload()}>Retry</button></section>}
+    {!loading && !error && selectedDate && !selected && <section className="dashboard-panel rfs-dashboard-state"><h2>No data for this day</h2><p>There is no recorded demand or saved forecast for {formatDateDDMMYYYY(selectedDate)}.</p><button type="button" onClick={() => router.push("/dashboard")}>Show overview</button></section>}
+
+    {!loading && !error && (!selectedDate || selected) && <>
+      <section className="dashboard-summary-grid rfs-kpi-grid" aria-label="Restaurant summary">
+        {selectedDate ? <>
+          <SummaryCard title={selectedMode === "historical" ? "Recorded covers" : "Predicted covers"} value={selectedCovers ?? "Unavailable"} description={`${selectedMode === "historical" ? "Observed demand" : "Forecast demand"} for ${formatDateDDMMYYYY(selectedDate)}.`} />
+          <SummaryCard title="Recommended staff" value={selectedCovers == null ? "Unavailable" : (selectedForecastRecord?.closed ? 0 : getStaffFromCovers(selectedCovers))} description="Rule-based recommendation, not a scheduled headcount." />
+          <SummaryCard title="Data type" value={selectedMode === "historical" ? "Recorded" : "Forecast"} description="Historical results and future predictions are kept separate." />
+        </> : <>
+          <SummaryCard title="Expected covers" value={forecastData.length ? predictedCoversNext7Days : "Unavailable"} description="Predicted total across the next available 7 forecast days." />
+          <SummaryCard title="Recommended staff" value={staffNeededTomorrow} description="Rule-based staffing recommendation for the next forecast day." />
+          <SummaryCard title="Estimated food revenue" value={financialSummary.estimated_food_revenue == null ? "Unavailable" : currency(financialSummary.estimated_food_revenue)} description="Past 30-day covers × average spend; not actual sales." />
+          <SummaryCard title="Peak forecast day" value={forecastData.length ? peakDemandDay : "Unavailable"} description="Highest predicted covers in the current forecast." />
+        </>}
       </section>
 
-      {loading ? (
-        <p className="dashboard-text">
-          Loading dashboard data...
-        </p>
-      ) : selectedDate ? (
-        selectedMode === "historical" ? (
-          <>
-            <section className="dashboard-summary-grid">
-              <SummaryCard
-                title="Selected Date"
-                value={formatDateDDMMYYYY(
-                  selectedDate
-                )}
-                description="Historical record selected from the calendar."
-              />
-
-              <SummaryCard
-                title="Total Covers"
-                value={
-                  selectedHistoricalRecord
-                    ?.total_covers ?? 0
-                }
-                description="Recorded total covers for the selected day."
-              />
-
-              <SummaryCard
-                title="Main Booking Type"
-                value={selectedHistoricalType}
-                description="Largest booking source for the selected historical day."
-              />
-
-              <SummaryCard
-                title="Estimated Staff Needed"
-                value={getStaffFromCovers(
-                  selectedHistoricalRecord
-                    ?.total_covers || 0
-                )}
-                description="Recommended staff level based on recorded demand."
-              />
-            </section>
-
-            <section className="dashboard-panel">
-              <h2 className="dashboard-panel-title">
-                Monthly Operational Insights For the{" "}
-                {formatDateDDMMYYYY(selectedDate)}
-              </h2>
-
-              <div className="reports-grid">
-                <div className="report-item">
-                  <p className="report-label">
-                    Same Day Covers
-                  </p>
-
-                  <h3 className="report-value">
-                    {selectedHistoricalRecord
-                      ?.same_day_covers ?? 0}
-                  </h3>
-                </div>
-
-                <div className="report-item">
-                  <p className="report-label">
-                    Walk-in Covers
-                  </p>
-
-                  <h3 className="report-value">
-                    {selectedHistoricalRecord
-                      ?.walk_in_covers ?? 0}
-                  </h3>
-                </div>
-
-                <div className="report-item">
-                  <p className="report-label">
-                    Advance Covers
-                  </p>
-
-                  <h3 className="report-value">
-                    {selectedHistoricalRecord
-                      ?.advance_covers ?? 0}
-                  </h3>
-                </div>
-
-                <div className="report-item">
-                  <p className="report-label">
-                    Average Duration
-                  </p>
-
-                  <h3 className="report-value">
-                    {Math.round(
-                      Number(
-                        selectedHistoricalRecord
-                          ?.avg_duration_covers_summary ||
-                          0
-                      )
-                    )}{" "}
-                    min
-                  </h3>
-                </div>
-
-                <div className="report-item">
-                  <p className="report-label">
-                    Total Labour Cost
-                  </p>
-
-                  <h3 className="report-value">
-                    {formatCurrency(
-                      financialSummary.total_labour_cost
-                    )}
-                  </h3>
-                </div>
-
-                <div className="report-item">
-                  <p className="report-label">
-                    Labour Cost Per Cover
-                  </p>
-
-                  <h3 className="report-value">
-                    £
-                    {selectedHistoricalRecord
-                      ?.total_covers
-                      ? (
-                          Number(
-                            financialSummary.total_labour_cost ||
-                              0
-                          ) /
-                          Number(
-                            selectedHistoricalRecord.total_covers ||
-                              1
-                          )
-                        ).toFixed(2)
-                      : "0.00"}
-                  </h3>
-                </div>
-              </div>
-            </section>
-
-            <section className="dashboard-panel">
-              <h2 className="dashboard-panel-title">
-                Food Revenue vs Labour Cost
-                Comparison
-              </h2>
-
-              <div className="reports-grid">
-                <div className="report-item">
-                  <p className="report-label">
-                    Estimated Food Revenue
-                  </p>
-
-                  <h3 className="report-value">
-                    {formatCurrency(
-                      financialSummary.estimated_food_revenue
-                    )}
-                  </h3>
-                </div>
-
-                <div className="report-item">
-                  <p className="report-label">
-                    Total Labour Cost
-                  </p>
-
-                  <h3 className="report-value">
-                    {formatCurrency(
-                      financialSummary.total_labour_cost
-                    )}
-                  </h3>
-                </div>
-
-                <div className="report-item">
-                  <p className="report-label">
-                    Revenue vs Labour Ratio
-                  </p>
-
-                  <h3 className="report-value">
-                    {Number(
-                      financialSummary.revenue_vs_labour_ratio ||
-                        0
-                    ).toFixed(2)}
-                    x
-                  </h3>
-                </div>
-
-                <div className="report-item">
-                  <p className="report-label">
-                    Gross Margin After Labour
-                  </p>
-
-                  <h3 className="report-value">
-                    {formatCurrency(
-                      financialSummary.gross_margin_after_labour
-                    )}
-                  </h3>
-                </div>
-              </div>
-            </section>
-
-            <section className="dashboard-bottom-grid">
-              <section className="dashboard-panel">
-                <BookingsTrend
-                  data={weeklyData}
-                />
-              </section>
-
-              <section className="dashboard-panel">
-                <StaffingOverviewChart
-                  data={historicalStaffData}
-                />
-              </section>
-            </section>
-          </>
-        ) : selectedMode === "forecast" ? (
-          <>
-            <section className="dashboard-summary-grid">
-              <SummaryCard
-                title="Selected Date"
-                value={formatDateDDMMYYYY(
-                  selectedDate
-                )}
-                description="Forecast day selected from the calendar."
-              />
-
-              <SummaryCard
-                title="Predicted Covers"
-                value={
-                  selectedForecastRecord
-                    ?.predicted_total_covers ?? 0
-                }
-                description="Random Forest prediction for the selected day."
-              />
-
-              <SummaryCard
-                title="Main Booking Type"
-                value={selectedForecastType}
-                description="Largest input booking source used for the forecast."
-              />
-
-              <SummaryCard
-                title="Estimated Staff Needed"
-                value={getStaffFromCovers(
-                  selectedForecastRecord
-                    ?.predicted_total_covers || 0
-                )}
-                description="Recommended staff level based on forecast demand."
-              />
-            </section>
-
-            <section className="dashboard-panel">
-              <h2 className="dashboard-panel-title">
-                Monthly Operational Insights For the{" "}
-                {formatDateDDMMYYYY(selectedDate)}
-              </h2>
-
-              <div className="reports-grid">
-                <div className="report-item">
-                  <p className="report-label">
-                    Forecast Day
-                  </p>
-
-                  <h3 className="report-value">
-                    {selectedForecastRecord
-                      ?.day_of_week || "-"}
-                  </h3>
-                </div>
-
-                <div className="report-item">
-                  <p className="report-label">
-                    Predicted Total Covers
-                  </p>
-
-                  <h3 className="report-value">
-                    {selectedForecastRecord
-                      ?.predicted_total_covers ?? 0}
-                  </h3>
-                </div>
-
-                <div className="report-item">
-                  <p className="report-label">
-                    Same-day Covers Input
-                  </p>
-
-                  <h3 className="report-value">
-                    {selectedForecastRecord
-                      ?.input_features
-                      ?.same_day_covers ?? 0}
-                  </h3>
-                </div>
-
-                <div className="report-item">
-                  <p className="report-label">
-                    Walk-in Covers Input
-                  </p>
-
-                  <h3 className="report-value">
-                    {selectedForecastRecord
-                      ?.input_features
-                      ?.walk_in_covers ?? 0}
-                  </h3>
-                </div>
-
-                <div className="report-item">
-                  <p className="report-label">
-                    Advance Covers Input
-                  </p>
-
-                  <h3 className="report-value">
-                    {selectedForecastRecord
-                      ?.input_features
-                      ?.advance_covers ?? 0}
-                  </h3>
-                </div>
-
-                <div className="report-item">
-                  <p className="report-label">
-                    Average Duration Input
-                  </p>
-
-                  <h3 className="report-value">
-                    {Math.round(
-                      Number(
-                        selectedForecastRecord
-                          ?.input_features
-                          ?.avg_duration_covers_summary ||
-                          0
-                      )
-                    )}{" "}
-                    min
-                  </h3>
-                </div>
-              </div>
-            </section>
-
-            <section className="dashboard-panel">
-              <h2 className="dashboard-panel-title">
-                Food Revenue vs Labour Cost
-                Comparison
-              </h2>
-
-              <div className="reports-grid">
-                <div className="report-item">
-                  <p className="report-label">
-                    Estimated Food Revenue
-                  </p>
-
-                  <h3 className="report-value">
-                    {formatCurrency(
-                      financialSummary.estimated_food_revenue
-                    )}
-                  </h3>
-                </div>
-
-                <div className="report-item">
-                  <p className="report-label">
-                    Total Labour Cost
-                  </p>
-
-                  <h3 className="report-value">
-                    {formatCurrency(
-                      financialSummary.total_labour_cost
-                    )}
-                  </h3>
-                </div>
-
-                <div className="report-item">
-                  <p className="report-label">
-                    Revenue vs Labour Ratio
-                  </p>
-
-                  <h3 className="report-value">
-                    {Number(
-                      financialSummary.revenue_vs_labour_ratio ||
-                        0
-                    ).toFixed(2)}
-                    x
-                  </h3>
-                </div>
-
-                <div className="report-item">
-                  <p className="report-label">
-                    Gross Margin After Labour
-                  </p>
-
-                  <h3 className="report-value">
-                    {formatCurrency(
-                      financialSummary.gross_margin_after_labour
-                    )}
-                  </h3>
-                </div>
-              </div>
-            </section>
-
-            <section className="dashboard-bottom-grid">
-              <section className="dashboard-panel">
-                <BookingsTrend
-                  data={weeklyData}
-                />
-              </section>
-
-              <section className="dashboard-panel">
-                <StaffingOverviewChart
-                  data={forecastStaffData}
-                />
-              </section>
-            </section>
-          </>
-        ) : (
-          <section className="dashboard-panel">
-            <h2 className="dashboard-panel-title">
-              No data for selected date
-            </h2>
-
-            <p className="dashboard-text">
-              There is no historical or forecast
-              record stored for{" "}
-              {formatDateDDMMYYYY(selectedDate)}.
-            </p>
-          </section>
-        )
-      ) : (
-        <>
-          <section className="dashboard-summary-grid">
-            <SummaryCard
-              title="Predicted Covers"
-              value={predictedCoversNext7Days}
-              description="Expected covers for the next 7 forecast days."
-            />
-
-            <SummaryCard
-              title="Staff Needed Tomorrow"
-              value={staffNeededTomorrow}
-              description="Estimated staffing level based on forecast demand."
-            />
-
-            <SummaryCard
-              title="Peak Demand Day"
-              value={peakDemandDay}
-              description="Highest expected demand from the Random Forest forecast."
-            />
-
-            <SummaryCard
-              title="Total Records"
-              value={totalRecords}
-              description="Operational demand records stored in the database."
-            />
-          </section>
-
-          <section className="dashboard-panel">
-            <h2 className="dashboard-panel-title">
-              Latest Operational Snapshot
-            </h2>
-
-            <div className="reports-grid">
-              <div className="report-item">
-                <p className="report-label">
-                  Latest Date
-                </p>
-
-                <h3 className="report-value">
-                  {latestRecord.date
-                    ? formatDateDDMMYYYY(
-                        latestRecord.date
-                      )
-                    : "-"}
-                </h3>
-              </div>
-
-              <div className="report-item">
-                <p className="report-label">
-                  Latest Total Covers
-                </p>
-
-                <h3 className="report-value">
-                  {latestRecord.total_covers ?? "-"}
-                </h3>
-              </div>
-
-              <div className="report-item">
-                <p className="report-label">
-                  Average Total Covers
-                </p>
-
-                <h3 className="report-value">
-                  {Math.round(
-                    Number(
-                      summary.avg_total_covers || 0
-                    )
-                  )}
-                </h3>
-              </div>
-
-              <div className="report-item">
-                <p className="report-label">
-                  Average Duration
-                </p>
-
-                <h3 className="report-value">
-                  {Math.round(
-                    Number(
-                      summary.avg_duration_covers_summary ||
-                        0
-                    )
-                  )}{" "}
-                  min
-                </h3>
-              </div>
-            </div>
-          </section>
-
-          <section className="dashboard-panel">
-            <h2 className="dashboard-panel-title">
-              Food Revenue vs Labour Cost
-              Comparison
-            </h2>
-
-            <div className="reports-grid">
-              <div className="report-item">
-                <p className="report-label">
-                  Estimated Food Revenue
-                </p>
-
-                <h3 className="report-value">
-                  {formatCurrency(
-                    financialSummary.estimated_food_revenue
-                  )}
-                </h3>
-              </div>
-
-              <div className="report-item">
-                <p className="report-label">
-                  Total Labour Cost
-                </p>
-
-                <h3 className="report-value">
-                  {formatCurrency(
-                    financialSummary.total_labour_cost
-                  )}
-                </h3>
-              </div>
-
-              <div className="report-item">
-                <p className="report-label">
-                  Revenue vs Labour Cost Ratio
-                </p>
-
-                <h3 className="report-value">
-                  {Number(
-                    financialSummary.revenue_vs_labour_ratio ||
-                      0
-                  ).toFixed(2)}
-                  x
-                </h3>
-              </div>
-
-              <div className="report-item">
-                <p className="report-label">
-                  Gross Margin After Labour
-                </p>
-
-                <h3 className="report-value">
-                  {formatCurrency(
-                    financialSummary.gross_margin_after_labour
-                  )}
-                </h3>
-              </div>
-            </div>
-          </section>
-
-          <section className="dashboard-bottom-grid">
-            <section className="dashboard-panel">
-              <BookingsTrend data={weeklyData} />
-            </section>
-
-            <section className="dashboard-panel">
-              <StaffingOverviewChart
-                data={weeklyStaffingData}
-              />
-            </section>
-          </section>
-        </>
-      )}
-    </>
-  );
+      <section className="rfs-dashboard-charts" aria-label="Demand and staffing charts">
+        <div className="dashboard-panel"><BookingsTrend data={history} title="Bookings trend" description="Recorded daily covers over the most recent available days; not the number of reservations." /></div>
+        <div className="dashboard-panel"><BookingsTrend data={forecast} title="Reservation forecast" description="Predicted daily covers. Forecasts are estimates, not completed bookings." /></div>
+        <div className="dashboard-panel"><StaffingOverviewChart data={staffing} title="Staffing overview" description="Recommended staff by forecast day. No roster or scheduled-staff data is available." /></div>
+        <div className="dashboard-panel"><BookingsTrend data={forecast} title="Demand forecast" description="Predicted covers by day, based on the current available forecast." /></div>
+      </section>
+
+      <section className="rfs-dashboard-context" aria-label="Operational context">
+        <div className="dashboard-panel"><h2>Latest operational snapshot</h2>{latestRecord.date ? <p>{formatDateDDMMYYYY(latestRecord.date)} · {latestRecord.total_covers ?? "Unavailable"} recorded covers</p> : <p>No recorded operational snapshot is available.</p>}</div>
+        <div className="dashboard-panel"><h2>Financial context</h2><p>Past 30-day modelled food revenue: {financialSummary.estimated_food_revenue == null ? "Unavailable" : currency(financialSummary.estimated_food_revenue)}</p><p>Active future staffing forecast labour: {financialSummary.total_labour_cost == null ? "Unavailable" : currency(financialSummary.total_labour_cost)}</p><small>Different periods; these figures should not be subtracted to claim a margin.</small></div>
+      </section>
+
+      <nav className="rfs-dashboard-actions" aria-label="Quick actions">
+        <Link href="/dashboard/bookings"><strong>Manage bookings</strong><span>Review covers and reservations</span></Link>
+        <Link href="/dashboard/reservation-forecast"><strong>View forecasts</strong><span>Explore predicted demand</span></Link>
+        <Link href="/dashboard/staff-forecast"><strong>Staff planning</strong><span>Review recommended levels</span></Link>
+        <Link href="/dashboard/reports"><strong>View reports</strong><span>Read saved management reports</span></Link>
+      </nav>
+    </>}
+  </>;
 }
 
-
-// Export the component through a parent Suspense boundary.
 export default function DashboardContent({ user }) {
-  return (
-    <Suspense
-      fallback={
-        <p className="dashboard-text">
-          Loading dashboard data...
-        </p>
-      }
-    >
-      <DashboardContentInner user={user} />
-    </Suspense>
-  );
+  return <Suspense fallback={<p className="dashboard-panel rfs-dashboard-state">Loading restaurant data…</p>}><DashboardContentInner user={user} /></Suspense>;
 }

@@ -7,25 +7,26 @@ DECLARE
         'user_account_tokens', 'staff_account_audit', 'auth_rate_limits',
         'report_history', 'forecast_runs', 'forecast_run_days',
         'active_forecast_run', 'service_actual_covers',
-        'service_actual_corrections'
+        'service_actual_corrections', 'in_app_notifications'
     ];
     application_sequences text[] := ARRAY[
         'users_id_seq', 'bookings_id_seq', 'staff_roles_id_seq',
         'staffing_rules_id_seq', 'staff_cost_forecast_id_seq',
         'business_settings_id_seq', 'user_account_tokens_id_seq',
         'staff_account_audit_id_seq', 'report_history_id_seq',
-        'forecast_runs_id_seq', 'service_actual_corrections_id_seq'
+        'forecast_runs_id_seq', 'service_actual_corrections_id_seq',
+        'in_app_notifications_id_seq'
     ];
 BEGIN
     IF (SELECT count(*) FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace
         WHERE n.nspname = 'public' AND c.relkind = 'r'
-          AND c.relname = ANY(application_tables)) <> 16 THEN
-        RAISE EXCEPTION 'Expected sixteen application tables';
+          AND c.relname = ANY(application_tables)) <> 17 THEN
+        RAISE EXCEPTION 'Expected seventeen application tables';
     END IF;
     IF (SELECT count(*) FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace
         WHERE n.nspname = 'public' AND c.relkind = 'S'
-          AND c.relname = ANY(application_sequences)) <> 11 THEN
-        RAISE EXCEPTION 'Expected eleven application sequences';
+          AND c.relname = ANY(application_sequences)) <> 12 THEN
+        RAISE EXCEPTION 'Expected twelve application sequences';
     END IF;
     IF EXISTS (
         SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace
@@ -70,7 +71,11 @@ BEGIN
     IF NOT has_table_privilege('postgres', 'public.users', 'SELECT')
       OR NOT has_table_privilege('service_role', 'public.users', 'SELECT')
       OR NOT has_sequence_privilege('postgres', 'public.users_id_seq', 'USAGE')
-      OR NOT has_sequence_privilege('service_role', 'public.users_id_seq', 'USAGE') THEN
+      OR NOT has_sequence_privilege('service_role', 'public.users_id_seq', 'USAGE')
+      OR NOT has_table_privilege('postgres', 'public.in_app_notifications', 'SELECT')
+      OR NOT has_table_privilege('postgres', 'public.in_app_notifications', 'INSERT')
+      OR NOT has_table_privilege('postgres', 'public.in_app_notifications', 'UPDATE')
+      OR NOT has_sequence_privilege('postgres', 'public.in_app_notifications_id_seq', 'USAGE') THEN
         RAISE EXCEPTION 'Server-side access was unexpectedly removed';
     END IF;
 END $$;

@@ -23,6 +23,7 @@ export default function useDashboardData() {
   const [weeklyData, setWeeklyData] = useState([]);
   const [allDemandData, setAllDemandData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   // Convert the selected date into a consistent format for comparison.
   const normalizedSelectedDate = useMemo(() => {
     return normalizeDate(selectedDate);
@@ -31,6 +32,7 @@ export default function useDashboardData() {
   useEffect(() => {// Load dashboard data whenever the selected date changes.
     const loadDashboardData = async () => {
       setLoading(true);
+      setError("");
 
       try {
         const forecastUrl = normalizedSelectedDate
@@ -79,6 +81,7 @@ export default function useDashboardData() {
         setAllDemandData(Array.isArray(demandJson) ? demandJson : []);
       } catch (error) {
         console.error("Failed to load dashboard data:", error);
+        setError("Restaurant data could not be loaded. Please try again.");
         setDashboardData(null);
         setForecastData([]);
         setWeeklyData([]);
@@ -143,7 +146,7 @@ export default function useDashboardData() {
   // Estimate staff needed for the next forecast day.
   const staffNeededTomorrow = useMemo(() => {
     if (!forecastData.length) return "-";
-    return getStaffFromCovers(forecastData[0]?.predicted_total_covers);
+    return forecastData[0]?.closed ? 0 : getStaffFromCovers(forecastData[0]?.predicted_total_covers);
   }, [forecastData]);
 
   const bookingTypeData = useMemo(() => {
@@ -184,6 +187,7 @@ export default function useDashboardData() {
   // Return all values needed by the dashboard page
   return {
     loading,
+    error,
     selectedDate,
     normalizedSelectedDate,
     selectedMode,
@@ -196,6 +200,7 @@ export default function useDashboardData() {
     peakDemandDay,
     totalRecords,
     weeklyData,
+    forecastData,
     bookingTypeData,
     recentBookings,
     latestRecord,

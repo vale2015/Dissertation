@@ -12,7 +12,7 @@ WITH application_tables AS (
           'user_account_tokens', 'staff_account_audit', 'auth_rate_limits',
           'report_history', 'forecast_runs', 'forecast_run_days',
           'active_forecast_run', 'service_actual_covers',
-          'service_actual_corrections'
+          'service_actual_corrections', 'in_app_notifications'
       )
 ), snapshot AS (
     SELECT jsonb_agg(jsonb_build_object(

@@ -14,6 +14,7 @@ from app.api.staffing_rules_route import staffing_rules_bp
 from app.api.weather_route import weather_bp
 from app.api.report_route import reports_bp
 from app.api.staff_route import staff_bp
+from app.api.notification_route import notification_bp
 from app.middleware.auth_middleware import require_authenticated_request
 from app.services.permission_service import has_permission,VIEW_DASHBOARD,MANAGE_BOOKINGS,VIEW_FORECASTS,VIEW_REPORTS,MANAGE_STAFFING_RULES,MANAGE_STAFF_ACCOUNTS
 
@@ -29,6 +30,7 @@ PROTECTED_BLUEPRINTS = {
     events_bp.name,
     reports_bp.name,
     staff_bp.name,
+    notification_bp.name,
 }
 
 BLUEPRINT_PERMISSIONS = {
@@ -166,5 +168,6 @@ def create_app():
 
     app.register_blueprint(reports_bp, url_prefix="/api/reports")
     app.register_blueprint(staff_bp, url_prefix="/api/staff")
+    app.register_blueprint(notification_bp, url_prefix="/api/notifications")
 
     return app

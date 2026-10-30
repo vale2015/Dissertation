@@ -3,6 +3,7 @@ from datetime import datetime
 from app.services.booking_service import (
     create_booking_and_sync_features,
     fetch_all_bookings_service,
+    fetch_todays_bookings_summary_service,
     fetch_booking_by_id_service,
     update_booking_and_sync_features,
     delete_booking_and_sync_features
@@ -107,6 +108,13 @@ def get_all_bookings():
     except Exception:
         # Avoid returning raw exception messages.
         return jsonify({"error": "Internal server error"}), 500
+
+
+def get_todays_bookings_summary():
+    try:
+        return jsonify(fetch_todays_bookings_summary_service()), 200
+    except Exception:
+        return jsonify({"error": "Today's bookings are unavailable."}), 500
 
 
 # Returns one booking by its ID.

@@ -26,15 +26,18 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
-test("manager sees typed chat in the header, weather on open, and no shortcut blocks", async () => {
+test("manager sees branded chat, weather on open, and suggested requests only prefill", async () => {
   const user = userEvent.setup();
   render(<ManagerChat />);
   const launcher = screen.getByRole("button", { name: "Open RFS assistant" });
   await user.click(launcher);
   expect(await screen.findByText("London: 11°C and cloudy.")).toBeInTheDocument();
-  expect(screen.getByText(/Hi, I can check the weather/)).toBeInTheDocument();
+  expect(screen.getByText(/Hi there! I’m your RFS Assistant/)).toBeInTheDocument();
   expect(screen.getByRole("textbox", { name: "Your message" })).toBeEnabled();
-  expect(screen.queryByRole("navigation", { name: /shortcuts/i })).not.toBeInTheDocument();
+  await user.click(screen.getByRole("button", { name: "Generate a report" }));
+  expect(screen.getByRole("textbox", { name: "Your message" })).toHaveValue("Generate a report");
+  expect(screen.getByRole("button", { name: "Check today's bookings" })).toBeInTheDocument();
+  expect(fetch).toHaveBeenCalledTimes(1);
   await user.keyboard("{Escape}");
   expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   expect(launcher).toHaveFocus();

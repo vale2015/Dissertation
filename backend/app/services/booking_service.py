@@ -1,5 +1,6 @@
 from sqlalchemy import text
 from datetime import datetime, date, time
+from zoneinfo import ZoneInfo
 from app.db.dbcon import engine
 import html
 import re
@@ -76,6 +77,27 @@ def fetch_all_bookings_service():
         rows = result.fetchall()
 
         return [serialize_booking_row(dict(row._mapping)) for row in rows]
+
+
+def fetch_todays_bookings_summary_service():
+    """Return a bounded, date-scoped booking summary for the assistant."""
+    today = datetime.now(ZoneInfo("Europe/London")).date()
+    with engine.connect() as conn:
+        totals = conn.execute(text("""
+            SELECT count(*) AS booking_count, COALESCE(sum(party_size), 0) AS booked_covers
+            FROM public.bookings WHERE booking_date = :today
+        """), {"today": today}).mappings().one()
+        rows = conn.execute(text("""
+            SELECT id, booking_time, party_size, booking_type
+            FROM public.bookings WHERE booking_date = :today
+            ORDER BY booking_time ASC NULLS LAST, id ASC LIMIT 10
+        """), {"today": today}).mappings().all()
+    return {
+        "date": today.isoformat(),
+        "booking_count": totals["booking_count"],
+        "booked_covers": totals["booked_covers"],
+        "bookings": [serialize_booking_row(dict(row)) for row in rows],
+    }
 
 
 # Fetches one booking by ID.
