@@ -8,6 +8,7 @@ import {
   useSearchParams,
 } from "next/navigation";
 import DatePicker from "react-datepicker";
+import ManagerChat from "@/components/chatbot/ManagerChat";
 import NavIcon from "@/components/layout/NavIcon";
 import { API_BASE } from "@/lib/api";
 import useSession from "@/hooks/useSession";
@@ -341,6 +342,7 @@ function SidebarContent() {
             })}
           </nav>
         </div>
+        <ManagerChat />
       </aside>
     </>
   );

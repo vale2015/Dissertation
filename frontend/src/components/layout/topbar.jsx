@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import LogoutForm from "@/components/auth/logoutForm";
-import ManagerChat from "@/components/chatbot/ManagerChat";
 import NotificationBell from "@/components/layout/NotificationBell";
 import useSession from "@/hooks/useSession";
 
@@ -35,7 +34,6 @@ export default function Topbar({ user }) {
   return <>
     <header className="topbar" aria-label="Notifications and account">
       <div className="topbar-right">
-        <ManagerChat />
         <NotificationBell key={currentUser?.id || "signed-out"} userId={currentUser?.id} />
         <details className="topbar-account">
           <summary aria-label="Account menu">
