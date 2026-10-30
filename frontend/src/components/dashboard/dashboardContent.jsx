@@ -28,6 +28,10 @@ function DashboardContentInner({ user }) {
     value: Number(row.predicted_total_covers || 0),
   }));
   const staffing = forecast.map((row, index) => ({ ...row, value: forecastData[index]?.closed ? 0 : getStaffFromCovers(row.value) }));
+  const cumulativeForecast = forecast.reduce((days, row) => [
+    ...days,
+    { ...row, value: (days.at(-1)?.value || 0) + row.value },
+  ], []);
   const selected = selectedMode === "historical" ? selectedHistoricalRecord : selectedForecastRecord;
   const selectedCovers = selectedMode === "historical" ? selected?.total_covers : selected?.predicted_total_covers;
 
@@ -62,9 +66,9 @@ function DashboardContentInner({ user }) {
 
       <section className="rfs-dashboard-charts" aria-label="Demand and staffing charts">
         <div className="dashboard-panel"><BookingsTrend data={history} title="Bookings trend" description="Recorded daily covers over the most recent available days; not the number of reservations." /></div>
-        <div className="dashboard-panel"><BookingsTrend data={forecast} title="Reservation forecast" description="Predicted daily covers. Forecasts are estimates, not completed bookings." /></div>
+        <div className="dashboard-panel"><BookingsTrend data={forecast} title="Reservation forecast" description="Predicted daily covers. Forecasts are estimates, not completed bookings." variant="columns" seriesLabel="Predicted covers" /></div>
         <div className="dashboard-panel"><StaffingOverviewChart data={staffing} title="Staffing overview" description="Recommended staff by forecast day. No roster or scheduled-staff data is available." /></div>
-        <div className="dashboard-panel"><BookingsTrend data={forecast} title="Demand forecast" description="Predicted covers by day, based on the current available forecast." /></div>
+        <div className="dashboard-panel"><BookingsTrend data={cumulativeForecast} title="Cumulative demand" description="Running total of predicted covers across the available forecast days." variant="line" seriesLabel="Cumulative covers" /></div>
       </section>
 
       <section className="rfs-dashboard-context" aria-label="Operational context">

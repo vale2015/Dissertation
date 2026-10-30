@@ -1,115 +1,13 @@
 "use client";
 
-import { useMemo } from "react";
-// Formats a date as DD-MM for the chart labels.
-function formatShortDate(value) {
-  if (!value) return "";
+import DataChart from "./DataChart";
 
-  const text = String(value).trim();
-  const directMatch = text.match(/^(\d{4})-(\d{2})-(\d{2})/);
+export default function StaffingOverviewChart({ data = [], title = "Staffing overview", description = "Recommended staff by day." }) {
+  const chartData = Array.isArray(data) ? data.map((item, index) => ({
+    date: item?.date || "",
+    label: item?.label || item?.date || `Day ${index + 1}`,
+    value: item?.value ?? item?.recommended_staff ?? item?.staff_needed ?? item?.staff,
+  })) : [];
 
-  if (!directMatch) return value;
-
-  const [, year, month, day] = directMatch;
-  return `${day}-${month}`;
-}
-// Bar chart component used to display estimated staffing levels.
-export default function StaffingOverviewChart({ data = [], title = "Staffing Overview", description = "Estimated staff required by day" }) {
-  // Clean and normalise staffing data before rendering the chart.
-  const chartData = useMemo(() => {
-    if (!Array.isArray(data)) return [];
-
-    return data
-      .map((item, index) => {
-        const safeValue = Number(
-          item?.value ??
-            item?.recommended_staff ??
-            item?.staff_needed ??
-            item?.staff ??
-            0
-        );
-
-        const safeDate = item?.date || "";
-        const safeLabel = item?.label || formatShortDate(safeDate) || `Day ${index + 1}`;
-
-        return {
-          label: safeLabel,
-          value: Number.isFinite(safeValue) ? safeValue : 0,
-          date: safeDate,
-        };
-      })
-      .filter((item) => item.value >= 0)
-      .slice(0, 30);
-  }, [data]);
-
-  const maxValue = Math.max(...chartData.map((item) => item.value), 1);
-
-  const labelStep =
-    chartData.length <= 7
-      ? 1
-      : chartData.length <= 14
-      ? 2
-      : chartData.length <= 21
-      ? 3
-      : 5;
-
-  const shouldShowLabel = (index) => {
-    return (
-      index === 0 ||
-      index === chartData.length - 1 ||
-      index % labelStep === 0
-    );
-  };
-
-  return (
-    <>
-      <div className="dashboard-chart-header">
-        <div>
-          <h3 className="dashboard-panel-title">{title}</h3>
-          <p className="dashboard-chart-subtitle">
-            {description}
-          </p>
-        </div>
-      </div>
-
-      <div className="staffing-overview-chart">{/* Render the bar chart when staffing data is available. */}
-        {chartData.length > 0 ? (
-          <div className="staffing-overview-bars staffing-overview-bars-monthly">
-            {chartData.map((item, index) => {
-              const barHeight =
-                item.value === 0 ? "0%" : `${(item.value / maxValue) * 100}%`;
-
-              return (
-                <div
-                  key={`${item.date || item.label}-${index}`}
-                  className="staffing-overview-item"
-                >
-                  <div className="staffing-overview-value">
-                    {shouldShowLabel(index) ? item.value : ""}
-                  </div>
-
-                  <div className="staffing-overview-bar-wrap">
-                    <div
-                      className="staffing-overview-bar"
-                      style={{ height: barHeight }}
-                    />
-                  </div>
-
-                  <div className="staffing-overview-label">
-                    {shouldShowLabel(index)
-                      ? formatShortDate(item.date) || item.label
-                      : ""}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <div className="dashboard-empty-state">
-            <p className="dashboard-text">No staffing data available.</p>
-          </div>
-        )}
-      </div>
-    </>
-  );
+  return <DataChart data={chartData} title={title} description={description} variant="columns" unit="staff" seriesLabel="Recommended staff" tone="navy" />;
 }

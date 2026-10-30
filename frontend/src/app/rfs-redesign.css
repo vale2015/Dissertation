@@ -215,3 +215,33 @@
 @media (max-width: 1050px) { .rfs-dashboard-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 700px) { .rfs-dashboard-heading { flex-direction: column; } .rfs-dashboard-date { width: 100%; } .rfs-dashboard-charts,.rfs-dashboard-context { grid-template-columns: 1fr; } }
 @media (max-width: 480px) { .rfs-dashboard-actions { grid-template-columns: 1fr; } }
+
+/* Shared, accessible data visualisation for historical demand and forecasts. */
+.rfs-data-chart { --rfs-chart-color: #db3347; color: #18243a; }
+.rfs-data-chart--navy { --rfs-chart-color: #394d78; }
+.rfs-data-chart .dashboard-chart-header { min-height: 58px; margin-bottom: 12px; gap: 12px; }
+.rfs-data-chart .dashboard-panel-title { margin-bottom: 5px; letter-spacing: -0.015em; }
+.rfs-data-chart .dashboard-chart-subtitle { max-width: 55ch; line-height: 1.5; }
+.rfs-chart-count { flex: 0 0 auto; padding: 5px 9px; border: 1px solid #e5eaf0; border-radius: 99px; background: #f8fafc; color: #526277; font-size: 11px; font-weight: 700; }
+.rfs-chart-legend { display: flex; align-items: center; gap: 7px; color: #42506a; font-size: 12px; font-weight: 650; }
+.rfs-chart-key { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--rfs-chart-color); }
+.rfs-chart-period { margin-left: auto; color: #67758b; font-weight: 500; }
+.rfs-chart-scroll { width: 100%; overflow-x: auto; }
+.rfs-chart-svg { display: block; width: 100%; height: auto; min-width: 320px; color: var(--rfs-chart-color); overflow: visible; }
+.rfs-chart-grid { stroke: #e8edf3; stroke-width: 1; stroke-dasharray: 3 5; }
+.rfs-chart-axis { fill: #718096; font-size: 11px; font-weight: 500; }
+.rfs-chart-axis--x { font-size: 10px; }
+.rfs-chart-line { stroke: var(--rfs-chart-color); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.rfs-chart-point { fill: #fff; stroke: var(--rfs-chart-color); stroke-width: 2.5; }
+.rfs-chart-bar { fill: var(--rfs-chart-color); }
+.rfs-chart-details { margin-top: 5px; color: #516079; font-size: 12px; }
+.rfs-chart-details summary { width: fit-content; cursor: pointer; }
+.rfs-chart-details summary:hover { color: #bd2338; }
+.rfs-chart-table-wrap { max-height: 230px; margin-top: 10px; overflow: auto; }
+.rfs-chart-table-wrap table { width: 100%; border-collapse: collapse; text-align: left; }
+.rfs-chart-table-wrap th,.rfs-chart-table-wrap td { padding: 6px 8px; border-bottom: 1px solid #e8edf3; }
+.rfs-chart-table-wrap td { text-align: right; font-variant-numeric: tabular-nums; }
+.rfs-chart-table-wrap thead th:last-child { text-align: right; }
+.rfs-chart-table-wrap caption { text-align: left; font-weight: 700; }
+.rfs-dashboard-charts .rfs-chart-svg { height: auto; }
+@media (max-width: 500px) { .rfs-chart-svg { min-width: 420px; } }
