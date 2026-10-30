@@ -152,7 +152,13 @@ def test_partially_historical_range_starts_search_today():
     assert result["supported_dates"][0] == today.isoformat()
 
 
-def test_dst_boundaries_are_converted_to_utc():
+def test_dst_boundaries_are_converted_to_utc(monkeypatch):
+    class FixedDateTime(datetime):
+        @classmethod
+        def now(cls, tz=None):
+            return cls(2026, 10, 24, tzinfo=tz)
+
+    monkeypatch.setattr("app.services.events_service.datetime", FixedDateTime)
     result = validate_event_date_range("2026-10-24", "2026-10-26", "Europe/London")
     assert result["search_start_datetime"] == "2026-10-23T23:00:00Z"
     assert result["search_end_datetime"] == "2026-10-27T00:00:00Z"

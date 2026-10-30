@@ -1,13 +1,15 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import StaffManagement from "@/components/staff/StaffManagement";
 import useSession from "@/hooks/useSession";
 import { downloadManagementReport, downloadSavedReport } from "@/lib/report-download";
 import { ROLES } from "@/lib/permissions";
 
 const PANEL_ID = "rfs-assistant-panel";
-const GREETING = "Hi, I can check the weather and local events, generate and find reports, and help manage staff. Type what you need.";
+const GREETING = "👋 Hi there! I’m your RFS Assistant! I’m here to make your day easier. Ask me about weather or local events, let me handle reports, or get help managing your staff. Just tell me what you need!";
+const SUGGESTIONS = ["Check today's bookings", "Show reservation forecast", "Suggest staffing for this week", "Generate a report"];
 
 export default function ManagerChat() {
   const { user } = useSession();
@@ -128,15 +130,18 @@ export default function ManagerChat() {
         aria-controls={PANEL_ID}
         onClick={open ? close : () => setOpen(true)}
       >
-        <span aria-hidden="true">✦</span> Ask RFS
+        <Image src="/brand/rfs-ai-mascot-v2.png" alt="" width={45} height={45} /><span>RFS AI</span>
       </button>
 
       {open && (
         <section className="manager-chat-panel" id={PANEL_ID} role="dialog" aria-modal="false" aria-labelledby="manager-chat-title">
           <header className="manager-chat-header">
-            <div>
-              <h2 id="manager-chat-title">RFS assistant</h2>
-              <p>{modelEnabled ? "AI-assisted requests · verified restaurant data" : "Restaurant tools · AI interpretation not configured"}</p>
+            <div className="manager-chat-brand">
+              <Image src="/brand/rfs-ai-mascot-v2.png" alt="" width={56} height={56} />
+              <div>
+                <h2 id="manager-chat-title">RFS AI</h2>
+                <p>{modelEnabled ? "Your Restaurant Assistant" : "Restaurant tools"}</p>
+              </div>
             </div>
             <button type="button" aria-label="Close assistant" onClick={close}>×</button>
           </header>
@@ -147,6 +152,9 @@ export default function ManagerChat() {
                 <p>{item.text}</p>
               </div>
             ))}
+            {ready && !messages.some((item) => item.role === "user") && <div className="manager-chat-suggestions" aria-label="Suggested requests">
+              {SUGGESTIONS.map((suggestion) => <button key={suggestion} type="button" onClick={() => { setInput(suggestion); inputRef.current?.focus(); }}>{suggestion}</button>)}
+            </div>}
             {loading && <p className="manager-chat-pending" role="status">Working on your request…</p>}
             {error && <p className="manager-chat-error" role="alert">{error}</p>}
             {staffWorkspace && <div className="manager-chat-workspace"><StaffManagement initialSearch={staffSearch} /></div>}

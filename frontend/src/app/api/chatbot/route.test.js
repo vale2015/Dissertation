@@ -80,3 +80,12 @@ test("undated report uses the latest available backend date", async () => {
   expect(fetch.mock.calls[1][0]).toBe(`${backendUrl}/dashboard/`);
   expect(fetch.mock.calls[2][0]).toContain("selected_date=2026-11-29");
 });
+
+test("today's bookings use a bounded, protected backend summary", async () => {
+  fetch.mockResolvedValueOnce(ok({ user: { id: 7, role: "manager" } }));
+  fetch.mockResolvedValueOnce(ok({ date: "2026-10-30", booking_count: 2, booked_covers: 5, bookings: [] }));
+  const response = await POST(message("Check today's bookings"));
+  expect(response.status).toBe(200);
+  expect((await response.json()).text).toContain("2 bookings for 5 booked covers");
+  expect(fetch.mock.calls[1][0]).toBe(`${backendUrl}/booking/today-summary`);
+});

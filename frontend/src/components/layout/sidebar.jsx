@@ -8,7 +8,7 @@ import {
   useSearchParams,
 } from "next/navigation";
 import DatePicker from "react-datepicker";
-import LogoutForm from "@/components/auth/logoutForm";
+import NavIcon from "@/components/layout/NavIcon";
 import { API_BASE } from "@/lib/api";
 import useSession from "@/hooks/useSession";
 import { hasPermission, PERMISSIONS } from "@/lib/permissions";
@@ -102,13 +102,10 @@ function SidebarContent() {
   // Stores the latest date returned from the backend.
   const [latestAvailableDate, setLatestAvailableDate] = useState("");
 
-  // Controls logout modal visibility.
-  const [showLogoutModal, setShowLogoutModal] = useState(false);
-
   // The main dashboard displays a monthly summary.
   const isDashboardPage = pathname === "/dashboard";
   const isLocalEventsPage = pathname === "/dashboard/local-events";
-  const isAccountPage = pathname === "/dashboard/staff" || pathname === "/dashboard/profile";
+  const isAccountPage = ["/dashboard/staff", "/dashboard/profile", "/dashboard/settings", "/dashboard/staffing-rules"].includes(pathname);
   const isReportHistoryPage = pathname.startsWith("/dashboard/reports/history");
   const isDateIndependentPage = isDashboardPage || isLocalEventsPage || isAccountPage || isReportHistoryPage || pathname === "/dashboard/forecast-accuracy";
 
@@ -181,49 +178,6 @@ function SidebarContent() {
   ]);
 
   /**
-   * Open the logout confirmation modal.
-   */
-  const handleLogoutClick = () => {
-    setShowLogoutModal(true);
-  };
-
-  /**
-   * Clear authentication data and return to the login page.
-   */
-  const handleConfirmLogout = async () => {
-  try {
-    const response = await fetch("/api/auth/logout", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-      },
-    });
-
-    if (!response.ok) {
-      const data = await response.json().catch(() => null);
-
-      throw new Error(
-        data?.error || "Unable to complete logout."
-      );
-    }
-
-    setShowLogoutModal(false);
-
-    router.replace("/");
-    router.refresh();
-  } catch (error) {
-    console.error("Logout failed:", error);
-  }
-};
-
-  /**
-   * Close the logout confirmation modal.
-   */
-  const handleCancelLogout = () => {
-    setShowLogoutModal(false);
-  };
-
-  /**
    * Update the selected date in the current URL.
    */
   const handleDateChange = (date) => {
@@ -255,7 +209,7 @@ function SidebarContent() {
    * single-day pages.
    */
   const withDate = (href) => {
-    if (["/dashboard","/dashboard/local-events","/dashboard/forecast-accuracy","/dashboard/staff","/dashboard/profile","/dashboard/reports/history"].includes(href)) {
+    if (["/dashboard","/dashboard/local-events","/dashboard/forecast-accuracy","/dashboard/staff","/dashboard/profile","/dashboard/settings","/dashboard/staffing-rules","/dashboard/reports/history"].includes(href)) {
       return href;
     }
 
@@ -278,47 +232,39 @@ function SidebarContent() {
     () => [
       {
         label: "Dashboard",
+        icon: "dashboard",
         href: "/dashboard",
         permission: PERMISSIONS.VIEW_DASHBOARD,
       },
       {
-        label: "Bookings Overview",
+        label: "Bookings",
+        icon: "bookings",
         href: "/dashboard/bookings",
         permission: PERMISSIONS.MANAGE_BOOKINGS,
       },
       {
-        label: "Add New Booking",
-        href: "/dashboard/createBooking",
-        permission: PERMISSIONS.MANAGE_BOOKINGS,
-      },
-      {
         label: "Reservation Forecast",
+        icon: "forecast",
         href: "/dashboard/reservation-forecast",
         permission: PERMISSIONS.VIEW_FORECASTS,
       },
       {
-        label: "Staff Forecast",
+        label: "Staffing Forecast",
+        icon: "staffForecast",
         href: "/dashboard/staff-forecast",
         permission: PERMISSIONS.VIEW_FORECASTS,
       },
-      {
-        label: "Forecast Accuracy",
-        href: "/dashboard/forecast-accuracy",
-        permission: PERMISSIONS.VIEW_FORECASTS,
-      },
-      {
-        label: "Staffing Rules",
-        href: "/dashboard/staffing-rules",
-        permission: PERMISSIONS.MANAGE_STAFFING_RULES,
-      },
+      { label: "Staff Management", icon: "staff", href: "/dashboard/staff", permission: PERMISSIONS.MANAGE_STAFF_ACCOUNTS },
       {
         label: "Reports",
+        icon: "reports",
         href: "/dashboard/reports",
         permission: PERMISSIONS.VIEW_REPORTS,
       },
       {
-        label: "My Profile",
-        href: "/dashboard/profile",
+        label: "Settings",
+        icon: "settings",
+        href: "/dashboard/settings",
         permission: PERMISSIONS.VIEW_OWN_PROFILE,
       },
     ],
@@ -329,25 +275,12 @@ function SidebarContent() {
     <>
       <aside className="sidebar">
         <div className="sidebar-top">
-          <div className="sidebar-calendar">
-            {isDashboardPage ? (
-              <>
-                <label className="sidebar-calendar-label">
-                  Date range
-                </label>
-
-                <div className="sidebar-range-box">
-                  <span className="sidebar-range-value">
-                    Last 30 days
-                  </span>
-                </div>
-
-                <p className="sidebar-calendar-note">
-                  Summary based on the most recent month of
-                  available data
-                </p>
-              </>
-            ) : isAccountPage || isReportHistoryPage ? (
+          <Link href="/dashboard" className="sidebar-brand" aria-label="RFS home">
+            <svg className="sidebar-brand-hat" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="2.6" aria-hidden="true"><path d="M11 30V18a8 8 0 0 1 5-14 8 8 0 0 1 15 1 8 8 0 0 1 6 14v11M11 30h26v8H11z" /></svg>
+            <strong>RFS</strong><span>Restaurant<br />Forecasting<br />System</span>
+          </Link>
+          {!isDashboardPage && <div className="sidebar-calendar">
+            {isAccountPage || isReportHistoryPage ? (
               <><label className="sidebar-calendar-label">{isReportHistoryPage ? "Report archive" : "Account"}</label><div className="sidebar-range-box"><span className="sidebar-range-value">No forecast date required</span></div></>
             ) : isLocalEventsPage ? (
               <>
@@ -388,11 +321,11 @@ function SidebarContent() {
                 </p>
               </>
             )}
-          </div>
+          </div>}
 
           <nav className="sidebar-nav">
             {menuItems.filter(item => hasPermission(user, item.permission)).map((item) => {
-              const isActive = pathname === item.href || (item.href === "/dashboard/reports/history" && isReportHistoryPage);
+              const isActive = pathname === item.href || (item.href === "/dashboard/reports" && isReportHistoryPage) || (item.href === "/dashboard/settings" && ["/dashboard/profile", "/dashboard/staffing-rules"].includes(pathname));
 
               return (
                 <Link
@@ -402,27 +335,13 @@ function SidebarContent() {
                     isActive ? "active" : ""
                   }`}
                 >
-                  {item.label}
+                  <NavIcon name={item.icon} /><span>{item.label}</span>
                 </Link>
               );
             })}
-
-            <button
-              type="button"
-              className="sidebar-logout-btn"
-              onClick={handleLogoutClick}
-            >
-              Logout
-            </button>
           </nav>
         </div>
       </aside>
-
-      <LogoutForm
-        isOpen={showLogoutModal}
-        onConfirm={handleConfirmLogout}
-        onCancel={handleCancelLogout}
-      />
     </>
   );
 }

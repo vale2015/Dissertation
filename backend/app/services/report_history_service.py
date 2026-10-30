@@ -10,6 +10,7 @@ from sqlalchemy import text
 
 from app.db.dbcon import SessionLocal
 from app.services.auth_service import get_secret_key
+from app.services.notification_service import create_report_saved_notification
 
 
 PAGE_SIZE = 20
@@ -62,6 +63,7 @@ def save_report(report, pdf_file, csv_file, actor_id):
             "pdf_file": pdf_file,
             "csv_file": csv_file,
         }).mappings().one()
+        create_report_saved_notification(db, actor_id, row["id"], metadata["selected_date"])
         db.commit()
     return {"id": row["id"], "created_at": row["created_at"].isoformat(),
             "expires_at": row["expires_at"].isoformat()}

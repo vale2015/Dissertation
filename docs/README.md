@@ -3,10 +3,12 @@
 ## Improvement lists
 
 - [Architecture improvement tracker](IMPROVEMENT_TRACKER.md) — canonical, numbered backlog for the original architecture review and later project improvements.
-- [MoSCoW prioritization](MOSCOW_PRIORITIZATION.md) — value-first Must/Should/Could/Won't-for-now ranking of all 56 tracker items, with rationale and delivery sequence.
+- [MoSCoW prioritization](MOSCOW_PRIORITIZATION.md) — value-first Must/Should/Could/Won't-for-now ranking of all 57 tracker items, with rationale and delivery sequence.
 - [Modernization, AI, and low-code options](MODERNIZATION_OPTIONS.md) — optional automation and AI paths, safeguards, and trade-offs.
 - [Restaurant manager chatbot scope](MANAGER_CHATBOT_SCOPE.md) — medium-priority skeleton first (#55), then weather, events, reports, and Staff Management capabilities (#54).
 - [RFS chatbot architecture design](RFS%20Chatbot%20Architecture%20Design.md) — reviewed system boundaries, current skeleton contract, future tool safety, and UI/UX design for #55 and #54.
+- [RFS UI/UX redesign specification](RFS_UI_UX_REDESIGN.md) — user-provided requirements and the [approved dashboard reference](RFS%20Restaurant%20Analytics%20Dashboard.png).
+- [RFS UI/UX redesign implementation plan](RFS_UI_UX_REDESIGN_PLAN.md) — delivery slices, route/data mapping, design decisions, and acceptance gates for #57.
 
 ## Implementation notes
 

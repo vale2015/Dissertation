@@ -14,7 +14,7 @@ function formatShortDate(value) {
   return `${day}-${month}`;
 }
 // Bar chart component used to display estimated staffing levels.
-export default function StaffingOverviewChart({ data = [] }) {
+export default function StaffingOverviewChart({ data = [], title = "Staffing Overview", description = "Estimated staff required by day" }) {
   // Clean and normalise staffing data before rendering the chart.
   const chartData = useMemo(() => {
     if (!Array.isArray(data)) return [];
@@ -65,9 +65,9 @@ export default function StaffingOverviewChart({ data = [] }) {
     <>
       <div className="dashboard-chart-header">
         <div>
-          <h3 className="dashboard-panel-title">Staffing Overview</h3>
+          <h3 className="dashboard-panel-title">{title}</h3>
           <p className="dashboard-chart-subtitle">
-            Estimated staff required by day
+            {description}
           </p>
         </div>
       </div>

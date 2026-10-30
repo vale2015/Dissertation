@@ -2,6 +2,7 @@
 
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 import SummaryCard from "@/components/dashboard/summaryCard";
 import BookingsTrend from "@/components/charts/BookingsTrend";
 import StaffingOverviewChart from "@/components/charts/StaffingOverviewChart";
@@ -268,6 +269,7 @@ function BookingsContent() {
                 <p className="dashboard-text">
                   Overview of reservations and staffing insights for the selected day
                 </p>
+                <Link className="rfs-page-action" href={selectedDate ? `/dashboard/createBooking?date=${selectedDate}` : "/dashboard/createBooking"}>Add booking</Link>
               </section>
                 {/* Show loading text while booking data is being fetched. */}
               {loading ? (

@@ -12,6 +12,7 @@ const ROUTE_PERMISSIONS = {
   "/dashboard/reports": PERMISSIONS.VIEW_REPORTS,
   "/dashboard/staff": PERMISSIONS.MANAGE_STAFF_ACCOUNTS,
   "/dashboard/profile": PERMISSIONS.VIEW_OWN_PROFILE,
+  "/dashboard/settings": PERMISSIONS.VIEW_OWN_PROFILE,
 };
 
 export function dashboardPermission(pathname) {

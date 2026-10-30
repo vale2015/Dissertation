@@ -19,6 +19,7 @@ test("dashboard routes keep their page permissions", () => {
     ["/dashboard/reports/history/1", PERMISSIONS.VIEW_REPORTS],
     ["/dashboard/staff", PERMISSIONS.MANAGE_STAFF_ACCOUNTS],
     ["/dashboard/profile", PERMISSIONS.VIEW_OWN_PROFILE],
+    ["/dashboard/settings", PERMISSIONS.VIEW_OWN_PROFILE],
   ]);
 
   for (const [path, permission] of routes) {

@@ -2,6 +2,7 @@ from flask import Blueprint
 from app.controllers.booking_controller import (
     add_booking,
     get_all_bookings,
+    get_todays_bookings_summary,
     get_booking_by_id,
     update_booking,
     delete_booking
@@ -13,6 +14,11 @@ booking_bp = Blueprint("booking_bp", __name__)
 @booking_bp.route("/", methods=["GET"])
 def fetch_bookings_route():
     return get_all_bookings()
+
+
+@booking_bp.get("/today-summary")
+def fetch_todays_bookings_summary_route():
+    return get_todays_bookings_summary()
 
 @booking_bp.route("/<int:booking_id>", methods=["GET"])
 def fetch_booking_by_id_route(booking_id):

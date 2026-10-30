@@ -27,7 +27,7 @@ function formatFullDate(value) {
   return `${day}/${month}/${year}`;
 }
 // Line chart component used to display reservation or demand trends.
-export default function BookingsTrend({ data = [] }) {
+export default function BookingsTrend({ data = [], title = "Reservations Trend", description = "Daily covers across the last 30 days · Hover over the line points to view the reservation value for each day." }) {
   // Stores the chart point currently hovered by the user.
   const [hoveredPoint, setHoveredPoint] = useState(null);
 
@@ -130,15 +130,17 @@ export default function BookingsTrend({ data = [] }) {
     <>
       <div className="dashboard-chart-header">
         <div>
-          <h3 className="dashboard-panel-title">Reservations Trend</h3>
+          <h3 className="dashboard-panel-title">{title}</h3>
           <p className="dashboard-chart-subtitle">
-            Daily covers across the last 30 days · Hover over the line points to view the reservation value for each day.
+            {description}
           </p>
         </div>
       </div>
 
       <div
         className="simple-line-chart has-tooltip"
+        role="img"
+        aria-label={`${title}: ${chartData.length ? chartData.map((point) => `${point.label} ${point.value} covers`).join(", ") : "no data available"}`}
         onMouseLeave={() => setHoveredPoint(null)}
       >
         {hoveredPoint && (

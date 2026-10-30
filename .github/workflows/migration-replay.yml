@@ -70,8 +70,9 @@ jobs:
                     'business_settings', 'user_account_tokens', 'staff_account_audit',
                     'auth_rate_limits', 'report_history', 'forecast_runs',
                     'forecast_run_days', 'active_forecast_run',
-                    'service_actual_covers', 'service_actual_corrections')) <> 16 THEN
-              RAISE EXCEPTION 'Expected all 16 application tables';
+                    'service_actual_covers', 'service_actual_corrections',
+                    'in_app_notifications')) <> 17 THEN
+              RAISE EXCEPTION 'Expected all 17 application tables';
             END IF;
             IF (SELECT count(*) FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace
                 WHERE n.nspname = 'public' AND c.relkind = 'r' AND c.relrowsecurity
@@ -80,13 +81,16 @@ jobs:
                     'business_settings', 'user_account_tokens', 'staff_account_audit',
                     'auth_rate_limits', 'report_history', 'forecast_runs',
                     'forecast_run_days', 'active_forecast_run',
-                    'service_actual_covers', 'service_actual_corrections')) <> 16 THEN
-              RAISE EXCEPTION 'Expected RLS on all 16 application tables';
+                    'service_actual_covers', 'service_actual_corrections',
+                    'in_app_notifications')) <> 17 THEN
+              RAISE EXCEPTION 'Expected RLS on all 17 application tables';
             END IF;
             IF has_table_privilege('anon', 'public.bookings', 'SELECT')
               OR has_table_privilege('authenticated', 'public.bookings', 'SELECT')
               OR has_table_privilege('anon', 'public.auth_rate_limits', 'SELECT')
               OR has_table_privilege('authenticated', 'public.auth_rate_limits', 'SELECT')
+              OR has_table_privilege('anon', 'public.in_app_notifications', 'SELECT')
+              OR has_table_privilege('authenticated', 'public.in_app_notifications', 'SELECT')
               OR has_sequence_privilege('anon', 'public.bookings_id_seq', 'USAGE') THEN
               RAISE EXCEPTION 'Server-only objects grant client access';
             END IF;
