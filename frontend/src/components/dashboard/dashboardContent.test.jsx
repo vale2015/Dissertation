@@ -1,9 +1,10 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 import { afterEach, expect, test, vi } from "vitest";
 import DashboardContent from "./dashboardContent";
 
-vi.mock("next/navigation", () => ({ useRouter: () => ({ push: vi.fn() }) }));
+const push = vi.hoisted(() => vi.fn());
+vi.mock("next/navigation", () => ({ useRouter: () => ({ push }) }));
 vi.mock("@/hooks/useDashboardData", () => ({
   default: () => ({
     loading: false,
@@ -22,7 +23,7 @@ vi.mock("@/hooks/useDashboardData", () => ({
   }),
 }));
 
-afterEach(cleanup);
+afterEach(() => { cleanup(); push.mockClear(); });
 
 test("dashboard ends with charts and omits the redundant cards below them", () => {
   render(<DashboardContent user={{ full_name: "Valerio Gerardi" }} />);
@@ -32,4 +33,18 @@ test("dashboard ends with charts and omits the redundant cards below them", () =
   expect(screen.queryByRole("heading", { name: "Latest operational snapshot" })).not.toBeInTheDocument();
   expect(screen.queryByRole("heading", { name: "Financial context" })).not.toBeInTheDocument();
   expect(screen.queryByRole("navigation", { name: "Quick actions" })).not.toBeInTheDocument();
+});
+
+test("choosing a day keeps the draft visible until Apply navigates to that date", () => {
+  render(<DashboardContent user={{ full_name: "Valerio Gerardi" }} />);
+  const input = screen.getByLabelText("View a day");
+  const apply = screen.getByRole("button", { name: "Apply" });
+  expect(apply).toBeDisabled();
+
+  fireEvent.change(input, { target: { value: "2026-11-30" } });
+  expect(input).toHaveValue("2026-11-30");
+  expect(push).not.toHaveBeenCalled();
+
+  fireEvent.click(apply);
+  expect(push).toHaveBeenCalledWith("/dashboard?date=2026-11-30");
 });
