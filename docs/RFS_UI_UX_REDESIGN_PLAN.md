@@ -1,12 +1,12 @@
 # RFS UI/UX redesign — implementation plan
 
-**Backlog item:** [#57 in the improvement tracker](IMPROVEMENT_TRACKER.md) · **Priority:** Must (user-directed product redesign) · **Status:** Partial; favicon/chart update released, end-to-end visual checks open
+**Backlog item:** [#57 in the improvement tracker](IMPROVEMENT_TRACKER.md) · **Priority:** Must (user-directed product redesign) · **Status:** Partial; the redesigned dashboard, notifications, mascot, view-only Reports, Settings, and left-docked assistant are released; responsive, role, notification, and accessibility acceptance checks remain
 **Sources:** [Redesign specification](RFS_UI_UX_REDESIGN.md) and [approved dashboard PNG](RFS%20Restaurant%20Analytics%20Dashboard.png) (1536 × 1024 reference viewport)
 **Decisions recorded 2026-10-30:** Follow the new mockup for the sidebar and assistant, including Staff Management and suggested chat prompts. Reproduce the pictured mascot as a standalone production asset; build a real notification feature; keep Reports view-only with generation in chat; and put Staffing Rules and personal account settings in Settings. The underlying access rules still apply.
 
 ## Outcome and constraints
 
-Make the signed-in product recognizably match the approved reference: compact white left sidebar, restrained red accents, spacious dashboard cards and charts, top-right account area, and a branded floating **RFS AI** conversation panel. The image is a visual target, not a source of sample data or permission rules. Keep the existing Next.js/Flask architecture, routes, and protected operations unless a specific phase identifies a necessary contract change.
+Make the signed-in product recognizably match the approved reference: compact white left sidebar, restrained red accents, spacious dashboard cards and charts, top-right account area, and a branded **RFS AI** conversation panel. The later PM-approved implementation places its launcher below the left menu and docks the conversation beside it, shifting content instead of covering the dashboard. The image is a visual target, not a source of sample data or permission rules. Keep the existing Next.js/Flask architecture, routes, and protected operations unless a specific phase identifies a necessary contract change.
 
 The screenshot's `48`, `142`, `€2,130`, percentage deltas, October 2026 dates, scheduled-staff series, and forecast band are illustrative. Never put them into production as constants. Display only values derived from the current authenticated restaurant's data, with the correct currency, units, date range, and observed/estimated/predicted labels. If a comparison or schedule is unavailable, use a clearly labelled unavailable state rather than inventing it.
 
@@ -71,7 +71,9 @@ Slices should be small reviewable changes, not one large CSS rewrite. Start with
 - Reports remains a view-only page. Generation, saving, archive retrieval, and download are chatbot actions.
 - Settings contains Staffing Rules and personal account settings, using only the existing permitted operations.
 
-## Implementation record — 2026-10-30
+## Chronological implementation record — 2026-10-30
+
+The following entries preserve the sequence of local work and later releases. Earlier “local” checkpoints are historical, not the current deployment state; use the tracker and status line above for current status.
 
 The first local slice adds the new shared shell styling, branded sidebar and assistant, a standalone transparent mascot candidate, the role-gated Staff Management link, a Settings hub using the existing own-profile and Staffing Rules components, and in-page links to Add Booking and Forecast Accuracy after their sidebar links were removed. Suggested assistant prompts currently cover only the four actions actually recognized by the chatbot: weather, events, reports, and staff management. They fill the composer without submitting. The Reports page already has no generate/save/download buttons, so it was not changed in this slice.
 

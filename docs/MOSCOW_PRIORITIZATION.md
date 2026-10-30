@@ -1,6 +1,6 @@
 # MoSCoW prioritization of architecture improvements
 
-This is a **value-first** product-priority view of all 57 items in the canonical [improvement tracker](IMPROVEMENT_TRACKER.md), not a second backlog. It reflects the [PRD](PRD.md): a single-restaurant dissertation prototype focused on helping managers prepare services, reuse reports, and judge whether forecasts are accurate. Last reviewed: 2026-10-30.
+This is a **value-first** product-priority view of all 59 items in the canonical [improvement tracker](IMPROVEMENT_TRACKER.md), not a second backlog. It reflects the [PRD](PRD.md): a single-restaurant dissertation prototype focused on helping managers prepare services, reuse reports, and judge whether forecasts are accurate. Last reviewed: 2026-10-30.
 
 **Must** = direct, high-value product outcomes or the minimum safeguards and tests required to deliver them safely. **Should** = meaningful usability, scalability, or operational benefit that can follow the next product increment. **Could** = lower-evidence optimization or structural work. **Won't for now** = explicitly deferred or outside current single-restaurant scope; reconsider if the user or product direction changes.
 
@@ -8,14 +8,14 @@ Priority is independent of delivery state. A Must can already be **Done**, and a
 
 ## Recommended value-first sequence
 
-1. **Prove forecast usefulness:** item 20 is Done; #21 remains the highest-value open product feature because managers need to compare forecasts with actual demand.
-2. **If moving into Phase 6, start with #29:** a shared dashboard layout removes repeated shell/navigation from 11 pages and gives the later chatbot a single mount point. Do not treat every Phase 6 item as one release.
-3. **Keep the chatbot medium priority:** #55 designs/builds the safe skeleton first; #54 adds weather, events, reports, and staff tools afterward. The disabled #52 report-note pilot does not block this work.
-4. **Maintain the remaining safety gates:** close the migration/access work in 3–4 while delivering new features. Item 5's implemented login safeguards remain in place, but the user deferred their live verification on 2026-10-23.
-5. **Apply release gates throughout, not as a late phase:** complete 7–8, 56, and the relevant portions of 35, 37, 39, 41, and 43 before shipping the affected flows. The remaining Should items follow measured bottlenecks and user feedback.
-6. **Deliver the newly approved visual direction:** #57 is now the next user-directed product initiative. Start with a data/mascot-asset contract and the shared shell, then the dashboard and RFS AI panel shown in the PNG. Build the approved real notification feed before visual sign-off, keep Reports view-only with generation in chat, and consolidate Staffing Rules and personal account settings. Expand to other pages in reviewable slices. Keep #56's release gate separate.
+1. **Prove forecast usefulness:** #20 is Done; finish #21 with genuine completed-service actuals and an authenticated accuracy journey before making performance claims from demo data.
+2. **Close release verification on the redesigned manager experience:** #57 has the approved shared shell, charts, notifications, Settings, and left-docked assistant, but remains Partial until its remaining acceptance checks pass. #29's shared layout is implemented and still awaits signed-in role checks.
+3. **Finish chatbot safety and evidence:** #54–55 are deployed pilots, not completed capabilities. Verify live model inference, protected manager/restricted-role journeys, report and staff actions, durable staff-write idempotency, privacy, and usage limits. Keep the separate #52 report-note pilot disabled until reviewed.
+4. **Maintain database and security gates:** close the remaining #3–4 migration/access work and the relevant #7–8 safeguards as features change. Track applied migrations separately from code and deployment.
+5. **Apply quality gates continuously:** use #35, #37, #39, #41, #43, and #56 as applicable to each release; a READY deployment is not proof of a successful user journey.
+6. **Keep product documentation usable:** #58 establishes the sequential PM-led team; #59 consolidates current requirements in the PRD and maintains the canonical tracker. Prioritize subsequent Should items from measured bottlenecks and manager feedback.
 
-The current user-directed product initiative is **57 (RFS UI/UX redesign)**. Item #21 remains a high-value forecasting outcome that awaits genuine completed-service evidence. The chatbot implementation (#54–55) remains Partial; #57 now includes its approved visual treatment and suggested prompts. Item 52 remains Partial and disabled in production. Security and test work remains Must because a feature that risks customer data or cannot be verified is not ready for users.
+The latest user-directed initiatives are **#57 (RFS UI/UX redesign), #58 (sequential agent team), and #59 (documentation consolidation)**. #21 remains a high-value forecasting outcome awaiting genuine completed-service evidence. The chatbot (#54–55) remains Partial; #52 remains Partial and disabled in production. Security and test work remains Must because a feature that risks customer data or cannot be verified is not ready for users.
 
 ## Must — user value and minimum safe-delivery gates (17)
 
@@ -39,7 +39,7 @@ The current user-directed product initiative is **57 (RFS UI/UX redesign)**. Ite
 | 56 | Remediate audited frontend dependency vulnerabilities | The patched branch has a clean audit; authenticated preview and production release checks remain before Done. |
 | 57 | Implement the approved RFS UI/UX redesign | User-approved dashboard and assistant experience is the next visible product direction; its bell must show real, recipient-scoped notifications, while Reports stays view-only and Settings reuses existing capabilities. Deliver without fabricated data or broken permissions. |
 
-## Should — meaningful next benefits (26)
+## Should — meaningful next benefits (28)
 
 | # | Improvement | Why Should |
 |---|---|---|
@@ -69,6 +69,8 @@ The current user-directed product initiative is **57 (RFS UI/UX redesign)**. Ite
 | 50 | Add provider circuit breakers | Keep optional external failures from spreading. |
 | 54 | Add a restaurant manager chatbot for existing app actions | Medium priority by user direction; useful manager workflows, after the skeleton and with account-action safeguards. |
 | 55 | Design and build the chatbot skeleton | First chatbot implementation milestone; shared entry point, authentication, accessibility, and disabled tool boundary before features. |
+| 58 | Establish the PM-led sequential AI delivery team | Improve delivery quality and role clarity for future changes without slowing every small task; the first handoff must prove the workflow. |
+| 59 | Audit and refresh project documentation | Give the PM and future specialists a reliable current architecture and navigation guide without losing historical design decisions. |
 
 ## Could — lower-evidence optimization and structure (12)
 

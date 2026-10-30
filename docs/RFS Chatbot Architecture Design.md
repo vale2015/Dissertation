@@ -1,12 +1,12 @@
 # RFS chatbot architecture design
 
-Status: revised engineering and UI/UX design. #54 and #55 are Partial on a local feature branch, not released. Last revised 2026-10-25. The [improvement tracker](IMPROVEMENT_TRACKER.md) owns delivery status. The user's later top-bar, typed-only, chat-complete workflow decision supersedes the original bottom-right preview design below where noted.
+Status: deployed technical boundary with incomplete acceptance. #54 and #55 remain Partial after [PR #7](https://github.com/vale2015/Dissertation/pull/7) and later UI releases; live model inference, staff-action safety, and role-based end-to-end journeys remain open in the [tracker](IMPROVEMENT_TRACKER.md). The [PRD](PRD.md) owns the current product contract. The current launcher is below the left menu and opens a left dock; older top-bar/bottom-right proposals below are historical where noted.
 
 ## 1. Product intent and release boundary
 
-RFS lets a restaurant manager type requests for weather, nearby events, fresh and past management reports, report save/download, and current Staff Management actions. The chatbot is another interface to the same protected capabilities, not a second source of truth. Its launcher replaces the top-bar weather widget. The sidebar removes Local Events, Past Reports, and Staff Management; the Reports entry becomes view-only. Existing direct routes stay available for recovery until the replacement is fully verified.
+RFS lets a restaurant manager type requests for weather, nearby events, fresh and past management reports, report save/download, and current Staff Management actions. The chatbot is another interface to the same protected capabilities, not a second source of truth. Its launcher now sits below the left sidebar menu. Local Events and Past Reports are chat workflows; Staff Management returned to the sidebar under the approved redesign and also remains available inside chat. Reports is view-only. Existing direct routes remain as recovery paths.
 
-The first published branch had an inert **skeleton** (#55), but the user's revised acceptance requires a usable typed composer and no shortcut cards. Current local #54 work adds protected read flows and an embedded staff workspace; it does not write to Supabase directly. It is not yet a verified release.
+The first published branch had an inert **skeleton** (#55). Later releases added the typed composer, protected read flows, an embedded staff workspace, and suggested prompts that prefill without sending. These are deployed, but #54–55 are not fully verified. The chat does not write to Supabase directly.
 
 ## 2. Architecture decision
 
@@ -28,17 +28,17 @@ flowchart LR
 - **Flask:** remains authoritative for permissions, business validation, staff audits, report calculations, weather, and events. Every future tool request must pass through protected Flask endpoints or the same service boundary.
 - **Supabase:** remains behind Flask. The skeleton adds no table or migration.
 
-The user selected Cloudflare Workers AI and its documented `@cf/qwen/qwen3.8-27b` model to avoid a funded account for the prototype. The Next.js server uses the installed AI SDK OpenAI-compatible provider with `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN` stored as private Vercel Preview variables. The model only classifies ambiguous text into allowlisted intents; it never receives backend records or executes tools. Direct, explicit requests work without a model. No separate agent framework, durable workflow, WebSocket, or Redis is needed for read-only work; durable idempotency is still required before staff writes meet the final acceptance criteria. See [Cloudflare model](https://developers.cloudflare.com/workers-ai/models/qwen3.8-27b/), [compatible endpoint](https://developers.cloudflare.com/workers-ai/configuration/open-ai-compatibility/), and [pricing](https://developers.cloudflare.com/workers-ai/platform/pricing/).
+The user selected Cloudflare Workers AI and its documented `@cf/qwen/qwen3.8-27b` model to avoid a funded account for the prototype. The Next.js server uses the installed AI SDK OpenAI-compatible provider with `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN` configured privately in Vercel Preview and Production; their values and live inference have not been verified in this documentation pass. The model only classifies ambiguous text into allowlisted intents; it never receives backend records or executes tools. Direct, explicit requests work without a model. No separate agent framework, durable workflow, WebSocket, or Redis is needed for read-only work; durable idempotency is still required before staff writes meet the final acceptance criteria. See [Cloudflare model](https://developers.cloudflare.com/workers-ai/models/qwen3.8-27b/), [compatible endpoint](https://developers.cloudflare.com/workers-ai/configuration/open-ai-compatibility/), and [pricing](https://developers.cloudflare.com/workers-ai/platform/pricing/).
 
-## 3. Current local chat contract (#54–55)
+## 3. Current deployed chat contract (#54–55)
 
 - GET /api/chatbot: requires a valid manager session verified against Flask /auth/me; fetches protected weather without a model call, and returns no-store status plus a weather or unavailable message.
 - POST /api/chatbot: checks origin, manager session, bounded JSON message, optional validated report context, and a local intent parser. Ambiguous non-sensitive requests may use Cloudflare for intent classification. It calls only fixed protected Flask routes or returns a staff-workspace instruction; model output is never an authorization decision.
-- The manager-only launcher appears in the top bar. The panel has an enabled typed composer, short capability greeting, no starter cards/options, and in-chat results or secure staff forms. Escape and Close restore focus to the launcher.
+- The manager-only launcher appears below the left sidebar navigation. The panel has an enabled typed composer, short capability greeting, suggested prompts that only prefill, and in-chat results or secure staff forms. On desktop it docks beside the sidebar and moves page content; Escape and Close restore focus to the launcher.
 
 An unavailable backend must fail closed for requests. Weather failure does not disable the rest of the chat; model unavailability falls back to explicit typed commands.
 
-## 4. Future capability contract (#54)
+## 4. Capability contract and remaining gaps (#54)
 
 | Capability | Existing source | Permission | Interaction |
 | --- | --- | --- | --- |
@@ -46,7 +46,7 @@ An unavailable backend must fail closed for requests. Weather failure does not d
 | Local events | GET /api/events/?start_date=&end_date= | view_forecasts | Bound and validate dates; show provider, date, source link, and unavailable state. |
 | Fresh and saved management reports | GET /api/reports/management?selected_date=&days_ahead=, report-history endpoints, and protected downloads | view_reports | Generate, summarize exact source figures, save, list, view, and download in chat without page navigation. The Reports sidebar entry is a read-only view. |
 | Staff search/detail | GET /api/staff/ and GET /api/staff/{id} | manage_staff_accounts | Return minimum needed fields; do not send raw records or secret links to the model. |
-| Staff registration/edit/status/reset | Existing POST/PATCH staff routes | manage_staff_accounts | Require a reviewed proposal card, explicit confirmation, fresh authorization, and idempotent execution. Never pass passwords or activation/reset links through model context. |
+| Staff registration/edit/status/reset | Existing POST/PATCH staff routes | manage_staff_accounts | Current secure workspace uses review/confirmation and protected routes. Durable idempotent execution remains open; never pass passwords or activation/reset links through model context. |
 
 The first draft's clock-in, clock-out, mark-sick, schedule, and reassign-role actions are **not** current RFS Staff Management endpoints. They are excluded rather than invented. The current app supports registration, edit, status changes (suspend/deactivate/reactivate), and reset-link issuance.
 
@@ -64,20 +64,20 @@ sequenceDiagram
   M->>UI: Ask for events or a report
   UI->>N: Send bounded message
   N->>F: Verify session and permission
-  N->>L: Offer only allowed read tools
-  L-->>N: Structured tool request
+  N->>L: Classify ambiguous non-secret text only
+  L-->>N: Allowlisted intent or no match
   N->>F: Validate and call protected endpoint
   F-->>N: Authoritative result
   N-->>UI: Answer plus source data/link
 ```
 
-For a staff write, the model may only **propose** a typed action. The server creates a short-lived pending action tied to the user, target, expected before-state, and a stable idempotency key. The UI shows the exact person and before/after values. Confirmation is a second, explicit request; the server reloads the action and permissions, verifies the expected state, performs one existing Flask operation, and records the outcome. Cancel/expiry performs no write. Network retries must return the original result, not repeat the mutation.
+The current staff workspace uses secure forms and explicit review/confirmation. The model does **not** propose or execute staff writes. To satisfy the remaining reliability acceptance criterion, a future confirmed-action flow needs a short-lived server-side action tied to the user, target, expected before-state, and a stable idempotency key. The UI should show the exact person and before/after values; a second request would reload the action and permissions, verify expected state, perform one protected Flask operation, and return the original result on retry. This durable step is not implemented yet.
 
 No write action is safe with only an in-memory pending card or a browser-generated key. The confirmed-action store, uniqueness constraint, and audit trail require a separate migration and tests before staff write tools are enabled.
 
 ## 6. UI/UX design
 
-The panel is a non-modal dashboard companion launched from the top bar, with no starter cards or shortcut options. On mobile it fits within the viewport without covering the close control. Keyboard users can open it with Enter/Space, close with Escape or the labelled button, and return focus to the launcher. Buttons and inputs have visible focus states; status and errors use appropriate live regions. Reduced-motion preferences should be respected as animation is added.
+The panel is a non-modal dashboard companion launched below the left sidebar menu. On desktop it docks to the left of page content; on smaller screens it stays in normal flow. The approved mockup includes suggested prompts, but they only prefill the typed composer. Keyboard users can open it with Enter/Space, close with Escape or the labelled button, and return focus to the launcher. Buttons and inputs need visible focus states; status and errors need appropriate live regions. Reduced-motion preferences should be respected as animation is added.
 
 Future conversation design should distinguish user messages, AI interpretation, verified source results, and proposed actions. Weather should appear automatically on open, not wait for a greeting. Reports and events need timestamps and links to the original screen/source. Every proposed staff change needs a separate confirmation card; never hide confirmation inside ordinary prose. Errors should name what failed and provide a safe retry without duplicating writes.
 
@@ -96,16 +96,16 @@ The preliminary pronouns-column proposal is **deferred**. The assistant can addr
 
 ## 8. Delivery and acceptance
 
-1. **#55 revised shell:** manager-only top-bar launcher/panel, authenticated GET and typed POST, responsive and keyboard design, error handling, unit/build/access tests, automatic weather, no option blocks.
-2. **#54 read-only and reports:** bounded event lookup and fresh/saved report generation, save and download in chat. Model classifies only ambiguous requests after privacy/usage checks; source figures remain deterministic.
-3. **#54 staff reads and writes:** embedded protected staff workspace with review/confirmation, followed by durable idempotency, audit, and permission tests for registration, edit, status, and reset.
+1. **#55 deployed shell:** manager-only left-sidebar launcher/dock, authenticated GET and typed POST, automatic weather, suggested prompt prefill, responsive and keyboard design. Finish authenticated role and browser verification.
+2. **#54 deployed capabilities:** bounded event lookup and fresh/saved report generation, save and download in chat; embedded protected staff workspace. Model classifies only ambiguous requests; source figures remain deterministic. Finish live model, privacy, usage-limit, and end-to-end verification.
+3. **#54 staff-write reliability:** add durable idempotency, audit, and permission tests for registration, edit, status, and reset before claiming complete safety.
 4. **Release quality:** authenticated manager and restricted-role browser journeys, end-to-end success/failure tests, runtime monitoring, and rollback evidence. Git push, migration, and Vercel READY are separate milestones.
 
-For #55, “Done” requires the panel to open/close by mouse and keyboard on representative dashboard pages, deny signed-out and non-manager access, leave POST and business actions inert, and pass focused tests plus a clean build. A deployment alone does not satisfy this.
+For #55, “Done” requires the current active panel to open/close by mouse and keyboard on representative dashboard pages, deny signed-out and non-manager access, handle typed GET/POST journeys and errors, and pass focused tests plus a clean build. The old inert-skeleton criterion is historical; a deployment alone does not satisfy this.
 
 ## 9. Decisions still needed before #54
 
 - Resolved: chat report generation includes save, history, view, and PDF/CSV download without navigating to another page.
 - For staff registration, should chat use the current active-account/password form or a future invitation flow?
 - Which minimal staff fields may enter model context, if any, and what conversation retention is acceptable?
-- Resolved provider/model for the prototype: Cloudflare Workers AI/Qwen 3.8 on the free account. Remaining: verify the free allowance, Preview credentials, privacy/usage limits, and evaluation threshold before release.
+- Resolved provider/model for the prototype: Cloudflare Workers AI/Qwen 3.8 on the free account. Correctly named credentials are configured for Preview and Production, but their values and live inference have not been verified. The Production build was released before free-allowance, privacy/usage-limit, and evaluation checks; complete those checks before marking the chatbot Done or widening use.

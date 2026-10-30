@@ -1,5 +1,7 @@
 # Database migrations
 
+**Current status (2026-10-30):** the repository has 12 timestamped migrations. The notification migration was applied to the live project and its RLS/grants were checked, as recorded under [tracker #57](../docs/IMPROVEMENT_TRACKER.md). The dated paragraphs below preserve the migration/release chronology; statements such as “pending” or “not updated” describe that earlier point in time, not today's state. Always check the tracker and run a fresh migration list/dry-run before another release.
+
 `migrations/` is the ordered, forward-only schema history for the application.
 It reconstructs the seven original tables, the two staff-account changes, the
 demand-date primary key, server-only access control for bookings, shared
@@ -95,22 +97,22 @@ test on a disposable/local database with `supabase db reset`, review the
 advisors, then deploy the migration. Do not edit a migration already applied
 to a shared database.
 
-### In-app notifications rollout (pending)
+### In-app notifications rollout (applied; release verification remains)
 
-`20261030104654_in_app_notifications.sql` adds a private, RLS-enabled,
-server-only inbox table with explicit client-role revocations. The Flask code
-in this worktree writes a notification in the same transaction as a saved
-report, so **apply and verify this migration before deploying that backend
-code**. Verify that `anon` and `authenticated` have no table or sequence
-privileges and that `postgres` can insert/select. A CLI dry-run on 2026-10-30
-against project `szvihzuaybmqkxwkoyli` listed this migration alone; it did
-not apply it. The local CLI is not linked and Docker/PostgreSQL are unavailable
-here, so a fresh local replay still needs the CI migration-replay gate before
-the migration is applied. No live database change was made in this session.
+`20261030104654_in_app_notifications.sql` added a private, RLS-enabled,
+server-only inbox table with explicit client-role revocations. At the initial
+review, a CLI dry-run listed it as pending; it was subsequently applied to the
+live project, with RLS and grants checked as recorded in [tracker #57](../docs/IMPROVEMENT_TRACKER.md).
+The Flask report-save path writes a notification in the same transaction as the
+saved report. A real end-to-end recipient-scoping/read-state check is still
+outstanding, so the UI redesign remains Partial. A fresh local full-stack
+replay is still a separate migration-verification gate; do not infer it from
+the live applied status.
 
 ```sql
--- Read-only checks: expect 10 application tables, 1 demand-date primary key,
--- and 10 RLS-enabled tables on the current live project.
+-- Historical baseline read-only checks: expect the 10 named baseline tables,
+-- one demand-date primary key, and RLS on those named tables. Newer migrations
+-- add more application tables; this is not a total live-table count.
 SELECT count(*) AS application_tables
 FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace
 WHERE n.nspname = 'public' AND c.relkind = 'r'

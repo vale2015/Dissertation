@@ -1,20 +1,24 @@
-# Project documentation
+# RFS documentation
 
-## Improvement lists
+Start with the [Product Requirements Document](PRD.md): it is the main reference for the product, current manager experience, role boundaries, and open decisions. The [improvement tracker](IMPROVEMENT_TRACKER.md) is the **only actionable backlog** and the source of truth for work status, test evidence, Git, Supabase, and Vercel state. The [MoSCoW view](MOSCOW_PRIORITIZATION.md) ranks all 59 tracker items by value; it does not create a second backlog.
 
-- [Architecture improvement tracker](IMPROVEMENT_TRACKER.md) — canonical, numbered backlog for the original architecture review and later project improvements.
-- [MoSCoW prioritization](MOSCOW_PRIORITIZATION.md) — value-first Must/Should/Could/Won't-for-now ranking of all 57 tracker items, with rationale and delivery sequence.
-- [Modernization, AI, and low-code options](MODERNIZATION_OPTIONS.md) — optional automation and AI paths, safeguards, and trade-offs.
-- [Restaurant manager chatbot scope](MANAGER_CHATBOT_SCOPE.md) — medium-priority skeleton first (#55), then weather, events, reports, and Staff Management capabilities (#54).
-- [RFS chatbot architecture design](RFS%20Chatbot%20Architecture%20Design.md) — reviewed system boundaries, current skeleton contract, future tool safety, and UI/UX design for #55 and #54.
-- [RFS UI/UX redesign specification](RFS_UI_UX_REDESIGN.md) — user-provided requirements and the [approved dashboard reference](RFS%20Restaurant%20Analytics%20Dashboard.png).
-- [RFS UI/UX redesign implementation plan](RFS_UI_UX_REDESIGN_PLAN.md) — delivery slices, route/data mapping, design decisions, and acceptance gates for #57.
+## Current design and delivery
 
-## Implementation notes
+- [RFS UI/UX implementation plan](RFS_UI_UX_REDESIGN_PLAN.md) — current interface decisions, release history, and remaining acceptance checks for #57.
+- [RFS chatbot architecture](RFS%20Chatbot%20Architecture%20Design.md) — protected API/model boundary and remaining safety work for #54–55; read its current-status note before older proposals.
+- [Sequential AI team workflow](RFS_AI_TEAM_WORKFLOW.md) — PM ownership, role skills, handoffs, and remaining proof for #58.
+- [Forecast accuracy](FORECAST_ACCURACY.md) — real versus demo actuals and release gate for #21.
 
-- [AI-assisted saved-report explanations](AI_REPORT_EXPLANATIONS.md) — deployed but disabled pilot, privacy boundary, configuration, and release checks for improvement 52.
-- [Report history design](REPORT_HISTORY.md) — storage, access, retention, and release checks for improvement 26.
-- [Immutable forecast runs](FORECAST_RUNS.md) — run snapshots, atomic activation, and release checks for improvement 20.
-- [Forecast accuracy](FORECAST_ACCURACY.md) — served actuals, pre-service comparison rules, metrics, and release checks for improvement 21.
+## Implemented architecture and operations
 
-Add future improvement lists to this folder and link them here. Keep their actionable items synchronized with the tracker, which owns implementation status.
+- [Immutable forecast runs](FORECAST_RUNS.md) — persisted prediction snapshots and verification for #20.
+- [Saved report history](REPORT_HISTORY.md) — immutable JSON/PDF/CSV snapshots, retention, access, and verification for #26.
+- [AI-assisted report explanations](AI_REPORT_EXPLANATIONS.md) — separate disabled pilot and release gates for #52; it is not a current report-page action.
+- [Database migration guide](../supabase/README.md) — schema history and migration procedure; use the tracker for latest live status.
+
+## Product and design history
+
+- [Original RFS UI/UX specification](RFS_UI_UX_REDESIGN.md) and [approved dashboard image](RFS%20Restaurant%20Analytics%20Dashboard.png) — original visual target; later PM decisions are in the implementation plan.
+- [Modernization options](MODERNIZATION_OPTIONS.md) — options and decision history, not approval to implement them.
+
+The old chatbot product-scope brief was consolidated into the PRD; its technical boundaries remain in the chatbot architecture document. The early HTML chat mockup and a stray diagram backup were removed from this folder because neither represents the current product. Git history retains them. Do not use historical design checklists as release status; use the tracker.
