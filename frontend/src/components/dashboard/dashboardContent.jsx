@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import { useRouter } from "next/navigation";
 import SummaryCard from "@/components/dashboard/summaryCard";
 import BookingsTrend from "@/components/charts/BookingsTrend";
@@ -21,6 +21,8 @@ function DashboardContentInner({ user }) {
     getStaffFromCovers,
   } = useDashboardData();
   const firstName = user?.full_name?.trim().split(/\s+/)[0] || "there";
+  const [draftSelection, setDraftSelection] = useState(null);
+  const draftDate = draftSelection?.baseDate === selectedDate ? draftSelection.value : (selectedDate || "");
   const history = weeklyData.slice(-7);
   const forecast = forecastData.slice(0, 7).map((row) => ({
     date: row.date, label: row.day_of_week || row.date,
@@ -34,20 +36,24 @@ function DashboardContentInner({ user }) {
   const selected = selectedMode === "historical" ? selectedHistoricalRecord : selectedForecastRecord;
   const selectedCovers = selectedMode === "historical" ? selected?.total_covers : selected?.predicted_total_covers;
 
-  function changeDate(event) {
-    const date = event.target.value;
-    router.push(date ? `/dashboard?date=${encodeURIComponent(date)}` : "/dashboard");
+  function applyDate(event) {
+    event.preventDefault();
+    if (draftDate && draftDate !== selectedDate) {
+      router.push(`/dashboard?date=${encodeURIComponent(draftDate)}`);
+    } else if (!draftDate && selectedDate) {
+      router.push("/dashboard");
+    }
   }
 
   return <>
     <section className="rfs-dashboard-heading">
       <div><h1>Good morning, {firstName}! <span aria-hidden="true">👋</span></h1><p>Here’s what’s happening at your restaurant{selectedDate ? ` on ${formatDateDDMMYYYY(selectedDate)}` : " today"}.</p></div>
-      <div className="rfs-dashboard-date"><label htmlFor="dashboard-date">View a day</label><input id="dashboard-date" type="date" value={selectedDate || ""} onChange={changeDate} />{selectedDate && <button type="button" onClick={() => router.push("/dashboard")}>Show overview</button>}</div>
+      <form className="rfs-dashboard-date" onSubmit={applyDate}><label htmlFor="dashboard-date">View a day</label><div className="rfs-dashboard-date-controls"><input id="dashboard-date" type="date" value={draftDate} onChange={(event) => setDraftSelection({ baseDate: selectedDate, value: event.target.value })} /><button type="submit" disabled={!draftDate || draftDate === selectedDate}>Apply</button></div>{selectedDate && <button type="button" onClick={() => router.push("/dashboard")}>Show overview</button>}</form>
     </section>
 
     {loading && <p className="dashboard-panel rfs-dashboard-state" role="status">Loading restaurant data…</p>}
     {!loading && error && <section className="dashboard-panel rfs-dashboard-state" role="alert"><h2>Dashboard unavailable</h2><p>{error}</p><button type="button" onClick={() => window.location.reload()}>Retry</button></section>}
-    {!loading && !error && selectedDate && !selected && <section className="dashboard-panel rfs-dashboard-state"><h2>No data for this day</h2><p>There is no recorded demand or saved forecast for {formatDateDDMMYYYY(selectedDate)}.</p><button type="button" onClick={() => router.push("/dashboard")}>Show overview</button></section>}
+    {!loading && !error && selectedDate && !selected && <section className="dashboard-panel rfs-dashboard-state"><h2>No data for this day</h2><p>There is no recorded demand or current forecast for {formatDateDDMMYYYY(selectedDate)}.</p><button type="button" onClick={() => router.push("/dashboard")}>Show overview</button></section>}
 
     {!loading && !error && (!selectedDate || selected) && <>
       <section className="dashboard-summary-grid rfs-kpi-grid" aria-label="Restaurant summary">

@@ -29,23 +29,17 @@ export default function useDashboardData() {
     return normalizeDate(selectedDate);
   }, [selectedDate]);
 
-  useEffect(() => {// Load dashboard data whenever the selected date changes.
+  useEffect(() => {// Load the current overview and forecast once; date selection filters these records locally.
     const loadDashboardData = async () => {
       setLoading(true);
       setError("");
 
       try {
-        const forecastUrl = normalizedSelectedDate
-          ? `${API_BASE}/demand/forecast?selected_date=${encodeURIComponent(
-              normalizedSelectedDate
-            )}`
-          : `${API_BASE}/demand/forecast`;
-        
         //Load all dashboard-related API data at the same time.
         const [dashboardRes, forecastRes, weeklyRes, demandRes] =
           await Promise.all([
             fetch(`${API_BASE}/dashboard/`),
-            fetch(forecastUrl),
+            fetch(`${API_BASE}/demand/forecast`),
             fetch(`${API_BASE}/demand/weekly`),
             fetch(`${API_BASE}/demand/`),
           ]);
@@ -92,7 +86,7 @@ export default function useDashboardData() {
     };
 
     loadDashboardData();
-  }, [normalizedSelectedDate]);
+  }, []);
 
   const summary = dashboardData?.summary || {};
   const latestRecord = dashboardData?.latest_record || {};

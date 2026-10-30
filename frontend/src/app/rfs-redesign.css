@@ -84,10 +84,12 @@
 .rfs-dashboard-heading > div:first-child { max-width: calc(100% - 255px); }
 .rfs-dashboard-heading h1 { margin: 0 0 5px; color: #101828; font-size: clamp(26px, 2.4vw, 36px); letter-spacing: -.035em; }
 .rfs-dashboard-heading p { margin: 0; color: #505a69; font-size: 16px; }
-.rfs-dashboard-date { display: grid; gap: 3px; min-width: 186px; margin-top: 44px; padding: 9px 14px; border: 1px solid #e1e4e8; border-radius: 10px; background: #fff; box-shadow: 0 4px 15px rgba(16,24,40,.04); }
+.rfs-dashboard-date { display: grid; gap: 3px; min-width: 220px; margin-top: 44px; padding: 9px 14px; border: 1px solid #e1e4e8; border-radius: 10px; background: #fff; box-shadow: 0 4px 15px rgba(16,24,40,.04); }
 .rfs-dashboard-date label { color: #586171; font-size: 11px; font-weight: 700; }
-.rfs-dashboard-date input { width: 100%; border: 0; background: transparent; color: #182235; font: inherit; font-size: 14px; }
+.rfs-dashboard-date-controls { display: flex; align-items: center; gap: 8px; }
+.rfs-dashboard-date input { min-width: 0; width: 100%; border: 0; background: transparent; color: #182235; font: inherit; font-size: 14px; }
 .rfs-dashboard-date button,.rfs-dashboard-state button { width: fit-content; border: 0; background: transparent; color: #a7141c; font: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
+.rfs-dashboard-date button:disabled { color: #98a2b3; cursor: not-allowed; }
 .rfs-kpi-grid { margin-bottom: 14px; }
 .rfs-kpi-grid .summary-card { min-height: 140px; padding: 20px; }
 .rfs-kpi-grid .summary-card-value { margin: 3px 0 7px; font-size: clamp(23px, 2vw, 31px); }
