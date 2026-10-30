@@ -2,6 +2,7 @@
 .dashboard-app { background: #fafbfc; color: #101828; }
 .dashboard-shell { display: block; min-height: 100vh; background: #fafbfc; }
 .dashboard-main-area { position: relative; display: flex; flex-direction: column; margin-left: 240px; min-height: 100vh; }
+.dashboard-app:has(.manager-chat-panel) .dashboard-main-area { margin-left: 640px; }
 .dashboard-page { padding: 18px 20px 56px; background: #fafbfc; }
 .dashboard-container { max-width: 1440px; margin: 0 auto; gap: 18px; }
 .dashboard-hero { margin-bottom: 10px; }
@@ -104,19 +105,19 @@
 .rfs-dashboard-state h2 { margin: 0 0 6px; font-size: 18px; }
 .rfs-dashboard-state p { color: #586171; }
 
-.manager-chat { position: static; }
+.sidebar .manager-chat { position: relative; z-index: auto; padding: 6px 10px 18px; }
 .manager-chat-launcher {
-  position: fixed; right: 24px; bottom: 20px; z-index: 1300;
-  display: flex; align-items: center; gap: 7px; min-height: 61px;
-  padding: 4px 17px 4px 4px; border: 2px solid #fff;
-  border-radius: 999px; background: #ad1821;
-  box-shadow: 0 8px 26px rgba(92, 9, 15, .25); font-size: 16px;
+  position: static; display: flex; align-items: center; justify-content: center;
+  gap: 8px; width: 100%; min-height: 52px; padding: 5px 12px;
+  border: 1px solid #a7141c; border-radius: 10px; background: #ad1821;
+  box-shadow: 0 5px 14px rgba(92, 9, 15, .14); font-size: 14px;
 }
-.manager-chat-launcher img { width: 49px; height: 49px; object-fit: contain; }
+.manager-chat-launcher img { width: 39px; height: 39px; object-fit: contain; }
 .manager-chat-panel {
-  top: auto; right: 18px; bottom: 92px; width: min(410px, calc(100vw - 28px));
-  height: min(690px, calc(100dvh - 108px)); border: 1px solid #eee;
-  border-radius: 18px; box-shadow: 0 20px 55px rgba(16,24,40,.22);
+  position: fixed; top: 0; right: auto; bottom: 0; left: 240px;
+  width: 400px; height: 100dvh; max-height: none;
+  border: 0; border-right: 1px solid #e9ebef; border-radius: 0;
+  box-shadow: 3px 0 16px rgba(16,24,40,.07);
 }
 .manager-chat-header { align-items: center; min-height: 87px; padding: 11px 16px; border: 0; background: linear-gradient(100deg, #b21720, #96151e); color: #fff; }
 .manager-chat-brand { display: flex; align-items: center; gap: 10px; }
@@ -147,7 +148,11 @@
   .dashboard-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .dashboard-bottom-grid { grid-template-columns: 1fr; }
 }
-@media (max-width: 700px) {
+@media (min-width: 1051px) and (max-width: 1300px) {
+  .dashboard-app:has(.manager-chat-panel) .dashboard-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dashboard-app:has(.manager-chat-panel) .rfs-dashboard-charts { grid-template-columns: 1fr; }
+}
+@media (max-width: 1050px) {
   .rfs-dashboard-heading { flex-direction: column; }
   .rfs-dashboard-heading > div:first-child { max-width: 100%; }
   .rfs-dashboard-date { width: 100%; margin-top: 0; }
@@ -164,10 +169,12 @@
   .sidebar-icon { width: 17px; height: 17px; }
   .sidebar-calendar { display: none; }
   .dashboard-main-area { margin-left: 0; }
+  .dashboard-app:has(.manager-chat-panel) .dashboard-main-area { margin-left: 0; }
   .dashboard-page { padding: 12px 14px 80px; }
   .topbar-user-name { max-width: 130px; }
-  .manager-chat-launcher { right: 12px; bottom: 10px; }
-  .manager-chat-panel { inset: 6px; width: auto; height: auto; max-height: calc(100dvh - 12px); }
+  .sidebar .manager-chat { padding: 0 10px 12px; }
+  .manager-chat-launcher { width: min(100%, 220px); }
+  .manager-chat-panel { position: static; width: 100%; height: min(600px, 70dvh); max-height: none; margin-top: 10px; border: 1px solid #e9ebef; border-radius: 12px; }
 }
 @media (max-width: 480px) {
   .dashboard-summary-grid { grid-template-columns: 1fr; }
