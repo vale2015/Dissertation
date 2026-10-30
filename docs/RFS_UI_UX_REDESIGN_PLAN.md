@@ -1,6 +1,6 @@
 # RFS UI/UX redesign — implementation plan
 
-**Backlog item:** [#57 in the improvement tracker](IMPROVEMENT_TRACKER.md) · **Priority:** Must (user-directed product redesign) · **Status:** Partial; first release live, latest visual changes local
+**Backlog item:** [#57 in the improvement tracker](IMPROVEMENT_TRACKER.md) · **Priority:** Must (user-directed product redesign) · **Status:** Partial; favicon/chart update released, end-to-end visual checks open
 **Sources:** [Redesign specification](RFS_UI_UX_REDESIGN.md) and [approved dashboard PNG](RFS%20Restaurant%20Analytics%20Dashboard.png) (1536 × 1024 reference viewport)
 **Decisions recorded 2026-10-30:** Follow the new mockup for the sidebar and assistant, including Staff Management and suggested chat prompts. Reproduce the pictured mascot as a standalone production asset; build a real notification feature; keep Reports view-only with generation in chat; and put Staffing Rules and personal account settings in Settings. The underlying access rules still apply.
 
@@ -84,3 +84,5 @@ The third local slice replaces the dashboard's old stacked summaries with the ap
 The first redesign release was subsequently pushed as `431c8f6`, merged through PR #8, and deployed to both Vercel production projects. The notification migration was applied and its RLS/grants inspected. This does not complete the visual and end-to-end acceptance checks.
 
 The latest local visual update responds to feedback that the charts looked unprofessional and that the favicon should use the mascot. A compact transparent head-and-hat icon now supplies Next.js `/icon.png`, replacing the former favicon. Dashboard charts share a fixed-proportion SVG design with readable axes, gridlines, discrete date labels, distinct observed/forecast/staffing treatments, and expandable values tables. The fourth chart now shows cumulative predicted demand rather than duplicating the daily reservation forecast. Lint, 18 unit, 16 component, and 7 route tests pass; a webpack production build generates 25 routes including `/icon.png`. This update has not yet been committed, pushed, or deployed, and still needs visual review at desktop and mobile sizes.
+
+That visual update was subsequently committed as `82a3c54` and pushed directly to `main` after both Vercel previews reached READY. The GitHub PR connector could not create a PR (403), so no PR was used for this increment. Both production projects reached READY on the exact commit. A live request to `/icon.png` returned 200 and the page metadata references it; the Vercel one-hour runtime-error scans were clear. The chart appearance, responsive layout, and signed-in role journeys still require browser review before #57 can be Done.
