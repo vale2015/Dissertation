@@ -1,0 +1,14 @@
+.git/
+.env
+.env.*
+frontend/
+docs/
+supabase/
+node_modules/
+venv/
+backend/venv/
+backend/.env
+backend/.env.*
+backend/tests/
+**/__pycache__/
+**/*.py[cod]

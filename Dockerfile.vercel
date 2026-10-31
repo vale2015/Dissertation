@@ -5,12 +5,13 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
-# Install the large scientific stack in the image, never in a request's /tmp.
-COPY requirements.txt ./
+# The backend Vercel project builds from the repository root. Install the
+# scientific stack into the image, not a function's limited /tmp at startup.
+COPY backend/requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY app ./app
-COPY main.py ./main.py
+COPY backend/app ./app
+COPY backend/main.py ./main.py
 
 EXPOSE 80
 CMD ["sh", "-c", "exec gunicorn --bind 0.0.0.0:${PORT:-80} --workers 1 --threads 4 --access-logfile - --error-logfile - main:app"]
