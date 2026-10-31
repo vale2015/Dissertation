@@ -1,6 +1,6 @@
 # MoSCoW prioritization of architecture improvements
 
-This is a **value-first** product-priority view of all 59 items in the canonical [improvement tracker](IMPROVEMENT_TRACKER.md), not a second backlog. It reflects the [PRD](PRD.md): a single-restaurant dissertation prototype focused on helping managers prepare services, reuse reports, and judge whether forecasts are accurate. Last reviewed: 2026-10-30.
+This is a **value-first** product-priority view of all 59 items in the canonical [improvement tracker](IMPROVEMENT_TRACKER.md), not a second backlog. It reflects the [PRD](PRD.md): a single-restaurant dissertation prototype focused on helping managers prepare services, reuse reports, and judge whether forecasts are accurate. Last reviewed: 2026-10-31.
 
 **Must** = direct, high-value product outcomes or the minimum safeguards and tests required to deliver them safely. **Should** = meaningful usability, scalability, or operational benefit that can follow the next product increment. **Could** = lower-evidence optimization or structural work. **Won't for now** = explicitly deferred or outside current single-restaurant scope; reconsider if the user or product direction changes.
 
@@ -70,7 +70,7 @@ The latest user-directed initiatives are **#57 (RFS UI/UX redesign), #58 (sequen
 | 54 | Add a restaurant manager chatbot for existing app actions | Medium priority by user direction; useful manager workflows, after the skeleton and with account-action safeguards. |
 | 55 | Design and build the chatbot skeleton | First chatbot implementation milestone; shared entry point, authentication, accessibility, and disabled tool boundary before features. |
 | 58 | Establish the PM-led sequential AI delivery team | Improve delivery quality and role clarity for future changes without slowing every small task; the first handoff must prove the workflow. |
-| 59 | Audit and refresh project documentation | Give the PM and future specialists a reliable current architecture and navigation guide without losing historical design decisions. |
+| 59 | Audit and refresh project documentation | Give the PM and future specialists four reliable current-state guides—PRD, agents, visual design, and architecture—without losing the canonical tracker or historical release evidence. |
 
 ## Could — lower-evidence optimization and structure (12)
 
