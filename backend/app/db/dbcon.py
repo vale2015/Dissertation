@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.engine import URL, make_url
+from sqlalchemy.exc import ArgumentError
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import NullPool
 
@@ -82,7 +83,14 @@ def create_database_url():
             1,
         )
 
-    database_url = make_url(raw_database_url)
+    try:
+        database_url = make_url(raw_database_url)
+    except (ArgumentError, ValueError):
+        # Parser errors can contain part of the URL, including its password.
+        raise RuntimeError(
+            "Database URL configuration is invalid. Check its host, port, "
+            "and password encoding."
+        ) from None
 
     # Remove Vercel/Supabase metadata unsupported by psycopg2.
     query_parameters = dict(database_url.query)
