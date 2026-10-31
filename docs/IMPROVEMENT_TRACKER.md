@@ -15,10 +15,10 @@ Status key: **Done** = acceptance criteria verified; **Verify release** = implem
 ## Current position
 
 - **Done:** 1–2, 20, 25–26.
-- **Partial:** 3–4, 52, 54–55, 57–59.
+- **Partial:** 3–4, 39, 52, 54–55, 57–59.
 - **Verify release:** 21, 29, 56.
 - **Deferred:** 5.
-- **Open:** 6–19, 22–24, 27–28, 30–51, and 53 (42 items).
+- **Open:** 6–19, 22–24, 27–28, 30–38, 40–51, and 53 (41 items).
 - **Selected direction:** #57 remains the product UI/UX redesign; #59 now has the PM-requested four current-state documentation guides awaiting acceptance. #58's first real feature handoff remains unverified. #56 remains a release gate on a protected preview; #21 and #29 still need live verification. The chatbot (#54–55) is deployed but Partial, and #52 remains a disabled Partial pilot.
 
 ## MoSCoW priority
@@ -92,7 +92,7 @@ Priority is separate from implementation status. This provisional, **value-first
 - [ ] **36. Add frontend component tests — Open.** Test key forms, tables, auth states, and accessibility behaviour.
 - [ ] **37. Add end-to-end tests — Open.** Cover login, booking, forecast, report download, and access-control journeys in a browser.
 - [ ] **38. Add API contract tests — Open.** Verify Next.js/Flask request and response compatibility in CI.
-- [ ] **39. Repair dependency reproducibility — Open.** Pin/install backend and frontend dependencies consistently and verify clean-environment setup.
+- [ ] **39. Repair dependency reproducibility — Partial.** Production login is intermittently unavailable because the Vercel Flask function attempts `uv sync` at cold start and SciPy wheel extraction fails with `No space left on device (os error 28)` before Flask starts (observed in backend runtime logs on 2026-10-31). The selected recovery packages pinned Python dependencies in `backend/Dockerfile.vercel` at build time, uses a pinned Gunicorn WSGI server, and excludes local secrets, tests, and tracked bytecode from the image context. On 2026-10-31, 213 local backend tests passed with a nonconnecting test database URL; independent QA confirmed source-level health (HTTP 200), 12 auth/authorization tests, required model-artifact inclusion, and clean diff whitespace. Docker is unavailable locally, so no container build, preview cold start, or real login has passed yet. **Acceptance for this recovery:** a backend preview builds successfully; cold-start health and an authenticated login succeed through the matching frontend; production is released with PM approval and the same checks pass after release without runtime dependency installation. The broader #39 acceptance still includes frontend dependency reproducibility and clean-environment verification. Branch publication and Vercel preview verification are pending; Supabase is unchanged.
 - [ ] **40. Remove the multiple-lockfile ambiguity — Open.** Select one package-root strategy and remove build-root warnings without discarding needed dependency locks.
 
 ## Phase 8 — Deployment and operations
