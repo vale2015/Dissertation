@@ -85,7 +85,7 @@
 .rfs-dashboard-heading > div:first-child { max-width: calc(100% - 255px); }
 .rfs-dashboard-heading h1 { margin: 0 0 5px; color: #101828; font-size: clamp(26px, 2.4vw, 36px); letter-spacing: -.035em; }
 .rfs-dashboard-heading p { margin: 0; color: #505a69; font-size: 16px; }
-.rfs-dashboard-date-bar { display: inline-flex; align-items: center; min-height: 62px; max-width: 100%; margin: 16px 0 20px; padding: 10px 16px; border: 1px solid #e7e9ed; border-radius: 12px; background: #fff; box-shadow: 0 3px 14px rgba(16,24,40,.035); }
+.rfs-dashboard-date-bar { margin: 16px 0 20px; }
 .rfs-dashboard-date-context { display: grid; gap: 2px; }
 .rfs-dashboard-date-eyebrow { color: #667085; font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
 .rfs-dashboard-date-context strong { color: #202938; font-size: 14px; }
@@ -185,7 +185,6 @@
   .manager-chat-panel { position: static; width: 100%; height: min(600px, 70dvh); max-height: none; margin-top: 10px; border: 1px solid #e9ebef; border-radius: 12px; }
 }
 @media (max-width: 480px) {
-  .rfs-dashboard-date-bar { min-height: 58px; }
   .dashboard-summary-grid { grid-template-columns: 1fr; }
   .topbar-user-name { max-width: 100px; }
 }
