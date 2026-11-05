@@ -4,11 +4,13 @@
 |---|---|
 | Product | RFS — Restaurant Forecasting System |
 | Document status | Living product baseline; implementation status and release evidence live in the [improvement tracker](IMPROVEMENT_TRACKER.md) |
-| Version | 1.1 |
-| Date | 30 October 2026 |
+| Version | 1.2 |
+| Date | 31 October 2026 |
 | Product owner | Valerio Gerardi |
 | Primary users | Independent restaurant managers, supervisors, and staff |
 | Platforms | Responsive web application; separate Next.js and Flask services |
+
+This is the **primary product reference** for user needs, current behaviour, requirements, and open decisions. The companion [agent guide](AGENT.md) explains the in-app assistant and PM-led delivery team; the [design system](DESIGN_SYSTEM.md) describes the implemented visual language; the [architecture guide](ARCHITECTURE.md) maps the technical components and data flows. The [improvement tracker](IMPROVEMENT_TRACKER.md), not this PRD, is authoritative for acceptance, tests, Git, database, and deployment status.
 
 ## 1. Executive summary
 

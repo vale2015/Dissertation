@@ -1,5 +1,6 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
+import userEvent from "@testing-library/user-event";
 import { afterEach, expect, test, vi } from "vitest";
 import DashboardContent from "./dashboardContent";
 import { getISODateInTimeZone } from "@/utils/DateFormat";
@@ -37,35 +38,41 @@ test("dashboard ends with charts and omits the redundant cards below them", () =
   expect(screen.queryByRole("navigation", { name: "Quick actions" })).not.toBeInTheDocument();
 });
 
-test("today is preselected and choosing another day waits for Apply", () => {
+test("today is shown in the calendar below the greeting and choosing a day opens it", () => {
   render(<DashboardContent user={{ full_name: "Valerio Gerardi" }} today="2026-10-30" />);
-  const input = screen.getByLabelText("View a day");
-  const apply = screen.getByRole("button", { name: "Apply" });
-  expect(input).toHaveValue("2026-10-30");
-  expect(apply).toBeEnabled();
-
-  fireEvent.change(input, { target: { value: "2026-11-30" } });
-  expect(input).toHaveValue("2026-11-30");
+  const dateButton = screen.getByRole("button", { name: /View a day/ });
+  expect(dateButton).toHaveTextContent("Fri, 30 Oct 2026");
+  expect(dateButton.closest(".rfs-dashboard-date-bar")).toHaveTextContent("Overview combines recent bookings and the next forecast days.");
   expect(push).not.toHaveBeenCalled();
 
-  fireEvent.click(apply);
-  expect(push).toHaveBeenCalledWith("/dashboard?date=2026-11-30");
+  fireEvent.click(dateButton);
+  const day = document.querySelector(".rfs-dashboard-calendar .react-datepicker__day--029:not(.react-datepicker__day--outside-month)");
+  expect(day).not.toBeNull();
+  fireEvent.click(day);
+  expect(push).toHaveBeenCalledWith("/dashboard?date=2026-10-29");
 });
 
 test("an applied URL date takes precedence and returning to overview restores today", () => {
   selectedDateState.value = "2026-11-30";
   const props = { user: { full_name: "Valerio Gerardi" }, today: "2026-10-30" };
   const view = render(<DashboardContent {...props} />);
-  const input = screen.getByLabelText("View a day");
-  expect(input).toHaveValue("2026-11-30");
-  expect(screen.getByRole("button", { name: "Apply" })).toBeDisabled();
+  const dateButton = screen.getByRole("button", { name: /View a day/ });
+  expect(dateButton).toHaveTextContent("Mon, 30 Nov 2026");
 
-  fireEvent.change(input, { target: { value: "2026-12-01" } });
   fireEvent.click(screen.getAllByRole("button", { name: "Show overview" })[0]);
   expect(push).toHaveBeenCalledWith("/dashboard");
   selectedDateState.value = "";
   view.rerender(<DashboardContent {...props} />);
-  expect(screen.getByLabelText("View a day")).toHaveValue("2026-10-30");
+  expect(screen.getByRole("button", { name: /View a day/ })).toHaveTextContent("Fri, 30 Oct 2026");
+});
+
+test("the calendar can be opened from its date button with the keyboard", async () => {
+  const user = userEvent.setup();
+  render(<DashboardContent user={{ full_name: "Valerio Gerardi" }} today="2026-10-30" />);
+  const dateButton = screen.getByRole("button", { name: /View a day/ });
+  dateButton.focus();
+  await user.keyboard("{Enter}");
+  expect(document.querySelector(".rfs-dashboard-calendar")).not.toBeNull();
 });
 
 test("today uses the London calendar day around the UTC boundary", () => {
