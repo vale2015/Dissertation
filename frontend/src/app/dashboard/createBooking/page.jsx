@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import AddNewBooking from "@/components/dashboard/addNewBooking";
 import { API_BASE } from "@/lib/api";
 
@@ -10,24 +10,31 @@ import { API_BASE } from "@/lib/api";
 function isMonday(dateString) {
   if (!dateString) return false;
 
-  const selectedDate = new Date(dateString);
+  const selectedDate = new Date(`${dateString}T00:00:00`);
   return selectedDate.getDay() === 1;
 }
 
+function validBookingDate(value) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value || "")) return "";
+  const [year, month, day] = value.split("-").map(Number);
+  const date = new Date(year, month - 1, day);
+  return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day ? value : "";
+}
 
 // Page used to create a new restaurant booking.
-export default function CreateBookingPage() {
+function CreateBookingContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   // Store all booking form values.
-  const [formData, setFormData] = useState({
-    booking_date: "",
+  const [formData, setFormData] = useState(() => ({
+    booking_date: validBookingDate(searchParams.get("date")),
     booking_time: "",
     party_size: "",
-    booking_type: "advance",
+    booking_type: "",
     customer_name: "",
     notes: "",
-  });
+  }));
 
   // Store form status messages and loading state.
   const [loading, setLoading] = useState(false);
@@ -47,9 +54,9 @@ export default function CreateBookingPage() {
     setSuccessMessage("");
   };
 
-  // Return the user to the dashboard when cancelling.
+  // Return the user to the bookings overview when cancelling.
   const handleCancel = () => {
-    router.push("/dashboard");
+    router.push("/dashboard/bookings");
   };
 
   // Validate the form and send the booking to the backend.
@@ -72,9 +79,14 @@ export default function CreateBookingPage() {
       !formData.booking_date ||
       !formData.booking_time ||
       !formData.party_size ||
-      !formData.customer_name
+      !formData.booking_type
     ) {
       setErrorMessage("Please complete all required fields.");
+      return;
+    }
+
+    if (!Number.isInteger(Number(formData.party_size)) || Number(formData.party_size) <= 0) {
+      setErrorMessage("Party size must be a positive whole number.");
       return;
     }
 
@@ -103,16 +115,14 @@ export default function CreateBookingPage() {
         throw new Error(data?.error || "Failed to add booking.");
       }
 
-      setSuccessMessage(
-        "Booking added successfully and synced to forecast data."
-      );
+      setSuccessMessage("Booking saved and daily demand totals updated.");
 
       // Reset the form after a successful booking.
       setFormData({
         booking_date: "",
         booking_time: "",
         party_size: "",
-        booking_type: "advance",
+        booking_type: "",
         customer_name: "",
         notes: "",
       });
@@ -123,13 +133,7 @@ export default function CreateBookingPage() {
     }
   };
 
-  return (
-    <Suspense
-      fallback={
-        <p className="dashboard-text">Loading booking form...</p>
-      }
-    >
-      <AddNewBooking
+  return <AddNewBooking
         formData={formData}
         loading={loading}
         successMessage={successMessage}
@@ -137,7 +141,9 @@ export default function CreateBookingPage() {
         onChange={handleChange}
         onSubmit={handleSubmit}
         onCancel={handleCancel}
-      />
-    </Suspense>
-  );
+      />;
+}
+
+export default function CreateBookingPage() {
+  return <Suspense fallback={<p className="dashboard-text">Loading booking form...</p>}><CreateBookingContent /></Suspense>;
 }
