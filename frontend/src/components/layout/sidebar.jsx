@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { forwardRef, Suspense, useEffect, useMemo, useState } from "react";
 import {
   usePathname,
   useRouter,
@@ -63,12 +63,27 @@ function formatDateToYMD(date) {
  * Converts YYYY-MM-DD into a Date object for react-datepicker.
  */
 function parseDateString(value) {
-  if (!value) return null;
-
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value || "")) return null;
   const [year, month, day] = value.split("-").map(Number);
-
-  return new Date(year, month - 1, day);
+  const date = new Date(year, month - 1, day);
+  return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day ? date : null;
 }
+
+const DashboardDateTrigger = forwardRef(function DashboardDateTrigger({ value, onClick, onKeyDown, onBlur, onFocus, id }, ref) {
+  function handleKeyDown(event) {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      onClick?.(event);
+    } else {
+      onKeyDown?.(event);
+    }
+  }
+
+  return <button id={id} ref={ref} type="button" className="rfs-dashboard-date-trigger" aria-label={`View a day, currently ${value}`} onClick={onClick} onKeyDown={handleKeyDown} onBlur={onBlur} onFocus={onFocus}>
+    <span>{value}</span>
+    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" strokeWidth="1.8"/><path d="M7 3v4M17 3v4M3 10h18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
+  </button>;
+});
 
 
 /**
@@ -91,7 +106,7 @@ function SidebarFallback() {
  * Contains the interactive Sidebar logic that depends on
  * useSearchParams().
  */
-function SidebarContent() {
+function SidebarContent({ today }) {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -117,6 +132,13 @@ function SidebarContent() {
     const urlDate = searchParams.get("date") || "";
     setSelectedDate(urlDate);
   }, [searchParams]);
+
+  useEffect(() => {
+    const urlDate = searchParams.get("date");
+    if (isDashboardPage && urlDate && !parseDateString(urlDate)) {
+      router.replace("/dashboard");
+    }
+  }, [isDashboardPage, router, searchParams]);
 
   /**
    * Load the latest historical date from the Flask backend.
@@ -280,50 +302,6 @@ function SidebarContent() {
             <svg className="sidebar-brand-hat" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="2.6" aria-hidden="true"><path d="M11 30V18a8 8 0 0 1 5-14 8 8 0 0 1 15 1 8 8 0 0 1 6 14v11M11 30h26v8H11z" /></svg>
             <strong>RFS</strong><span>Restaurant<br />Forecasting<br />System</span>
           </Link>
-          {!isDashboardPage && <div className="sidebar-calendar">
-            {isAccountPage || isReportHistoryPage ? (
-              <><label className="sidebar-calendar-label">{isReportHistoryPage ? "Report archive" : "Account"}</label><div className="sidebar-range-box"><span className="sidebar-range-value">No forecast date required</span></div></>
-            ) : isLocalEventsPage ? (
-              <>
-                <label className="sidebar-calendar-label">
-                  Event search
-                </label>
-                <div className="sidebar-range-box">
-                  <span className="sidebar-range-value">
-                    Choose dates on the page
-                  </span>
-                </div>
-                <p className="sidebar-calendar-note">
-                  Search nearby events independently of forecasts
-                </p>
-              </>
-            ) : (
-              <>
-                <label className="sidebar-calendar-label">
-                  Select day
-                </label>
-
-                <DatePicker
-                  selected={parseDateString(
-                    selectedDate || latestAvailableDate
-                  )}
-                  onChange={handleDateChange}
-                  dateFormat="dd/MM/yyyy"
-                  className="sidebar-date-input"
-                  calendarClassName="custom-datepicker"
-                  dayClassName={() =>
-                    "custom-datepicker-day"
-                  }
-                />
-
-                <p className="sidebar-calendar-note">
-                  Defaulting to the latest available date in
-                  your dataset
-                </p>
-              </>
-            )}
-          </div>}
-
           <nav className="sidebar-nav">
             {menuItems.filter(item => hasPermission(user, item.permission)).map((item) => {
               const isActive = pathname === item.href || (item.href === "/dashboard/reports" && isReportHistoryPage) || (item.href === "/dashboard/settings" && ["/dashboard/profile", "/dashboard/staffing-rules"].includes(pathname));
@@ -341,6 +319,48 @@ function SidebarContent() {
               );
             })}
           </nav>
+          <div className={`sidebar-calendar ${isDashboardPage ? "rfs-sidebar-dashboard-calendar" : ""}`}>
+            {isDashboardPage ? (
+              <>
+                <label className="sidebar-calendar-label" htmlFor="dashboard-sidebar-date">View a day</label>
+                <DatePicker
+                  id="dashboard-sidebar-date"
+                  selected={parseDateString(searchParams.get("date")) || parseDateString(today)}
+                  onChange={handleDateChange}
+                  dateFormat="EEE, d MMM yyyy"
+                  customInput={<DashboardDateTrigger />}
+                  calendarClassName="custom-datepicker rfs-dashboard-calendar"
+                  popperClassName="rfs-dashboard-calendar-popper"
+                  popperPlacement="bottom-start"
+                  portalId="rfs-sidebar-calendar-portal"
+                  showPopperArrow={false}
+                />
+                {searchParams.get("date") && <button className="rfs-dashboard-overview-link" type="button" onClick={() => router.push("/dashboard")}>Show overview</button>}
+              </>
+            ) : isAccountPage || isReportHistoryPage ? (
+              <><label className="sidebar-calendar-label">{isReportHistoryPage ? "Report archive" : "Account"}</label><div className="sidebar-range-box"><span className="sidebar-range-value">No forecast date required</span></div></>
+            ) : isLocalEventsPage ? (
+              <>
+                <label className="sidebar-calendar-label">Event search</label>
+                <div className="sidebar-range-box"><span className="sidebar-range-value">Choose dates on the page</span></div>
+                <p className="sidebar-calendar-note">Search nearby events independently of forecasts</p>
+              </>
+            ) : (
+              <>
+                <label className="sidebar-calendar-label">Select day</label>
+                <DatePicker
+                  selected={parseDateString(selectedDate || latestAvailableDate)}
+                  onChange={handleDateChange}
+                  dateFormat="dd/MM/yyyy"
+                  className="sidebar-date-input"
+                  calendarClassName="custom-datepicker"
+                  portalId="rfs-sidebar-calendar-portal"
+                  dayClassName={() => "custom-datepicker-day"}
+                />
+                <p className="sidebar-calendar-note">Defaulting to the latest available date in your dataset</p>
+              </>
+            )}
+          </div>
         </div>
         <ManagerChat />
       </aside>
@@ -355,10 +375,10 @@ function SidebarContent() {
  * The Suspense boundary prevents Next.js prerendering errors
  * caused by useSearchParams().
  */
-export default function Sidebar() {
+export default function Sidebar({ today }) {
   return (
     <Suspense fallback={<SidebarFallback />}>
-      <SidebarContent />
+      <SidebarContent today={today} />
     </Suspense>
   );
 }

@@ -1,47 +1,18 @@
 "use client";
 
-import { forwardRef, Suspense } from "react";
+import { Suspense } from "react";
 import { useRouter } from "next/navigation";
-import DatePicker from "react-datepicker";
 import SummaryCard from "@/components/dashboard/summaryCard";
 import BookingsTrend from "@/components/charts/BookingsTrend";
 import StaffingOverviewChart from "@/components/charts/StaffingOverviewChart";
 import { formatDateDDMMYYYY } from "@/utils/DateFormat";
 import useDashboardData from "@/hooks/useDashboardData";
-import "react-datepicker/dist/react-datepicker.css";
 
 const currency = (value) => Number.isFinite(Number(value))
   ? new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(Number(value))
   : "Unavailable";
 
-function parseCalendarDate(value) {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(value || "")) return null;
-  const [year, month, day] = value.split("-").map(Number);
-  const date = new Date(year, month - 1, day);
-  return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day ? date : null;
-}
-
-function formatCalendarDate(date) {
-  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
-}
-
-const DashboardDateTrigger = forwardRef(function DashboardDateTrigger({ value, onClick, onKeyDown, onBlur, onFocus, id }, ref) {
-  function handleKeyDown(event) {
-    if (event.key === "Enter" || event.key === " ") {
-      event.preventDefault();
-      onClick?.(event);
-    } else {
-      onKeyDown?.(event);
-    }
-  }
-
-  return <button id={id} ref={ref} type="button" className="rfs-dashboard-date-trigger" aria-label={`View a day, currently ${value}`} onClick={onClick} onKeyDown={handleKeyDown} onBlur={onBlur} onFocus={onFocus}>
-    <span>{value}</span>
-    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" strokeWidth="1.8"/><path d="M7 3v4M17 3v4M3 10h18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
-  </button>;
-});
-
-function DashboardContentInner({ user, today }) {
+function DashboardContentInner({ user }) {
   const router = useRouter();
   const {
     loading, error, selectedDate, selectedMode, selectedHistoricalRecord,
@@ -50,7 +21,6 @@ function DashboardContentInner({ user, today }) {
     getStaffFromCovers,
   } = useDashboardData();
   const firstName = user?.full_name?.trim().split(/\s+/)[0] || "there";
-  const calendarDate = parseCalendarDate(selectedDate) || parseCalendarDate(today);
   const history = weeklyData.slice(-7);
   const forecast = forecastData.slice(0, 7).map((row) => ({
     date: row.date, label: row.day_of_week || row.date,
@@ -64,34 +34,16 @@ function DashboardContentInner({ user, today }) {
   const selected = selectedMode === "historical" ? selectedHistoricalRecord : selectedForecastRecord;
   const selectedCovers = selectedMode === "historical" ? selected?.total_covers : selected?.predicted_total_covers;
 
-  function chooseDate(date) {
-    if (!date) return;
-    const dateString = formatCalendarDate(date);
-    if (dateString !== selectedDate) router.push(`/dashboard?date=${encodeURIComponent(dateString)}`);
-  }
-
-  function showOverview() {
-    router.push("/dashboard");
-  }
-
   return <>
     <section className="rfs-dashboard-heading">
       <div><h1>Good morning, {firstName}! <span aria-hidden="true">👋</span></h1><p>{selectedDate ? `Here’s your restaurant data for ${formatDateDDMMYYYY(selectedDate)}.` : "Here’s your restaurant overview."}</p></div>
     </section>
 
-    <section className="rfs-dashboard-date-bar" aria-label="Dashboard date selection">
+    <section className="rfs-dashboard-date-bar" aria-label="Dashboard view">
       <div className="rfs-dashboard-date-context">
         <span className="rfs-dashboard-date-eyebrow">Dashboard view</span>
         <strong>{selectedDate ? "Selected day" : "Overview"}</strong>
       </div>
-      <div className="rfs-dashboard-date-picker">
-        <label htmlFor="dashboard-date">View a day</label>
-        <div className="rfs-dashboard-date-field">
-          <DatePicker id="dashboard-date" selected={calendarDate} onChange={chooseDate} dateFormat="EEE, d MMM yyyy" customInput={<DashboardDateTrigger />} calendarClassName="custom-datepicker rfs-dashboard-calendar" popperPlacement="bottom-start" showPopperArrow={false} />
-        </div>
-      </div>
-      <p className="rfs-dashboard-date-note">{selectedDate ? "Showing data for this date." : "Overview combines recent bookings and the next forecast days."}</p>
-      {selectedDate && <button className="rfs-dashboard-overview-link" type="button" onClick={showOverview}>Show overview</button>}
     </section>
 
     {loading && <p className="dashboard-panel rfs-dashboard-state" role="status">Loading restaurant data…</p>}
@@ -123,6 +75,6 @@ function DashboardContentInner({ user, today }) {
   </>;
 }
 
-export default function DashboardContent({ user, today }) {
-  return <Suspense fallback={<p className="dashboard-panel rfs-dashboard-state">Loading restaurant data…</p>}><DashboardContentInner user={user} today={today} /></Suspense>;
+export default function DashboardContent({ user }) {
+  return <Suspense fallback={<p className="dashboard-panel rfs-dashboard-state">Loading restaurant data…</p>}><DashboardContentInner user={user} /></Suspense>;
 }

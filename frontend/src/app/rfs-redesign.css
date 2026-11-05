@@ -85,18 +85,16 @@
 .rfs-dashboard-heading > div:first-child { max-width: calc(100% - 255px); }
 .rfs-dashboard-heading h1 { margin: 0 0 5px; color: #101828; font-size: clamp(26px, 2.4vw, 36px); letter-spacing: -.035em; }
 .rfs-dashboard-heading p { margin: 0; color: #505a69; font-size: 16px; }
-.rfs-dashboard-date-bar { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; min-height: 70px; margin: 16px 0 20px; padding: 10px 16px; border: 1px solid #e7e9ed; border-radius: 12px; background: #fff; box-shadow: 0 3px 14px rgba(16,24,40,.035); }
-.rfs-dashboard-date-context { display: grid; gap: 2px; min-width: 125px; padding-right: 18px; border-right: 1px solid #eceef1; }
+.rfs-dashboard-date-bar { display: inline-flex; align-items: center; min-height: 62px; max-width: 100%; margin: 16px 0 20px; padding: 10px 16px; border: 1px solid #e7e9ed; border-radius: 12px; background: #fff; box-shadow: 0 3px 14px rgba(16,24,40,.035); }
+.rfs-dashboard-date-context { display: grid; gap: 2px; }
 .rfs-dashboard-date-eyebrow { color: #667085; font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
 .rfs-dashboard-date-context strong { color: #202938; font-size: 14px; }
-.rfs-dashboard-date-picker { display: flex; align-items: center; gap: 12px; }
-.rfs-dashboard-date-picker label { color: #485467; font-size: 13px; font-weight: 600; }
-.rfs-dashboard-date-field { width: 210px; }
+.rfs-sidebar-dashboard-calendar { display: grid; gap: 8px; margin: 0 10px 12px; }
+.rfs-sidebar-dashboard-calendar .react-datepicker-wrapper { width: 100%; }
 .rfs-dashboard-date-trigger { display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; min-height: 42px; padding: 0 12px; border: 1px solid #d8dee6; border-radius: 9px; background: #fff; color: #202938; font: inherit; font-size: 13px; font-weight: 700; white-space: nowrap; cursor: pointer; }
 .rfs-dashboard-date-trigger svg { width: 17px; height: 17px; flex: none; color: #a7141c; }
 .rfs-dashboard-date-trigger:hover { border-color: #a7141c; }
-.rfs-dashboard-date-note { max-width: 320px; margin: 0 0 0 auto; color: #667085; font-size: 12px; line-height: 1.4; }
-.rfs-dashboard-date-field .react-datepicker-popper { z-index: 300; }
+.rfs-dashboard-calendar-popper { z-index: 1400 !important; }
 .rfs-dashboard-calendar .react-datepicker__day--today:not(.react-datepicker__day--selected) { background: #fffafb !important; color: #a7141c !important; }
 .rfs-dashboard-calendar .react-datepicker__day--selected,.rfs-dashboard-calendar .react-datepicker__day--selected.react-datepicker__day--today { background: #a7141c !important; color: #fff !important; }
 .rfs-dashboard-overview-link,.rfs-dashboard-state button { width: fit-content; border: 0; background: transparent; color: #a7141c; font: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
@@ -166,7 +164,6 @@
   .rfs-dashboard-heading { flex-direction: column; }
   .rfs-dashboard-heading > div:first-child { max-width: 100%; }
   .rfs-dashboard-date-bar { margin-top: 14px; }
-  .rfs-dashboard-date-note { max-width: none; margin-left: 0; }
   .rfs-dashboard-charts { grid-template-columns: 1fr; }
   .topbar,.dashboard-main-area:has(.rfs-dashboard-heading) .topbar { position: static; margin: 8px 14px 0; }
   .dashboard-shell { display: flex; flex-direction: column; }
@@ -178,7 +175,7 @@
   .sidebar-nav { flex-direction: row; overflow-x: auto; padding: 0 10px 9px; }
   .sidebar-link { flex: none; white-space: nowrap; font-size: 12px; }
   .sidebar-icon { width: 17px; height: 17px; }
-  .sidebar-calendar { display: none; }
+  .sidebar-calendar { margin-top: 0; }
   .dashboard-main-area { margin-left: 0; }
   .dashboard-app:has(.manager-chat-panel) .dashboard-main-area { margin-left: 0; }
   .dashboard-page { padding: 12px 14px 80px; }
@@ -188,10 +185,7 @@
   .manager-chat-panel { position: static; width: 100%; height: min(600px, 70dvh); max-height: none; margin-top: 10px; border: 1px solid #e9ebef; border-radius: 12px; }
 }
 @media (max-width: 480px) {
-  .rfs-dashboard-date-bar { align-items: stretch; gap: 10px; }
-  .rfs-dashboard-date-context { width: 100%; padding: 0 0 8px; border-right: 0; border-bottom: 1px solid #eceef1; }
-  .rfs-dashboard-date-picker { justify-content: space-between; gap: 8px; width: 100%; }
-  .rfs-dashboard-date-field { width: min(210px, 65%); }
+  .rfs-dashboard-date-bar { min-height: 58px; }
   .dashboard-summary-grid { grid-template-columns: 1fr; }
   .topbar-user-name { max-width: 100px; }
 }
