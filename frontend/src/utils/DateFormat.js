@@ -16,6 +16,17 @@ export function getISODateInTimeZone(now = new Date(), timeZone = "Europe/London
 export function formatDateDDMMYYYY(dateString) {
   if (!dateString) return "-";
 
+  // API calendar dates are days, not UTC instants. Keep them stable in every timezone.
+  const dateOnly = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(dateString));
+  if (dateOnly) {
+    const [, year, month, day] = dateOnly;
+    const parsed = new Date(Date.UTC(Number(year), Number(month) - 1, Number(day)));
+    if (parsed.getUTCFullYear() !== Number(year) || parsed.getUTCMonth() + 1 !== Number(month) || parsed.getUTCDate() !== Number(day)) {
+      return String(dateString);
+    }
+    return `${day}-${month}-${year}`;
+  }
+
   const date = new Date(dateString);
 
   if (Number.isNaN(date.getTime())) {
