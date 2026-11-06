@@ -186,6 +186,42 @@
 .settings-page .profile-card { border-color: #eceef1; box-shadow: 0 5px 22px rgba(16,24,40,.045); }
 .rfs-page-action { display: inline-flex; align-items: center; justify-content: center; width: fit-content; min-height: 40px; margin-top: 13px; padding: 8px 15px; border: 1px solid #a7141c; border-radius: 8px; background: #a7141c; color: #fff; font-size: 13px; font-weight: 700; text-decoration: none; }
 .rfs-page-action-secondary { background: #fff; color: #a7141c; }
+.rfs-forecast-page { display: grid; gap: 18px; }
+.rfs-forecast-header { display: flex; align-items: end; justify-content: space-between; gap: 20px; }
+.rfs-forecast-kicker { margin: 0 0 8px; color: #a7141c; font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.rfs-forecast-header h1 { margin: 0 0 5px; color: #101828; font-size: clamp(28px, 2.4vw, 36px); letter-spacing: -.035em; }
+.rfs-forecast-header p:last-child { margin: 0; color: #505a69; font-size: 15px; line-height: 1.5; }
+.rfs-forecast-header .rfs-page-action { flex: none; margin: 0 0 3px; }
+.rfs-forecast-controls { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 18px; border: 1px solid #eceef1; border-radius: 12px; background: #fff; }
+.rfs-forecast-control-label { display: block; margin-bottom: 7px; color: #5f6b7a; font-size: 11px; font-weight: 750; text-transform: uppercase; letter-spacing: .04em; }
+.rfs-forecast-horizon { display: inline-flex; gap: 4px; padding: 3px; border: 1px solid #e5e9ee; border-radius: 9px; background: #f6f7f9; }
+.rfs-forecast-horizon button { min-width: 75px; min-height: 34px; padding: 6px 12px; border: 0; border-radius: 6px; background: transparent; color: #344054; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+.rfs-forecast-horizon button[aria-pressed="true"] { background: #a7141c; color: #fff; box-shadow: 0 2px 5px rgba(167,20,28,.16); }
+.rfs-forecast-controls > p { margin: 0; color: #667085; font-size: 13px; text-align: right; }
+.rfs-forecast-stats { margin: 0; }
+.rfs-forecast-stats .summary-card { min-height: 142px; }
+.rfs-forecast-chart { min-width: 0; }
+.rfs-forecast-details { padding: 0; overflow: hidden; }
+.rfs-forecast-details-heading { display: flex; justify-content: space-between; align-items: start; gap: 14px; padding: 22px 22px 16px; }
+.rfs-forecast-details-heading h2 { margin: 0 0 4px; font-size: 18px; letter-spacing: -.02em; }
+.rfs-forecast-details-heading p { margin: 0; color: #667085; font-size: 13px; line-height: 1.5; }
+.rfs-forecast-details-heading > span { flex: none; color: #667085; font-size: 12px; font-weight: 700; }
+.rfs-forecast-table { min-width: 660px; }
+.rfs-forecast-table thead tr { background: #f8f9fb; }
+.rfs-forecast-table th,.rfs-forecast-table td { padding: 13px 18px; border-color: #eceef1; font-size: 13px; }
+.rfs-forecast-table th:first-child,.rfs-forecast-table td:first-child { padding-left: 22px; }
+.rfs-forecast-table th:last-child,.rfs-forecast-table td:last-child { padding-right: 22px; }
+.rfs-forecast-table tbody th { color: #202938; font-weight: 700; text-align: left; }
+.rfs-forecast-covers { color: #101828 !important; font-weight: 800 !important; font-variant-numeric: tabular-nums; }
+.rfs-forecast-status { display: inline-block; padding: 5px 9px; border-radius: 99px; font-size: 11px; font-weight: 750; }
+.rfs-forecast-status.is-open { background: #ecfdf3; color: #027a48; }
+.rfs-forecast-status.is-closed { background: #f2f4f7; color: #475467; }
+.rfs-forecast-basis { margin: -2px 0 0; color: #667085; font-size: 12px; line-height: 1.5; }
+.rfs-forecast-note { margin: 0; padding: 12px 14px; border: 1px solid #f3dfad; border-radius: 9px; background: #fffbeb; color: #704f12; font-size: 13px; }
+.rfs-forecast-state { padding: 28px; color: #505a69; }
+.rfs-forecast-state h2 { margin: 0 0 6px; color: #101828; font-size: 18px; }
+.rfs-forecast-state p { margin: 0 0 12px; font-size: 14px; }
+.rfs-forecast-state button { padding: 8px 13px; border: 1px solid #a7141c; border-radius: 7px; background: #fff; color: #a7141c; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
 
 .dashboard-app :is(a,button,input,select,summary):focus-visible { outline: 3px solid #2563eb; outline-offset: 2px; }
 @media (max-width: 1050px) {
@@ -195,6 +231,9 @@
 @media (min-width: 1051px) and (max-width: 1300px) {
   .dashboard-app:has(.manager-chat-panel) .dashboard-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .dashboard-app:has(.manager-chat-panel) .rfs-dashboard-charts { grid-template-columns: 1fr; }
+}
+@media (min-width: 1051px) and (max-width: 1700px) {
+  .dashboard-app:has(.manager-chat-panel) .rfs-forecast-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 1050px) {
   .rfs-dashboard-heading { flex-direction: column; }
@@ -222,6 +261,12 @@
 }
 @media (max-width: 700px) {
   .rfs-booking-grid { grid-template-columns: 1fr; gap: 18px; }
+  .rfs-forecast-header { display: block; }
+  .rfs-forecast-header .rfs-page-action { margin-top: 14px; }
+  .rfs-forecast-controls { align-items: start; flex-direction: column; }
+  .rfs-forecast-controls > p { text-align: left; }
+  .rfs-forecast-details-heading { display: block; }
+  .rfs-forecast-details-heading > span { display: block; margin-top: 8px; }
 }
 @media (max-width: 480px) {
   .rfs-booking-section { padding: 22px 18px; }
