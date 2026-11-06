@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, expect, test, vi } from "vitest";
@@ -7,21 +7,35 @@ import useSession from "@/hooks/useSession";
 import { PERMISSIONS } from "@/lib/permissions";
 
 const navigation = vi.hoisted(() => ({
+  pathname: "/dashboard",
   searchParams: new URLSearchParams(),
   router: { push: vi.fn(), replace: vi.fn() },
 }));
 
 vi.mock("next/navigation", () => ({
-  usePathname: () => "/dashboard",
+  usePathname: () => navigation.pathname,
   useRouter: () => navigation.router,
   useSearchParams: () => navigation.searchParams,
 }));
 vi.mock("@/hooks/useSession", () => ({ default: vi.fn() }));
 
 beforeEach(() => {
+  navigation.pathname = "/dashboard";
   navigation.searchParams = new URLSearchParams();
   useSession.mockReturnValue({ user: { id: 7, role: "manager", permissions: Object.values(PERMISSIONS) } });
   vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => ({ latest_record: { date: "2026-10-30" } }) }));
+});
+
+test("forecast navigation uses the latest historical day when dashboard selection is in the future", async () => {
+  navigation.searchParams = new URLSearchParams("date=2026-11-30");
+  render(<Sidebar today="2026-11-05" />);
+  await waitFor(() => expect(screen.getByRole("link", { name: "Reservation Forecast" })).toHaveAttribute("href", "/dashboard/reservation-forecast?date=2026-10-30"));
+});
+
+test("forecast navigation preserves a valid historical base day", async () => {
+  navigation.searchParams = new URLSearchParams("date=2026-10-25");
+  render(<Sidebar today="2026-11-05" />);
+  await waitFor(() => expect(screen.getByRole("link", { name: "Reservation Forecast" })).toHaveAttribute("href", "/dashboard/reservation-forecast?date=2026-10-25"));
 });
 
 afterEach(() => {

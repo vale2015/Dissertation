@@ -241,6 +241,15 @@ function SidebarContent({ today }) {
       searchParams.get("date") ||
       latestAvailableDate;
 
+    // A dashboard-selected future day is a forecast target, not a valid
+    // historical base for generating a new reservation forecast.
+    if (href === "/dashboard/reservation-forecast") {
+      const historicalDate = latestAvailableDate && parseDateString(activeDate) && activeDate <= latestAvailableDate
+        ? activeDate
+        : latestAvailableDate;
+      return historicalDate ? `${href}?date=${historicalDate}` : href;
+    }
+
     if (!activeDate) {
       return href;
     }
@@ -347,17 +356,18 @@ function SidebarContent({ today }) {
               </>
             ) : (
               <>
-                <label className="sidebar-calendar-label">Select day</label>
+                <label className="sidebar-calendar-label">{pathname === "/dashboard/reservation-forecast" ? "Historical base day" : "Select day"}</label>
                 <DatePicker
                   selected={parseDateString(selectedDate || latestAvailableDate)}
                   onChange={handleDateChange}
+                  maxDate={pathname === "/dashboard/reservation-forecast" ? parseDateString(latestAvailableDate) || undefined : undefined}
                   dateFormat="dd/MM/yyyy"
                   className="sidebar-date-input"
                   calendarClassName="custom-datepicker"
                   portalId="rfs-sidebar-calendar-portal"
                   dayClassName={() => "custom-datepicker-day"}
                 />
-                <p className="sidebar-calendar-note">Defaulting to the latest available date in your dataset</p>
+                <p className="sidebar-calendar-note">{pathname === "/dashboard/reservation-forecast" ? "Forecasts begin after this historical day" : "Defaulting to the latest available date in your dataset"}</p>
               </>
             )}
           </div>
