@@ -9,7 +9,7 @@ import { hasPermission, PERMISSIONS } from "@/lib/permissions";
 export default function SettingsPage() {
   const { user } = useSession();
   const canManageRules = hasPermission(user, PERMISSIONS.MANAGE_STAFFING_RULES);
-  const [section, setSection] = useState("account");
+  const [section, setSection] = useState(() => typeof window !== "undefined" && window.location.hash === "#rules" ? "rules" : "account");
   const activeSection = section === "rules" && canManageRules ? "rules" : "account";
 
   return <div className="settings-page">

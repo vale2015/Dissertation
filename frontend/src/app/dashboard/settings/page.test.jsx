@@ -25,3 +25,11 @@ test("authorized manager can open staffing rules inside Settings", async () => {
   expect(screen.getByText("Staffing rules view")).toBeInTheDocument();
   expect(screen.queryByText("Own profile form")).not.toBeInTheDocument();
 });
+
+test("authorized deep link opens staffing rules inside Settings", async () => {
+  window.location.hash = "#rules";
+  useSession.mockReturnValue({ user: { permissions: ["view_own_profile", "manage_staffing_rules"] } });
+  render(<SettingsPage />);
+  expect(await screen.findByText("Staffing rules view")).toBeInTheDocument();
+  window.location.hash = "";
+});

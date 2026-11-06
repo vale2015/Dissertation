@@ -1,907 +1,242 @@
 "use client";
 
-import {
-  Suspense,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { formatDateDDMMYYYY } from "@/utils/DateFormat";
+import Link from "next/link";
+import DataChart from "@/components/charts/DataChart";
+import SummaryCard from "@/components/dashboard/summaryCard";
 import { API_BASE } from "@/lib/api";
+import { formatDateDDMMYYYY } from "@/utils/DateFormat";
+import useSession from "@/hooks/useSession";
+import { hasPermission, PERMISSIONS } from "@/lib/permissions";
 
+const DEPARTMENTS = [
+  { key: "floor", label: "Front of house", short: "FOH" },
+  { key: "kitchen", label: "Kitchen", short: "Kitchen" },
+  { key: "bar", label: "Bar", short: "Bar" },
+  { key: "management", label: "Management", short: "Management" },
+];
+const currency = new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" });
 
-// Normalise different date formats into YYYY-MM-DD.
-function normalizeDate(value) {
-  if (!value) return "";
-
-  const text = String(value).trim();
-
-  if (/^\d{4}-\d{2}-\d{2}$/.test(text)) {
-    return text;
-  }
-
-  if (/^\d{2}-\d{2}-\d{4}$/.test(text)) {
-    const [day, month, year] = text.split("-");
-    return `${year}-${month}-${day}`;
-  }
-
-  if (/^\d{2}\/\d{2}\/\d{4}$/.test(text)) {
-    const [day, month, year] = text.split("/");
-    return `${year}-${month}-${day}`;
-  }
-
-  const parsedDate = new Date(text);
-
-  if (!Number.isNaN(parsedDate.getTime())) {
-    const year = parsedDate.getFullYear();
-    const month = String(
-      parsedDate.getMonth() + 1
-    ).padStart(2, "0");
-    const day = String(parsedDate.getDate()).padStart(
-      2,
-      "0"
-    );
-
-    return `${year}-${month}-${day}`;
-  }
-
-  return "";
+function validISODate(value) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value || "")) return false;
+  const [year, month, day] = value.split("-").map(Number);
+  const date = new Date(year, month - 1, day);
+  return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day;
 }
 
+function nonNegativeNumber(value) {
+  if (value === null || value === undefined || value === "") throw new Error("Incomplete staffing forecast data");
+  const number = Number(value);
+  if (!Number.isFinite(number) || number < 0) throw new Error("Incomplete staffing forecast data");
+  return number;
+}
 
-// Return the weekday name for a date.
-function getDayName(dateValue) {
-  const parsedDate = new Date(dateValue);
-
-  if (Number.isNaN(parsedDate.getTime())) {
-    return "";
+function normalizeForecast(json, days) {
+  if (!Array.isArray(json?.daily_totals) || json.daily_totals.length !== days || !validISODate(json?.selected_date)) {
+    throw new Error("Incomplete staffing forecast data");
+  }
+  const rolesByDate = new Map();
+  if (Array.isArray(json.results)) {
+    for (const role of json.results) {
+      if (!validISODate(role.forecast_date)) throw new Error("Incomplete staffing forecast data");
+      const dateRoles = rolesByDate.get(role.forecast_date) || [];
+      dateRoles.push(role);
+      rolesByDate.set(role.forecast_date, dateRoles);
+    }
   }
 
-  return parsedDate.toLocaleDateString("en-GB", {
-    weekday: "long",
-  });
-}
-
-
-// Format a value as UK currency.
-function formatCurrency(value) {
-  return `£${Number(value || 0).toFixed(2)}`;
-}
-
-
-// Determine demand level from forecasted covers.
-function getDemandLevel(covers, closed) {
-  if (closed) return "Closed";
-  if (covers <= 20) return "Low";
-  if (covers <= 30) return "Moderate";
-  return "High";
-}
-
-
-// Create a department-level staffing summary.
-function getDepartmentBreakdown(costRows, closed) {
-  if (closed) {
+  const rows = json.daily_totals.map((day) => {
+    if (!validISODate(day.forecast_date)) throw new Error("Incomplete staffing forecast data");
+    const closed = day.closed === true;
+    const covers = nonNegativeNumber(day.predicted_covers);
+    const cost = nonNegativeNumber(day.total_estimated_cost);
+    const rawRoles = rolesByDate.get(day.forecast_date) || day.operational_roles || [];
+    if (!Array.isArray(rawRoles)) throw new Error("Incomplete staffing forecast data");
+    const roles = rawRoles.map((role) => ({
+      department: String(role.department || ""),
+      name: String(role.role_name || ""),
+      staff: nonNegativeNumber(role.required_staff),
+      rate: nonNegativeNumber(role.hourly_rate),
+      hours: nonNegativeNumber(role.shift_hours),
+      cost: nonNegativeNumber(role.estimated_cost),
+    }));
+    if (roles.some((role) => !role.department || !role.name || !Number.isInteger(role.staff))) {
+      throw new Error("Incomplete staffing forecast data");
+    }
+    const departments = Object.fromEntries(DEPARTMENTS.map(({ key }) => [key, 0]));
+    for (const role of roles) {
+      const key = role.department.toLowerCase();
+      if (!(key in departments)) throw new Error("Unknown staffing department");
+      departments[key] += role.staff;
+    }
+    const staff = roles.reduce((sum, role) => sum + role.staff, 0);
+    const roleCost = roles.reduce((sum, role) => sum + role.cost, 0);
+    if ((closed && (covers !== 0 || cost !== 0 || staff !== 0)) || Math.abs(cost - roleCost) > 0.05) {
+      throw new Error("Inconsistent staffing forecast data");
+    }
     return {
-      foh: "—",
-      kitchen: "—",
-      bar: "—",
-      total: "Closed",
-    };
-  }
-
-  let foh = 0;
-  let kitchen = 0;
-  let bar = 0;
-  let supervisor = 0;
-
-  costRows.forEach((item) => {
-    const department = String(
-      item.department || ""
-    ).toLowerCase();
-
-    const requiredStaff = Number(
-      item.required_staff || 0
-    );
-
-    if (department === "floor") {
-      foh += requiredStaff;
-    }
-
-    if (department === "kitchen") {
-      kitchen += requiredStaff;
-    }
-
-    if (department === "bar") {
-      bar += requiredStaff;
-    }
-
-    if (department === "management") {
-      supervisor += requiredStaff;
-    }
-  });
-
-  return {
-    foh,
-    kitchen,
-    bar,
-    total: foh + kitchen + bar + supervisor,
-  };
-}
-
-
-// Group staff-cost rows by forecast date.
-function groupResultsByDate(results) {
-  return results.reduce((groupedResults, item) => {
-    const dateKey = normalizeDate(item.forecast_date);
-
-    if (!groupedResults[dateKey]) {
-      groupedResults[dateKey] = [];
-    }
-
-    groupedResults[dateKey].push(item);
-
-    return groupedResults;
-  }, {});
-}
-
-
-// Combine forecast totals with department staffing data.
-function mapForecastRows(dailyTotals, costResults) {
-  const resultsByDate = groupResultsByDate(
-    costResults
-  );
-
-  return dailyTotals.map((item) => {
-    const normalizedDate = normalizeDate(
-      item.forecast_date
-    );
-
-    const relatedRoleRows =
-      resultsByDate[normalizedDate] || [];
-
-    const closed = item.closed === true;
-
-    const numericCovers = closed
-      ? 0
-      : Number(item.predicted_covers || 0);
-
-    const staff = getDepartmentBreakdown(
-      relatedRoleRows,
-      closed
-    );
-
-    const labourCost = Number(
-      item.total_estimated_cost || 0
-    );
-
-    return {
-      date: item.forecast_date,
-      normalizedDate,
-      day: getDayName(item.forecast_date),
+      date: day.forecast_date,
+      label: new Date(`${day.forecast_date}T00:00:00`).toLocaleDateString("en-GB", { weekday: "long" }),
       closed,
-      closure_reason: item.closure_reason || null,
-      covers: closed ? "Closed" : numericCovers,
-      numericCovers,
-      foh: staff.foh,
-      kitchen: staff.kitchen,
-      bar: staff.bar,
-      total: staff.total,
-      demand: getDemandLevel(
-        numericCovers,
-        closed
-      ),
-      labourCost,
-      labourCostDisplay:
-        formatCurrency(labourCost),
-      roleBreakdown: relatedRoleRows,
+      closureReason: day.closure_reason || "Restaurant closed",
+      covers, cost, staff, departments, roles, rule: day.rule_applied,
     };
   });
+  if (new Set(rows.map((row) => row.date)).size !== days) throw new Error("Duplicate staffing forecast dates");
+  return { rows, runId: json.run_id ?? null, baseDate: json.selected_date, modelVersion: json.model_version || "" };
 }
 
+function StaffingBars({ rows }) {
+  const maximum = Math.max(1, ...rows.map((row) => row.staff));
+  return <>
+    <div className="rfs-staff-legend" aria-hidden="true">
+      {DEPARTMENTS.map((department) => <span key={department.key} className={`rfs-staff-legend-${department.key}`}>{department.label}</span>)}
+    </div>
+    <div className="rfs-staff-chart-scroll"><div className="rfs-staff-bars" aria-hidden="true">
+      {rows.map((row) => <div className="rfs-staff-bar-row" key={row.date}>
+        <span>{row.label.slice(0, 3)} {formatDateDDMMYYYY(row.date).slice(0, 5)}</span>
+        <div className="rfs-staff-bar-track">{DEPARTMENTS.map((department) => row.departments[department.key] > 0 && <span
+          key={department.key} className={`rfs-staff-bar-${department.key}`}
+          style={{ width: `${row.departments[department.key] / maximum * 100}%` }} />)}</div>
+        <strong>{row.closed ? "Closed" : row.staff}</strong>
+      </div>)}
+    </div></div>
+    <p className="rfs-staff-chart-footnote">Recommended staff, not a scheduled rota. Exact daily values are in the table below.</p>
+  </>;
+}
 
-// Contains the page logic that depends on useSearchParams().
 function StaffForecastContent() {
+  const { user } = useSession();
+  const canManageRules = hasPermission(user, PERMISSIONS.MANAGE_STAFFING_RULES);
   const searchParams = useSearchParams();
-  const selectedDate = searchParams.get("date");
-
-  const [forecastDays, setForecastDays] =
-    useState(7);
-
-  const [viewMode, setViewMode] =
-    useState("cost");
-
-  const [forecastRows, setForecastRows] =
-    useState([]);
-
-  const [forecastRunId, setForecastRunId] =
-    useState(null);
-
-  const [loading, setLoading] =
-    useState(true);
-
-  const [clickedRowDate, setClickedRowDate] =
-    useState("");
-
+  const requestedDate = searchParams.get("date") || "";
+  const invalidDate = Boolean(requestedDate) && !validISODate(requestedDate);
+  const [days, setDays] = useState(7);
+  const [view, setView] = useState("staffing");
+  const [retryKey, setRetryKey] = useState(0);
+  const [result, setResult] = useState(null);
+  const [status, setStatus] = useState("loading");
   const [error, setError] = useState("");
+  const [selectedDay, setSelectedDay] = useState("");
 
-  // Load the staffing forecast from the Flask backend.
   useEffect(() => {
-    let isMounted = true;
-
-    async function loadForecast() {
+    if (invalidDate) {
+      setResult(null);
+      setError("Choose a valid historical date in the dashboard calendar.");
+      setStatus("error");
+      return;
+    }
+    const controller = new AbortController();
+    async function generateForecast() {
+      setStatus("loading");
+      setError("");
+      setResult(null);
       try {
-        setLoading(true);
-        setError("");
-
-        const queryDate = selectedDate || "";
-
-        const requestUrl =
-          `${API_BASE}/staff-cost/forecast` +
-          `?days_ahead=${forecastDays}` +
-          `&selected_date=${queryDate}`;
-
-        const response = await fetch(requestUrl, {
-          method: "POST",
-          cache: "no-store",
+        const params = new URLSearchParams({ days_ahead: String(days) });
+        if (requestedDate) params.set("selected_date", requestedDate);
+        const response = await fetch(`${API_BASE}/staff-cost/forecast?${params}`, {
+          method: "POST", cache: "no-store", signal: controller.signal,
         });
-
         const json = await response.json();
-
-        if (!response.ok) {
-          throw new Error(
-            json?.error ||
-              json?.message ||
-              "Failed to load staff cost forecast."
-          );
-        }
-
-        const dailyTotals = Array.isArray(
-          json?.daily_totals
-        )
-          ? json.daily_totals
-          : [];
-
-        const costResults = Array.isArray(
-          json?.results
-        )
-          ? json.results
-          : [];
-
-        const mappedRows = mapForecastRows(
-          dailyTotals,
-          costResults
-        );
-
-        if (!isMounted) {
+        if (response.status === 422 && /complete 7- or 10-day forecast/i.test(json?.error || "")) {
+          if (controller.signal.aborted) return;
+          setError("There isn’t enough eligible demand history for this date. Choose another historical day.");
+          setStatus("empty");
           return;
         }
-
-        setForecastRows(mappedRows);
-        setForecastRunId(json?.run_id ?? null);
-        setClickedRowDate("");
+        if (!response.ok) throw new Error(json?.error || "Staffing forecast unavailable");
+        const forecast = normalizeForecast(json, days);
+        if (controller.signal.aborted) return;
+        setResult(forecast);
+        setSelectedDay(forecast.rows.find((row) => !row.closed)?.date || forecast.rows[0].date);
+        setStatus("ready");
       } catch (requestError) {
-        if (!isMounted) {
-          return;
-        }
-
-        console.error(
-          "Failed to load staff cost forecast:",
-          requestError
-        );
-
-        setError(
-          requestError.message ||
-            "Failed to load staff forecast."
-        );
-
-        setForecastRows([]);
-        setForecastRunId(null);
-        setClickedRowDate("");
-      } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
+        if (controller.signal.aborted) return;
+        const detail = requestError?.message || "";
+        setError(/^(Incomplete|Inconsistent|Unknown staffing|Duplicate staffing)/.test(detail)
+          ? "The staffing data was incomplete. Please try again."
+          : detail || "We couldn’t generate a staffing forecast. Please try again.");
+        setStatus("error");
       }
     }
-
-    loadForecast();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [forecastDays, selectedDate]);
-
-  const openDays = useMemo(() => {
-    return forecastRows.filter(
-      (row) => !row.closed
-    );
-  }, [forecastRows]);
-
-  const closedDays = useMemo(() => {
-    return forecastRows.filter(
-      (row) => row.closed
-    );
-  }, [forecastRows]);
-
-  const averageDailyStaff = useMemo(() => {
-    if (!openDays.length) {
-      return 0;
-    }
-
-    const totalStaff = openDays.reduce(
-      (sum, row) => {
-        return sum + Number(row.total || 0);
-      },
-      0
-    );
-
-    return (
-      totalStaff / openDays.length
-    ).toFixed(1);
-  }, [openDays]);
-
-  const totalPredictedCovers = useMemo(() => {
-    return openDays.reduce((sum, row) => {
-      return (
-        sum + Number(row.numericCovers || 0)
-      );
-    }, 0);
-  }, [openDays]);
-
-  const totalForecastLabourCost =
-    useMemo(() => {
-      return openDays.reduce((sum, row) => {
-        return (
-          sum + Number(row.labourCost || 0)
-        );
-      }, 0);
-    }, [openDays]);
-
-  const averageDailyLabourCost =
-    useMemo(() => {
-      if (!openDays.length) {
-        return 0;
-      }
-
-      return (
-        totalForecastLabourCost /
-        openDays.length
-      );
-    }, [
-      openDays,
-      totalForecastLabourCost,
-    ]);
-
-  const peakDayRow = useMemo(() => {
-    if (!openDays.length) {
-      return null;
-    }
-
-    return [...openDays].sort(
-      (firstRow, secondRow) => {
-        return (
-          secondRow.numericCovers -
-          firstRow.numericCovers
-        );
-      }
-    )[0];
-  }, [openDays]);
-
-  const peakStaff = useMemo(() => {
-    if (!openDays.length) {
-      return "-";
-    }
-
-    const maxStaffRow = [...openDays].sort(
-      (firstRow, secondRow) => {
-        return (
-          Number(secondRow.total || 0) -
-          Number(firstRow.total || 0)
-        );
-      }
-    )[0];
-
-    return maxStaffRow?.total ?? "-";
-  }, [openDays]);
-
-  const mostExpensiveDayRow = useMemo(() => {
-    if (!openDays.length) {
-      return null;
-    }
-
-    return [...openDays].sort(
-      (firstRow, secondRow) => {
-        return (
-          Number(secondRow.labourCost || 0) -
-          Number(firstRow.labourCost || 0)
-        );
-      }
-    )[0];
-  }, [openDays]);
-
-  const selectedRow = useMemo(() => {
-    if (!forecastRows.length) {
-      return null;
-    }
-
-    if (clickedRowDate) {
-      const clickedMatch = forecastRows.find(
-        (row) =>
-          row.normalizedDate === clickedRowDate
-      );
-
-      if (clickedMatch) {
-        return clickedMatch;
-      }
-    }
-
-    const normalizedSelectedDate =
-      normalizeDate(selectedDate);
-
-    if (normalizedSelectedDate) {
-      const urlMatch = forecastRows.find(
-        (row) =>
-          row.normalizedDate ===
-          normalizedSelectedDate
-      );
-
-      if (urlMatch) {
-        return urlMatch;
-      }
-    }
-
-    return forecastRows[0];
-  }, [
-    forecastRows,
-    clickedRowDate,
-    selectedDate,
-  ]);
-
-  return (
-    <>
-              <section className="dashboard-hero">
-                <h1 className="dashboard-title">
-                  Staff Forecast
-                </h1>
-
-                <p className="dashboard-text">
-                  {forecastDays}-day staffing
-                  recommendations and cost forecast by
-                  department
-                </p>
-                {forecastRunId && (
-                  <p className="dashboard-text">Saved forecast run #{forecastRunId}</p>
-                )}
-
-                <div className="forecast-toggle">
-                  <button
-                    type="button"
-                    className={
-                      forecastDays === 7
-                        ? "forecast-toggle-btn active"
-                        : "forecast-toggle-btn"
-                    }
-                    onClick={() =>
-                      setForecastDays(7)
-                    }
-                  >
-                    7 Days
-                  </button>
-
-                  <button
-                    type="button"
-                    className={
-                      forecastDays === 10
-                        ? "forecast-toggle-btn active"
-                        : "forecast-toggle-btn"
-                    }
-                    onClick={() =>
-                      setForecastDays(10)
-                    }
-                  >
-                    10 Days
-                  </button>
-                </div>
-
-                <div className="forecast-toggle forecast-view-toggle">
-                  <button
-                    type="button"
-                    className={
-                      viewMode === "staffing"
-                        ? "forecast-toggle-btn active"
-                        : "forecast-toggle-btn"
-                    }
-                    onClick={() =>
-                      setViewMode("staffing")
-                    }
-                  >
-                    Staffing View
-                  </button>
-
-                  <button
-                    type="button"
-                    className={
-                      viewMode === "cost"
-                        ? "forecast-toggle-btn active"
-                        : "forecast-toggle-btn"
-                    }
-                    onClick={() =>
-                      setViewMode("cost")
-                    }
-                  >
-                    Staffing + Cost View
-                  </button>
-                </div>
-              </section>
-
-              {loading ? (
-                <p className="dashboard-text">
-                  Loading staff forecast...
-                </p>
-              ) : error ? (
-                <p className="login-error">
-                  {error}
-                </p>
-              ) : (
-                <div className="staff-forecast-layout">
-                  <section className="dashboard-panel staff-forecast-table-panel">
-                    <h2 className="dashboard-panel-title">
-                      Forecast Details (
-                      {forecastDays} Days)
-                    </h2>
-
-                    <div className="booking-table-wrapper">
-                      <table className="booking-table staff-forecast-table">
-                        <thead>
-                          <tr>
-                            <th rowSpan={2}>
-                              Date
-                            </th>
-                            <th rowSpan={2}>
-                              Day
-                            </th>
-                            <th rowSpan={2}>
-                              Covers
-                            </th>
-
-                            <th
-                              colSpan={4}
-                              className="department-staffing-heading"
-                            >
-                              Department
-                            </th>
-
-                            {viewMode ===
-                              "cost" && (
-                              <th rowSpan={2}>
-                                Estimated Staff Cost
-                              </th>
-                            )}
-                          </tr>
-
-                          <tr>
-                            <th className="staff-col">
-                              FOH
-                            </th>
-                            <th className="staff-col">
-                              Kitchen
-                            </th>
-                            <th className="staff-col">
-                              Bar
-                            </th>
-                            <th className="staff-col">
-                              Total
-                            </th>
-                          </tr>
-                        </thead>
-
-                        <tbody>
-                          {forecastRows.length >
-                          0 ? (
-                            forecastRows.map(
-                              (row, index) => {
-                                const isSelected =
-                                  selectedRow?.normalizedDate ===
-                                  row.normalizedDate;
-
-                                const isHighCost =
-                                  !row.closed &&
-                                  row.labourCost >=
-                                    averageDailyLabourCost;
-
-                                return (
-                                  <tr
-                                    key={`${row.normalizedDate}-${forecastDays}-${index}`}
-                                    onClick={() =>
-                                      setClickedRowDate(
-                                        row.normalizedDate
-                                      )
-                                    }
-                                    className={`
-                                      ${
-                                        isSelected
-                                          ? "selected-forecast-row"
-                                          : ""
-                                      }
-                                      ${
-                                        isHighCost
-                                          ? "high-cost-row"
-                                          : ""
-                                      }
-                                    `}
-                                  >
-                                    <td>
-                                      {formatDateDDMMYYYY(
-                                        row.date
-                                      )}
-                                    </td>
-
-                                    <td>
-                                      {row.day}
-                                    </td>
-
-                                    <td>
-                                      {row.covers}
-                                    </td>
-
-                                    <td>
-                                      {row.foh}
-                                    </td>
-
-                                    <td>
-                                      {row.kitchen}
-                                    </td>
-
-                                    <td>
-                                      {row.bar}
-                                    </td>
-
-                                    <td>
-                                      {row.total}
-                                    </td>
-
-                                    {viewMode ===
-                                      "cost" && (
-                                      <td className="labour-cost-cell">
-                                        {row.closed
-                                          ? "£0.00"
-                                          : row.labourCostDisplay}
-                                      </td>
-                                    )}
-                                  </tr>
-                                );
-                              }
-                            )
-                          ) : (
-                            <tr>
-                              <td
-                                colSpan={
-                                  viewMode ===
-                                  "cost"
-                                    ? 8
-                                    : 7
-                                }
-                                className="empty-state-cell"
-                              >
-                                No staff forecast
-                                data available.
-                              </td>
-                            </tr>
-                          )}
-                        </tbody>
-                      </table>
-                    </div>
-                  </section>
-
-                  <aside className="dashboard-panel staff-summary-panel">
-                    <h2 className="dashboard-panel-title">
-                      Period Summary
-                    </h2>
-
-                    <div className="staff-summary-scroll">
-                      <div className="summary-mini-card">
-                        <h3>
-                          Average Daily Staff
-                        </h3>
-                        <p>
-                          {averageDailyStaff}
-                        </p>
-                        <span>
-                          Across all forecasted open
-                          days in the next{" "}
-                          {forecastDays} days
-                        </span>
-                      </div>
-
-                      <div className="summary-mini-card">
-                        <h3>
-                          Total Predicted Covers
-                        </h3>
-                        <p>
-                          {totalPredictedCovers}
-                        </p>
-                        <span>
-                          Across all open days in
-                          the next {forecastDays}{" "}
-                          days
-                        </span>
-                      </div>
-
-                      {viewMode === "cost" && (
-                        <>
-                          <div className="summary-mini-card">
-                            <h3>
-                              Total Forecast
-                              Staffing Cost
-                            </h3>
-                            <p>
-                              {formatCurrency(
-                                totalForecastLabourCost
-                              )}
-                            </p>
-                            <span>
-                              Total staffing cost
-                              in the next{" "}
-                              {forecastDays} days
-                            </span>
-                          </div>
-
-                          <div className="summary-mini-card">
-                            <h3>
-                              Average Daily
-                              Staffing Cost
-                            </h3>
-                            <p>
-                              {formatCurrency(
-                                averageDailyLabourCost
-                              )}
-                            </p>
-                            <span>
-                              Average daily
-                              staffing cost
-                            </span>
-                          </div>
-                        </>
-                      )}
-
-                      <div className="staff-divider" />
-
-                      <h3 className="staff-side-heading">
-                        Selected Day
-                      </h3>
-
-                      {selectedRow ? (
-                        <>
-                          <p>
-                            {formatDateDDMMYYYY(
-                              selectedRow.date
-                            )}{" "}
-                            — {selectedRow.day}
-                          </p>
-
-                          <div className="staff-side-grid">
-                            <span>Covers</span>
-                            <strong>
-                              {
-                                selectedRow.covers
-                              }
-                            </strong>
-
-                            <span>FOH</span>
-                            <strong>
-                              {selectedRow.foh}
-                            </strong>
-
-                            <span>Kitchen</span>
-                            <strong>
-                              {
-                                selectedRow.kitchen
-                              }
-                            </strong>
-
-                            <span>Bar</span>
-                            <strong>
-                              {selectedRow.bar}
-                            </strong>
-
-                            <span>
-                              Total Staff
-                            </span>
-                            <strong>
-                              {
-                                selectedRow.total
-                              }
-                            </strong>
-
-                            {viewMode ===
-                              "cost" && (
-                              <>
-                                <span>
-                                  Estimated Labour
-                                  Cost
-                                </span>
-                                <strong>
-                                  {selectedRow.closed
-                                    ? "£0.00"
-                                    : selectedRow.labourCostDisplay}
-                                </strong>
-                              </>
-                            )}
-                          </div>
-                        </>
-                      ) : (
-                        <p>
-                          No forecast row selected.
-                        </p>
-                      )}
-
-                      <div className="staff-divider" />
-
-                      <h3 className="staff-side-heading">
-                        Weekly Breakdown
-                      </h3>
-
-                      <div className="staff-side-grid">
-                        <span>Peak Day</span>
-                        <strong>
-                          {peakDayRow?.day || "-"}
-                        </strong>
-
-                        <span>Peak Staff</span>
-                        <strong>
-                          {peakStaff}
-                        </strong>
-
-                        {viewMode === "cost" && (
-                          <>
-                            <span>
-                              Most Expensive Day
-                            </span>
-                            <strong>
-                              {mostExpensiveDayRow
-                                ?.day || "-"}
-                            </strong>
-                          </>
-                        )}
-
-                        <span>Open Days</span>
-                        <strong>
-                          {openDays.length} of{" "}
-                          {forecastRows.length}
-                        </strong>
-
-                        <span>Closed Days</span>
-                        <strong>
-                          {closedDays.length
-                            ? closedDays
-                                .map(
-                                  (row) => row.day
-                                )
-                                .join(", ")
-                            : "-"}
-                        </strong>
-                      </div>
-                    </div>
-                  </aside>
-                </div>
-              )}
-    </>
-  );
+    generateForecast();
+    return () => controller.abort();
+  }, [days, requestedDate, invalidDate, retryKey]);
+
+  const rows = useMemo(() => result?.rows || [], [result]);
+  const openDays = useMemo(() => rows.filter((row) => !row.closed), [rows]);
+  const selected = rows.find((row) => row.date === selectedDay) || openDays[0] || rows[0];
+  const totalCovers = openDays.reduce((sum, row) => sum + row.covers, 0);
+  const totalCost = openDays.reduce((sum, row) => sum + row.cost, 0);
+  const averageStaff = openDays.length ? (openDays.reduce((sum, row) => sum + row.staff, 0) / openDays.length).toFixed(1) : "—";
+  const peakStaffDay = openDays.reduce((peak, row) => !peak || row.staff > peak.staff ? row : peak, null);
+  const costChartData = rows.map((row) => ({ date: row.date, label: row.label, value: row.cost }));
+
+  return <div className="rfs-forecast-page rfs-staff-page">
+    <header className="rfs-forecast-header"><div>
+      <p className="rfs-forecast-kicker">Planning / Team outlook</p>
+      <h1>Staffing forecast</h1>
+      <p>Rule-based staffing recommendations and estimated labour cost—not a scheduled rota.</p>
+    </div>{result?.runId && <span className="rfs-staff-run">Saved run #{result.runId}</span>}</header>
+
+    <div className="rfs-forecast-controls rfs-staff-controls">
+      <div><span className="rfs-forecast-control-label">Forecast horizon</span><div className="rfs-forecast-horizon" role="group" aria-label="Forecast horizon">
+        {[7, 10].map((horizon) => <button key={horizon} type="button" aria-pressed={days === horizon} onClick={() => setDays(horizon)}>{horizon} days</button>)}
+      </div></div>
+      <div><span className="rfs-forecast-control-label">Show</span><div className="rfs-forecast-horizon" role="group" aria-label="Forecast view">
+        <button type="button" aria-pressed={view === "staffing"} onClick={() => setView("staffing")}>Staffing</button>
+        <button type="button" aria-pressed={view === "cost"} onClick={() => setView("cost")}>Labour cost</button>
+      </div></div>
+      <p>Based on demand through {result?.baseDate ? formatDateDDMMYYYY(result.baseDate) : requestedDate ? formatDateDDMMYYYY(requestedDate) : "the latest available date"}. Changing the horizon creates a new saved run.</p>
+    </div>
+
+    {status === "loading" && <section className="dashboard-panel rfs-forecast-state" role="status">Generating and saving staffing forecast…</section>}
+    {status === "error" && <section className="dashboard-panel rfs-forecast-state" role="alert"><h2>Staffing forecast unavailable</h2><p>{error}</p>{!invalidDate && <button type="button" onClick={() => setRetryKey((key) => key + 1)}>Try again</button>}</section>}
+    {status === "empty" && <section className="dashboard-panel rfs-forecast-state"><h2>No staffing forecast available</h2><p>{error}</p></section>}
+
+    {status === "ready" && <>
+      <section className="dashboard-summary-grid rfs-forecast-stats rfs-staff-stats" aria-label="Staffing forecast summary">
+        <SummaryCard title="Average recommended staff" value={averageStaff} description="Per open forecast day; not scheduled staff." />
+        <SummaryCard title="Peak staffing day" value={peakStaffDay?.label || "—"} description={peakStaffDay ? `${formatDateDDMMYYYY(peakStaffDay.date)} · ${peakStaffDay.staff} recommended` : "No open days in this forecast."} />
+        <SummaryCard title="Predicted covers" value={totalCovers} description={`Total across ${openDays.length} open forecast days.`} />
+        <SummaryCard title="Estimated labour cost" value={currency.format(totalCost)} description="Rule-based estimate across open forecast days." />
+      </section>
+
+      <div className="rfs-staff-main">
+        <section className="dashboard-panel rfs-staff-chart-panel" aria-label={view === "staffing" ? "Recommended staff by day" : "Estimated labour cost by day"}>
+          {view === "staffing" ? <><div className="rfs-forecast-details-heading"><div><h2>Recommended staff by day</h2><p>Department mix follows the active staffing rules.</p></div><span>{rows.length} days</span></div><StaffingBars rows={rows} /></> :
+            <DataChart data={costChartData} title="Estimated labour cost by day" description="Projected cost from recommended roles, rates and standard shift lengths; closed days are zero." variant="columns" unit="GBP" seriesLabel="Estimated labour cost" />}
+        </section>
+        <section className="dashboard-panel rfs-staff-day-panel" aria-labelledby="rfs-staff-day-title">
+          <div className="rfs-forecast-details-heading"><div><h2 id="rfs-staff-day-title">Selected day</h2><p>{selected.label}, {formatDateDDMMYYYY(selected.date)}</p></div><span className={`rfs-forecast-status ${selected.closed ? "is-closed" : "is-open"}`}>{selected.closed ? "Closed" : "Open"}</span></div>
+          <p className="sr-only" role="status">Selected {selected.label}, {formatDateDDMMYYYY(selected.date)}. {selected.closed ? "Restaurant closed." : `${selected.staff} staff recommended.`}</p>
+          {selected.closed ? <p className="rfs-staff-day-empty">{selected.closureReason}. No staff or labour cost is forecast.</p> : <>
+            <dl className="rfs-staff-day-facts"><div><dt>Predicted covers</dt><dd>{selected.covers}</dd></div><div><dt>Recommended staff</dt><dd>{selected.staff}</dd></div><div><dt>Estimated labour</dt><dd>{currency.format(selected.cost)}</dd></div></dl>
+            {selected.rule && <p className="rfs-staff-rule">Staffing rule: {selected.rule.min_covers}–{selected.rule.max_covers} predicted covers{canManageRules && <> · <Link href="/dashboard/settings#rules">Review staffing rules in Settings</Link></>}</p>}
+            <h3>By department</h3><dl className="rfs-staff-departments">{DEPARTMENTS.map((department) => <div key={department.key}><dt>{department.label}</dt><dd>{selected.departments[department.key]}</dd></div>)}</dl>
+          </>}
+        </section>
+      </div>
+
+      <section className="dashboard-panel rfs-forecast-details rfs-staff-details" aria-labelledby="rfs-staff-details-title">
+        <div className="rfs-forecast-details-heading"><div><h2 id="rfs-staff-details-title">Day-by-day plan</h2><p>Select a date to inspect its department and role recommendations.</p></div><span>{formatDateDDMMYYYY(rows[0].date)} – {formatDateDDMMYYYY(rows.at(-1).date)}</span></div>
+        <div className="booking-table-wrapper"><table className="booking-table rfs-forecast-table rfs-staff-table"><caption className="sr-only">Recommended staffing and estimated cost for {rows.length} forecast days</caption><thead><tr><th scope="col">Date</th><th scope="col">Service</th><th scope="col">Predicted covers</th><th scope="col">Recommended staff</th><th scope="col">Department mix</th><th scope="col">Estimated labour</th></tr></thead><tbody>
+          {rows.map((row) => <tr key={row.date} className={selected.date === row.date ? "is-selected" : ""}><th scope="row"><button type="button" className="rfs-staff-date-button" aria-pressed={selected.date === row.date} onClick={() => setSelectedDay(row.date)}>{formatDateDDMMYYYY(row.date)} <span>{row.label}</span></button></th><td><span className={`rfs-forecast-status ${row.closed ? "is-closed" : "is-open"}`}>{row.closed ? "Closed" : "Open"}</span></td><td>{row.closed ? "—" : row.covers}</td><td className="rfs-forecast-covers">{row.closed ? "—" : row.staff}</td><td>{row.closed ? row.closureReason : DEPARTMENTS.filter((department) => row.departments[department.key] > 0).map((department) => `${row.departments[department.key]} ${department.short}`).join(" · ") || "No roles recommended"}</td><td>{row.closed ? "—" : currency.format(row.cost)}</td></tr>)}
+        </tbody></table></div>
+      </section>
+
+      <section className="dashboard-panel rfs-forecast-details rfs-staff-roles" aria-labelledby="rfs-staff-roles-title">
+        <div className="rfs-forecast-details-heading"><div><h2 id="rfs-staff-roles-title">Role and cost breakdown</h2><p>{selected.label}, {formatDateDDMMYYYY(selected.date)} · recommended quantities, not assigned people.</p></div></div>
+        {selected.closed ? <p className="rfs-staff-day-empty">No roles are needed on this closed day.</p> : selected.roles.length ? <div className="booking-table-wrapper"><table className="booking-table rfs-forecast-table rfs-staff-table"><caption className="sr-only">Role-level staffing costs for {selected.date}</caption><thead><tr><th scope="col">Department</th><th scope="col">Role</th><th scope="col">Staff</th><th scope="col">Hourly rate</th><th scope="col">Shift</th><th scope="col">Estimated cost</th></tr></thead><tbody>
+          {selected.roles.map((role, index) => <tr key={`${role.department}-${role.name}-${index}`}><th scope="row">{role.department}</th><td>{role.name}</td><td>{role.staff}</td><td>{currency.format(role.rate)}</td><td>{role.hours} hours</td><td>{currency.format(role.cost)}</td></tr>)}
+        </tbody></table></div> : <p className="rfs-staff-day-empty">No staff roles are recommended for this open day under the active rule.</p>}
+      </section>
+      <p className="rfs-forecast-basis">Saved run {result.runId ? `#${result.runId}` : "unavailable"} · Model version <span title={result.modelVersion}>{result.modelVersion ? result.modelVersion.slice(0, 12) : "unavailable"}</span>. These are recommendations and cost estimates, not an actual rota or payroll.</p>
+    </>}
+  </div>;
 }
 
-
-// Export the page through a parent Suspense boundary.
 export default function StaffForecastPage() {
-  return (
-    <Suspense
-      fallback={
-        <p className="dashboard-text">
-          Loading staff forecast...
-        </p>
-      }
-    >
-      <StaffForecastContent />
-    </Suspense>
-  );
+  return <Suspense fallback={<p className="dashboard-text" role="status">Loading staffing forecast…</p>}><StaffForecastContent /></Suspense>;
 }
