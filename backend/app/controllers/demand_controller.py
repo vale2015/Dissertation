@@ -1,4 +1,7 @@
-from flask import jsonify, request
+from datetime import date
+import re
+
+from flask import current_app, jsonify, request
 from app.ml.pipelines.predict_pipeline import prediction_demand
 from app.services.demand_service import (
     get_all_demand_records,
@@ -113,17 +116,16 @@ def demand_forecast():
         if days_ahead not in [7, 10]:
             return jsonify({"error": "days_ahead must be 7 or 10"}), 400
 
+        if selected_date is not None:
+            if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", selected_date):
+                return jsonify({"error": "date must be a valid ISO date"}), 400
+            try:
+                date.fromisoformat(selected_date)
+            except ValueError:
+                return jsonify({"error": "date must be a valid ISO date"}), 400
+
         forecast = prediction_demand(days_ahead=days_ahead, selected_date=selected_date)
         return jsonify(forecast), 200
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-# Train or retrain the Random Forest demand forecasting model.
-def training_demand_model():
-    try:
-        # Import here so the training pipeline only loads when this endpoint is called.
-        from app.ml.pipelines.train_pipeline import train_model
-        result = train_model()
-        return jsonify(result), 200
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    except Exception:
+        current_app.logger.exception("Unable to generate demand forecast.")
+        return jsonify({"error": "Forecast is temporarily unavailable."}), 500

@@ -109,9 +109,11 @@ def _metrics(rows):
     matched = [row for row in rows if row["actual_covers"] is not None]
     if not matched:
         return {"evaluated_days": 0, "mean_absolute_error": None,
-                "mean_absolute_percentage_error": None, "mean_bias": None,
+                "mean_absolute_percentage_error": None, "weighted_absolute_percentage_error": None,
+                "mean_bias": None,
                 "zero_actual_days_excluded_from_mape": 0}
     errors = [row["predicted_covers"] - row["actual_covers"] for row in matched]
+    total_actual = sum(row["actual_covers"] for row in matched)
     percentage_errors = [abs(row["error_covers"]) / row["actual_covers"] * 100
                          for row in matched if row["actual_covers"] > 0]
     return {
@@ -119,6 +121,8 @@ def _metrics(rows):
         "mean_absolute_error": round(sum(map(abs, errors)) / len(errors), 2),
         "mean_absolute_percentage_error": round(sum(percentage_errors) / len(percentage_errors), 2)
         if percentage_errors else None,
+        "weighted_absolute_percentage_error": round(sum(map(abs, errors)) / total_actual * 100, 2)
+        if total_actual else None,
         "mean_bias": round(sum(errors) / len(errors), 2),
         "zero_actual_days_excluded_from_mape": len(matched) - len(percentage_errors),
     }
@@ -181,10 +185,12 @@ def get_accuracy_report(window_days=90, dataset="real"):
 
     by_weekday = defaultdict(list)
     by_lead_days = defaultdict(list)
+    by_model_version = defaultdict(list)
     for row in rows:
         if row["actual_covers"] is not None:
             by_weekday[row["weekday"]].append(row)
             by_lead_days[row["lead_days"]].append(row)
+            by_model_version[row["model_version"] or "unknown"].append(row)
     return {
         "dataset": dataset,
         "window_days": window_days,
@@ -196,5 +202,7 @@ def get_accuracy_report(window_days=90, dataset="real"):
                                    "Friday", "Saturday", "Sunday") if day in by_weekday],
         "by_lead_days": [{"lead_days": lead, **_metrics(group)}
                          for lead, group in sorted(by_lead_days.items())],
+        "by_model_version": [{"model_version": version, **_metrics(group)}
+                             for version, group in sorted(by_model_version.items())],
         "days": rows,
     }

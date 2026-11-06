@@ -84,13 +84,21 @@ def test_accuracy_uses_original_preservice_open_snapshot_and_real_actuals(monkey
     assert report["dataset"] == "real"
     assert report["summary"] == {
         "evaluated_days": 2, "mean_absolute_error": 15.0,
-        "mean_absolute_percentage_error": 25.0, "mean_bias": 15.0,
+        "mean_absolute_percentage_error": 25.0,
+        "weighted_absolute_percentage_error": 75.0, "mean_bias": 15.0,
         "zero_actual_days_excluded_from_mape": 1,
     }
     assert report["awaiting_actual_days"] == 1
     assert report["days"][0]["actual_covers"] == 40
     assert report["days"][0]["booked_covers"] == 35
     assert report["by_lead_days"][1]["lead_days"] == 2
+    assert report["by_model_version"][0]["model_version"] == "abc"
+    assert report["by_model_version"][0]["evaluated_days"] == 2
+
+
+def test_weighted_error_is_undefined_when_all_real_actuals_are_zero():
+    rows = [{"predicted_covers": 2, "actual_covers": 0, "error_covers": 2}]
+    assert service._metrics(rows)["weighted_absolute_percentage_error"] is None
 
 
 def test_demo_accuracy_is_separate_from_real_accuracy(monkeypatch):

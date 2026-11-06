@@ -8,7 +8,6 @@ from app.controllers.demand_controller import (
     delete_demand,
     weekly_demand,
     demand_forecast,
-    training_demand_model,
 )
 
 # Create a Blueprint to group all demand-related API endpoints.
@@ -53,11 +52,4 @@ def get_weekly_demand():
 @demand_bp.get("/forecast")
 def get_forecast():
     return demand_forecast()
-
-# Train or retrain the machine learning demand model.
-@demand_bp.get("/train")
-def train_model_route():
-    return training_demand_model()
-
-
 

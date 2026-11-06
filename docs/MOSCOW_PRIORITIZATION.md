@@ -1,6 +1,6 @@
 # MoSCoW prioritization of architecture improvements
 
-This is a **value-first** product-priority view of all 60 items in the canonical [improvement tracker](IMPROVEMENT_TRACKER.md), not a second backlog. It reflects the [PRD](PRD.md): a single-restaurant dissertation prototype focused on helping managers prepare services, reuse reports, and judge whether forecasts are accurate. Last reviewed: 2026-11-05.
+This is a **value-first** product-priority view of all 62 items in the canonical [improvement tracker](IMPROVEMENT_TRACKER.md), not a second backlog. It reflects the [PRD](PRD.md): a single-restaurant dissertation prototype focused on helping managers prepare services, reuse reports, and judge whether forecasts are accurate. Last reviewed: 2026-11-06.
 
 **Must** = direct, high-value product outcomes or the minimum safeguards and tests required to deliver them safely. **Should** = meaningful usability, scalability, or operational benefit that can follow the next product increment. **Could** = lower-evidence optimization or structural work. **Won't for now** = explicitly deferred or outside current single-restaurant scope; reconsider if the user or product direction changes.
 
@@ -8,16 +8,16 @@ Priority is independent of delivery state. A Must can already be **Done**, and a
 
 ## Recommended value-first sequence
 
-1. **Prove forecast usefulness:** #20 is Done; finish #21 with genuine completed-service actuals and an authenticated accuracy journey before making performance claims from demo data.
+1. **Make training and demand writes safe, then prove forecast usefulness:** #17's mutating web retraining route is removed in the forecast-serving update but a durable job is still absent; resolve #62's demand-write permission gap. #20 is Done, while #21 still needs genuine completed-service actuals. Use real outcomes for #61's baseline-versus-model benchmark before changing algorithms or making performance claims from demo data.
 2. **Close release verification on the redesigned manager experience:** #57 has the approved shared shell, charts, notifications, Settings, and left-docked assistant, but remains Partial until its remaining acceptance checks pass. #29's shared layout is implemented and still awaits signed-in role checks.
 3. **Finish chatbot safety and evidence:** #54–55 are deployed pilots, not completed capabilities. Verify live model inference, protected manager/restricted-role journeys, report and staff actions, durable staff-write idempotency, privacy, and usage limits. Keep the separate #52 report-note pilot disabled until reviewed.
 4. **Maintain database and security gates:** close the remaining #3–4 migration/access work and the relevant #7–8 safeguards as features change. Track applied migrations separately from code and deployment.
 5. **Apply quality gates continuously:** use #35, #37, #39, #41, #43, and #56 as applicable to each release; a READY deployment is not proof of a successful user journey.
 6. **Keep product documentation usable:** #58 establishes the sequential PM-led team; #59 consolidates current requirements in the PRD and maintains the canonical tracker. Prioritize subsequent Should items from measured bottlenecks and manager feedback.
 
-The latest user-directed initiatives are **#57 (RFS UI/UX redesign), #58 (sequential agent team), and #59 (documentation consolidation)**. #21 remains a high-value forecasting outcome awaiting genuine completed-service evidence. The chatbot (#54–55) remains Partial; #52 remains Partial and disabled in production. Security and test work remains Must because a feature that risks customer data or cannot be verified is not ready for users.
+The latest forecast review adds **#61 (model-quality benchmark)** and **#62 (demand-write authorization)**, and raises **#17 (safe training boundary)** to Must. #21 remains the prerequisite for evidence from genuine completed services. The chatbot (#54–55) remains Partial; #52 remains Partial and disabled in production. Security and test work remains Must because a feature that risks customer data or cannot be verified is not ready for users.
 
-## Must — user value and minimum safe-delivery gates (17)
+## Must — user value and minimum safe-delivery gates (20)
 
 | # | Improvement | Why Must |
 |---|---|---|
@@ -27,8 +27,11 @@ The latest user-directed initiatives are **#57 (RFS UI/UX redesign), #58 (sequen
 | 4 | Verify and restrict Supabase table access | Protect customer and staff data before adding more stored reports. |
 | 7 | Strengthen browser security headers | Protect authenticated user sessions and downloads. |
 | 8 | Add API request limits and validation | Keep booking and report inputs safe and predictable. |
+| 17 | Move training out of web requests | Current mutating GET permits supervisors to start CPU-heavy retraining; use a manager-only durable job before scale. |
 | 20 | Create immutable forecast runs | Required to compare a prediction with the eventual actual without rewriting history. |
 | 21 | Add prediction-versus-actual tracking | Show managers whether forecasts are useful and meet a stated PRD goal. |
+| 61 | Benchmark and calibrate the demand forecast | Choose a model on genuine 7/10-day forecast outcomes, not synthetic demo scores or algorithm fashion. |
+| 62 | Enforce least-privilege demand writes | Stop read-only forecast roles from changing operational demand data. |
 | 25 | Remove network calls from critical report latency | Make reports dependable even when optional weather or event services lag. |
 | 26 | Add a report history feature | Give managers the requested ability to retrieve and compare past reports. |
 | 35 | Add real database integration tests | Verify booking correctness, access, and new persisted history with real database behavior. |
@@ -39,7 +42,7 @@ The latest user-directed initiatives are **#57 (RFS UI/UX redesign), #58 (sequen
 | 56 | Remediate audited frontend dependency vulnerabilities | The patched branch has a clean audit; authenticated preview and production release checks remain before Done. |
 | 57 | Implement the approved RFS UI/UX redesign | User-approved dashboard and assistant experience is the next visible product direction; its bell must show real, recipient-scoped notifications, while Reports stays view-only and Settings reuses existing capabilities. Deliver without fabricated data or broken permissions. |
 
-## Should — meaningful next benefits (29)
+## Should — meaningful next benefits (28)
 
 | # | Improvement | Why Should |
 |---|---|---|
@@ -50,7 +53,6 @@ The latest user-directed initiatives are **#57 (RFS UI/UX redesign), #58 (sequen
 | 12 | Consolidate dashboard requests | Make the daily planning view faster. |
 | 13 | Add frontend query caching and deduplication | Reduce wait time and repeated loading. |
 | 15 | Add timeouts and cancellation to the BFF | Avoid long hangs when backend calls fail. |
-| 17 | Move training out of web requests | Keep interactive planning available during model training. |
 | 18 | Store model files in durable object storage | Preserve usable forecasts across deployments and instances. |
 | 23 | Replace instance-local provider caches | Improve weather/event availability without making it core. |
 | 29 | Create a shared dashboard layout | Make navigation and authorization more consistent. |

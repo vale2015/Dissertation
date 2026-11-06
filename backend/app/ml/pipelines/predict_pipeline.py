@@ -1,4 +1,5 @@
 from datetime import timedelta, date
+from functools import lru_cache
 import hashlib
 import io
 import os
@@ -13,6 +14,19 @@ from app.db.dbcon import SessionLocal
 HISTORICAL_WINDOW_DAYS = 90
 HOLIDAY_COUNTRY = "GB"
 HOLIDAY_SUBDIV = None
+
+
+@lru_cache(maxsize=1)
+def _load_model_artifact(model_path, modified_ns, file_size):
+    """Load the trusted, bundled artifact once per warm process and file version."""
+    with open(model_path, "rb") as model_file:
+        model_bytes = model_file.read()
+    saved_artifact = joblib.load(io.BytesIO(model_bytes))
+    return (
+        saved_artifact["model"],
+        saved_artifact["feature_columns"],
+        hashlib.sha256(model_bytes).hexdigest(),
+    )
 
 # Fixed Christmas closure period used to mark the restaurant as closed.
 CHRISTMAS_CLOSED_START = date(2025, 12, 21)
@@ -110,16 +124,38 @@ def prediction_demand(days_ahead=7, selected_date=None):
         )
         # Stop forecasting if the model has not been trained yet.
         if not os.path.exists(model_path):
-            return {"message": "Model file not found. Train the model first."}
-        # Load the trained model and the feature columns used during training.
-        with open(model_path, "rb") as model_file:
-            model_bytes = model_file.read()
-        model_version = hashlib.sha256(model_bytes).hexdigest()
-        saved_artifact = joblib.load(io.BytesIO(model_bytes))
-        model = saved_artifact["model"]
-        feature_columns = saved_artifact["feature_columns"]
+            raise FileNotFoundError("Bundled forecast model artifact is unavailable.")
+        # The deployment-bundled artifact is immutable in production. The stat
+        # key also refreshes a local developer process after an offline retrain.
+        model_stat = os.stat(model_path)
+        model, feature_columns, model_version = _load_model_artifact(
+            model_path, model_stat.st_mtime_ns, model_stat.st_size
+        )
+
+        selected_date_obj = date.fromisoformat(selected_date) if selected_date else None
 
         with SessionLocal() as db:
+            if selected_date_obj:
+                base_date = selected_date_obj
+            else:
+                base_date = db.execute(
+                    text(
+                        """
+                        SELECT MAX(date)
+                        FROM public.restaurant_demand_features
+                        WHERE same_day_covers IS NOT NULL
+                          AND walk_in_covers IS NOT NULL
+                          AND advance_covers IS NOT NULL
+                          AND total_covers IS NOT NULL
+                          AND avg_duration_covers_summary IS NOT NULL
+                        """
+                    )
+                ).scalar()
+
+            if base_date is None:
+                return {"message": "No data found in restaurant_demand_features"}
+
+            window_start_date = base_date - timedelta(days=HISTORICAL_WINDOW_DAYS - 1)
             result = db.execute(
                 text(
                     """
@@ -131,9 +167,11 @@ def prediction_demand(days_ahead=7, selected_date=None):
                         total_covers,
                         avg_duration_covers_summary
                     FROM public.restaurant_demand_features
+                    WHERE date >= :window_start_date AND date <= :base_date
                     ORDER BY date ASC
                     """
-                )
+                ),
+                {"window_start_date": window_start_date, "base_date": base_date},
             )
             rows = result.fetchall()
             columns = result.keys()
@@ -174,9 +212,7 @@ def prediction_demand(days_ahead=7, selected_date=None):
         df["date_only"] = df["date"].dt.date
         available_dates = sorted(df["date_only"].tolist())
 
-        if selected_date:
-            selected_date_obj = pd.to_datetime(selected_date).date()
-
+        if selected_date_obj:
             if selected_date_obj not in available_dates:
                 return {
                     "model": "random_forest",
@@ -190,8 +226,6 @@ def prediction_demand(days_ahead=7, selected_date=None):
             base_date = selected_date_obj
         else:
             base_date = max(available_dates)
-
-        window_start_date = base_date - timedelta(days=HISTORICAL_WINDOW_DAYS - 1)
 
         history_df = (
             df[
@@ -345,8 +379,5 @@ def prediction_demand(days_ahead=7, selected_date=None):
             "forecast": forecast,
         }
 
-    except Exception as e:
-        return {
-            "message": "Forecast failed",
-            "error": str(e),
-        }
+    except Exception:
+        raise

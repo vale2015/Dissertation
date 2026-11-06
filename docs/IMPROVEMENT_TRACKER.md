@@ -1,6 +1,6 @@
 # Dissertation architecture improvement tracker
 
-This is the project's canonical living improvement backlog, seeded from the original 50-item architecture plan in this chat. Keep the original numbers and order so that “continue with the improvements” has an unambiguous meaning; append any new improvements with new numbers. Any focused improvement lists also live in `docs/` and are indexed in [README.md](README.md). Last reviewed: 2026-10-31.
+This is the project's canonical living improvement backlog, seeded from the original 50-item architecture plan in this chat. Keep the original numbers and order so that “continue with the improvements” has an unambiguous meaning; append any new improvements with new numbers. Any focused improvement lists also live in `docs/` and are indexed in [README.md](README.md). Last reviewed: 2026-11-06.
 
 ## How to use this file
 
@@ -15,11 +15,11 @@ Status key: **Done** = acceptance criteria verified; **Verify release** = implem
 ## Current position
 
 - **Done:** 1–2, 20, 25–26.
-- **Partial:** 3–4, 39, 52, 54–55, 57–59.
+- **Partial:** 3–4, 17, 22, 39, 52, 54–55, 57–61.
 - **Verify release:** 21, 29, 56.
 - **Deferred:** 5.
-- **Open:** 6–19, 22–24, 27–28, 30–38, 40–51, and 53 (41 items).
-- **Selected direction:** #57 remains the product UI/UX redesign; #59 now has the PM-requested four current-state documentation guides awaiting acceptance. #58's first real feature handoff remains unverified. #56 remains a release gate on a protected preview; #21 and #29 still need live verification. The chatbot (#54–55) is deployed but Partial, and #52 remains a disabled Partial pilot.
+- **Open:** remaining unstarted items, including the new demand-write authorization review #62.
+- **Selected direction:** #17 and #22 have a tested serving-safety/performance slice, while #61 has diagnostic accuracy metrics but no fair candidate-model trial or genuine served-cover evidence. Release evidence for this slice is recorded separately from tests and database state below. #21 still needs real completed-service and authenticated release verification. #57 remains the product UI/UX redesign; #56 remains a release gate on a protected preview. The chatbot (#54–55) is deployed but Partial, and #52 remains a disabled Partial pilot.
 
 ## MoSCoW priority
 
@@ -27,8 +27,8 @@ Priority is separate from implementation status. This provisional, **value-first
 
 | Priority | Item numbers |
 |---|---|
-| **Must** | 1, 2, 3, 4, 7, 8, 20, 21, 25, 26, 35, 37, 39, 41, 43, 56, 57 |
-| **Should** | 6, 9, 10, 11, 12, 13, 15, 17, 18, 23, 29, 32, 33, 34, 36, 38, 40, 42, 45, 46, 47, 48, 49, 50, 54, 55, 58, 59 |
+| **Must** | 1, 2, 3, 4, 7, 8, 17, 20, 21, 25, 26, 35, 37, 39, 41, 43, 56, 57, 61, 62 |
+| **Should** | 6, 9, 10, 11, 12, 13, 15, 18, 23, 29, 32, 33, 34, 36, 38, 40, 42, 45, 46, 47, 48, 49, 50, 54, 55, 58, 59, 60 |
 | **Could** | 14, 16, 19, 22, 24, 27, 30, 31, 44, 51, 52, 53 |
 | **Won't for now** | 5, 28 |
 
@@ -44,6 +44,7 @@ Priority is separate from implementation status. This provisional, **value-first
 - [ ] **6. Standardize safe API errors — Open.** Add centralized Flask handlers and a consistent `{code, message, request_id}` response; keep internal details in logs and test that exceptions never leak.
 - [ ] **7. Strengthen browser security headers — Open.** Review the existing Flask headers and cookie settings, add missing browser-facing Next.js headers and production HSTS, then verify pages and downloads.
 - [ ] **8. Add API request limits and validation — Open.** Centralize body-size, date-range, field-length, numeric-boundary, and unknown-field rules with malformed-input tests.
+- [ ] **62. Enforce least-privilege demand writes — Open; high priority (Must).** The demand POST and DELETE routes are currently guarded by blueprint-wide `view_forecasts`, allowing a supervisor with read-only forecast permission to mutate demand records. Define the PM-approved manager write policy, apply action-specific authorization to both routes, and test manager success plus supervisor/staff denial. This pre-existing issue was identified by the independent forecast security review on 2026-11-06; no role permissions have been changed in the forecast-serving slice.
 
 ## Phase 2 — Database and API scalability
 
@@ -58,12 +59,13 @@ Priority is separate from implementation status. This provisional, **value-first
 
 ## Phase 3 — Forecasting and machine-learning lifecycle
 
-- [ ] **17. Move training out of web requests — Open.** Use a manager-only POST to enqueue one durable training job, expose status, and keep CPU work out of interactive requests.
+- [ ] **17. Move training out of web requests — Partial; high priority (Must).** The forecast-serving slice removes mutating `GET /api/demand/train` (and leaves offline `train_model()` available); GET/POST now return 404 in focused tests. Independent security review passed; independent QA ran 13 focused and 224 total backend tests on 2026-11-06. **Remaining:** if in-app retraining is still needed, design a manager-only POST that enqueues one durable, rate-limited job with status, concurrency protection, restart recovery, and active-model rollback. No replacement job exists. Release status is recorded in the verification notes below.
 - [ ] **18. Store model files in durable object storage — Open.** Save immutable model artifacts privately with checksums, metadata, an active pointer, and rollback support.
 - [ ] **19. Add a model registry — Open.** Record model version, training window, features, parameters, metrics, creator, and active/retired state.
 - [x] **20. Create immutable forecast runs — Done.** Feature commit `82b43b7` adds the run/day schema, model-artifact fingerprint, complete-run validation, transactional insert/activation, protected historical reads, and active-run staffing/dashboard queries without deleting earlier runs. The staffing page generates with POST and shows the saved run ID. See [FORECAST_RUNS.md](FORECAST_RUNS.md). All 197 backend tests passed again on 2026-10-23, including invalid/incomplete-run and transaction-rollback cases; frontend lint had zero errors (one pre-existing warning), and the webpack production build passed with normal workspace access. [PR #3](https://github.com/vale2015/Dissertation/pull/3) was merged as `f89a0ba`; its [migration replay](https://github.com/vale2015/Dissertation/actions/runs/39936121162) passed. The migration was already applied to live Supabase before the merge. Both production Vercel services reached READY on `f89a0ba`. An authenticated demo manager created 7-day run #1 and 10-day run #2 in production; the page rendered both, the protected list/detail endpoints returned stored snapshots, run #1 remained readable and inactive, and the dashboard labour cost matched active run #2 (£4,948.99). Database reads confirmed 7/10 complete forecast days, 24/32 staffing rows, the active pointer at #2, and all 212 legacy rows intact. New tables have RLS and no `anon`/`authenticated` table privileges; signed-out run-list access was denied. The last-hour Vercel runtime-error scan found no errors. The user declined a protected-preview access link and explicitly authorized production-first verification. No live failure was induced; transaction rollback and immutability were verified by automated tests and migration replay. The two immutable demo runs remain in the database as test evidence.
 - [ ] **21. Add prediction-versus-actual tracking — Verify release.** Feature commit `f0a0438` added manager-entered served covers (no POS integration), audited immutable corrections, protected endpoints, original pre-service forecast selection, accuracy metrics/segments, and a Forecast Accuracy page. Booking totals are context, not actuals. All 202 initial backend tests passed; [migration replay 40077356251](https://github.com/vale2015/Dissertation/actions/runs/40077356251) passed on PostgreSQL 17. [PR #4](https://github.com/vale2015/Dissertation/pull/4) merged as `454a42e`; the original migration reached Supabase and both Vercel services reached READY. A signed-out production check denied the page and API with “Authentication required.” Existing saved forecasts cover 2026-11-30 to 2026-12-09, so no genuinely eligible completed day existed on 2026-10-24. At the user's request, commit `5a747b8` added a clearly labelled and isolated synthetic sample to the **current database**: migration `20261024083448_demo_actual_source` was applied, and the source/actor constraint and server-only access were verified. After both Vercel production services reached READY on `5a747b8` (frontend `dpl_8WszGd17isdjUG7pUJdEN9QVmU9K`, backend `dpl_Bz7mZVz9FvXDwwPbRCVkeVBUEXKc`), the one-time fixture inserted immutable demo run #3 for seven past dates, six synthetic actuals, and one awaiting entry. Read-only checks found active real run #2 unchanged, zero real eligible completed days, and demo MAE of 3.00 covers. The revised code passed 203 backend tests, frontend lint (one existing warning), and Vercel builds; the local webpack build remained blocked by a OneDrive file lock, and the one-hour production error scan found none. **Remaining:** authenticated production manager/supervisor entry and correction, staff-role denial, duplicate prevention, and a real completed-service comparison after a pre-service forecast. The demo does not satisfy the genuine-service acceptance criterion, so #21 remains Verify release. See [FORECAST_ACCURACY.md](FORECAST_ACCURACY.md).
-- [ ] **22. Optimize prediction requests — Open.** Query only required history, cache a versioned model per warm instance, and measure cold/warm latency.
+- [ ] **22. Optimize prediction requests — Partial.** The predictor now selects only the needed date-bounded 90-day history with bound parameters, finds the latest complete row with `MAX(date)`, and caches the bundled model/hash per warm process and artifact stat key. Focused tests cover bounded reads, 7/10-day output, cache reuse, and invalid dates; independent QA passed 224 backend tests on 2026-11-06. **Remaining:** measure cold/warm p50/p95 latency, database rows/query plan and cache hits in a real environment; decide whether a short-lived/shared or saved result keyed by model version, historical cutoff, and data version is needed, with invalidation on input/model changes. A process-local cache is not durable/shared state. No live performance gain has been measured. Release status is recorded below.
+- [ ] **61. Benchmark and calibrate the demand forecast before changing models — Partial; high priority (Must).** The accuracy API now reports WAPE (undefined for zero total actuals) and groups diagnostics by saved model-version fingerprint while preserving the real/demo split. Independent QA passed focused accuracy tests and the 224-test backend suite on 2026-11-06. These groups are **not** fair head-to-head comparisons because they may represent different service dates. **Remaining:** after #21 has enough genuine completed-service actuals, compare a same-weekday/seasonal baseline and existing Random Forest with a histogram gradient-boosted tree candidate; trial LightGBM only if justified. Use leakage-free rolling-origin tests generating the same recursive 7- and 10-day horizons as the product. Report open-day MAE, WAPE, signed bias, and error by horizon/weekday with sample counts; keep closures and synthetic demo data separate. Shadow a candidate against immutable runs, promote only with a documented material improvement and rollback path, and retain the current model otherwise. No model has been changed or promoted; release status is recorded below.
 
 ## Phase 4 — External integrations and reports
 
@@ -107,7 +109,7 @@ Priority is separate from implementation status. This provisional, **value-first
 
 - [ ] **46. Add structured logging — Open.** Propagate request IDs and log safe, searchable fields without credentials or tokens.
 - [ ] **47. Add centralized error monitoring — Open.** Capture backend/frontend failures with redaction, alerting, and release context.
-- [ ] **48. Add technical and business metrics — Open.** Track latency, database load, provider health, cache effectiveness, forecast quality, and report duration.
+- [ ] **48. Add technical and business metrics — Open.** Track latency (including forecast cold/warm p50/p95), database rows/load, provider health, cache effectiveness, real forecast quality, and report duration.
 - [ ] **49. Add health and readiness endpoints — Open.** Separate liveness from dependency readiness and test their deployment use.
 - [ ] **50. Add provider circuit breakers — Open.** Stop repeatedly calling failing integrations, recover after cooldown, and preserve partial results.
 

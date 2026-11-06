@@ -15,6 +15,10 @@ The [Product Requirements Document](docs/PRD.md) is the main product reference. 
 
 The app has **no POS integration**. Booking totals are not actual guests served; genuine forecast accuracy requires a completed service and a manually recorded actual. Current release and acceptance gaps are recorded under [#21](docs/FORECAST_ACCURACY.md), [#54–55](docs/IMPROVEMENT_TRACKER.md), and [#57](docs/RFS_UI_UX_REDESIGN_PLAN.md).
 
+### Forecast modernization in progress
+
+The forecast-serving update removes the CPU-heavy web retraining endpoint, restricts each forecast read to its required 90-day history, and reuses the bundled Random Forest artifact within a warm process. The accuracy API also adds WAPE and a saved-model-version breakdown. These changes passed 224 backend tests and independent security/QA review, but live latency and accuracy improvements have not been established. They are partial steps under [#17, #22, and #61](docs/IMPROVEMENT_TRACKER.md). Retraining remains available offline, not through the app. A durable manager-only training job, real performance measurements, and a fair recursive 7/10-day benchmark against genuine served-cover actuals remain open. The synthetic demo sample cannot justify promoting another model. The independent review also identified a separate existing demand-write permission gap, tracked as [#62](docs/IMPROVEMENT_TRACKER.md). The tracker records Git, database, and Vercel release evidence separately.
+
 ## Architecture
 
 ```mermaid
@@ -29,7 +33,7 @@ flowchart LR
 
 The browser calls same-origin Next.js routes, not PostgreSQL or the Supabase Data API. Next.js stores the Flask-issued JWT in an HttpOnly session cookie and forwards protected requests with a server-side bearer token. Flask checks the current account and permissions and remains authoritative for booking, forecast, report, staff, and notification operations. Cloudflare credentials remain server-side; the model only classifies ambiguous text into an allowlisted intent. Saved reports and notification events are persisted in PostgreSQL. Optional provider results use a backend instance cache, so context can be unavailable on a cold instance.
 
-The frontend and backend are separate Vercel projects. Supabase migrations are a separate release step; pushing code does not apply them. See [database setup and migration history](supabase/README.md) and the tracker for open migration/access checks.
+The frontend and backend are separate Vercel projects. The Random Forest artifact is bundled with the backend deployment, not stored in a model registry or durable object store. Supabase migrations are a separate release step; pushing code does not apply them. See [database setup and migration history](supabase/README.md) and the tracker for open migration/access checks.
 
 ## Repository map
 
