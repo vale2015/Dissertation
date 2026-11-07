@@ -1,28 +1,30 @@
 ---
 name: move-board-cards
-description: Dormant legacy Trello card-moving skill for Dissertation. Do not use while AGENTS.md says Trello is disabled; use only if the PM explicitly re-enables Trello and requests a board move.
+description: Mirror RFS improvement status to the connected RFS BACKLOG TASKS Trello board after the Markdown tracker is updated. Use at project task-state handoffs; never treat a board move as completion evidence.
 ---
 
 # Move board cards
 
-This skill is inactive under the repository's current no-Trello instruction in `AGENTS.md`. Do not open, query, or change the board for ordinary task handoffs. Use `backlog-handoff` and `docs/product/IMPROVEMENT_TRACKER.md` instead. The procedure below applies only if the PM explicitly reverses that instruction and asks for a board move.
+The PM re-enabled Trello for the [RFS BACKLOG TASKS board](https://trello.com/b/vF796eiJ/rfs-backlog-tasks). Use this skill only for that board and the numbered tasks in `docs/product/IMPROVEMENT_TRACKER.md`. The Markdown tracker is authoritative for status, tests, and release evidence; the board is a visual mirror. Read [the board workflow](../../../docs/agents/TRELLO_BOARD_WORKFLOW.md) for board identity, list mapping, and exceptions before any write.
 
-Use the connected Trello board for the Dissertation project. This skill changes card status by moving the existing card to the corresponding list; it does not create cards, lists, or labels.
+Use the connected Trello account; never require an API key in the repository. Create a single card for a newly added or newly picked-up numbered item if no matching card exists. The PM explicitly requested a one-time import of existing non-deferred tracker items on 2026-11-07; that does not authorize future bulk imports. Do not create other lists/labels, archive cards, or touch other boards without a separate PM request.
 
 ## Status rules
 
-- **READY**: the work has not been picked up.
-- **IN PROGRESS**: work has actually started and is not yet fully tested.
-- **DONE**: the card's acceptance criteria are met and the change has been fully tested. A commit, push, migration, or deployment by itself is not sufficient.
+- **READY**: tracker Open and not picked up.
+- **IN PROGRESS**: tracker Partial or work has actually started and implementation/verification remains open.
+- **IN REVIEW**: tracker Verify release, or implementation is complete and awaiting final PM acceptance.
+- **DONE**: tracker Done after its acceptance criteria and required tests (including PM acceptance where required) are met. A commit, push, migration, or deployment alone is insufficient.
+- **Deferred**: the PM chose to leave #5 off the board. Do not create a deferred card or mislabel it as READY/IN REVIEW.
 
-When the card represents a project improvement, read `docs/product/IMPROVEMENT_TRACKER.md` and any relevant focused list before starting. Keep the tracker accurate in the same work session. The tracker may have more detailed states than the three board lists; do not collapse **Partial** or **Verify release** into **Done**. Do not move a card to **DONE** while its tracker item remains incomplete.
+Before a board write, read the numbered tracker item and any focused list. Run `backlog-handoff` first so the tracker reflects the actual state and evidence. Never infer Done from the board itself or move a card to DONE while its tracker item remains incomplete.
 
 ## Move procedure
 
-1. Identify the exact Dissertation board and the requested card. Prefer a card URL or ID; otherwise search by the item's unique tracker number and title. If more than one board or card matches, ask the user which one they mean.
-2. Read the card and the board's lists. Resolve the destination list by its actual name, matching **READY**, **IN PROGRESS**, or **DONE** case-insensitively. If the list is absent or ambiguous, stop and ask; do not create or rename one.
-3. For **DONE**, check the card's acceptance criteria and concrete test results. If evidence is missing, keep the card **IN PROGRESS**, explain what remains, and leave the tracker at its accurate status.
-4. If the card is already in the destination list, make no write. Otherwise use the connected Trello card move action with the card's resolved ID and destination list ID. Do not change other card fields or move it to another board.
-5. Read the card again to confirm its new list. Report the card, previous and new status, test evidence when marking **DONE**, and any tracker update. Distinguish the board move from Git, Supabase, and Vercel state.
+1. Read the exact board by its documented URL/ID, then its lists and cards. Match a task by unique `#NN` prefix and tracker title. If duplicates or an ambiguous match exist, stop and ask instead of guessing.
+2. Resolve the destination from the current tracker state. Confirm the board has exactly one matching READY, IN PROGRESS, IN REVIEW, or DONE list; do not create/rename lists as part of a routine handoff.
+3. If no card exists for this numbered item, create one in the resolved list with title `#NN — tracker title` and a description containing the work scope and testable acceptance criteria, plus the tracker path and current evidence state. This is normally a one-item handoff; the one-time PM-requested import is the exception.
+4. If the card exists, update its description when the task scope, acceptance criteria, or tracker status changed; preserve unrelated content. Move it within this board only when the mapped list differs. If its description and list already match, make no write. Do not mark a card complete separately from its list status or change unrelated card fields.
+5. Read the card again to confirm its list. Report the card link, previous and new list, tracker status, and any verification gap. Distinguish Trello state from Git, Supabase, and Vercel state.
 
-If Trello is unavailable or the intended board cannot be identified, do not claim the card moved. Report the connection or identification issue and ask for the board/card link if needed.
+If Trello is unavailable, the intended board/list cannot be identified, or the card cannot be uniquely matched, do not claim synchronization. Leave the tracker accurate and report the exact unsynced task. This skill acts only during a task handoff, not as a background monitor.

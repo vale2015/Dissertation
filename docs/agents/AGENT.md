@@ -1,6 +1,6 @@
 # RFS agentic capabilities and delivery framework
 
-**Current-state guide — 6 November 2026.** This document covers two different kinds of “agent”: the manager-facing RFS AI assistant in the product, and the PM-led specialist workflow used to develop the product. They are not one autonomous system. The [PRD](../product/PRD.md) owns product requirements; the [tracker](../product/IMPROVEMENT_TRACKER.md) owns completion and release status. The [architecture guide](../architecture/ARCHITECTURE.md) owns system-wide component boundaries.
+**Current-state guide — 7 November 2026.** This document covers two different kinds of “agent”: the manager-facing RFS AI assistant in the product, and the PM-led specialist workflow used to develop the product. They are not one autonomous system. The [PRD](../product/PRD.md) owns product requirements; the [tracker](../product/IMPROVEMENT_TRACKER.md) owns completion and release status. The [architecture guide](../architecture/ARCHITECTURE.md) owns system-wide component boundaries.
 
 ## 1. Manager-facing RFS AI
 
@@ -39,7 +39,7 @@ The chat route validates origin, JSON size, message/context, session, and manage
 
 ## 2. PM-led specialist team
 
-The repository contains reusable skills, **not persistent background agents**. The user is Product Manager and owns scope, priority, and final acceptance. `AGENTS.md` at the repository root coordinates handoffs; `.agents/skills/` contains the role instructions. Specialists work **sequentially**, not in parallel. Trello is disabled; the Markdown tracker is the only actionable backlog.
+The repository contains reusable skills, **not persistent background agents**. The user is Product Manager and owns scope, priority, and final acceptance. `AGENTS.md` at the repository root coordinates handoffs; `.agents/skills/` contains the role instructions. Specialists work **sequentially**, not in parallel. The Markdown tracker is the authoritative backlog; the [Trello board](TRELLO_BOARD_WORKFLOW.md) mirrors numbered task status and contains descriptions and acceptance criteria.
 
 ```mermaid
 flowchart TD
@@ -58,6 +58,7 @@ flowchart TD
   H --> PM2[PM review and acceptance]
   PM2 -. status and evidence .-> B[(docs/product/IMPROVEMENT_TRACKER.md)]
   T -. pickup .-> B
+  B -. after tracker update .-> TB[Trello board status mirror]
 ```
 
 | Skill | When it is used | Responsibility |
@@ -70,10 +71,11 @@ flowchart TD
 | `security-review` | Sensitive data or action boundary | Review authorization, exposure, injection, and unsafe automation. |
 | `ai-chatbot-evaluation` | Chatbot model, intent, or tool change | Evaluate routing, safety, and unsupported claims. |
 | `backlog-handoff` | Task-state change or completion | Record evidence and accurate status in the tracker. |
+| `move-board-cards` | After tracker handoff | Create or move the matching Trello card; keep its description and acceptance criteria aligned. |
 
-QUICK uses a focused self-check for an isolated low-risk change; STANDARD adds independent QA; FULL adds only the risk reviews needed. An implementer cannot approve their own non-trivial work. A handoff records the task ID, changed files, actual checks, gaps, and next decision. After two unsuccessful fix/retest cycles, report the blocker. Skills do not authorize a `main` merge, deployment, or production data change. The legacy `move-board-cards` skill is dormant unless the PM explicitly reverses the no-Trello rule.
+QUICK uses a focused self-check for an isolated low-risk change; STANDARD adds independent QA; FULL adds only the risk reviews needed. An implementer cannot approve their own non-trivial work. A handoff records the task ID, changed files, actual checks, gaps, and next decision. After two unsuccessful fix/retest cycles, report the blocker. Skills do not authorize a `main` merge, deployment, or production data change. The PM re-enabled the board mirror on 7 November 2026; board moves follow the tracker and do not themselves prove completion.
 
-**Current evidence:** the skills and workflow are installed and their configuration was independently reviewed, but tracker [#58](../product/IMPROVEMENT_TRACKER.md) remains Partial until a real feature completes the full sequence and PM acceptance. See the [workflow history](RFS_AI_TEAM_WORKFLOW.md) for the original setup record and the [chatbot technical note](../chatbot/RFS%20Chatbot%20Architecture%20Design.md) for deeper implementation boundaries.
+**Current evidence:** the skills and workflow are installed and their original configuration was independently reviewed. The #63 Staffing Forecast work exercised the sequence, but tracker [#58](../product/IMPROVEMENT_TRACKER.md) remains Partial until explicit PM acceptance and remaining validation are recorded. On 7 November 2026 the PM re-enabled Trello and the 62 non-deferred tracker items were mirrored with descriptions and acceptance criteria. See the [workflow history](RFS_AI_TEAM_WORKFLOW.md), [board rules](TRELLO_BOARD_WORKFLOW.md), and [chatbot technical note](../chatbot/RFS%20Chatbot%20Architecture%20Design.md).
 
 ## 3. Rules shared by both kinds of agent
 

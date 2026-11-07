@@ -4,7 +4,7 @@ This is a **value-first** product-priority view of all 63 items in the canonical
 
 **Must** = direct, high-value product outcomes or the minimum safeguards and tests required to deliver them safely. **Should** = meaningful usability, scalability, or operational benefit that can follow the next product increment. **Could** = lower-evidence optimization or structural work. **Won't for now** = explicitly deferred or outside current single-restaurant scope; reconsider if the user or product direction changes.
 
-Priority is independent of delivery state. A Must can already be **Done**, and a Could can be **Open**. The [tracker](IMPROVEMENT_TRACKER.md) alone records work state; Trello is not used. Original numbers remain stable identifiers, but this ranking is an explicit user-directed departure from numeric implementation order. These priorities are provisional because there are no measured traffic, error-budget, or delivery-deadline constraints yet.
+Priority is independent of delivery state. A Must can already be **Done**, and a Could can be **Open**. The [tracker](IMPROVEMENT_TRACKER.md) alone records authoritative work state and evidence; the [Trello board](../agents/TRELLO_BOARD_WORKFLOW.md) mirrors it. Original numbers remain stable identifiers, but this ranking is an explicit user-directed departure from numeric implementation order. These priorities are provisional because there are no measured traffic, error-budget, or delivery-deadline constraints yet.
 
 ## Recommended value-first sequence
 
@@ -100,4 +100,4 @@ The forecast review added **#61 (model-quality benchmark)** and **#62 (demand-wr
 | 5 | Verify login throttling and account protection in production | The user declined further work on this item on 2026-10-23. Existing protections remain deployed; live `429`/`Retry-After` and recovery are unverified. Reopen if requested or if login issues appear. |
 | 28 | Separate global identity from restaurant membership | Multi-restaurant administration is outside the current PRD. Revisit only if item 27 changes the tenancy decision. |
 
-Item 5 is Deferred in the tracker; item 28 remains Open because its trigger is conditional rather than a user decision to stop work. No board is used.
+Item 5 is Deferred in the tracker and, by PM choice, omitted from Trello; item 28 remains Open because its trigger is conditional rather than a user decision to stop work.
