@@ -1,6 +1,6 @@
 # RFS agentic capabilities and delivery framework
 
-**Current-state guide — 31 October 2026.** This document covers two different kinds of “agent”: the manager-facing RFS AI assistant in the product, and the PM-led specialist workflow used to develop the product. They are not one autonomous system. The [PRD](PRD.md) owns product requirements; the [tracker](IMPROVEMENT_TRACKER.md) owns completion and release status. The [architecture guide](ARCHITECTURE.md) owns system-wide component boundaries.
+**Current-state guide — 6 November 2026.** This document covers two different kinds of “agent”: the manager-facing RFS AI assistant in the product, and the PM-led specialist workflow used to develop the product. They are not one autonomous system. The [PRD](../product/PRD.md) owns product requirements; the [tracker](../product/IMPROVEMENT_TRACKER.md) owns completion and release status. The [architecture guide](../architecture/ARCHITECTURE.md) owns system-wide component boundaries.
 
 ## 1. Manager-facing RFS AI
 
@@ -33,7 +33,9 @@ flowchart LR
   S --> F
 ```
 
-The chat route validates origin, JSON size, message/context, session, and manager access before a bounded request. Flask remains the authority for permissions and business rules. Staff write reliability is **not complete**: durable idempotency, privacy/usage limits, live model inference, and authenticated manager/restricted-role end-to-end checks are open under [#54–55](IMPROVEMENT_TRACKER.md). The separate saved-report AI-explanation pilot [#52](AI_REPORT_EXPLANATIONS.md) is disabled and is **not** part of the current chatbot.
+The chat route validates origin, JSON size, message/context, session, and manager access before a bounded request. Flask remains the authority for permissions and business rules. Staff write reliability is **not complete**: durable idempotency, privacy/usage limits, live model inference, and authenticated manager/restricted-role end-to-end checks are open under [#54–55](../product/IMPROVEMENT_TRACKER.md). The separate saved-report AI-explanation pilot [#52](../chatbot/AI_REPORT_EXPLANATIONS.md) is feature-gated off by default, its current production enablement has not been rechecked, and it is **not** part of the chatbot.
+
+**Next approved workflow, not live:** registration and editing should become multi-turn, typed journeys with secure password capture and exact-target confirmation. Only after they and the existing staff actions pass release checks should Staff Management disappear from the sidebar. The model remains an optional intent classifier, never the write executor. See the [focused workflow and diagram](../chatbot/STAFF_MANAGEMENT_CHAT_WORKFLOW.md).
 
 ## 2. PM-led specialist team
 
@@ -54,7 +56,7 @@ flowchart TD
   R --> H
   S --> H
   H --> PM2[PM review and acceptance]
-  PM2 -. status and evidence .-> B[(docs/IMPROVEMENT_TRACKER.md)]
+  PM2 -. status and evidence .-> B[(docs/product/IMPROVEMENT_TRACKER.md)]
   T -. pickup .-> B
 ```
 
@@ -71,7 +73,7 @@ flowchart TD
 
 QUICK uses a focused self-check for an isolated low-risk change; STANDARD adds independent QA; FULL adds only the risk reviews needed. An implementer cannot approve their own non-trivial work. A handoff records the task ID, changed files, actual checks, gaps, and next decision. After two unsuccessful fix/retest cycles, report the blocker. Skills do not authorize a `main` merge, deployment, or production data change. The legacy `move-board-cards` skill is dormant unless the PM explicitly reverses the no-Trello rule.
 
-**Current evidence:** the skills and workflow are installed and their configuration was independently reviewed, but tracker [#58](IMPROVEMENT_TRACKER.md) remains Partial until a real feature completes the full sequence and PM acceptance. See the [workflow history](RFS_AI_TEAM_WORKFLOW.md) for the original setup record and the [chatbot technical note](RFS%20Chatbot%20Architecture%20Design.md) for deeper implementation boundaries.
+**Current evidence:** the skills and workflow are installed and their configuration was independently reviewed, but tracker [#58](../product/IMPROVEMENT_TRACKER.md) remains Partial until a real feature completes the full sequence and PM acceptance. See the [workflow history](RFS_AI_TEAM_WORKFLOW.md) for the original setup record and the [chatbot technical note](../chatbot/RFS%20Chatbot%20Architecture%20Design.md) for deeper implementation boundaries.
 
 ## 3. Rules shared by both kinds of agent
 
