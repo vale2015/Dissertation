@@ -1,10 +1,10 @@
 # RFS chatbot architecture design
 
-Status: deployed technical boundary with incomplete acceptance. #54 and #55 remain Partial after [PR #7](https://github.com/vale2015/Dissertation/pull/7) and later UI releases; live model inference, staff-action safety, and role-based end-to-end journeys remain open in the [tracker](IMPROVEMENT_TRACKER.md). The [PRD](PRD.md) owns the current product contract. The current launcher is below the left menu and opens a left dock; older top-bar/bottom-right proposals below are historical where noted.
+Status: deployed technical boundary with incomplete acceptance (reviewed 6 November 2026). #54 and #55 remain Partial after [PR #7](https://github.com/vale2015/Dissertation/pull/7) and later UI releases; live model inference, staff-action safety, and role-based end-to-end journeys remain open in the [tracker](../product/IMPROVEMENT_TRACKER.md). The [PRD](../product/PRD.md) owns the current product contract. The current launcher is below the left menu and opens a left dock; older top-bar/bottom-right proposals below are historical where noted. Conversational register/edit and subsequent sidebar removal are **planned, not deployed**; see the [focused workflow](STAFF_MANAGEMENT_CHAT_WORKFLOW.md).
 
 ## 1. Product intent and release boundary
 
-RFS lets a restaurant manager type requests for weather, nearby events, fresh and past management reports, report save/download, and current Staff Management actions. The chatbot is another interface to the same protected capabilities, not a second source of truth. Its launcher now sits below the left sidebar menu. Local Events and Past Reports are chat workflows; Staff Management returned to the sidebar under the approved redesign and also remains available inside chat. Reports is view-only. Existing direct routes remain as recovery paths.
+RFS lets a restaurant manager type requests for weather, nearby events, fresh and past management reports, report save/download, and current Staff Management actions. The chatbot is another interface to the same protected capabilities, not a second source of truth. Its launcher now sits below the left sidebar menu. Local Events and Past Reports are chat workflows; Staff Management is currently in the sidebar and inside chat, but the PM has approved a future chat-first replacement for registration/editing and eventual sidebar removal. Reports is view-only. Existing direct routes remain as recovery paths.
 
 The first published branch had an inert **skeleton** (#55). Later releases added the typed composer, protected read flows, an embedded staff workspace, and suggested prompts that prefill without sending. These are deployed, but #54–55 are not fully verified. The chat does not write to Supabase directly.
 
@@ -42,8 +42,8 @@ An unavailable backend must fail closed for requests. Weather failure does not d
 
 | Capability | Existing source | Permission | Interaction |
 | --- | --- | --- | --- |
-| Weather on open | GET /api/weather/ | view_forecasts | Deterministic card, fetched when chat opens; no model call needed. Show observation time and stale/unavailable state. |
-| Local events | GET /api/events/?start_date=&end_date= | view_forecasts | Bound and validate dates; show provider, date, source link, and unavailable state. |
+| Weather on open | GET /api/weather/ | view_forecasts | Deterministic text fetched when chat opens; no model call needed. The reply flags stale or unavailable weather. The API carries a fetch timestamp, but the current panel does not display it; that is a remaining presentation gap. |
+| Local events | GET /api/events/?start_date=&end_date= | view_forecasts | Bound and validate dates; current reply lists up to eight event names with date and provider text or an unavailable state. Source links are not yet rendered in chat. |
 | Fresh and saved management reports | GET /api/reports/management?selected_date=&days_ahead=, report-history endpoints, and protected downloads | view_reports | Generate, summarize exact source figures, save, list, view, and download in chat without page navigation. The Reports sidebar entry is a read-only view. |
 | Staff search/detail | GET /api/staff/ and GET /api/staff/{id} | manage_staff_accounts | Return minimum needed fields; do not send raw records or secret links to the model. |
 | Staff registration/edit/status/reset | Existing POST/PATCH staff routes | manage_staff_accounts | Current secure workspace uses review/confirmation and protected routes. Durable idempotent execution remains open; never pass passwords or activation/reset links through model context. |
@@ -73,7 +73,7 @@ sequenceDiagram
 
 The current staff workspace uses secure forms and explicit review/confirmation. The model does **not** propose or execute staff writes. To satisfy the remaining reliability acceptance criterion, a future confirmed-action flow needs a short-lived server-side action tied to the user, target, expected before-state, and a stable idempotency key. The UI should show the exact person and before/after values; a second request would reload the action and permissions, verify expected state, perform one protected Flask operation, and return the original result on retry. This durable step is not implemented yet.
 
-No write action is safe with only an in-memory pending card or a browser-generated key. The confirmed-action store, uniqueness constraint, and audit trail require a separate migration and tests before staff write tools are enabled.
+The existing secure workspace can perform protected staff writes, but it does not meet the requested durable once-only guarantee. A browser-generated key or in-memory pending card alone is insufficient for **new conversational execution**. The confirmed-action store, uniqueness constraint, and audit integration require a reviewed migration and tests before that new execution path is enabled.
 
 ## 6. UI/UX design
 
@@ -106,6 +106,6 @@ For #55, “Done” requires the current active panel to open/close by mouse and
 ## 9. Decisions still needed before #54
 
 - Resolved: chat report generation includes save, history, view, and PDF/CSV download without navigating to another page.
-- For staff registration, should chat use the current active-account/password form or a future invitation flow?
+- The current [staff-in-chat plan](STAFF_MANAGEMENT_CHAT_WORKFLOW.md) assumes the existing active-account/password registration for its first increment. Invitation-by-link remains a separate PM decision and would require a different API and release plan.
 - Which minimal staff fields may enter model context, if any, and what conversation retention is acceptable?
 - Resolved provider/model for the prototype: Cloudflare Workers AI/Qwen 3.8 on the free account. Correctly named credentials are configured for Preview and Production, but their values and live inference have not been verified. The Production build was released before free-allowance, privacy/usage-limit, and evaluation checks; complete those checks before marking the chatbot Done or widening use.

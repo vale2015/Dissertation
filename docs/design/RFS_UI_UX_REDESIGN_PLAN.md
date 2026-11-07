@@ -1,8 +1,10 @@
 # RFS UI/UX redesign — implementation plan
 
-**Backlog item:** [#57 in the improvement tracker](IMPROVEMENT_TRACKER.md) · **Priority:** Must (user-directed product redesign) · **Status:** Partial; the redesigned dashboard, notifications, mascot, view-only Reports, Settings, and left-docked assistant are released; responsive, role, notification, and accessibility acceptance checks remain
+**Backlog item:** [#57 in the improvement tracker](../product/IMPROVEMENT_TRACKER.md) · **Priority:** Must (user-directed product redesign) · **Status:** Partial; the redesigned dashboard, notifications, mascot, view-only Reports, Settings, and left-docked assistant are released; responsive, role, notification, and accessibility acceptance checks remain
 **Sources:** [Redesign specification](RFS_UI_UX_REDESIGN.md) and [approved dashboard PNG](RFS%20Restaurant%20Analytics%20Dashboard.png) (1536 × 1024 reference viewport)
 **Decisions recorded 2026-10-30:** Follow the new mockup for the sidebar and assistant, including Staff Management and suggested chat prompts. Reproduce the pictured mascot as a standalone production asset; build a real notification feature; keep Reports view-only with generation in chat; and put Staffing Rules and personal account settings in Settings. The underlying access rules still apply.
+
+**Current position, 2026-11-06:** The dashboard's plain-text view indicator remains in content, while the calendar is in the sidebar below Settings and selects immediately. The Add Booking, Reservation Forecast, and Staffing Forecast redesign code has reached production but still awaits signed-in acceptance. Staff Management is still visible to managers, but the PM now wants that link removed **after** conversational registration/editing is safe and verified under [#54](../chatbot/STAFF_MANAGEMENT_CHAT_WORKFLOW.md). The chronological notes below remain release history, not a substitute for the [tracker](../product/IMPROVEMENT_TRACKER.md).
 
 ## Outcome and constraints
 
@@ -18,14 +20,14 @@ The screenshot's `48`, `142`, `€2,130`, percentage deltas, October 2026 dates,
 | Bookings | `/dashboard/bookings`; expose `/dashboard/createBooking` as a prominent in-page action | Do not call aggregated covers a reservation count. |
 | Reservation Forecast | `/dashboard/reservation-forecast`; link to `/dashboard/forecast-accuracy` from forecast details | Keep forecast accuracy discoverable without adding an extra top-level mockup item. |
 | Staffing Forecast | Existing `/dashboard/staff-forecast` route, new visible label | Preserve `VIEW_FORECASTS` and forecast-run provenance. |
-| Staff Management | Existing `/dashboard/staff` route, restored sidebar link | Render only for `MANAGE_STAFF_ACCOUNTS`; existing in-chat staff tools remain available. |
+| Staff Management | Existing `/dashboard/staff` guarded route and currently visible manager sidebar link | Render only for `MANAGE_STAFF_ACCOUNTS`; keep in-chat staff tools. The newer PM-approved target removes the visible link only after conversational register/edit and other in-chat actions pass release checks. |
 | Reports | Existing `/dashboard/reports` view | Display existing report content only: no generate, save, or download controls on this page. RFS AI handles generation, saving, archive lookup, and downloads. No Past Reports sidebar entry. |
 | Settings | `/dashboard/settings` hub containing Staffing Rules and personal account settings | Reuse the existing Staffing Rules flow only for `MANAGE_STAFFING_RULES`; show each signed-in user only their own existing profile fields and full-name edit. Do not invent password, preference, or other account operations. |
 | Top-right account | Profile menu with Settings and Logout | Preserve current session/logout behaviour; keep the existing profile route as a deep link or redirect to its Settings section. |
 | Notifications | Real top-bar bell with unread count and accessible inbox | Show persisted, recipient-scoped notifications from completed app events; support read state. No decorative bell, fabricated alerts, or cross-user access. |
 | RFS AI launcher/panel | Re-skin `ManagerChat.jsx` with approved branding, immediate greeting, and suggested prompts. Per later user feedback, place the launcher below the left navigation and open a left-side dock that shifts page content, superseding the mockup's right-side panel. | Chips only prefill a supported, role-allowed request; sending remains explicit. No unsupported operation or automatic staff mutation. |
 
-The user approved the exact mascot appearance shown in the PNG. That approval is a visual target, not proof that a separately licensed source asset exists: the mascot is embedded in a flattened screenshot. Obtain the original standalone asset if available, or recreate it as a separate transparent production asset and compare it with the reference before release; confirm usage rights if the original artwork came from a third party. Keep both source design files in `docs/` under the repository's documentation rules; do not move the Markdown into the chatbot component directory solely because the source specification suggests that path.
+The user approved the exact mascot appearance shown in the PNG. That approval is a visual target, not proof that a separately licensed source asset exists: the mascot is embedded in a flattened screenshot. Obtain the original standalone asset if available, or recreate it as a separate transparent production asset and compare it with the reference before release; confirm usage rights if the original artwork came from a third party. Keep the source design specification and image in `docs/design/` under the repository's documentation rules; do not move the Markdown into the chatbot component directory solely because the source specification suggests that path.
 
 ## Delivery slices, ordered by visible value and dependency
 
@@ -51,7 +53,7 @@ Slices should be small reviewable changes, not one large CSS rewrite. Start with
 - Implement notifications through the existing Flask API and database, not direct browser access to notification rows. Store recipient, event type/source, content, creation/read timestamps, and an idempotency key; enforce recipient and role checks server-side. The first genuine event is a saved management report, inserted in the same transaction as its report snapshot. Use a bounded list and refresh on opening/focusing the inbox; realtime delivery and scheduled briefings are separate future work (#51). Retain notifications for 90 days with bounded cleanup and keep the table server-only.
 - Reuse the current own-profile endpoint and Staffing Rules page in Settings; permission-gate the rules section. Existing `/dashboard/profile` and `/dashboard/staffing-rules` links may redirect or remain deep links, but should not create parallel settings implementations.
 - Do not infer scheduled staff from recommended staff, and do not render a confidence band without a defensible backend calculation.
-- Coordinate with #56 before release: the dependency update is in a protected preview but not yet in `main` or production. Plan the redesign branch from the eventual approved base, not an outdated checkout.
+- The original #56 coordination gate has passed at the source/release level: Next.js 16.4.3 is in `origin/main` and later production frontend builds. #56 still awaits authenticated manager/restricted-role regression verification before its own **Done** status; do not equate a successful build with that check.
 
 ## Acceptance and verification
 

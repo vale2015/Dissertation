@@ -1,6 +1,6 @@
 # RFS — Complete UI/UX Redesign Specification
 
-> **Status:** Original approved design brief; substantially implemented but still Partial under [tracker #57](IMPROVEMENT_TRACKER.md). Its checklists record the initial target, not current release status. Later PM decisions removed the white top strip and cards below the charts and moved RFS AI to a left dock. See the [implementation plan](RFS_UI_UX_REDESIGN_PLAN.md) for the current contract.
+> **Status:** Original approved design brief; substantially implemented but still Partial under [tracker #57](../product/IMPROVEMENT_TRACKER.md). Its checklists record the initial target, not current release status. Later PM decisions removed the white top strip and cards below the charts, moved the calendar below Settings, and moved RFS AI to a left dock. Reports remains view-only; its generation/save/download workflow is in chat. The current Staff Management sidebar entry is planned for removal only after conversational register/edit passes safety and release checks. See the [implementation plan](RFS_UI_UX_REDESIGN_PLAN.md) and [staff workflow](../chatbot/STAFF_MANAGEMENT_CHAT_WORKFLOW.md) for current decisions.
 > **Design reference:** Approved RFS dashboard and RFS AI mockup (26 October 2026)
 
 ## 1. Objective
@@ -231,4 +231,4 @@ Each implementation backlog item must document:
 
 ## 7. Repository organization
 
-Keep **this Markdown specification in the same existing chatbot directory** as `ManagerChat.jsx`. The directory can later house a chatbot-specific component README and UI assets, while this document serves as the cross-application redesign plan. Do not move existing components purely to accommodate the specification.
+Keep this historical specification in `docs/design/`, alongside the [current implementation plan](RFS_UI_UX_REDESIGN_PLAN.md). Chatbot components remain under `frontend/src/components/chatbot/`; do not move application code solely to match this old document.

@@ -1,6 +1,6 @@
 # Immutable forecast runs
 
-This is the implementation note for [improvement 20](IMPROVEMENT_TRACKER.md), not a separate backlog.
+This is the implementation note for [improvement 20](../product/IMPROVEMENT_TRACKER.md), not a separate backlog.
 
 The old staffing forecast deleted earlier rows for the same date whenever it regenerated. That erased the original recommendation and prevented a meaningful forecast-versus-actual comparison. The new design stores each complete prediction and its daily staffing rows under a unique run ID. A single-row pointer identifies the current run; the old runs remain readable for later accuracy analysis.
 

@@ -43,6 +43,7 @@ test("shows accurate staffing, cost and saved-run information without suggesting
   expect(fetchMock.mock.calls[0][0]).toBe("/api/backend/staff-cost/forecast?days_ahead=7");
   expect(fetchMock.mock.calls[0][1].method).toBe("POST");
   expect(screen.getByText("Saved run #42")).toBeInTheDocument();
+  expect(screen.queryByText(/Based on demand through|Changing the horizon creates a new saved run/)).not.toBeInTheDocument();
   expect(screen.getByText("Average recommended staff").closest(".summary-card")).toHaveTextContent("5.0");
   expect(screen.getByText("Predicted covers", { selector: ".summary-card-label" }).closest(".summary-card")).toHaveTextContent("192");
   expect(screen.getByText("Estimated labour cost", { selector: ".summary-card-label" }).closest(".summary-card")).toHaveTextContent("£2,880.00");

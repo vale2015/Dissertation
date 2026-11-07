@@ -1,6 +1,6 @@
 # Database migrations
 
-**Current status (2026-10-30):** the repository has 12 timestamped migrations. The notification migration was applied to the live project and its RLS/grants were checked, as recorded under [tracker #57](../docs/IMPROVEMENT_TRACKER.md). The dated paragraphs below preserve the migration/release chronology; statements such as “pending” or “not updated” describe that earlier point in time, not today's state. Always check the tracker and run a fresh migration list/dry-run before another release.
+**Current status (2026-10-30):** the repository has 12 timestamped migrations. The notification migration was applied to the live project and its RLS/grants were checked, as recorded under [tracker #57](../docs/product/IMPROVEMENT_TRACKER.md). The dated paragraphs below preserve the migration/release chronology; statements such as “pending” or “not updated” describe that earlier point in time, not today's state. Always check the tracker and run a fresh migration list/dry-run before another release.
 
 `migrations/` is the ordered, forward-only schema history for the application.
 It reconstructs the seven original tables, the two staff-account changes, the
@@ -102,7 +102,7 @@ to a shared database.
 `20261030104654_in_app_notifications.sql` added a private, RLS-enabled,
 server-only inbox table with explicit client-role revocations. At the initial
 review, a CLI dry-run listed it as pending; it was subsequently applied to the
-live project, with RLS and grants checked as recorded in [tracker #57](../docs/IMPROVEMENT_TRACKER.md).
+live project, with RLS and grants checked as recorded in [tracker #57](../docs/product/IMPROVEMENT_TRACKER.md).
 The Flask report-save path writes a notification in the same transaction as the
 saved report. A real end-to-end recipient-scoping/read-state check is still
 outstanding, so the UI redesign remains Partial. A fresh local full-stack

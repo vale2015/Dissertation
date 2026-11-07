@@ -5,7 +5,7 @@ description: Dormant legacy Trello card-moving skill for Dissertation. Do not us
 
 # Move board cards
 
-This skill is inactive under the repository's current no-Trello instruction in `AGENTS.md`. Do not open, query, or change the board for ordinary task handoffs. Use `backlog-handoff` and `docs/IMPROVEMENT_TRACKER.md` instead. The procedure below applies only if the PM explicitly reverses that instruction and asks for a board move.
+This skill is inactive under the repository's current no-Trello instruction in `AGENTS.md`. Do not open, query, or change the board for ordinary task handoffs. Use `backlog-handoff` and `docs/product/IMPROVEMENT_TRACKER.md` instead. The procedure below applies only if the PM explicitly reverses that instruction and asks for a board move.
 
 Use the connected Trello board for the Dissertation project. This skill changes card status by moving the existing card to the corresponding list; it does not create cards, lists, or labels.
 
@@ -15,7 +15,7 @@ Use the connected Trello board for the Dissertation project. This skill changes 
 - **IN PROGRESS**: work has actually started and is not yet fully tested.
 - **DONE**: the card's acceptance criteria are met and the change has been fully tested. A commit, push, migration, or deployment by itself is not sufficient.
 
-When the card represents a project improvement, read `docs/IMPROVEMENT_TRACKER.md` and any relevant focused list before starting. Keep the tracker accurate in the same work session. The tracker may have more detailed states than the three board lists; do not collapse **Partial** or **Verify release** into **Done**. Do not move a card to **DONE** while its tracker item remains incomplete.
+When the card represents a project improvement, read `docs/product/IMPROVEMENT_TRACKER.md` and any relevant focused list before starting. Keep the tracker accurate in the same work session. The tracker may have more detailed states than the three board lists; do not collapse **Partial** or **Verify release** into **Done**. Do not move a card to **DONE** while its tracker item remains incomplete.
 
 ## Move procedure
 

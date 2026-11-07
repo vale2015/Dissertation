@@ -10,14 +10,14 @@ Priority is independent of delivery state. A Must can already be **Done**, and a
 
 1. **Make training and demand writes safe, then prove forecast usefulness:** #17's mutating web retraining route is removed in the forecast-serving update but a durable job is still absent; resolve #62's demand-write permission gap. #20 is Done, while #21 still needs genuine completed-service actuals. Use real outcomes for #61's baseline-versus-model benchmark before changing algorithms or making performance claims from demo data.
 2. **Close release verification on the redesigned manager experience:** #57 has the approved shared shell, charts, notifications, Settings, and left-docked assistant, but remains Partial until its remaining acceptance checks pass. #29's shared layout is implemented and still awaits signed-in role checks.
-3. **Finish chatbot safety and evidence:** #54–55 are deployed pilots, not completed capabilities. Verify live model inference, protected manager/restricted-role journeys, report and staff actions, durable staff-write idempotency, privacy, and usage limits. Keep the separate #52 report-note pilot disabled until reviewed.
+3. **Finish chatbot safety and the PM's staff workflow:** #54 is now the active Must-priority delivery: complete conversational registration/editing and safe staff writes before removing its sidebar entry. #54–55 are deployed pilots, not completed capabilities. Verify live model inference, protected manager/restricted-role journeys, report and staff actions, durable staff-write idempotency, privacy, and usage limits. Do not approve or widen use of the separate off-by-default #52 report-note pilot until reviewed.
 4. **Maintain database and security gates:** close the remaining #3–4 migration/access work and the relevant #7–8 safeguards as features change. Track applied migrations separately from code and deployment.
 5. **Apply quality gates continuously:** use #35, #37, #39, #41, #43, and #56 as applicable to each release; a READY deployment is not proof of a successful user journey.
 6. **Keep product documentation usable:** #58 establishes the sequential PM-led team; #59 consolidates current requirements in the PRD and maintains the canonical tracker. Prioritize subsequent Should items from measured bottlenecks and manager feedback.
 
-The latest forecast review adds **#61 (model-quality benchmark)** and **#62 (demand-write authorization)**, and raises **#17 (safe training boundary)** to Must. #21 remains the prerequisite for evidence from genuine completed services. The chatbot (#54–55) remains Partial; #52 remains Partial and disabled in production. Security and test work remains Must because a feature that risks customer data or cannot be verified is not ready for users.
+The forecast review added **#61 (model-quality benchmark)** and **#62 (demand-write authorization)**, and raised **#17 (safe training boundary)** to Must. The 6 November PM decision also raised **#54** to Must for conversational staff registration/editing and eventual sidebar removal. #21 remains the prerequisite for evidence from genuine completed services. The chatbot (#54–55) remains Partial; #52 remains Partial and off by default, with current production enablement not rechecked. Security and test work remains Must because a feature that risks customer data or cannot be verified is not ready for users.
 
-## Must — user value and minimum safe-delivery gates (20)
+## Must — user value and minimum safe-delivery gates (21)
 
 | # | Improvement | Why Must |
 |---|---|---|
@@ -27,7 +27,7 @@ The latest forecast review adds **#61 (model-quality benchmark)** and **#62 (dem
 | 4 | Verify and restrict Supabase table access | Protect customer and staff data before adding more stored reports. |
 | 7 | Strengthen browser security headers | Protect authenticated user sessions and downloads. |
 | 8 | Add API request limits and validation | Keep booking and report inputs safe and predictable. |
-| 17 | Move training out of web requests | Current mutating GET permits supervisors to start CPU-heavy retraining; use a manager-only durable job before scale. |
+| 17 | Move training out of web requests | The mutating web route has been removed, closing that immediate exposure; a manager-only durable training job and full release verification remain before Done. |
 | 20 | Create immutable forecast runs | Required to compare a prediction with the eventual actual without rewriting history. |
 | 21 | Add prediction-versus-actual tracking | Show managers whether forecasts are useful and meet a stated PRD goal. |
 | 61 | Benchmark and calibrate the demand forecast | Choose a model on genuine 7/10-day forecast outcomes, not synthetic demo scores or algorithm fashion. |
@@ -39,10 +39,11 @@ The latest forecast review adds **#61 (model-quality benchmark)** and **#62 (dem
 | 39 | Repair dependency reproducibility | Ensure value-bearing changes can be built and tested from a clean environment. |
 | 41 | Add continuous integration | Keep the essential tests running on each change. |
 | 43 | Add deployment smoke tests | Confirm the new manager-facing flows work after release. |
-| 56 | Remediate audited frontend dependency vulnerabilities | The patched branch has a clean audit; authenticated preview and production release checks remain before Done. |
+| 54 | Add a restaurant manager chatbot for existing app actions | PM-selected next workflow: finish secure in-chat staff registration/editing, then remove Staff Management from the sidebar without losing other account controls. |
+| 56 | Remediate audited frontend dependency vulnerabilities | The patched dependency is in `main` and later production builds; authenticated regression checks and PM acceptance remain before Done. |
 | 57 | Implement the approved RFS UI/UX redesign | User-approved dashboard and assistant experience is the next visible product direction; its bell must show real, recipient-scoped notifications, while Reports stays view-only and Settings reuses existing capabilities. Deliver without fabricated data or broken permissions. |
 
-## Should — meaningful next benefits (29)
+## Should — meaningful next benefits (28)
 
 | # | Improvement | Why Should |
 |---|---|---|
@@ -69,7 +70,6 @@ The latest forecast review adds **#61 (model-quality benchmark)** and **#62 (dem
 | 48 | Add technical and business metrics | Measure report use, forecast quality, and actual bottlenecks. |
 | 49 | Add health and readiness endpoints | Improve diagnosis of unavailable services. |
 | 50 | Add provider circuit breakers | Keep optional external failures from spreading. |
-| 54 | Add a restaurant manager chatbot for existing app actions | Medium priority by user direction; useful manager workflows, after the skeleton and with account-action safeguards. |
 | 55 | Design and build the chatbot skeleton | First chatbot implementation milestone; shared entry point, authentication, accessibility, and disabled tool boundary before features. |
 | 58 | Establish the PM-led sequential AI delivery team | Improve delivery quality and role clarity for future changes without slowing every small task; the first handoff must prove the workflow. |
 | 59 | Audit and refresh project documentation | Give the PM and future specialists four reliable current-state guides—PRD, agents, visual design, and architecture—without losing the canonical tracker or historical release evidence. |
@@ -90,7 +90,7 @@ The latest forecast review adds **#61 (model-quality benchmark)** and **#62 (dem
 | 31 | Introduce TypeScript incrementally | Reduce type errors after API contracts are stabilized. |
 | 44 | Align deployment regions | Revisit when measured cross-region latency warrants a move. |
 | 51 | Automate manager briefings and alerts | Future scheduled, opt-in summaries after forecast-versus-actual exists; distinct from #57's approved event-driven in-app notification inbox. |
-| 52 | Add AI-assisted report explanations | The disabled pilot is Partial, but the user now prefers a chatbot that performs existing manager workflows. Revisit as an optional chat capability after quality and cost review. |
+| 52 | Add AI-assisted report explanations | The off-by-default pilot is Partial, but the user now prefers a chatbot that performs existing manager workflows. Revisit as an optional chat capability after quality and cost review. |
 | 53 | Pilot a low-code external integration | Could remove custom integration code when a specific external workflow is requested. |
 
 ## Won't for now — explicitly deferred or outside current scope (2)

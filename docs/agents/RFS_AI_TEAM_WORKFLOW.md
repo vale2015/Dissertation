@@ -1,6 +1,6 @@
 # RFS sequential AI delivery team
 
-**Product owner:** the user, acting as Product Manager (PM). **Backlog:** [IMPROVEMENT_TRACKER.md](IMPROVEMENT_TRACKER.md), item #58. **Priority:** Should (user-directed delivery process). **Current status:** Partial until exercised on a real task.
+**Product owner:** the user, acting as Product Manager (PM). **Backlog:** [IMPROVEMENT_TRACKER.md](../product/IMPROVEMENT_TRACKER.md), item #58. **Priority:** Should (user-directed delivery process). **Current status:** Partial until exercised on a real task.
 
 This is a repository configuration, not seven continuously running services. Codex can invoke one specialist at a time for a particular PM-approved task. The engineering lead starts with `feature-triage`, chooses a proportional path, and hands off sequentially. The PM owns product decisions and final product acceptance.
 
@@ -21,4 +21,4 @@ The supplied starter pack contained a Trello handoff and an outdated right-side 
 
 The skill metadata/name format check passed, and an independent QA agent reviewed the configuration. Its finding that the old board skill could auto-route ordinary status updates was fixed and rechecked. This is a configuration review, not a feature-delivery trial.
 
-**Verification still needed:** run one real task through triage, an implementation specialist, independent QA where selected, an accurate tracker update, and PM acceptance. Until then, the skill files and coordination rules are installed but the handoff behavior is not proven end to end.
+**Current evidence (7 November 2026):** the [#63 Staffing Forecast redesign](../product/IMPROVEMENT_TRACKER.md) exercised triage, implementation, independent UX/QA, and tracker handoff. Explicit PM acceptance of that complete sequence is not yet recorded, so #58 remains Partial. The team files and `AGENTS.md` are present in `origin/main`; the original setup note's branch-only state is historical. No standalone Vercel deployment or Supabase migration is required for the repository workflow itself.

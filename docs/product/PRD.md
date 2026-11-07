@@ -4,13 +4,13 @@
 |---|---|
 | Product | RFS — Restaurant Forecasting System |
 | Document status | Living product baseline; implementation status and release evidence live in the [improvement tracker](IMPROVEMENT_TRACKER.md) |
-| Version | 1.2 |
-| Date | 31 October 2026 |
+| Version | 1.3 |
+| Date | 6 November 2026 |
 | Product owner | Valerio Gerardi |
 | Primary users | Independent restaurant managers, supervisors, and staff |
 | Platforms | Responsive web application; separate Next.js and Flask services |
 
-This is the **primary product reference** for user needs, current behaviour, requirements, and open decisions. The companion [agent guide](AGENT.md) explains the in-app assistant and PM-led delivery team; the [design system](DESIGN_SYSTEM.md) describes the implemented visual language; the [architecture guide](ARCHITECTURE.md) maps the technical components and data flows. The [improvement tracker](IMPROVEMENT_TRACKER.md), not this PRD, is authoritative for acceptance, tests, Git, database, and deployment status.
+This is the **primary product reference** for user needs, current behaviour, requirements, and open decisions. The companion [agent guide](../agents/AGENT.md) explains the in-app assistant and PM-led delivery team; the [design system](../design/DESIGN_SYSTEM.md) describes the implemented visual language; the [architecture guide](../architecture/ARCHITECTURE.md) maps the technical components and data flows. The [improvement tracker](IMPROVEMENT_TRACKER.md), not this PRD, is authoritative for acceptance, tests, Git, database, and deployment status.
 
 ## 1. Executive summary
 
@@ -149,11 +149,15 @@ Key needs:
 
 ### 7.4 Current manager experience and approved interface decisions
 
-The visible sidebar contains Dashboard, Bookings, Reservation Forecast, Staffing Forecast, Staff Management (manager only), Reports, and Settings, filtered by role permissions. Bookings exposes Add Booking; Forecast Accuracy is reached from the forecast experience. Settings combines personal account fields with Staffing Rules for managers. A real notification bell sits with the account controls. The dashboard shows live-data cards and charts; it does not show the old white top strip or the former cards beneath the charts.
+The visible sidebar contains Dashboard, Bookings, Reservation Forecast, Staffing Forecast, Staff Management (manager only), Reports, and Settings, filtered by role permissions. Bookings exposes Add Booking; Forecast Accuracy is reached from the forecast experience. Settings combines personal account fields with Staffing Rules for managers. The sidebar calendar sits below Settings and above RFS AI; on the dashboard it defaults to the current Europe/London day, opens a selected-day view immediately, and can return to Overview. A real notification bell sits with the account controls. The dashboard shows live-data cards and charts; it does not show the old white top strip or the former cards beneath the charts.
+
+Add Booking separates required service fields (date, time, positive whole-number party size, and booking type) from optional guest name and notes. Reservation Forecast presents a 7/10-day estimate with closure context and a day-by-day table. Staffing Forecast shows recommended department/role counts and estimated labour cost from a saved run, not a rota or actual sales. These interfaces still have signed-in visual and functional acceptance gaps recorded in the tracker.
 
 RFS AI is manager-only. Its launcher is below the left navigation. On desktop, the conversation opens as a left dock and moves the page aside rather than obscuring it; at smaller widths it stays in normal flow. It greets the manager, shows current restaurant weather on open, and accepts typed requests. Suggested prompts may prefill the composer but never submit or mutate data automatically. The assistant can retrieve local events, bookings/forecast summaries, and fresh or saved reports; report generation, saving, history retrieval, and PDF/CSV downloads happen in chat. The Reports page only lists and displays saved snapshots. Staff Management remains both a sidebar page and a protected workspace inside chat; account changes are completed through secure forms and confirmation, not autonomous model actions.
 
-The application remains a single-restaurant prototype. Currency, dates, observed versus estimated values, missing data, and demo forecast-accuracy fixtures must be labelled honestly. The [redesign plan](RFS_UI_UX_REDESIGN_PLAN.md) records implementation decisions; the [tracker](IMPROVEMENT_TRACKER.md) records what remains unverified.
+**Approved next workflow (planned, not yet live):** remove the Staff Management sidebar entry once managers can complete registration and editing conversationally inside RFS AI, with secure password capture, exact-account review, explicit confirmation, protected execution, and retry safety. Other current staff-account actions must remain accessible in the bot. Keep the guarded direct route initially as a recovery path. See the [staff-in-chat delivery plan](../chatbot/STAFF_MANAGEMENT_CHAT_WORKFLOW.md); the [tracker](IMPROVEMENT_TRACKER.md) records implementation and release state.
+
+The application remains a single-restaurant prototype. Currency, dates, observed versus estimated values, missing data, and demo forecast-accuracy fixtures must be labelled honestly. The [redesign plan](../design/RFS_UI_UX_REDESIGN_PLAN.md) records implementation decisions; the [tracker](IMPROVEMENT_TRACKER.md) records what remains unverified.
 
 ## 8. Functional requirements
 
@@ -234,6 +238,7 @@ Priority definitions: **Must** is necessary for the product's core purpose, **Sh
 | CHAT-03 | Must for staff writes | Staff actions use the existing protected workspace. | A manager reviews the exact account/action, confirms writes, receives failure feedback, and cannot repeat a mutation unintentionally; durable idempotency and complete live testing remain open. |
 | CHAT-04 | Must for model use | AI may classify ambiguous intent but cannot authorize or execute a write. | The Next.js server sends only bounded non-secret text to Cloudflare Workers AI; allowlisted routing and Flask permissions remain authoritative. Privacy, usage limits, and live-model evaluation are required before declaring the pilot complete. |
 | CHAT-05 | Must for staff writes | All existing Staff Management actions are available inside the protected chat workspace. | Managers can search/filter/view, register, edit permitted identity or role fields, suspend, deactivate, reactivate, and issue reset links without leaving chat; each write shows the exact target and values for explicit review, rechecks permissions, and is safe under retries. There is no delete or rota/time-attendance action. |
+| CHAT-06 | Must for the next staff workflow | Registration and editing are completed through typed conversation in RFS AI, after which the Staff Management sidebar entry is removed. | A manager can identify the exact account, provide permitted fields, review and confirm a once-only write, and see a verified result without opening the page. Passwords never enter chat or model context; other existing staff actions remain available in chat, and the direct route stays permission-guarded. |
 | NOTIF-01 | Should | Users receive recipient-scoped in-app notifications for completed report saves. | Persisted unread/read states and counts work; only the intended recipient can view or mark an item read; the real event is tested end to end. |
 | SET-01 | Should | Settings combines personal account information and manager-authorized Staffing Rules. | Users can edit only their own permitted fields; non-managers do not see or access rule management. |
 
@@ -416,7 +421,7 @@ Each event should include timestamp, authorised user identifier where appropriat
 
 ## 17. Product decisions and open questions
 
-1. **Resolved:** saved management reports store immutable JSON and PDF/CSV snapshots for 90 days; see [report history](REPORT_HISTORY.md).
+1. **Resolved:** saved management reports store immutable JSON and PDF/CSV snapshots for 90 days; see [report history](../architecture/REPORT_HISTORY.md).
 2. What forecast accuracy threshold is acceptable for staffing decisions after a valid baseline is collected? The current demo sample is illustrative, not that baseline.
 3. Which alert channels are justified: in-app only, email, SMS, or messaging integrations?
 4. Should managers be able to override a forecast, and how should the original prediction and reason be preserved?
@@ -439,6 +444,6 @@ A product increment is complete when:
 - sensitive data is excluded from logs, analytics, and exports;
 - database changes include a reviewed migration and recovery guidance;
 - relevant automated tests, linting, and production builds pass;
-- README/API documentation reflects user-visible or operational changes;
-- the Vercel preview is verified before production promotion.
+- relevant product, design, architecture, and API documentation reflects user-visible or operational changes; update the root README only when the PM asks for it;
+- normally, the protected Vercel preview is verified before production promotion; any PM-approved exception is recorded with its risk and followed by equivalent signed-in production checks before the increment is called Done.
 

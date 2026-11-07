@@ -84,7 +84,7 @@ function normalizeForecast(json, days) {
     };
   });
   if (new Set(rows.map((row) => row.date)).size !== days) throw new Error("Duplicate staffing forecast dates");
-  return { rows, runId: json.run_id ?? null, baseDate: json.selected_date, modelVersion: json.model_version || "" };
+  return { rows, runId: json.run_id ?? null, modelVersion: json.model_version || "" };
 }
 
 function StaffingBars({ rows }) {
@@ -188,7 +188,6 @@ function StaffForecastContent() {
         <button type="button" aria-pressed={view === "staffing"} onClick={() => setView("staffing")}>Staffing</button>
         <button type="button" aria-pressed={view === "cost"} onClick={() => setView("cost")}>Labour cost</button>
       </div></div>
-      <p>Based on demand through {result?.baseDate ? formatDateDDMMYYYY(result.baseDate) : requestedDate ? formatDateDDMMYYYY(requestedDate) : "the latest available date"}. Changing the horizon creates a new saved run.</p>
     </div>
 
     {status === "loading" && <section className="dashboard-panel rfs-forecast-state" role="status">Generating and saving staffing forecast…</section>}

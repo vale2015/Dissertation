@@ -225,7 +225,6 @@
 
 .rfs-staff-run { flex: none; padding: 7px 10px; border: 1px solid #eceef1; border-radius: 7px; color: #505a69; background: #fff; font-size: 12px; font-weight: 700; }
 .rfs-staff-controls { justify-content: flex-start; flex-wrap: wrap; }
-.rfs-staff-controls > p { margin-left: auto; max-width: 380px; line-height: 1.5; }
 .rfs-staff-stats .summary-card { min-width: 0; }
 .rfs-staff-main { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(300px, .9fr); gap: 16px; align-items: stretch; }
 .rfs-staff-chart-panel,.rfs-staff-day-panel { min-width: 0; padding: 0; overflow: hidden; }
@@ -301,7 +300,6 @@
   .manager-chat-panel { position: static; width: 100%; height: min(600px, 70dvh); max-height: none; margin-top: 10px; border: 1px solid #e9ebef; border-radius: 12px; }
 }
 @media (max-width: 700px) {
-  .rfs-staff-controls > p { margin-left: 0; max-width: none; }
   .rfs-staff-day-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .rfs-booking-grid { grid-template-columns: 1fr; gap: 18px; }
   .rfs-forecast-header { display: block; }
