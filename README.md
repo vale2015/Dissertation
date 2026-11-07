@@ -68,7 +68,7 @@ GitHub `main` is connected to separate Vercel frontend and backend projects. The
 
 ## PM-led agentic delivery team
 
-The Product Manager (you) owns scope, priorities, and final product acceptance. `AGENTS.md` coordinates reusable project skills; it does not create agents that run continuously. For each task, the engineering lead chooses a QUICK, STANDARD, or FULL path. Specialists work **one at a time**, with independent QA and risk-based UX, security, or AI evaluation when needed. An implementer cannot approve their own non-trivial work. No Trello board is used; the Markdown tracker is canonical.
+The Product Manager (you) owns scope, priorities, and final product acceptance. `AGENTS.md` coordinates reusable project skills; it does not create agents that run continuously. For each task, the engineering lead chooses a QUICK, STANDARD, or FULL path. Specialists work **one at a time**, with independent QA and risk-based UX, security, or AI evaluation when needed. An implementer cannot approve their own non-trivial work. The [RFS BACKLOG TASKS Trello board](https://trello.com/b/vF796eiJ/rfs-backlog-tasks) shows task progress, while the [Markdown tracker](docs/product/IMPROVEMENT_TRACKER.md) remains authoritative for acceptance, tests, and release evidence. Agents update the tracker first, then the matching card at a task handoff; there is no unattended background sync.
 
 ```mermaid
 flowchart LR
@@ -82,9 +82,10 @@ flowchart LR
   Extra --> PM2
   Lead -. pickup .-> T[(Markdown tracker)]
   PM2 -. evidence and status .-> T
+  T -. status mirror at handoff .-> B[Trello board]
 ```
 
-See [the agent guide](docs/agents/AGENT.md) and [team workflow](docs/agents/RFS_AI_TEAM_WORKFLOW.md) for the eight roles and handoff requirements. The team configuration is still **Partial** under tracker #58: a real feature has exercised the sequential handoff, but explicit PM acceptance of that full process is not recorded. A role never grants permission to merge to `main`, deploy, or change production data without PM approval.
+The board uses READY (not picked up), IN PROGRESS (work under way), IN REVIEW (release checks or acceptance pending), and DONE (fully tested and accepted). Deferred task #5 stays off the board by PM choice. Each numbered card has a description and acceptance criteria. See the [board workflow](docs/agents/TRELLO_BOARD_WORKFLOW.md), [agent guide](docs/agents/AGENT.md), and [team workflow](docs/agents/RFS_AI_TEAM_WORKFLOW.md) for handoff requirements. The team configuration is still **Partial** under tracker #58: a real feature has exercised the sequential handoff, but explicit PM acceptance of that full process is not recorded. A role never grants permission to merge to `main`, deploy, or change production data without PM approval.
 
 ## Documentation and limitations
 

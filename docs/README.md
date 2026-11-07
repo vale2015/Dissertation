@@ -7,7 +7,7 @@
 3. [DESIGN_SYSTEM.md](design/DESIGN_SYSTEM.md) — the implemented visual language, layout, components, responsive rules, and remaining visual checks.
 4. [ARCHITECTURE.md](architecture/ARCHITECTURE.md) — the overall frontend, API, ML, database, provider, security, and deployment architecture, with data-flow diagrams.
 
-This index stays at the top of `docs/`; all other files are grouped by topic below. The 17 Markdown files were reviewed against the repository on 7 November 2026, before this folder reorganization. Dated implementation notes preserve release history and are not necessarily current UI specifications. The [improvement tracker](product/IMPROVEMENT_TRACKER.md) is the **only actionable backlog** and source of truth for work status, tests, Git, Supabase, and Vercel.
+This index stays at the top of `docs/`; all other files are grouped by topic below. The original 17 Markdown files were reviewed against the repository on 7 November 2026, before this folder reorganization; the Trello workflow note was added later. Dated implementation notes preserve release history and are not necessarily current UI specifications. The [improvement tracker](product/IMPROVEMENT_TRACKER.md) is the **authoritative actionable backlog** and source of truth for work status, tests, Git, Supabase, and Vercel; Trello mirrors its task status.
 
 ## Product (`product/`)
 
@@ -40,5 +40,6 @@ This index stays at the top of `docs/`; all other files are grouped by topic bel
 
 - [Agent guide](agents/AGENT.md) — manager-facing RFS AI and the PM-led specialist framework, with orchestration and safety boundaries.
 - [Sequential team workflow](agents/RFS_AI_TEAM_WORKFLOW.md) — team-setup record and remaining acceptance proof for #58.
+- [Trello board workflow](agents/TRELLO_BOARD_WORKFLOW.md) — card fields, status mapping, and tracker-first handoff rules for the PM's board.
 
 The old chatbot product-scope brief was consolidated into the PRD; its technical boundaries remain in the chatbot architecture document. The early HTML chat mockup and a stray diagram backup were removed because neither represents the current product. Git history retains them. Do not use historical design checklists as release status; use the tracker.
