@@ -1,6 +1,6 @@
 # MoSCoW prioritization of architecture improvements
 
-This is a **value-first** product-priority view of all 63 items in the canonical [improvement tracker](IMPROVEMENT_TRACKER.md), not a second backlog. It reflects the [PRD](PRD.md): a single-restaurant dissertation prototype focused on helping managers prepare services, reuse reports, and judge whether forecasts are accurate. Last reviewed: 2026-11-06.
+This is a **value-first** product-priority view of all 64 items in the canonical [improvement tracker](IMPROVEMENT_TRACKER.md), not a second backlog. It reflects the [PRD](PRD.md): a single-restaurant dissertation prototype focused on helping managers prepare services, reuse reports, and judge whether forecasts are accurate. Last reviewed: 2026-11-09.
 
 **Must** = direct, high-value product outcomes or the minimum safeguards and tests required to deliver them safely. **Should** = meaningful usability, scalability, or operational benefit that can follow the next product increment. **Could** = lower-evidence optimization or structural work. **Won't for now** = explicitly deferred or outside current single-restaurant scope; reconsider if the user or product direction changes.
 
@@ -43,7 +43,7 @@ The forecast review added **#61 (model-quality benchmark)** and **#62 (demand-wr
 | 56 | Remediate audited frontend dependency vulnerabilities | The patched dependency is in `main` and later production builds; authenticated regression checks and PM acceptance remain before Done. |
 | 57 | Implement the approved RFS UI/UX redesign | User-approved dashboard and assistant experience is the next visible product direction; its bell must show real, recipient-scoped notifications, while Reports stays view-only and Settings reuses existing capabilities. Deliver without fabricated data or broken permissions. |
 
-## Should — meaningful next benefits (28)
+## Should — meaningful next benefits (29)
 
 | # | Improvement | Why Should |
 |---|---|---|
@@ -75,6 +75,7 @@ The forecast review added **#61 (model-quality benchmark)** and **#62 (demand-wr
 | 59 | Audit and refresh project documentation | Give the PM and future specialists four reliable current-state guides—PRD, agents, visual design, and architecture—without losing the canonical tracker or historical release evidence. |
 | 60 | Redesign the Add Booking page around stored fields | Remove a false required-name constraint and make the booking workflow match the actual create contract. |
 | 63 | Redesign the Staffing Forecast planning page | Make recommended staffing, cost, closure, and role inputs understandable in the manager's daily workflow. |
+| 64 | Install the RFS research knowledge base and automatic agent recovery | Keep externally sourced AI/hospitality ideas and PM decisions available across agent sessions; current work is an integration slice, not a verified weekly system. |
 
 ## Could — lower-evidence optimization and structure (12)
 

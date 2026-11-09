@@ -13,7 +13,7 @@ This index stays at the top of `docs/`; all other files are grouped by topic bel
 
 - [PRD](product/PRD.md) — primary product requirements and open decisions.
 - [Improvement tracker](product/IMPROVEMENT_TRACKER.md) — canonical backlog and implementation/release evidence.
-- [MoSCoW priorities](product/MOSCOW_PRIORITIZATION.md) — value ranking of the same 63 tracker items, not another backlog.
+- [MoSCoW priorities](product/MOSCOW_PRIORITIZATION.md) — value ranking of the same 64 tracker items, not another backlog.
 - [Modernization options](product/MODERNIZATION_OPTIONS.md) — options and decision history, not implementation approval.
 
 ## Design (`design/`)
@@ -41,5 +41,13 @@ This index stays at the top of `docs/`; all other files are grouped by topic bel
 - [Agent guide](agents/AGENT.md) — manager-facing RFS AI and the PM-led specialist framework, with orchestration and safety boundaries.
 - [Sequential team workflow](agents/RFS_AI_TEAM_WORKFLOW.md) — team-setup record and remaining acceptance proof for #58.
 - [Trello board workflow](agents/TRELLO_BOARD_WORKFLOW.md) — card fields, status mapping, and tracker-first handoff rules for the PM's board.
+- [Context-recovery memo](agents/RFS_CONTEXT_WINDOW_MEMO.md) — proposed startup and continuity specification; installation and fresh-session proof remain under #64.
+- [Current handover](agents/CONTEXT_HANDOVER.md) — concise checkpoint for resuming authorised project work; verify it against the tracker and working tree.
+
+## Research knowledge (`knowledge/`)
+
+- [Knowledge-base entry point](knowledge/README.md) — current installation status, agent usage, and approval boundary.
+- [Feature-discovery sources](knowledge/RFS_FEATURE_DISCOVERY_SOURCES.md) — supplied publisher register and dated baseline checks.
+- [Weekly knowledge-base implementation guide](knowledge/RFS_WEEKLY_KNOWLEDGE_BASE_IMPLEMENTATION_GUIDE.md) — specification for the research records, HTML review, scheduler, publication, and acceptance tests; not evidence of completion.
 
 The old chatbot product-scope brief was consolidated into the PRD; its technical boundaries remain in the chatbot architecture document. The early HTML chat mockup and a stray diagram backup were removed because neither represents the current product. Git history retains them. Do not use historical design checklists as release status; use the tracker.
