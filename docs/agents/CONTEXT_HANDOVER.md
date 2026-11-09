@@ -16,9 +16,9 @@ The Product Manager asked to add the supplied `RFS_Automation_and_Knowledge_Base
 
 | Area | Current evidence |
 | --- | --- |
-| Checkout | `main` at `ecd9e7bd9f9663dd7f2397fbeb0aeaa4abcc9927` before this local change; preserve uncommitted knowledge-base files. Recheck remote main before publication. |
+| Checkout | `main` started at `ecd9e7bd9f9663dd7f2397fbeb0aeaa4abcc9927`; the independently reviewed integration was committed locally as `06a8f8d`. Recheck the current branch and remote main before further work. |
 | Tests/review | Independent QA checked local links across 10 affected files, 64 unique tracker IDs, balanced code fences, import fidelity, and `git diff --check`; the documentation slice passed after this handover correction. Fresh-context recovery and the weekly pipeline have not been demonstrated. |
-| GitHub | This knowledge-base addition is local and uncommitted at this checkpoint. |
+| GitHub | The integration commit is `06a8f8d`; remote publication must be verified separately. |
 | Trello | [#64 card](https://trello.com/c/rMCYDpwB/63-64-install-the-rfs-research-knowledge-base-and-automatic-agent-recovery) was created on the RFS board in IN PROGRESS after the tracker was updated; card/list/description read-back succeeded on 9 November 2026. |
 | Weekly automation | The supplied documents describe an existing task, but current configuration, writer permissions, and any completed run have not been verified here. Do not create a duplicate. |
 | Persistent HTML/snapshot | Not created or published. |
@@ -27,5 +27,5 @@ The Product Manager asked to add the supplied `RFS_Automation_and_Knowledge_Base
 
 ## Resume here
 
-1. Explain the completed documentation slice and remaining weekly-workflow gap before any commit/push; then verify the exact remote result if published.
+1. Publish the reviewed integration and this evidence note to `main` without force, then verify the exact remote commit. Report Vercel status separately if a documentation-only push triggers builds.
 2. Build and verify the scheduled research pipeline separately under #64; do not mark the full task Done from documentation alone.
