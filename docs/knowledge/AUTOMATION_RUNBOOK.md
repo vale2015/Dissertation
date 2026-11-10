@@ -9,8 +9,8 @@ Existing weekly web task
   → read current sources, PRD, tracker, decisions and last scan state from main
   → inspect the 13 registered public entry pages and relevant linked official pages
   → validate citations, availability, constraints and RFS relevance
-  → submit one public GitHub Issue containing the JSON envelope, using a
-    separate account that has no collaborator/code-write access
+  → submit one public GitHub Issue containing the JSON envelope, using
+    Valerio's existing vale2015 account
   → the trusted main-branch GitHub Actions publisher checks the submitter,
     tests the pipeline, and validates the envelope
   → deterministic publisher updates discoveries, scan state/history and
@@ -18,7 +18,9 @@ Existing weekly web task
   → task checks the Actions result and published commit, then reports it
 ```
 
-The web task does not run local Python or edit generated files. GitHub Actions is event-driven by an Issue, **not** a second weekly schedule. The [write-enabled publisher](../../.github/workflows/knowledge-refresh.yml) runs from trusted `main` code. It is **off by default** until repository variables `RFS_RESEARCH_BOT_LOGIN` and `RFS_RESEARCH_BOT_ID` identify the separate issue-submitting account. That account must **not** be invited as a collaborator to this personal repository: on personal repositories a collaborator can push code. The workflow checks the Issue author's login and immutable numeric ID, title, body format, and input's base `main` commit before publishing only validated research records and HTML. A failed validation leaves `main`'s last valid HTML/JSON snapshot unchanged; the rejected input remains in its Issue for diagnosis. PM decisions in `review_decisions.json`, app code, tracker, Trello, Vercel and restaurant data are outside the weekly writer's authority.
+The web task does not run local Python or edit generated files. GitHub Actions is event-driven by an Issue, **not** a second weekly schedule. The [write-enabled publisher](../../.github/workflows/knowledge-refresh.yml) runs from trusted `main` code. On 10 November 2026, the PM replaced the proposed separate account with the existing owner account. The workflow therefore accepts only Issues opened by the exact `vale2015` login and numeric GitHub user ID `147600089` in `vale2015/Dissertation`. It checks the title, bounded JSON body, and input's base `main` commit before staging only generated research records and HTML; an explicit staged-path guard fails on any other file. A failed validation leaves `main`'s last valid HTML/JSON snapshot unchanged; the rejected input remains in its Issue for diagnosis. PM decisions in `review_decisions.json`, app code, tracker, Trello, Vercel and restaurant data are outside the **publisher workflow's** write path.
+
+**Security boundary:** This is a workflow-level restriction, not a folder-only permission on the connected GitHub account. The owner/ChatGPT connection retains repository-wide rights and could edit other paths through a different action. GitHub file-path rules applied to that same owner would also affect normal project updates, and an owner bypass would bypass the automation too. No such repository ruleset is claimed here. The existing weekly task must be instructed to submit a research Issue only, never to edit repository files directly; this instruction is not an access-control boundary. The first scheduled run and actual behavior remain unverified, so do not describe unattended publication as proven. If account-level isolation becomes mandatory, introduce a separately scoped submission identity or service and re-review this design.
 
 ## Input contract
 
@@ -43,8 +45,8 @@ The resulting [HTML review file](html-output/index.html) is the stable downloada
 
 ## Setup and remaining verification
 
-1. Create/use a separate GitHub account for the web task's Issue submission, with **no** collaborator invitation to this public repository. Confirm it can read the public files and open Issues. Do not put passwords or tokens in this repository or chat. Verify the web task can actually use that limited account without replacing the owner's normal project connection; if the current ChatGPT plan/connector cannot isolate accounts, leave unattended publishing off and choose another limited channel.
-2. After verifying the limited account, set repository Actions variables `RFS_RESEARCH_BOT_LOGIN` to its exact GitHub login and `RFS_RESEARCH_BOT_ID` to its numeric GitHub user ID. Until both are set, the workflow skips all Issues. These values are identity gates, not credentials; verify them from the actual GitHub account profile/API, not an Issue body.
+1. Keep the existing GitHub connection as `vale2015`; do not create another account or token for this path. Verify that the web task can open an Issue in the public repository and that its saved prompt forbids direct file edits. Never submit credentials, customer/staff data, or private restaurant records in the public Issue. The owner's GitHub permissions remain broad despite the prompt.
+2. Confirm the trusted workflow on `main` matches the repository and the owner's login and numeric ID, and that its staged-path guard permits only the four generated research-output paths. Do not apply a repository-wide file-path block that prevents normal app changes. If the owner account or repository is renamed/transferred, recheck the identity gate before relying on publication.
 3. Run a real baseline collection across all 13 entry pages. Verify partial/failed source reporting honestly; the current empty HTML is only an initialized placeholder.
 4. Trigger the workflow with one valid research Issue, verify the Action and resulting `main` commit, then open the generated HTML in a browser and confirm links, filters and snapshot ID.
 5. Update the existing web task's prompt while preserving its schedule. Do not replace or duplicate it. Confirm at least one actual scheduled run and a fresh project context reading the published knowledge without a supplied file path.

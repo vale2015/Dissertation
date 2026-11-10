@@ -5,7 +5,7 @@ on:
     types: [opened]
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: rfs-knowledge-publication
@@ -14,12 +14,13 @@ concurrency:
 jobs:
   publish:
     if: >-
-      ${{ vars.RFS_RESEARCH_BOT_LOGIN != '' &&
-          vars.RFS_RESEARCH_BOT_ID != '' &&
-          github.event.issue.user.login == vars.RFS_RESEARCH_BOT_LOGIN &&
-          format('{0}', github.event.issue.user.id) == vars.RFS_RESEARCH_BOT_ID &&
+      ${{ github.repository == 'vale2015/Dissertation' &&
+          github.event.issue.user.login == 'vale2015' &&
+          format('{0}', github.event.issue.user.id) == '147600089' &&
           startsWith(github.event.issue.title, 'RFS research input ') &&
           !github.event.issue.pull_request }}
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -35,15 +36,22 @@ jobs:
       - name: Publish validated input
         shell: bash
         env:
-          RESEARCH_BOT_LOGIN: ${{ vars.RFS_RESEARCH_BOT_LOGIN }}
-          RESEARCH_BOT_ID: ${{ vars.RFS_RESEARCH_BOT_ID }}
+          RESEARCH_SUBMITTER_LOGIN: vale2015
+          RESEARCH_SUBMITTER_ID: '147600089'
         run: |
           set -euo pipefail
-          python -B tools/feature_discovery/pipeline.py extract-issue --root . --event "$GITHUB_EVENT_PATH" --actor "$RESEARCH_BOT_LOGIN" --user-id "$RESEARCH_BOT_ID" --repository "$GITHUB_REPOSITORY" --output "$RUNNER_TEMP/rfs-scan-input.json"
+          python -B tools/feature_discovery/pipeline.py extract-issue --root . --event "$GITHUB_EVENT_PATH" --actor "$RESEARCH_SUBMITTER_LOGIN" --user-id "$RESEARCH_SUBMITTER_ID" --repository "$GITHUB_REPOSITORY" --output "$RUNNER_TEMP/rfs-scan-input.json"
           python -B -c 'import json, subprocess, sys; expected=json.load(open(sys.argv[1], encoding="utf-8"))["base_repository_commit"]; actual=subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip(); sys.exit(0 if expected == actual else "Research input was based on an older main commit; collect again before publication.")' "$RUNNER_TEMP/rfs-scan-input.json"
           python -B tools/feature_discovery/pipeline.py refresh --root . --input "$RUNNER_TEMP/rfs-scan-input.json"
           python -B tools/feature_discovery/pipeline.py validate --root .
-          git add -- docs/knowledge/discoveries.json docs/knowledge/scan_state.json docs/knowledge/html-output/index.html docs/knowledge/scan_history
+          run_id=$(python -B -c 'import json, sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["run_id"])' "$RUNNER_TEMP/rfs-scan-input.json")
+          git add -- docs/knowledge/discoveries.json docs/knowledge/scan_state.json docs/knowledge/html-output/index.html "docs/knowledge/scan_history/${run_id}.json"
+          while IFS= read -r path; do
+            case "$path" in
+              docs/knowledge/discoveries.json|docs/knowledge/scan_state.json|docs/knowledge/html-output/index.html|docs/knowledge/scan_history/*.json) ;;
+              *) echo "::error::Unexpected staged path: $path"; exit 1 ;;
+            esac
+          done < <(git diff --cached --name-only)
           if git diff --cached --quiet; then
             echo "Research snapshot unchanged."
             exit 0

@@ -142,27 +142,29 @@ class PipelineTest(unittest.TestCase):
         with self.assertRaises(pipeline.ValidationError):
             pipeline.validate(self.root)
 
-    def test_issue_receiver_requires_the_limited_submitter_and_matching_run(self):
+    def test_issue_receiver_requires_the_configured_submitter_and_matching_run(self):
         envelope = self.envelope()
         event = {"action": "opened", "repository": {"full_name": "vale2015/Dissertation"},
                  "issue": {"title": "RFS research input run-20261109", "body":
                            pipeline.ISSUE_PREFIX + json.dumps(envelope),
                            "html_url": "https://github.com/vale2015/Dissertation/issues/123",
-                           "user": {"login": "rfs-research-bot", "id": 12345}}}
+                           "user": {"login": "vale2015", "id": 147600089}}}
         event_path = self.root / "event.json"
         output_path = self.root / "received.json"
         event_path.write_text(json.dumps(event), encoding="utf-8")
         with self.assertRaises(pipeline.ValidationError):
-            pipeline.extract_issue(event_path, output_path, "someone-else", "12345", "vale2015/Dissertation")
+            pipeline.extract_issue(event_path, output_path, "someone-else", "147600089", "vale2015/Dissertation")
         self.assertFalse(output_path.exists())
         with self.assertRaises(pipeline.ValidationError):
-            pipeline.extract_issue(event_path, output_path, "rfs-research-bot", "99999", "vale2015/Dissertation")
-        pipeline.extract_issue(event_path, output_path, "rfs-research-bot", "12345", "vale2015/Dissertation")
+            pipeline.extract_issue(event_path, output_path, "vale2015", "99999", "vale2015/Dissertation")
+        with self.assertRaises(pipeline.ValidationError):
+            pipeline.extract_issue(event_path, output_path, "vale2015", "147600089", "another/repository")
+        pipeline.extract_issue(event_path, output_path, "vale2015", "147600089", "vale2015/Dissertation")
         self.assertEqual(pipeline.read_json(output_path)["submission_issue_url"], event["issue"]["html_url"])
         event["issue"]["title"] = "RFS research input wrong-run"
         event_path.write_text(json.dumps(event), encoding="utf-8")
         with self.assertRaises(pipeline.ValidationError):
-            pipeline.extract_issue(event_path, output_path, "rfs-research-bot", "12345", "vale2015/Dissertation")
+            pipeline.extract_issue(event_path, output_path, "vale2015", "147600089", "vale2015/Dissertation")
 
     def test_init_preserves_existing_records(self):
         first = self.run_envelope(self.envelope())
