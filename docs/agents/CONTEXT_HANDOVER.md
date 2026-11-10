@@ -20,13 +20,13 @@ The Product Manager asked to install and automate the supplied `RFS_Automation_a
 
 | Area | Current evidence |
 | --- | --- |
-| Checkout | `main` reached `e8c77f1481647d57a8271c33181498ebd95a0d5e` after the same-account publisher and evidence updates; the local worktree was clean at the start of this documentation refresh. Recheck remote main before further work. |
+| Checkout | The README/knowledge documentation refresh reached `main` as `6f9f61d9fc5d1363db240a9e44ae07779df0da21`; the exact remote commit was read back. Recheck remote main before further work. |
 | Tests/review | Prior documentation QA passed. Independent QA for the same-account revision passed 9 focused Python tests, local knowledge validation, workflow YAML parsing, and `git diff --check`. Independent security review found no code-level blocker after exact history-file staging but confirmed the owner's wider account permissions remain. Actionlint, a real-source baseline, Actions run, and browser review remain open. |
 | GitHub | The reviewed same-owner identity/path restriction was pushed as `ac2b547018a15f13a5794debc5333d796c05706c` and read back on GitHub `main`. The Issue-triggered Actions job has not run. |
 | Trello | [#64 card](https://trello.com/c/rMCYDpwB/63-64-install-the-rfs-research-knowledge-base-and-automatic-agent-recovery) remains IN PROGRESS; its same-account scope, criteria, and publication evidence were read back on 10 November 2026. |
 | Weekly automation | The PM confirms **Refresh RFS knowledge** is a web task. Its current prompt, ability to submit an Issue without direct file edits, and actual completed run remain unverified. Do not create a duplicate or claim the schedule is proven. |
 | Persistent HTML/snapshot | Initialized local `docs/knowledge/html-output/index.html` and JSON; no actual findings, remote publication, browser check, or scheduled update yet. |
-| Vercel/Supabase | The latest evidence-only commit `e8c77f1` automatically produced frontend deployment `dpl_EhxR5TQ6Gz4cq6cumSnWG2BGRf8g` and backend deployment `dpl_47NV1JxqN1pBZZEUr8234ATGqd2H`, both production READY. No app runtime code, migration, production restaurant data, or manual deployment changed. Further knowledge-only commits may still trigger Vercel builds. |
+| Vercel/Supabase | The README/knowledge documentation commit `6f9f61d` automatically produced frontend deployment `dpl_9xVot3baRS3yfj2AaCTTBf3fWQ5e` and backend deployment `dpl_DczMPLA5r7RbmN3UMJqx2XDC11o1`, both production READY. No app runtime code, migration, production restaurant data, or manual deployment changed. Further knowledge-only commits may still trigger Vercel builds. |
 | PM acceptance | The PM approved the same-account route on 10 November 2026 with a knowledge-output-only publisher workflow. This is not a restriction on the connected owner's wider GitHub permissions. No research finding is approved as an app feature, and no actual unattended publication has been verified. |
 
 ## Resume here
