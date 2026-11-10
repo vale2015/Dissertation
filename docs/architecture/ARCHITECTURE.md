@@ -1,6 +1,6 @@
 # RFS system architecture
 
-**Current-state guide — 6 November 2026.** This is the overall component and data-flow reference for the single-restaurant dissertation prototype. The [PRD](../product/PRD.md) owns product requirements, the [agent guide](../agents/AGENT.md) covers both assistant and delivery agents, and the [tracker](../product/IMPROVEMENT_TRACKER.md) owns implementation/release evidence. Diagrams show code and deployed boundaries, not a claim that every end-to-end acceptance check has passed.
+**Current-state guide — 10 November 2026.** This is the overall component and data-flow reference for the single-restaurant dissertation prototype. The [PRD](../product/PRD.md) owns product requirements, the [agent guide](../agents/AGENT.md) covers both assistant and delivery agents, and the [tracker](../product/IMPROVEMENT_TRACKER.md) owns implementation/release evidence. Diagrams show code and deployed boundaries, not a claim that every end-to-end acceptance check has passed.
 
 ## System context and deployment
 
@@ -81,6 +81,8 @@ The manager asks RFS AI to generate, save, retrieve, or download a management re
 - Flask authenticates protected blueprints and checks the permission associated with each operation. Report and notification services filter data by authorization/recipient. Session and provider secrets must not enter model prompts or browser variables.
 - Optional provider failures should produce warnings or unavailable states without blocking core booking, forecasting, or reporting. Provider caches are instance-local, not a distributed cache.
 - The prototype is not multi-tenant; scaling to high traffic or multiple restaurants would require deliberate tenancy, storage/cache, background-work, and performance decisions rather than assuming the current serverless boundaries suffice.
+
+The project research pipeline is outside the runtime app architecture. A web-based weekly task is intended to submit public research Issues; a trusted GitHub Actions workflow validates them and writes only generated files under `docs/knowledge/`. The workflow cannot narrow the existing owner's GitHub connection, and its first real publication remains unverified. See the [knowledge runbook](../knowledge/AUTOMATION_RUNBOOK.md) and tracker [#64](../product/IMPROVEMENT_TRACKER.md).
 
 ## Verification and known limits
 

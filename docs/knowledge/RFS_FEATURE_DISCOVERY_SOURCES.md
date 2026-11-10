@@ -1,6 +1,6 @@
 # RFS feature discovery: sources and weekly refresh
 
-> Repository import note (9 November 2026): this source register is now in `docs/knowledge/`. Its 8 November baseline and weekly-task statements are historical observations, not current run verification. See [README.md](README.md) and tracker #64 for implementation status.
+> Current-state note (10 November 2026): this is the PM-supplied historical source and collection specification. Its 8 November baseline, nine-entry count, same-file update procedure, and weekly-task statements are not the live publication contract. The machine-readable [registry](sources.json) now has 13 entry pages; the [runbook](AUTOMATION_RUNBOOK.md) defines the existing-account Issue → validated GitHub Actions → JSON/HTML workflow. No real scan or scheduled publication has been verified. See [README.md](README.md) and tracker [#64](../product/IMPROVEMENT_TRACKER.md).
 
 Owner: Valerio Gerardi. Created: 8 November 2026. Timezone: Europe/Dublin.
 

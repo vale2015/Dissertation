@@ -1,6 +1,6 @@
 # RFS agentic capabilities and delivery framework
 
-**Current-state guide — 9 November 2026.** This document covers two different kinds of “agent”: the manager-facing RFS AI assistant in the product, and the PM-led specialist workflow used to develop the product. They are not one autonomous system. The [PRD](../product/PRD.md) owns product requirements; the [tracker](../product/IMPROVEMENT_TRACKER.md) owns completion and release status. The [architecture guide](../architecture/ARCHITECTURE.md) owns system-wide component boundaries.
+**Current-state guide — 10 November 2026.** This document covers two different kinds of “agent”: the manager-facing RFS AI assistant in the product, and the PM-led specialist workflow used to develop the product. They are not one autonomous system. The [PRD](../product/PRD.md) owns product requirements; the [tracker](../product/IMPROVEMENT_TRACKER.md) owns completion and release status. The [architecture guide](../architecture/ARCHITECTURE.md) owns system-wide component boundaries.
 
 ## 1. Manager-facing RFS AI
 
@@ -79,7 +79,7 @@ QUICK uses a focused self-check for an isolated low-risk change; STANDARD adds i
 
 ## 3. Rules shared by both kinds of agent
 
-The project delivery agent also has a [research knowledge-base entry point](../knowledge/README.md). Its supplied sources and implementation guide are now in the repository, and `AGENTS.md` directs future project work to them. This is **not** a capability of the restaurant-facing chatbot. The weekly scan, durable discovery records, and HTML PM review are still unimplemented or unverified under [#64](../product/IMPROVEMENT_TRACKER.md). Research can inform a PM decision, but cannot approve or start product work on its own.
+The project delivery agent also has a [research knowledge-base entry point](../knowledge/README.md). Its six-publisher source registry, initialized durable records, stable HTML review shell, and Issue-triggered publisher are installed on `main`; `AGENTS.md` directs future project work to them. This is **not** a capability of the restaurant-facing chatbot. The publisher accepts research Issues only from the verified `vale2015` account and stages only generated research outputs. That workflow-level limit does not narrow the owner's other GitHub permissions. A real scan, Issue/Actions publication, browser check, weekly-task prompt/run, and fresh-context recovery remain unverified under [#64](../product/IMPROVEMENT_TRACKER.md). Research can inform a PM decision, but cannot approve or start product work on its own; the [runbook](../knowledge/AUTOMATION_RUNBOOK.md) specifies the current boundary.
 
 - No model output or specialist role grants permissions. The authenticated backend and PM decision respectively remain authoritative.
 - Keep user/customer/staff secrets out of prompts, logs, reports, and browser variables.

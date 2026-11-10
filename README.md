@@ -87,6 +87,24 @@ flowchart LR
 
 The board uses READY (not picked up), IN PROGRESS (work under way), IN REVIEW (release checks or acceptance pending), and DONE (fully tested and accepted). Deferred task #5 stays off the board by PM choice. Each numbered card has a description and acceptance criteria. See the [board workflow](docs/agents/TRELLO_BOARD_WORKFLOW.md), [agent guide](docs/agents/AGENT.md), and [team workflow](docs/agents/RFS_AI_TEAM_WORKFLOW.md) for handoff requirements. The team configuration is still **Partial** under tracker #58: a real feature has exercised the sequential handoff, but explicit PM acceptance of that full process is not recorded. A role never grants permission to merge to `main`, deploy, or change production data without PM approval.
 
+## Research knowledge workflow
+
+The project also has a research pipeline for discovering relevant AI and hospitality developments. It is **separate from the restaurant-facing RFS AI chatbot**: research can inform a Product Manager decision, but cannot approve or implement an app feature. The [source registry](docs/knowledge/sources.json) contains 13 public entry pages from six publishers. The existing **Refresh RFS knowledge** web task is intended to inspect them weekly and submit a public research Issue using the existing `vale2015` GitHub account. The trusted [GitHub Actions publisher](.github/workflows/knowledge-refresh.yml) checks that account's login and numeric ID, the Issue format and base `main` commit, then validates and commits only the generated research snapshot. The [HTML review file](docs/knowledge/html-output/index.html) has a stable repository path for PM review.
+
+```mermaid
+flowchart LR
+  S[13 public source pages] -. weekly scan to verify .-> W[Existing web task]
+  W -. research Issue to verify .-> I[GitHub Issue from vale2015]
+  I --> G{Trusted workflow validation}
+  G -->|Valid| P[Deterministic publisher]
+  G -->|Invalid| K[Keep last valid snapshot]
+  P --> O[(Research JSON and HTML on main)]
+  O --> PM[PM reviews findings]
+  PM -->|Approved product work only| T[Improvement tracker and delivery team]
+```
+
+The publisher's staged-file check limits **that workflow** to `discoveries.json`, `scan_state.json`, one `scan_history/<run-id>.json`, and `html-output/index.html`. It does **not** reduce the existing GitHub owner's wider repository permissions; no folder-only GitHub ruleset was installed. The registry, initialized empty records, HTML shell, publisher, and nine passing focused tests are on `main`, but no real baseline scan, Issue-triggered publication, browser review, or scheduled run has been verified. The existing web task's prompt still needs to be checked and, if necessary, updated so it submits Issues rather than editing files directly. [Task #64](docs/product/IMPROVEMENT_TRACKER.md) remains **Partial**. See the [knowledge entry point](docs/knowledge/README.md) and [automation runbook](docs/knowledge/AUTOMATION_RUNBOOK.md) for the input contract, privacy limits, and remaining checks.
+
 ## Documentation and limitations
 
 Start with the [PRD](docs/product/PRD.md), then use the [docs index](docs/README.md) to find the [architecture](docs/architecture/ARCHITECTURE.md), [design system](docs/design/DESIGN_SYSTEM.md), and release notes. The project is a single-restaurant academic prototype. Forecast quality depends on representative historical and served-actual data; live chatbot inference, staff-write idempotency, signed-in responsive/accessibility checks, genuine accuracy comparisons, and some migration/access gates still require verification. Consult the tracker before treating any feature as fully tested.

@@ -46,8 +46,8 @@ This index stays at the top of `docs/`; all other files are grouped by topic bel
 
 ## Research knowledge (`knowledge/`)
 
-- [Knowledge-base entry point](knowledge/README.md) — current installation status, agent usage, and approval boundary.
-- [Weekly automation runbook](knowledge/AUTOMATION_RUNBOOK.md) — current web-task input, GitHub publisher, stable HTML output, and remaining checks.
+- [Knowledge-base entry point](knowledge/README.md) — installed research components, current verification gaps, agent usage, and approval boundary.
+- [Weekly automation runbook](knowledge/AUTOMATION_RUNBOOK.md) — same-account Issue intake, workflow-only output restriction, stable HTML output, and remaining scheduled-run checks.
 - [Feature-discovery sources](knowledge/RFS_FEATURE_DISCOVERY_SOURCES.md) — supplied publisher register and dated baseline checks.
 - [Weekly knowledge-base implementation guide](knowledge/RFS_WEEKLY_KNOWLEDGE_BASE_IMPLEMENTATION_GUIDE.md) — specification for the research records, HTML review, scheduler, publication, and acceptance tests; not evidence of completion.
 
