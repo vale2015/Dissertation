@@ -1,0 +1,140 @@
+{
+  "coverage": "not_scanned",
+  "entries": [
+    {
+      "entry_url": "https://developers.openai.com/api/docs/changelog",
+      "error": null,
+      "last_attempt_at": null,
+      "last_success_at": null,
+      "overflow": [],
+      "processed_through": null,
+      "result": "not_scanned",
+      "source_id": "AI-001"
+    },
+    {
+      "entry_url": "https://developers.openai.com/cookbook",
+      "error": null,
+      "last_attempt_at": null,
+      "last_success_at": null,
+      "overflow": [],
+      "processed_through": null,
+      "result": "not_scanned",
+      "source_id": "AI-001"
+    },
+    {
+      "entry_url": "https://platform.claude.com/docs/en/release-notes/overview",
+      "error": null,
+      "last_attempt_at": null,
+      "last_success_at": null,
+      "overflow": [],
+      "processed_through": null,
+      "result": "not_scanned",
+      "source_id": "AI-002"
+    },
+    {
+      "entry_url": "https://www.anthropic.com/engineering",
+      "error": null,
+      "last_attempt_at": null,
+      "last_success_at": null,
+      "overflow": [],
+      "processed_through": null,
+      "result": "not_scanned",
+      "source_id": "AI-002"
+    },
+    {
+      "entry_url": "https://www.anthropic.com/research",
+      "error": null,
+      "last_attempt_at": null,
+      "last_success_at": null,
+      "overflow": [],
+      "processed_through": null,
+      "result": "not_scanned",
+      "source_id": "AI-002"
+    },
+    {
+      "entry_url": "https://www.nory.ai/blog",
+      "error": null,
+      "last_attempt_at": null,
+      "last_success_at": null,
+      "overflow": [],
+      "processed_through": null,
+      "result": "not_scanned",
+      "source_id": "HOSP-001"
+    },
+    {
+      "entry_url": "https://www.nory.ai/agentic-ai",
+      "error": null,
+      "last_attempt_at": null,
+      "last_success_at": null,
+      "overflow": [],
+      "processed_through": null,
+      "result": "not_scanned",
+      "source_id": "HOSP-001"
+    },
+    {
+      "entry_url": "https://www.gotenzo.com/resources/",
+      "error": null,
+      "last_attempt_at": null,
+      "last_success_at": null,
+      "overflow": [],
+      "processed_through": null,
+      "result": "not_scanned",
+      "source_id": "HOSP-002"
+    },
+    {
+      "entry_url": "https://support.gotenzo.com/developers/",
+      "error": null,
+      "last_attempt_at": null,
+      "last_success_at": null,
+      "overflow": [],
+      "processed_through": null,
+      "result": "not_scanned",
+      "source_id": "HOSP-002"
+    },
+    {
+      "entry_url": "https://support.gotenzo.com/docs/forecasting-overview-what-it-is-and-how-it-works/",
+      "error": null,
+      "last_attempt_at": null,
+      "last_success_at": null,
+      "overflow": [],
+      "processed_through": null,
+      "result": "not_scanned",
+      "source_id": "HOSP-002"
+    },
+    {
+      "entry_url": "https://sevenrooms.com/press/",
+      "error": null,
+      "last_attempt_at": null,
+      "last_success_at": null,
+      "overflow": [],
+      "processed_through": null,
+      "result": "not_scanned",
+      "source_id": "HOSP-003"
+    },
+    {
+      "entry_url": "https://sevenrooms.com/platform/artificial-intelligence/",
+      "error": null,
+      "last_attempt_at": null,
+      "last_success_at": null,
+      "overflow": [],
+      "processed_through": null,
+      "result": "not_scanned",
+      "source_id": "HOSP-003"
+    },
+    {
+      "entry_url": "https://www.opentable.com/blog/newsroom/",
+      "error": null,
+      "last_attempt_at": null,
+      "last_success_at": null,
+      "overflow": [],
+      "processed_through": null,
+      "result": "not_scanned",
+      "source_id": "HOSP-004"
+    }
+  ],
+  "last_attempt_at": null,
+  "last_complete_success_at": null,
+  "last_run_id": null,
+  "schema_version": 1,
+  "snapshot_id": null
+}

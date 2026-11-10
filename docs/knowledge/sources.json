@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "sources": [
+    {
+      "source_id": "AI-001",
+      "publisher": "OpenAI",
+      "allowed_domains": ["openai.com"],
+      "category": "ai_platform",
+      "entry_urls": [
+        "https://developers.openai.com/api/docs/changelog",
+        "https://developers.openai.com/cookbook"
+      ],
+      "enabled": true,
+      "topics": ["models", "tools", "agents", "applied_ai", "evaluation"],
+      "verification_date": "2026-11-08"
+    },
+    {
+      "source_id": "AI-002",
+      "publisher": "Anthropic",
+      "allowed_domains": ["anthropic.com", "claude.com"],
+      "category": "ai_platform",
+      "entry_urls": [
+        "https://platform.claude.com/docs/en/release-notes/overview",
+        "https://www.anthropic.com/engineering",
+        "https://www.anthropic.com/research"
+      ],
+      "enabled": true,
+      "topics": ["models", "tools", "agents", "applied_ai", "research"],
+      "verification_date": "2026-11-08"
+    },
+    {
+      "source_id": "HOSP-001",
+      "publisher": "Nory",
+      "allowed_domains": ["nory.ai"],
+      "category": "hospitality",
+      "entry_urls": [
+        "https://www.nory.ai/blog",
+        "https://www.nory.ai/agentic-ai"
+      ],
+      "enabled": true,
+      "topics": ["restaurant_forecasting", "staffing", "restaurant_agents"],
+      "verification_date": "2026-11-08"
+    },
+    {
+      "source_id": "HOSP-002",
+      "publisher": "Tenzo",
+      "allowed_domains": ["gotenzo.com"],
+      "category": "hospitality",
+      "entry_urls": [
+        "https://www.gotenzo.com/resources/",
+        "https://support.gotenzo.com/developers/",
+        "https://support.gotenzo.com/docs/forecasting-overview-what-it-is-and-how-it-works/"
+      ],
+      "enabled": true,
+      "topics": ["forecasting", "reporting", "integrations"],
+      "verification_date": "2026-11-08"
+    },
+    {
+      "source_id": "HOSP-003",
+      "publisher": "SevenRooms",
+      "allowed_domains": ["sevenrooms.com"],
+      "category": "hospitality",
+      "entry_urls": [
+        "https://sevenrooms.com/press/",
+        "https://sevenrooms.com/platform/artificial-intelligence/"
+      ],
+      "enabled": true,
+      "topics": ["bookings", "guest_operations", "restaurant_ai"],
+      "verification_date": "2026-11-08"
+    },
+    {
+      "source_id": "HOSP-004",
+      "publisher": "OpenTable",
+      "allowed_domains": ["opentable.com"],
+      "category": "hospitality",
+      "entry_urls": [
+        "https://www.opentable.com/blog/newsroom/"
+      ],
+      "enabled": true,
+      "topics": ["bookings", "restaurant_operations", "reporting"],
+      "verification_date": "2026-11-08"
+    }
+  ]
+}
