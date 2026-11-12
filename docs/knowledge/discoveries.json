@@ -1,8 +1,53 @@
 {
-  "generated_at": null,
-  "observations": [],
+  "generated_at": "2026-11-12T10:39:57Z",
+  "observations": [
+    {
+      "availability": "unclear",
+      "canonical_url": "https://sevenrooms.com/platform/artificial-intelligence/",
+      "constraints": [
+        "The page does not establish region, pricing, access, or an exact launch date.",
+        "No evidence that RFS has phone-call, guest-profile, or SevenRooms integration capability."
+      ],
+      "content_fingerprint": "95eb6bb1981ecd3336249b6cf92de5be77502a8e53b2243867b99efa8986bc04",
+      "evidence_type": "vendor_announcement",
+      "first_seen_at": "2026-11-12T10:39:57Z",
+      "kind": "product_release",
+      "last_checked_at": "2026-11-12T10:39:57Z",
+      "method_details": null,
+      "observation_id": "OBS-3561dd77393c068dfe20",
+      "published_date": null,
+      "publisher": "SevenRooms",
+      "release_item_key": "restaurant-voice-ai-product-page-2026",
+      "revisions": [],
+      "source_id": "HOSP-003",
+      "summary": "SevenRooms says its Voice AI answers calls, books directly into its reservation system, and updates guest profiles. The statement is a vendor product claim and does not establish independent performance or integration with RFS.",
+      "title": "SevenRooms Voice AI for reservations"
+    },
+    {
+      "availability": "beta",
+      "canonical_url": "https://support.gotenzo.com/developers/",
+      "constraints": [
+        "Announcement gives only May 2026, not an exact publication date.",
+        "Access, pricing, supported operations, permission behavior, and fit for RFS remain unverified."
+      ],
+      "content_fingerprint": "c14c5d7eea324879265a628e4c88366580718d07eaa092338b846bce8bdd6c15",
+      "evidence_type": "technical_documentation",
+      "first_seen_at": "2026-11-12T10:39:57Z",
+      "kind": "product_release",
+      "last_checked_at": "2026-11-12T10:39:57Z",
+      "method_details": null,
+      "observation_id": "OBS-9f40d69b0a2062e06691",
+      "published_date": null,
+      "publisher": "Tenzo",
+      "release_item_key": "mcp-server-beta-2026-05",
+      "revisions": [],
+      "source_id": "HOSP-002",
+      "summary": "Tenzo's developer portal says its MCP Server beta connects AI assistants to Tenzo restaurant data, and lists OAuth 2.0 PKCE, refresh tokens, and updated scopes separately. This is a vendor-documented capability, not a tested RFS integration.",
+      "title": "Tenzo MCP Server beta"
+    }
+  ],
   "opportunities": [],
   "proposed_sources": [],
   "schema_version": 1,
-  "snapshot_id": null
+  "snapshot_id": "34c181b6fb882e0c98949deda9d1d8f8950a4e7c32b537c10191b90cdd01e47a"
 }

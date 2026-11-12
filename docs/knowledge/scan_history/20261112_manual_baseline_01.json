@@ -1,0 +1,154 @@
+{
+  "base_repository_commit": "f9458fbcd73e5c908167721e1029952e12457dbb",
+  "observations": [
+    {
+      "availability": "beta",
+      "canonical_url": "https://support.gotenzo.com/developers/",
+      "constraints": [
+        "Announcement gives only May 2026, not an exact publication date.",
+        "Access, pricing, supported operations, permission behavior, and fit for RFS remain unverified."
+      ],
+      "evidence_type": "technical_documentation",
+      "kind": "product_release",
+      "published_date": null,
+      "publisher": "Tenzo",
+      "release_item_key": "mcp-server-beta-2026-05",
+      "source_id": "HOSP-002",
+      "summary": "Tenzo's developer portal says its MCP Server beta connects AI assistants to Tenzo restaurant data, and lists OAuth 2.0 PKCE, refresh tokens, and updated scopes separately. This is a vendor-documented capability, not a tested RFS integration.",
+      "title": "Tenzo MCP Server beta"
+    },
+    {
+      "availability": "unclear",
+      "canonical_url": "https://sevenrooms.com/platform/artificial-intelligence/",
+      "constraints": [
+        "The page does not establish region, pricing, access, or an exact launch date.",
+        "No evidence that RFS has phone-call, guest-profile, or SevenRooms integration capability."
+      ],
+      "evidence_type": "vendor_announcement",
+      "kind": "product_release",
+      "published_date": null,
+      "publisher": "SevenRooms",
+      "release_item_key": "restaurant-voice-ai-product-page-2026",
+      "source_id": "HOSP-003",
+      "summary": "SevenRooms says its Voice AI answers calls, books directly into its reservation system, and updates guest profiles. The statement is a vendor product claim and does not establish independent performance or integration with RFS.",
+      "title": "SevenRooms Voice AI for reservations"
+    }
+  ],
+  "opportunity_proposals": [],
+  "pipeline": {
+    "changed_records": 2,
+    "coverage": "partial",
+    "snapshot_id": "34c181b6fb882e0c98949deda9d1d8f8950a4e7c32b537c10191b90cdd01e47a"
+  },
+  "run_id": "20261112_manual_baseline_01",
+  "schema_version": 1,
+  "source_results": [
+    {
+      "attempted_at": "2026-11-12T10:39:57Z",
+      "entry_url": "https://developers.openai.com/api/docs/changelog",
+      "error": "Entry page reached; release history was not exhaustively reviewed.",
+      "overflow": [],
+      "source_id": "AI-001",
+      "status": "partial"
+    },
+    {
+      "attempted_at": "2026-11-12T10:39:57Z",
+      "entry_url": "https://developers.openai.com/cookbook",
+      "error": "Entry page reached; linked examples were not exhaustively reviewed.",
+      "overflow": [],
+      "source_id": "AI-001",
+      "status": "partial"
+    },
+    {
+      "attempted_at": "2026-11-12T10:39:57Z",
+      "entry_url": "https://platform.claude.com/docs/en/release-notes/overview",
+      "error": "Entry page reached; release history was not exhaustively reviewed.",
+      "overflow": [],
+      "source_id": "AI-002",
+      "status": "partial"
+    },
+    {
+      "attempted_at": "2026-11-12T10:39:57Z",
+      "entry_url": "https://www.anthropic.com/engineering",
+      "error": "Entry page reached; linked articles were not exhaustively reviewed.",
+      "overflow": [],
+      "source_id": "AI-002",
+      "status": "partial"
+    },
+    {
+      "attempted_at": "2026-11-12T10:39:57Z",
+      "entry_url": "https://www.anthropic.com/research",
+      "error": "Entry page reached; linked research was not exhaustively reviewed.",
+      "overflow": [],
+      "source_id": "AI-002",
+      "status": "partial"
+    },
+    {
+      "attempted_at": "2026-11-12T10:39:57Z",
+      "entry_url": "https://www.nory.ai/blog",
+      "error": "Entry page reached; linked articles were not exhaustively reviewed.",
+      "overflow": [],
+      "source_id": "HOSP-001",
+      "status": "partial"
+    },
+    {
+      "attempted_at": "2026-11-12T10:39:57Z",
+      "entry_url": "https://www.nory.ai/agentic-ai",
+      "error": "Entry page reached; product claims were not independently tested.",
+      "overflow": [],
+      "source_id": "HOSP-001",
+      "status": "partial"
+    },
+    {
+      "attempted_at": "2026-11-12T10:39:57Z",
+      "entry_url": "https://www.gotenzo.com/resources/",
+      "error": "Entry page reached; linked resources were not exhaustively reviewed.",
+      "overflow": [],
+      "source_id": "HOSP-002",
+      "status": "partial"
+    },
+    {
+      "attempted_at": "2026-11-12T10:39:57Z",
+      "entry_url": "https://support.gotenzo.com/developers/",
+      "error": null,
+      "overflow": [],
+      "processed_through": "2026-11-12T10:39:57Z",
+      "source_id": "HOSP-002",
+      "status": "success"
+    },
+    {
+      "attempted_at": "2026-11-12T10:39:57Z",
+      "entry_url": "https://support.gotenzo.com/docs/forecasting-overview-what-it-is-and-how-it-works/",
+      "error": "Entry page reached; article details were not fully reviewed.",
+      "overflow": [],
+      "source_id": "HOSP-002",
+      "status": "partial"
+    },
+    {
+      "attempted_at": "2026-11-12T10:39:57Z",
+      "entry_url": "https://sevenrooms.com/press/",
+      "error": "Entry page reached; listing shows a subset of posts and was not exhaustively reviewed.",
+      "overflow": [],
+      "source_id": "HOSP-003",
+      "status": "partial"
+    },
+    {
+      "attempted_at": "2026-11-12T10:39:57Z",
+      "entry_url": "https://sevenrooms.com/platform/artificial-intelligence/",
+      "error": "Entry page reached; product claims were not independently tested.",
+      "overflow": [],
+      "source_id": "HOSP-003",
+      "status": "partial"
+    },
+    {
+      "attempted_at": "2026-11-12T10:39:57Z",
+      "entry_url": "https://www.opentable.com/blog/newsroom/",
+      "error": "Entry page reached; listing and linked announcements were not exhaustively reviewed.",
+      "overflow": [],
+      "source_id": "HOSP-004",
+      "status": "partial"
+    }
+  ],
+  "started_at": "2026-11-12T10:39:57Z",
+  "submission_issue_url": "https://github.com/vale2015/Dissertation/issues/19"
+}
