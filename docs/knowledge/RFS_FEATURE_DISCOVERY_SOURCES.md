@@ -1,6 +1,6 @@
 # RFS feature discovery: sources and weekly refresh
 
-> Current-state note (10 November 2026): this is the PM-supplied historical source and collection specification. Its 8 November baseline, nine-entry count, same-file update procedure, and weekly-task statements are not the live publication contract. The machine-readable [registry](sources.json) now has 13 entry pages; the [runbook](AUTOMATION_RUNBOOK.md) defines the existing-account Issue → validated GitHub Actions → JSON/HTML workflow. No real scan or scheduled publication has been verified. See [README.md](README.md) and tracker [#64](../product/IMPROVEMENT_TRACKER.md).
+> Current-state note (12 November 2026): this is the PM-supplied historical source and collection specification. Its 8 November baseline, nine-entry count, same-file update procedure, and weekly-task statements are not the live publication contract. The machine-readable [registry](sources.json) has 13 entry pages; the [runbook](AUTOMATION_RUNBOOK.md) defines the existing-account Issue → validated GitHub Actions → JSON/HTML workflow. A **partial manual scan** was published through [Issue #19](https://github.com/vale2015/Dissertation/issues/19); no scheduled publication has been verified. See [README.md](README.md) and tracker [#64](../product/IMPROVEMENT_TRACKER.md).
 
 Owner: Valerio Gerardi. Created: 8 November 2026. Timezone: Europe/Dublin.
 
