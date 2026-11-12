@@ -1,6 +1,6 @@
 # RFS current handover
 
-Updated: 10 November 2026 (Europe/London). This is a continuity checkpoint, not proof that external services are healthy; reconcile it with current evidence before acting.
+Updated: 12 November 2026 (Europe/London). This is a continuity checkpoint, not proof that external services are healthy; reconcile it with current evidence before acting.
 
 ## Current objective
 
@@ -20,16 +20,17 @@ The Product Manager asked to install and automate the supplied `RFS_Automation_a
 
 | Area | Current evidence |
 | --- | --- |
-| Checkout | The README/knowledge documentation refresh reached `main` as `6f9f61d9fc5d1363db240a9e44ae07779df0da21`; the exact remote commit was read back. Recheck remote main before further work. |
+| Checkout | The latest documentation release reached `main` as `506b00ab371f680f27397cb3423ba2239fc37318`; the exact remote commit was read back on 12 November. Recheck remote main before further work. |
 | Tests/review | Prior documentation QA passed. Independent QA for the same-account revision passed 9 focused Python tests, local knowledge validation, workflow YAML parsing, and `git diff --check`. Independent security review found no code-level blocker after exact history-file staging but confirmed the owner's wider account permissions remain. Actionlint, a real-source baseline, Actions run, and browser review remain open. |
 | GitHub | The reviewed same-owner identity/path restriction was pushed as `ac2b547018a15f13a5794debc5333d796c05706c` and read back on GitHub `main`. The Issue-triggered Actions job has not run. |
 | Trello | [#64 card](https://trello.com/c/rMCYDpwB/63-64-install-the-rfs-research-knowledge-base-and-automatic-agent-recovery) remains IN PROGRESS; its same-account scope, criteria, and publication evidence were read back on 10 November 2026. |
 | Weekly automation | The PM confirms **Refresh RFS knowledge** is a web task. Its current prompt, ability to submit an Issue without direct file edits, and actual completed run remain unverified. Do not create a duplicate or claim the schedule is proven. |
-| Persistent HTML/snapshot | Initialized local `docs/knowledge/html-output/index.html` and JSON; no actual findings, remote publication, browser check, or scheduled update yet. |
+| Persistent HTML/snapshot | Initialized local `docs/knowledge/html-output/index.html` and JSON; no actual findings, remote publication, browser check, or scheduled update yet. On 12 November a manual partial scan reached all thirteen entry pages and checked two vendor observations in an untracked draft input. Isolated publisher dry-run validated `coverage: partial`, `changed_records: 2`; nine focused tests passed. Canonical records were not changed. |
 | Vercel/Supabase | The README/knowledge documentation commit `6f9f61d` automatically produced frontend deployment `dpl_9xVot3baRS3yfj2AaCTTBf3fWQ5e` and backend deployment `dpl_DczMPLA5r7RbmN3UMJqx2XDC11o1`, both production READY. No app runtime code, migration, production restaurant data, or manual deployment changed. Further knowledge-only commits may still trigger Vercel builds. |
 | PM acceptance | The PM approved the same-account route on 10 November 2026 with a knowledge-output-only publisher workflow. This is not a restriction on the connected owner's wider GitHub permissions. No research finding is approved as an app feature, and no actual unattended publication has been verified. |
 
 ## Resume here
 
-1. Inspect and update the existing web task prompt to submit research Issues only, preserving its schedule. The task is web-based and not visible in the local Codex automation registry; do not create a duplicate. The workflow limits its own output, not the connected owner's wider GitHub permissions.
-2. Run a real source baseline, trigger and inspect the Actions publisher, browser-check the HTML, and prove a scheduled run and fresh-context recovery. Keep #64 Partial until these are done. Avoid unnecessary docs-only pushes because both Vercel projects currently build them.
+1. Resolve the 12 November publication blocker: the connected GitHub integration returns `403 Resource not accessible by integration` for Issue creation, even though the signed-in owner can read the repository. The browser fallback did not submit an Issue; do not claim an Actions run. A locally validated manual input draft is `docs/knowledge/scan-input-20261112-manual.json` and is **untracked**. Recheck its `base_repository_commit` against current remote `main` immediately before any submission; its timestamps are approximate and coverage is partial. Never post private data in a public Issue.
+2. Inspect and update the existing web task prompt to submit research Issues only, preserving its schedule. The task is web-based and not visible in the local Codex automation registry; do not create a duplicate. The workflow limits its own output, not the connected owner's wider GitHub permissions.
+3. Trigger and inspect a valid Actions publication, browser-check the generated HTML, then prove a scheduled run and fresh-context recovery. Keep #64 Partial until these are done. Avoid unnecessary docs-only pushes because both Vercel projects build them.
