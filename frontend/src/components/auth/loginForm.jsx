@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 // Reusable login form component used by the home/login page.
 export default function LoginForm({
   email,
@@ -16,7 +18,17 @@ export default function LoginForm({
     <div className="login-panel">
       <div className="login-panel-header">
         <p className="login-eyebrow">Welcome to RFS</p>
-        <h1 className="login-title">Welcome back</h1>
+        <div className="login-heading-row">
+          <h1 className="login-title">Welcome back</h1>
+          <Image
+            src="/brand/rfs-ai-mascot-v2.png"
+            alt=""
+            width={72}
+            height={72}
+            className="login-mascot"
+            priority
+          />
+        </div>
 
         <p className="login-subtitle">
           Sign in to plan your next service with confidence.

@@ -67,13 +67,26 @@
   letter-spacing: .11em;
   text-transform: uppercase;
 }
-.entry-page .login-title {
+.entry-page .login-heading-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   margin-bottom: 11px;
+}
+.entry-page .login-title {
+  margin-bottom: 0;
   color: #101828;
   font-size: clamp(32px, 3.4vw, 42px);
   font-weight: 750;
   letter-spacing: -.045em;
   line-height: 1.1;
+}
+.entry-page .login-mascot {
+  flex: none;
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
 }
 .entry-page .login-subtitle {
   max-width: none;
@@ -252,6 +265,8 @@
   .entry-page .entry-login-side { padding: 30px 23px 36px; }
   .entry-page .entry-hero-side { min-height: 225px; padding: 30px 23px; }
   .entry-page .login-panel-header { margin-bottom: 28px; }
+  .entry-page .login-title { font-size: 30px; }
+  .entry-page .login-mascot { width: 54px; height: 54px; }
   .entry-page .login-form { gap: 17px; }
 }
 

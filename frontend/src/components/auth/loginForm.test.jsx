@@ -27,6 +27,7 @@ test("sign-in controls remain labelled and submit through the existing handler",
   const user = userEvent.setup();
   const props = renderForm({ email: "manager@example.com", password: "demo-password" });
   expect(screen.getByRole("heading", { name: "Welcome back" })).toBeInTheDocument();
+  expect(document.querySelector('img[src*="rfs-ai-mascot-v2.png"]')).toHaveAttribute("alt", "");
   expect(screen.getByRole("textbox", { name: "Email" })).toHaveAttribute("autocomplete", "email");
   expect(screen.getByLabelText("Password")).toHaveAttribute("type", "password");
   await user.click(screen.getByRole("button", { name: "Show password" }));
