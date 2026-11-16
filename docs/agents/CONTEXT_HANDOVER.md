@@ -6,11 +6,12 @@ Updated: 16 November 2026 (Europe/London). This is a continuity checkpoint, not 
 
 The Product Manager has deferred chatbot staff-workflow [#54](../product/IMPROVEMENT_TRACKER.md) and requested a modern login screen consistent with the RFS design under [#57](../product/IMPROVEMENT_TRACKER.md). Preserve the local, uncommitted #54 backend/migration work; do not apply its migration or remove Staff Management navigation. The earlier research automation [#64](../product/IMPROVEMENT_TRACKER.md) is also Partial and is not the active request.
 
-## 16 November local work, not yet released
+## 16 November login and #54 checkpoint
 
 - The login page/form now have a scoped light-card/navy-red visual refresh and a collapsed demo-access disclosure. The authentication endpoint and role redirects are unchanged. Independent UX was source-only; independent QA passed 3 login, 53 component, 19 unit, and 7 route tests, lint (zero errors, one existing warning), diff checks, and a separate-output webpack build. The default Turbopack build stalled. Browser inspection failed because the UI tool captured the wrong window and its in-app browser could not reach localhost; desktop/mobile rendering and authenticated login remain unverified. Check Git publication and Vercel deployment separately before claiming the login slice is live.
 - #54 has a backend-only, uncommitted draft: `backend/app/api/staff_route.py`, `backend/app/controllers/staff_chat_controller.py`, `backend/app/services/staff_chat_service.py`, `backend/app/services/staff_service.py`, `backend/tests/test_staff_chat_actions.py`, and `supabase/migrations/20261112120000_staff_chat_actions.sql`. The implementer reported six focused tests and a prior 229-test backend suite passing. Independent QA, real PostgreSQL replay, migration application, frontend conversation and release checks remain open. The Supabase CLI was unavailable; the migration file is a local fallback, not an applied change. Do not stage these files with the login work.
 - Local `main` was `75b384150ec38fb172e7fc4e3cbe1343c0f7924c` before the login work. Check Git and external services afresh before claiming a later release. The root README has not been changed for this login request.
+- Login source and status commit `90ee014b64d18e51896a7a073680604e562421a8` was pushed and read back on GitHub `main`. Vercel frontend production deployment `dpl_3QTeX19VUR7dHjy1dzm629P59qWu` reached READY on the same SHA, with aliases attached and no errors in the initial one-hour runtime query. Browser rendering and an actual authenticated login are still unverified. No #54 backend code or migration was pushed or applied.
 
 ## Completed in this checkpoint
 
@@ -22,7 +23,7 @@ The Product Manager has deferred chatbot staff-workflow [#54](../product/IMPROVE
 - Added the thirteen-entry machine-readable source registry, initialized canonical JSON records and an empty HTML page, implemented the deterministic publisher with focused tests, and drafted a trusted-main, Issue-triggered GitHub Actions publisher. See [the current runbook](../knowledge/AUTOMATION_RUNBOOK.md).
 - Refreshed the main README with a research-workflow diagram and explicit installed-versus-unverified boundaries. The docs index, agent and architecture guides, knowledge entry point, and historical source/guide notices now point to the same-account runbook. Independent documentation QA found no broken local links or unbalanced Mermaid fences; the diagram was not visually rendered. No app runtime or database code changed.
 
-## Publication and verification
+## Historical #64 publication and verification
 
 | Area | Current evidence |
 | --- | --- |
