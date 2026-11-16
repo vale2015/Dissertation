@@ -15,10 +15,11 @@ export default function LoginForm({
   return (
     <div className="login-panel">
       <div className="login-panel-header">
-        <h1 className="login-title">Welcome Back</h1>
+        <p className="login-eyebrow">Welcome to RFS</p>
+        <h1 className="login-title">Welcome back</h1>
 
         <p className="login-subtitle">
-          Sign in to access demand forecasts and operational insights.
+          Sign in to plan your next service with confidence.
         </p>
       </div>
 
@@ -37,6 +38,7 @@ export default function LoginForm({
             onChange={onEmailChange}
             placeholder="Enter your email"
             autoComplete="email"
+            aria-describedby={error ? "login-error" : undefined}
             disabled={loading}
             required
           />
@@ -57,6 +59,7 @@ export default function LoginForm({
               onChange={onPasswordChange}
               placeholder="Enter your password"
               autoComplete="current-password"
+              aria-describedby={error ? "login-error" : undefined}
               disabled={loading}
               required
             />
@@ -75,31 +78,33 @@ export default function LoginForm({
         </div>
 
         {error && (
-          <p className="login-error" role="alert">
+          <p className="login-error" id="login-error" role="alert">
             {error}
           </p>
         )}
 
         <button className="login-button" type="submit" disabled={loading}>
-          {loading ? "LOGGING IN..." : "LOGIN"}
+          <span>{loading ? "Signing in…" : "Sign in"}</span>
+          {!loading && <span aria-hidden="true">→</span>}
         </button>
       </form>
 
-      <div className="demo-box">
-        <h2 className="demo-box-title">RECRUITER DEMO ACCESS</h2>
+      <details className="demo-box">
+        <summary className="demo-box-title">Exploring the demo? <span aria-hidden="true">⌄</span></summary>
+        <div className="demo-box-content">
+          <p className="demo-box-text">Use the demonstration account to explore sample data.</p>
 
-        <p className="demo-box-text">
-          <strong>Email:</strong> manager@example.com
-        </p>
+          <p className="demo-box-text">
+            <strong>Email:</strong> manager@example.com
+          </p>
 
-        <p className="demo-box-text">
-          <strong>Password:</strong> admin123
-        </p>
+          <p className="demo-box-text">
+            <strong>Password:</strong> admin123
+          </p>
 
-        <p className="demo-box-text">
-          This account provides access to demonstration data only.
-        </p>
-      </div>
+          <p className="demo-box-text">This account provides access to demonstration data only.</p>
+        </div>
+      </details>
     </div>
   );
 }

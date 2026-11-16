@@ -1,10 +1,16 @@
 # RFS current handover
 
-Updated: 12 November 2026 (Europe/London). This is a continuity checkpoint, not proof that external services are healthy; reconcile it with current evidence before acting.
+Updated: 16 November 2026 (Europe/London). This is a continuity checkpoint, not proof that external services are healthy; reconcile it with current evidence before acting.
 
 ## Current objective
 
-The Product Manager asked to install and automate the supplied `RFS_Automation_and_Knowledge_Base` material. Research content belongs in `docs/knowledge/`; project-agent startup and decision boundaries are linked from root `AGENTS.md`. This is tracked implementation [#64](../product/IMPROVEMENT_TRACKER.md), not an existing restaurant-facing chatbot feature.
+The Product Manager has deferred chatbot staff-workflow [#54](../product/IMPROVEMENT_TRACKER.md) and requested a modern login screen consistent with the RFS design under [#57](../product/IMPROVEMENT_TRACKER.md). Preserve the local, uncommitted #54 backend/migration work; do not apply its migration or remove Staff Management navigation. The earlier research automation [#64](../product/IMPROVEMENT_TRACKER.md) is also Partial and is not the active request.
+
+## 16 November local work, not yet released
+
+- The login page/form now have a scoped light-card/navy-red visual refresh and a collapsed demo-access disclosure. The authentication endpoint and role redirects are unchanged. Independent UX was source-only; independent QA passed 3 login, 53 component, 19 unit, and 7 route tests, lint (zero errors, one existing warning), diff checks, and a separate-output webpack build. The default Turbopack build stalled. Browser inspection failed because the UI tool captured the wrong window and its in-app browser could not reach localhost; desktop/mobile rendering and authenticated login remain unverified. Check Git publication and Vercel deployment separately before claiming the login slice is live.
+- #54 has a backend-only, uncommitted draft: `backend/app/api/staff_route.py`, `backend/app/controllers/staff_chat_controller.py`, `backend/app/services/staff_chat_service.py`, `backend/app/services/staff_service.py`, `backend/tests/test_staff_chat_actions.py`, and `supabase/migrations/20261112120000_staff_chat_actions.sql`. The implementer reported six focused tests and a prior 229-test backend suite passing. Independent QA, real PostgreSQL replay, migration application, frontend conversation and release checks remain open. The Supabase CLI was unavailable; the migration file is a local fallback, not an applied change. Do not stage these files with the login work.
+- Local `main` was `75b384150ec38fb172e7fc4e3cbe1343c0f7924c` before the login work. Check Git and external services afresh before claiming a later release. The root README has not been changed for this login request.
 
 ## Completed in this checkpoint
 
@@ -29,7 +35,7 @@ The Product Manager asked to install and automate the supplied `RFS_Automation_a
 | Vercel/Supabase | The README/knowledge documentation commit `6f9f61d` automatically produced frontend deployment `dpl_9xVot3baRS3yfj2AaCTTBf3fWQ5e` and backend deployment `dpl_DczMPLA5r7RbmN3UMJqx2XDC11o1`, both production READY. No app runtime code, migration, production restaurant data, or manual deployment changed. Further knowledge-only commits may still trigger Vercel builds. |
 | PM acceptance | The PM approved the same-account route on 10 November 2026 with a knowledge-output-only publisher workflow. This is not a restriction on the connected owner's wider GitHub permissions. No research finding is approved as an app feature, and no actual unattended publication has been verified. |
 
-## Resume here
+## When resuming #64
 
 1. Inspect and update the existing web task prompt to submit research Issues only, preserving its schedule. The task is web-based and not visible in the local Codex automation registry; do not create a duplicate. The GitHub connector still returns 403 for Issue writes, so test whether the web task itself can submit using an authorized route. The workflow limits its own output, not the connected owner's wider GitHub permissions.
 2. Browser-check the generated HTML and confirm its filters, links, and snapshot ID. The current manual scan is partial; a complete baseline and linked opportunity/PM-decision lifecycle remain open.
