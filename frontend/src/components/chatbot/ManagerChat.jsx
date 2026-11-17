@@ -2,14 +2,30 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import DatePicker from "react-datepicker";
 import StaffManagement from "@/components/staff/StaffManagement";
 import useSession from "@/hooks/useSession";
 import { downloadManagementReport, downloadSavedReport } from "@/lib/report-download";
 import { ROLES } from "@/lib/permissions";
+import "react-datepicker/dist/react-datepicker.css";
 
 const PANEL_ID = "rfs-assistant-panel";
 const GREETING = "👋 Hi there! I’m your RFS Assistant! I’m here to make your day easier. Ask me about weather or local events, let me handle reports, or get help managing your staff. Just tell me what you need!";
 const SUGGESTIONS = ["Check today's bookings", "Show reservation forecast", "Suggest staffing for this week", "Generate a report"];
+
+function calendarDateString(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function reportRequestForDate(date, pendingReport) {
+  const horizon = `${pendingReport.days === 10 ? 10 : 7}-day report`;
+  if (pendingReport.intent === "report_save") return `save ${horizon} for ${date}`;
+  if (pendingReport.intent === "report_download_fresh") return `download ${horizon} for ${date} as ${pendingReport.format === "csv" ? "csv" : "pdf"}`;
+  return `generate a ${horizon} for ${date}`;
+}
 
 export default function ManagerChat() {
   const { user } = useSession();
@@ -23,12 +39,25 @@ export default function ManagerChat() {
   const [staffSearch, setStaffSearch] = useState("");
   const [modelEnabled, setModelEnabled] = useState(false);
   const [reportContext, setReportContext] = useState(null);
+  const [pendingReport, setPendingReport] = useState(null);
   const launcherRef = useRef(null);
   const inputRef = useRef(null);
+  const datePickerRef = useRef(null);
   const scrollRef = useRef(null);
 
   const append = useCallback((role, text) => {
     setMessages((current) => [...current, { role, text }]);
+  }, []);
+
+  const resetConversation = useCallback(() => {
+    setMessages([{ role: "assistant", text: GREETING }]);
+    setReportContext(null);
+    setPendingReport(null);
+    setStaffWorkspace(false);
+    setStaffSearch("");
+    setInput("");
+    setError("");
+    window.requestAnimationFrame(() => inputRef.current?.focus());
   }, []);
 
   const close = useCallback(() => {
@@ -40,6 +69,7 @@ export default function ManagerChat() {
     if (!open) return undefined;
     const controller = new AbortController();
     setLoading(true);
+    setReady(false);
     setError("");
     fetch("/api/chatbot", { cache: "no-store", signal: controller.signal })
       .then(async (response) => {
@@ -48,14 +78,16 @@ export default function ManagerChat() {
         if (!body?.conversation_enabled) throw new Error("The assistant is unavailable.");
         setReady(true);
         setModelEnabled(Boolean(body.model_enabled));
-        append("assistant", body.weather?.text || body.weather_error || "Weather is unavailable right now.");
+        setMessages((current) => current.some((item) => item.kind === "weather")
+          ? current
+          : [...current, { role: "assistant", kind: "weather", text: body.weather?.text || body.weather_error || "Weather is unavailable right now." }]);
       })
       .catch((caught) => {
         if (caught.name !== "AbortError") setError(caught.message);
       })
       .finally(() => { if (!controller.signal.aborted) setLoading(false); });
     return () => controller.abort();
-  }, [open, append]);
+  }, [open]);
 
   useEffect(() => {
     if (!open) return undefined;
@@ -79,10 +111,9 @@ export default function ManagerChat() {
 
   if (user?.role !== ROLES.MANAGER) return null;
 
-  async function submit(event) {
-    event.preventDefault();
-    const message = input.trim();
+  async function sendMessage(message, requestMessage = message) {
     if (!message || loading || !ready) return;
+    let focusCalendar = false;
     setInput("");
     setError("");
     append("user", message);
@@ -91,11 +122,17 @@ export default function ManagerChat() {
       const response = await fetch("/api/chatbot", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message, ...(reportContext ? { context: reportContext } : {}) }),
+        body: JSON.stringify({ message: requestMessage, ...(reportContext ? { context: reportContext } : {}) }),
         cache: "no-store",
       });
       const body = await response.json().catch(() => null);
       if (!response.ok) throw new Error(body?.error || "I could not complete that request.");
+      if (body.reset === true) {
+        resetConversation();
+        return;
+      }
+      setPendingReport(body.date_picker || null);
+      focusCalendar = Boolean(body.date_picker);
       if (body.download?.download === "saved") {
         await downloadSavedReport(body.download.reportId, body.download.format);
         append("assistant", `Downloaded saved report #${body.download.reportId} as ${body.download.format.toUpperCase()}.`);
@@ -114,8 +151,23 @@ export default function ManagerChat() {
       append("assistant", caught.message || "That request failed. Please try again.");
     } finally {
       setLoading(false);
-      window.requestAnimationFrame(() => inputRef.current?.focus());
+      window.requestAnimationFrame(() => (focusCalendar ? datePickerRef.current : inputRef.current)?.focus());
     }
+  }
+
+  function submit(event) {
+    event.preventDefault();
+    const message = input.trim();
+    const requestMessage = pendingReport && /^\d{4}-\d{2}-\d{2}$/.test(message)
+      ? reportRequestForDate(message, pendingReport)
+      : message;
+    void sendMessage(message, requestMessage);
+  }
+
+  function chooseReportDate(date) {
+    if (!(date instanceof Date) || Number.isNaN(date.getTime()) || !pendingReport) return;
+    const dateString = calendarDateString(date);
+    void sendMessage(dateString, reportRequestForDate(dateString, pendingReport));
   }
 
   return (
@@ -143,7 +195,10 @@ export default function ManagerChat() {
                 <p>{modelEnabled ? "Your Restaurant Assistant" : "Restaurant tools"}</p>
               </div>
             </div>
-            <button type="button" aria-label="Close assistant" onClick={close}>×</button>
+            <div className="manager-chat-header-actions">
+              <button type="button" className="manager-chat-new" onClick={resetConversation} disabled={!ready || loading}>New chat</button>
+              <button type="button" aria-label="Close assistant" onClick={close}>×</button>
+            </div>
           </header>
           <div className="manager-chat-messages" ref={scrollRef} aria-live="polite">
             {messages.map((item, index) => (
@@ -157,6 +212,19 @@ export default function ManagerChat() {
             </div>}
             {loading && <p className="manager-chat-pending" role="status">Working on your request…</p>}
             {error && <p className="manager-chat-error" role="alert">{error}</p>}
+            {pendingReport && ready && !loading && <div ref={datePickerRef} className="manager-chat-date-picker" role="group" aria-labelledby="manager-chat-date-picker-title" tabIndex={-1}>
+              <p id="manager-chat-date-picker-title">Choose a report date</p>
+              <DatePicker
+                inline
+                selected={null}
+                onChange={chooseReportDate}
+                openToDate={new Date()}
+                showMonthDropdown
+                showYearDropdown
+                dropdownMode="select"
+                calendarClassName="custom-datepicker manager-chat-calendar"
+              />
+            </div>}
             {staffWorkspace && <div className="manager-chat-workspace"><StaffManagement initialSearch={staffSearch} /></div>}
           </div>
           <form className="manager-chat-composer" onSubmit={submit}>

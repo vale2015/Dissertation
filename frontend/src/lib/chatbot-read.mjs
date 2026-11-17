@@ -1,4 +1,5 @@
 const ISO_DATE = /\b\d{4}-\d{2}-\d{2}\b/g;
+const TEN_DAY_HORIZON = /\b10(?:\s+|-)days?\b/;
 
 function validDate(value) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
@@ -21,6 +22,9 @@ export function validChatbotContext(value) {
 export function classifyChatbotMessage(message, context = null) {
   const text = typeof message === "string" ? message.trim() : "";
   if (!text || text.length > 500) return { error: "Enter a message of up to 500 characters." };
+  if (/^(?:(?:please\s+)?(?:start|begin|open|create)\s+(?:a\s+)?(?:brand\s+)?new\s+chat|new\s+chat|(?:clear|reset)\s+(?:this\s+|the\s+|my\s+)?(?:chat|conversation))(?:\s+please)?[.!?]?$/i.test(text)) {
+    return { intent: "new_chat" };
+  }
   const lower = text.toLowerCase();
   const dates = [...text.matchAll(ISO_DATE)].map((match) => match[0]);
   if (dates.some((date) => !validDate(date))) return { error: "Use a valid date in YYYY-MM-DD format." };
@@ -60,12 +64,12 @@ export function classifyChatbotMessage(message, context = null) {
       const format = /\bcsv\b/.test(lower) ? "csv" : /\bpdf\b/.test(lower) ? "pdf" : null;
       if (!format) return { error: "Specify PDF or CSV for the download." };
       if (reportId && dates.length === 0) return { intent: "report_download", reportId: Number(reportId[1]), format };
-      if (dates.length) return { intent: "report_download_fresh", date: dates[0], days: /\b10\s*days?\b/.test(lower) ? 10 : 7, format };
+      if (dates.length) return { intent: "report_download_fresh", date: dates[0], days: TEN_DAY_HORIZON.test(lower) ? 10 : 7, format };
       return { error: "Tell me the saved report ID, or a date in YYYY-MM-DD format for a new report." };
     }
     if (reportId && dates.length === 0 && /\b(show|view|open|read|past|saved)\b/.test(lower)) return { intent: "report_detail", reportId: Number(reportId[1]) };
     if (/\b(past|saved|previous|history|old)\b/.test(lower) && !/\bsave\b/.test(lower)) return { intent: "report_history" };
-    const days = /\b10\s*days?\b/.test(lower) ? 10 : 7;
+    const days = TEN_DAY_HORIZON.test(lower) ? 10 : 7;
     if (/\bsave\b/.test(lower)) return { intent: "report_save", date: dates[0] || null, days };
     return { intent: "report", date: dates[0] || null, days };
   }
@@ -80,6 +84,7 @@ function calendarMonth(now) {
 
 export function chatbotReadTarget(intent, now = new Date()) {
   switch (intent.intent) {
+    case "new_chat": return { reset: true };
     case "bookings_today": return { path: "/booking/today-summary", method: "GET" };
     case "reservation_forecast": return { path: "/demand/forecast?days=7", method: "GET" };
     case "staffing_forecast": return { path: "/staff-cost/", method: "GET" };
@@ -93,7 +98,7 @@ export function chatbotReadTarget(intent, now = new Date()) {
     case "report":
     case "report_save":
     case "report_download_fresh":
-      if (!intent.date) return { resolve: "latest_report", intent: intent.intent, days: intent.days, format: intent.format };
+      if (!intent.date) return { resolve: "choose_report_date", intent: intent.intent, days: intent.days, format: intent.format };
       if (intent.intent === "report_save") return { path: "/reports/history", method: "POST", body: { selected_date: intent.date, days_ahead: intent.days } };
       if (intent.intent === "report_download_fresh") return { download: "fresh", selectedDate: intent.date, days: intent.days, format: intent.format };
       return { path: `/reports/management?${new URLSearchParams({ selected_date: intent.date, days_ahead: String(intent.days) })}`, method: "GET" };

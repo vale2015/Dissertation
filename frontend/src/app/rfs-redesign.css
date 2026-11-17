@@ -169,9 +169,20 @@
 .manager-chat-header h2 { color: #fff; font-size: 22px; }
 .manager-chat-header p { color: #fff6f6; }
 .manager-chat-header button { color: #fff; }
+.manager-chat-header-actions { display: flex; align-items: center; gap: 10px; }
+.manager-chat-header .manager-chat-new { align-self: center; padding: 7px 10px; border: 1px solid rgba(255,255,255,.55); border-radius: 8px; font-size: 12px; font-weight: 700; white-space: nowrap; }
+.manager-chat-header .manager-chat-new:hover:not(:disabled), .manager-chat-header .manager-chat-new:focus-visible { background: rgba(255,255,255,.14); }
+.manager-chat-header .manager-chat-new:disabled { opacity: .55; cursor: not-allowed; }
 .manager-chat-messages { padding: 20px 16px; background: #fff; }
 .manager-chat-message { max-width: 92%; border-color: #f0f0f0; border-radius: 14px; box-shadow: 0 3px 16px rgba(16,24,40,.04); }
 .manager-chat-user { box-shadow: none; }
+.manager-chat-date-picker { box-sizing: border-box; width: min(100%, 340px); margin: 4px 0 16px; padding: 12px; border: 1px solid #e9ebef; border-radius: 14px; background: #fff; box-shadow: 0 3px 16px rgba(16,24,40,.04); }
+.manager-chat-date-picker > p { margin: 0 0 10px; color: #17243a; font-size: 13px; font-weight: 750; }
+.manager-chat-date-picker .react-datepicker { width: 100%; border-color: #e9ebef; }
+.manager-chat-date-picker .react-datepicker__month-container { float: none; width: 100%; }
+.manager-chat-date-picker .react-datepicker__week, .manager-chat-date-picker .react-datepicker__day-names { display: flex; justify-content: space-around; }
+.manager-chat-date-picker .react-datepicker__day, .manager-chat-date-picker .react-datepicker__day-name { flex: 1 1 0; min-width: 0; max-width: 2rem; margin: 2px 0; }
+.manager-chat-date-picker .react-datepicker__day:focus-visible, .manager-chat-date-picker .react-datepicker__navigation:focus-visible, .manager-chat-date-picker select:focus-visible { outline: 3px solid #2563eb; outline-offset: 2px; }
 .manager-chat-suggestions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 17px; }
 .manager-chat-suggestions button { padding: 10px 14px; border: 1px solid #f4c9ce; border-radius: 999px; background: #fff1f2; color: #a7141c; font: inherit; font-size: 13px; cursor: pointer; }
 .manager-chat-suggestions button:hover { background: #ffe3e6; }

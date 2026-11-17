@@ -1,8 +1,10 @@
 import { beforeEach, afterEach, expect, test, vi } from "vitest";
 import { cookies } from "next/headers";
 import { GET, POST } from "./route";
+import { classifyWithCloudflare, cloudflareModelAvailable } from "@/lib/chatbot-model.mjs";
 
 vi.mock("next/headers", () => ({ cookies: vi.fn() }));
+vi.mock("@/lib/chatbot-model.mjs", () => ({ classifyWithCloudflare: vi.fn(), cloudflareModelAvailable: vi.fn(() => false) }));
 
 const backendUrl = "https://backend.example/api";
 const ok = (body, status = 200) => ({ ok: status >= 200 && status < 300, status, json: async () => body });
@@ -11,6 +13,7 @@ beforeEach(() => {
   process.env.BACKEND_API_URL = backendUrl;
   delete process.env.CLOUDFLARE_ACCOUNT_ID;
   delete process.env.CLOUDFLARE_API_TOKEN;
+  cloudflareModelAvailable.mockReturnValue(false);
   cookies.mockResolvedValue({ get: () => ({ value: "session-token" }) });
   vi.stubGlobal("fetch", vi.fn().mockResolvedValue(ok({ user: { id: 7, role: "manager" } })));
 });
@@ -61,6 +64,23 @@ test("staff request opens in-chat workspace and never sends staff data to the mo
   expect(fetch).toHaveBeenCalledTimes(1);
 });
 
+test("fresh-chat command resets after manager verification without a model or business API call", async () => {
+  cloudflareModelAvailable.mockReturnValue(true);
+  const response = await POST(message("start a brand new chat"));
+  expect(response.status).toBe(200);
+  expect(await response.json()).toEqual({ reset: true });
+  expect(fetch).toHaveBeenCalledTimes(1);
+  expect(classifyWithCloudflare).not.toHaveBeenCalled();
+});
+
+test("fresh-chat command remains manager-only", async () => {
+  cookies.mockResolvedValueOnce({ get: () => undefined });
+  expect((await POST(message("new chat"))).status).toBe(401);
+  fetch.mockResolvedValueOnce(ok({ user: { id: 8, role: "staff" } }));
+  expect((await POST(message("reset conversation"))).status).toBe(403);
+  expect(classifyWithCloudflare).not.toHaveBeenCalled();
+});
+
 test("report request calls the protected backend with server-side session", async () => {
   fetch.mockResolvedValueOnce(ok({ user: { id: 7, role: "manager" } }));
   fetch.mockResolvedValueOnce(ok({ metadata: { selected_date: "2026-11-29", currency: "GBP" }, summary: { forecasted_covers: 50, open_days: 7 }, financials: { estimated_labour_cost: 500 } }));
@@ -71,14 +91,36 @@ test("report request calls the protected backend with server-side session", asyn
   expect(fetch.mock.calls[1][1].headers.Authorization).toBe("Bearer session-token");
 });
 
-test("undated report uses the latest available backend date", async () => {
+test("10-day report generation, save and download keep the selected horizon", async () => {
   fetch.mockResolvedValueOnce(ok({ user: { id: 7, role: "manager" } }));
-  fetch.mockResolvedValueOnce(ok({ latest_record: { date: "2026-11-29" } }));
-  fetch.mockResolvedValueOnce(ok({ metadata: { selected_date: "2026-11-29", days_ahead: 7, currency: "GBP" }, summary: { forecasted_covers: 50, open_days: 7 }, financials: { estimated_labour_cost: 500 } }));
+  fetch.mockResolvedValueOnce(ok({ metadata: { selected_date: "2026-06-15", days_ahead: 10, currency: "GBP" }, summary: { forecasted_covers: 50, open_days: 10 }, financials: { estimated_labour_cost: 500 } }));
+  const generated = await POST(message("generate a 10-day report for 2026-06-15"));
+  expect(generated.status).toBe(200);
+  expect(fetch.mock.calls[1][0]).toContain("days_ahead=10");
+
+  fetch.mockResolvedValueOnce(ok({ user: { id: 7, role: "manager" } }));
+  fetch.mockResolvedValueOnce(ok({ report: { id: 8 } }));
+  const saved = await POST(message("save 10-day report for 2026-06-15"));
+  expect(saved.status).toBe(200);
+  expect(JSON.parse(fetch.mock.calls[3][1].body)).toEqual({ selected_date: "2026-06-15", days_ahead: 10 });
+
+  fetch.mockResolvedValueOnce(ok({ user: { id: 7, role: "manager" } }));
+  const download = await POST(message("download 10-day report for 2026-06-15 as pdf"));
+  expect(download.status).toBe(200);
+  expect((await download.json()).download).toEqual({ download: "fresh", selectedDate: "2026-06-15", days: 10, format: "pdf" });
+  expect(fetch).toHaveBeenCalledTimes(5);
+});
+
+test("undated report asks for a calendar choice without model or backend report calls", async () => {
+  cloudflareModelAvailable.mockReturnValue(true);
   const response = await POST(message("generate a report"));
   expect(response.status).toBe(200);
-  expect(fetch.mock.calls[1][0]).toBe(`${backendUrl}/dashboard/`);
-  expect(fetch.mock.calls[2][0]).toContain("selected_date=2026-11-29");
+  expect(await response.json()).toEqual({
+    text: "Choose a date in the calendar below to generate your report. You can also type a date as YYYY-MM-DD.",
+    date_picker: { intent: "report", days: 7, format: null },
+  });
+  expect(fetch).toHaveBeenCalledTimes(1);
+  expect(classifyWithCloudflare).not.toHaveBeenCalled();
 });
 
 test("today's bookings use a bounded, protected backend summary", async () => {

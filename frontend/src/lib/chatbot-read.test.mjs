@@ -14,6 +14,19 @@ test("typed requests route to allowlisted restaurant operations", () => {
   assert.equal(classifyChatbotMessage("Check today's bookings").intent, "bookings_today");
   assert.equal(classifyChatbotMessage("Show reservation forecast").intent, "reservation_forecast");
   assert.equal(classifyChatbotMessage("Suggest staffing for this week").intent, "staffing_forecast");
+  assert.deepEqual(classifyChatbotMessage("generate a 10-day report for 2026-06-15"), { intent: "report", date: "2026-06-15", days: 10 });
+  assert.deepEqual(classifyChatbotMessage("save 10-day report for 2026-06-15"), { intent: "report_save", date: "2026-06-15", days: 10 });
+  assert.deepEqual(classifyChatbotMessage("download 10-day report for 2026-06-15 as pdf"), { intent: "report_download_fresh", date: "2026-06-15", days: 10, format: "pdf" });
+  assert.deepEqual(classifyChatbotMessage("generate a 10 day report for 2026-06-15"), { intent: "report", date: "2026-06-15", days: 10 });
+});
+
+test("fresh-chat commands are bounded and never absorb ordinary restaurant requests", () => {
+  for (const text of ["new chat", "start a new chat", "start a brand new chat", "Clear this chat!", "reset conversation", "PLEASE CREATE A NEW CHAT."]) {
+    assert.deepEqual(classifyChatbotMessage(text), { intent: "new_chat" });
+  }
+  assert.deepEqual(chatbotReadTarget({ intent: "new_chat" }), { reset: true });
+  assert.equal(classifyChatbotMessage("How do I start a new chat for staff?").intent, "staff");
+  assert.equal(classifyChatbotMessage("new chat for reports").intent, "report");
 });
 
 test("invalid dates and excessive input are rejected", () => {
@@ -37,7 +50,7 @@ test("backend targets are fixed to known protected routes", () => {
   assert.deepEqual(chatbotReadTarget({ intent: "staff" }), { workspace: "staff", search: "" });
   assert.deepEqual(classifyChatbotMessage("find staff Alex Example"), { intent: "staff", search: "Alex Example" });
   assert.deepEqual(chatbotReadTarget({ intent: "report_download", reportId: 4, format: "pdf" }), { download: "saved", reportId: 4, format: "pdf" });
-  assert.deepEqual(chatbotReadTarget({ intent: "report", days: 7 }), { resolve: "latest_report", intent: "report", days: 7, format: undefined });
+  assert.deepEqual(chatbotReadTarget({ intent: "report", days: 7 }), { resolve: "choose_report_date", intent: "report", days: 7, format: undefined });
   assert.match(chatbotReadTarget({ intent: "events", dates: [] }, new Date("2026-10-25T12:00:00Z")).path, /start_date=2026-10-25&end_date=2026-10-31/);
 });
 

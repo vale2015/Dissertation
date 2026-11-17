@@ -69,6 +69,7 @@ export async function POST(request) {
 
   let intent = classifyChatbotMessage(body.message, context);
   if (intent.error) return reply({ error: intent.error }, 400);
+  if (intent.intent === "new_chat") return reply({ reset: true }, 200);
   if (intent.intent === "unknown" && cloudflareModelAvailable()) {
     // Do not send likely account identifiers or secrets to the model.
     if (/@|\b(password|token|secret|reset link)\b/i.test(body.message)) {
@@ -82,18 +83,12 @@ export async function POST(request) {
   }
 
   let target = chatbotReadTarget(intent);
-  if (target.resolve === "latest_report") {
-    try {
-      const latest = await backendRequest(access.token, { path: "/dashboard/", method: "GET" });
-      const selectedDate = latest.body?.latest_record?.date;
-      if (latest.error || !/^\d{4}-\d{2}-\d{2}$/.test(selectedDate || "")) {
-        return reply({ text: "Which report date should I use? Please enter it as YYYY-MM-DD." }, 200);
-      }
-      intent = { ...intent, date: selectedDate };
-      target = chatbotReadTarget(intent);
-    } catch {
-      return reply({ text: "I could not find the latest available report date. Please enter a date as YYYY-MM-DD." }, 200);
-    }
+  if (target.resolve === "choose_report_date") {
+    const action = target.intent === "report_save" ? "save" : target.intent === "report_download_fresh" ? "download" : "generate";
+    return reply({
+      text: `Choose a date in the calendar below to ${action} your report. You can also type a date as YYYY-MM-DD.`,
+      date_picker: { intent: target.intent, days: target.days, format: target.format || null },
+    }, 200);
   }
   if (target.error) return reply({ error: target.error }, 400);
   if (target.prompt) return reply({ text: target.prompt }, 200);
