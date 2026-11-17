@@ -14,8 +14,11 @@ This is a repository configuration, not seven continuously running services. Cod
 | UX reviewer | `ux-design-review` | Review manager usability, responsive design, and accessibility when relevant. |
 | Security reviewer | `security-review` | Review sensitive data, permissions, and automated actions when relevant. |
 | Backlog coordinator | `backlog-handoff`, then `move-board-cards` | Keep tracker evidence and status authoritative, then mirror the numbered task on Trello. |
+| Ticket commenter | `ticket-comment-handoff` | Each specialist posts one evidence-based outcome and next-action comment on its numbered card at a meaningful handoff. |
 
 QUICK uses one implementation specialist and a focused self-check for an isolated, low-risk task. STANDARD adds a separate QA handoff. FULL adds only the UX, security, or AI review warranted by the change, one at a time. A short handoff states task ID, changed files, criteria checked, actual test results, outstanding risks, next role, and PM decision needed. An implementer's self-check is never represented as independent QA. After two unsuccessful fix/retest cycles, report the blocker instead of looping.
+
+Each role's handoff is also left as a concise Trello comment on the same task card, including when the result is incomplete. This gives the PM a reviewable trail without making Trello the source of truth: task status and verification evidence remain in the tracker. A status-changing handoff updates the tracker and board list before its comment; an unavailable connector produces an unsent draft for the PM instead of a false claim that a comment was posted.
 
 The supplied starter pack contained a Trello handoff and an outdated right-side chatbot direction. The original no-Trello instruction was reversed by the PM on 7 November 2026: the [RFS board](TRELLO_BOARD_WORKFLOW.md) now mirrors numbered tracker status, while the Markdown tracker remains canonical and the live chatbot remains left-docked. The Trello connector is used only for this board and does not authorize a merge, deployment, or production-data change.
 

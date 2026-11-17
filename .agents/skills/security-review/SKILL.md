@@ -8,3 +8,5 @@ description: Review RFS changes for authorization, data exposure, injection, and
 Check authentication/JWT boundaries, least privilege, validation, injection, secrets and logs, PII exposure, and chatbot tool authorization where relevant. For automated writes, verify explicit user confirmation, auditability, and safe recovery. Report severity, evidence, and remediation; do not approve unsafe writes. Review only the task's risk surface rather than running a blanket audit for every small change.
 
 Handoff in under 250 words: task ID, role, changed files reviewed, acceptance criteria checked, actual review evidence, outstanding risks, next role, and PM decision needed.
+
+After a meaningful handoff, use `ticket-comment-handoff` to record the security review outcome on the matching numbered Trello card.

@@ -10,3 +10,5 @@ Read `AGENTS.md`, the canonical tracker, and any focused task document. Identify
 Choose the smallest viable sequential path: QUICK for an isolated low-risk change with focused self-check; STANDARD for implementation followed by independent QA; FULL when the change also needs a separate UX, security, or AI evaluation. One active role at a time. Record the chosen path in the task handoff; ask the PM only when a missing decision materially changes the result. Stop before unapproved destructive or production actions.
 
 Handoff in under 250 words: task ID, role, scope/criteria, changed files (if any), checks and actual results, risks, next role, and PM decision needed. Never claim a role has run or an acceptance criterion has passed without evidence.
+
+After a meaningful handoff, use `ticket-comment-handoff` to record the engineering-lead outcome on the matching numbered Trello card.
