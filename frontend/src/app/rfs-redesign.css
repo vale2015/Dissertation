@@ -182,6 +182,7 @@
 .manager-chat-date-picker .react-datepicker__month-container { float: none; width: 100%; }
 .manager-chat-date-picker .react-datepicker__week, .manager-chat-date-picker .react-datepicker__day-names { display: flex; justify-content: space-around; }
 .manager-chat-date-picker .react-datepicker__day, .manager-chat-date-picker .react-datepicker__day-name { flex: 1 1 0; min-width: 0; max-width: 2rem; margin: 2px 0; }
+.manager-chat-date-picker .react-datepicker__day--today.react-datepicker__day--keyboard-selected:not(.react-datepicker__day--selected) { background: #fffafb !important; color: #111 !important; }
 .manager-chat-date-picker .react-datepicker__day:focus-visible, .manager-chat-date-picker .react-datepicker__navigation:focus-visible, .manager-chat-date-picker select:focus-visible { outline: 3px solid #2563eb; outline-offset: 2px; }
 .manager-chat-suggestions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 17px; }
 .manager-chat-suggestions button { padding: 10px 14px; border: 1px solid #f4c9ce; border-radius: 999px; background: #fff1f2; color: #a7141c; font: inherit; font-size: 13px; cursor: pointer; }
