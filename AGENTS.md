@@ -1,5 +1,7 @@
 # Project improvement coordination
 
+- **PM priority override (19 November 2026): chatbot completion takes precedence over other project work.** Follow #65 → #66 → #67 under #54/#55 in [the ordered blocker plan](docs/chatbot/CHATBOT_BLOCKER_RESOLUTION.md). Necessary chatbot safety/release dependencies stay in that queue. Preserve other task statuses and the model-configuration hold until deliberately resumed; priority alone does not authorize credential changes or repeated failed inference calls.
+
 - Whenever you produce a list of improvements for this project, save or update it as a Markdown file in `docs/` before handing it to the user. Link the file in the response. Do not leave the only copy in a chat message.
 - Use `docs/product/IMPROVEMENT_TRACKER.md` as the canonical actionable backlog. Add newly proposed items there with unique numbers, or update existing items instead of creating duplicates. If a focused list merits its own document, put it in the relevant topic folder under `docs/` and add it to `docs/README.md`; keep its actionable items synchronized with the tracker.
 - Before starting any improvement, read the tracker and the relevant focused list. Prioritize expected user/product value and necessary safety dependencies using `docs/product/MOSCOW_PRIORITIZATION.md`; preserve item numbers as identifiers, not a mandatory implementation sequence. Reassess priority when evidence or user direction changes.

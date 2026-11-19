@@ -56,3 +56,5 @@ This index stays at the top of `docs/`; all other files are grouped by topic bel
 - [Weekly knowledge-base implementation guide](knowledge/RFS_WEEKLY_KNOWLEDGE_BASE_IMPLEMENTATION_GUIDE.md) — specification for the research records, HTML review, scheduler, publication, and acceptance tests; not evidence of completion.
 
 The old chatbot product-scope brief was consolidated into the PRD; its technical boundaries remain in the chatbot architecture document. The early HTML chat mockup and a stray diagram backup were removed because neither represents the current product. Git history retains them. Do not use historical design checklists as release status; use the tracker.
+
+- [First-priority chatbot blocker plan](chatbot/CHATBOT_BLOCKER_RESOLUTION.md) — ordered work packages #65–67 for parent #54 and foundation #55.

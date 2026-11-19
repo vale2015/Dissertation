@@ -1,5 +1,9 @@
 # RFS current handover
 
+## 19 November PM priority override
+
+Chatbot completion takes precedence over all other work: #65 authentication → #66 independent live AI verification → #67 release acceptance and parent closure. These are Open/READY work packages for #54/#55, not new completed features. The earlier configuration hold remains until deliberately resumed. See [ordered plan](../chatbot/CHATBOT_BLOCKER_RESOLUTION.md). Other task statuses are preserved; necessary chatbot safety/release dependencies are included.
+
 ## 19 November #54 working checkpoint (supersedes older state below)
 
 - **Current status:** #54 remains Partial / Trello IN PROGRESS. The PM chose to keep model verification blocked for now. No unchanged-auth retries, sidebar removal or Done claim.
