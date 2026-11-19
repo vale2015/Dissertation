@@ -28,6 +28,8 @@ This index stays at the top of `docs/`; all other files are grouped by topic bel
 
 - [RFS chatbot architecture](chatbot/RFS%20Chatbot%20Architecture%20Design.md) — protected API/model boundary and remaining safety work for #54–55.
 - [Staff registration and editing in RFS AI](chatbot/STAFF_MANAGEMENT_CHAT_WORKFLOW.md) — proposed delivery features and release gates for #54; the sidebar is not removed yet.
+- [Staff conversation verification](chatbot/STAFF_CHAT_VERIFICATION_2026-11-19.md) — current #54 evidence, testing limits and remaining release checks.
+- [Model authentication diagnostics](chatbot/MODEL_AUTH_DIAGNOSTICS.md) — bounded server diagnostics, credential-format handling and the observed inference blocker.
 - [AI-assisted report explanations](chatbot/AI_REPORT_EXPLANATIONS.md) — separate off-by-default pilot and release gates for #52; it is not a report-page action.
 
 ## Architecture and data (`architecture/`)

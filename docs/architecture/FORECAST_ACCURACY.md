@@ -1,5 +1,8 @@
 # Forecast accuracy (improvement 21)
 
+**Current acceptance — 19 November 2026:** The PM approved #21 as a demonstration feature and instructed moving it to Done. All three reviewed tasks (#21, #29 and #56) are Done. The 31 actuals remain labelled synthetic; genuine service/model validation remains under #61. Earlier Verify release statements below record the historical acceptance gate and are superseded.
+
+
 This is an implementation note for [tracker item 21](../product/IMPROVEMENT_TRACKER.md), not a second backlog. Status: **Verify release** as of 2026-10-24. The feature is merged and both production services are READY, but a real completed-service comparison and authenticated production flow have not yet been verified.
 
 ## What is measured
