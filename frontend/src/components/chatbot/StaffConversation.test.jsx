@@ -150,3 +150,26 @@ test("manager registration allows an explicitly unassigned restaurant role", asy
   expect(await screen.findByRole("button", { name: "Review change" })).toBeEnabled();
   expect(action.draft.staff_role_id).toBeNull();
 });
+
+test.each(["register", "edit"])("%s preserves names above 100 characters through the 120-character boundary", async (kind) => {
+  const user = userEvent.setup();
+  if (kind === "edit") action = { id: "draft-id", kind, state: "draft", revision: 1, target_user_id: member.id, draft: {} };
+  render(<StaffConversation command={{ kind }} actorId={7} onExit={vi.fn()} />);
+  if (kind === "edit") await user.click(await screen.findByRole("button", { name: "Change full name" }));
+
+  const name101 = "A".repeat(101);
+  await user.type(await screen.findByRole("textbox", { name: "Full name" }), name101);
+  await user.click(screen.getByRole("button", { name: "Continue" }));
+  await waitFor(() => expect(action.draft.full_name).toBe(name101));
+
+  await user.click(screen.getByRole("button", { name: "Change full name" }));
+  const input = screen.getByRole("textbox", { name: "Full name" });
+  const name120 = "B".repeat(120);
+  expect(input).toHaveAttribute("maxlength", "120");
+  await user.type(input, `${name120}Z`);
+  expect(input).toHaveValue(name120);
+  await user.click(screen.getByRole("button", { name: "Continue" }));
+  await waitFor(() => expect(action.draft.full_name).toBe(name120));
+  const namePatches = fetch.mock.calls.filter(([, options]) => options.method === "PATCH").map(([, options]) => JSON.parse(options.body));
+  expect(namePatches).toEqual([{ full_name: name101 }, { full_name: name120 }]);
+});
