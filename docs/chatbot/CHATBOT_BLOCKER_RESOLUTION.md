@@ -46,4 +46,3 @@ Trello queue: [#65 authentication](https://trello.com/c/Ppb8CHd2) → [#66 live 
 #52 AI-assisted report explanations remains a separate off-by-default pilot. It follows core chatbot completion unless the PM reprioritizes it; this plan does not enable it. #21/#29/#56 remain Done, and genuine forecast validation stays under #61 after chatbot priority.
 
 Current baseline: application published through [PR #21](https://github.com/vale2015/Dissertation/pull/21); [verification record](STAFF_CHAT_VERIFICATION_2026-11-19.md); [safe model diagnostics](MODEL_AUTH_DIAGNOSTICS.md). Planning creates no new successful inference evidence. See the canonical [tracker](../product/IMPROVEMENT_TRACKER.md) and [priority order](../product/MOSCOW_PRIORITIZATION.md).
-
