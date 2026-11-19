@@ -236,3 +236,57 @@ test("new chat cancels the protected draft and staff details never enter the gen
   expect(fetch.mock.calls.some(([url, options]) => url === "/api/chatbot" && options.method === "POST")).toBe(false);
   expect(screen.queryByText("Private Example")).not.toBeInTheDocument();
 });
+
+test.each([
+  "register Alex Example alex@example.test",
+  "deactivate Alex Example alex@example.test",
+  "please register Alex Example alex@example.test",
+  "Can you please suspend Alex Example alex@example.test",
+  "please reactivate alex@example.test",
+  "Can you reset password for Alex Example alex@example.test",
+  "please edit Alex Example alex@example.test",
+  "please register Alex Example alex@example.test password=hidden-value",
+  "can you please deactivate Alex Example alex@example.test",
+  "I need to register Alex Example alex@example.test",
+  "Can you please edit Alex Example alex@example.test token=hidden-value",
+  "please find staff Alex Example alex@example.test secret=hidden-value",
+  "please, register Alex Example alex@example.test",
+  "I’d like to register Alex Example alex@example.test",
+  "I'd like to deactivate Alex Example alex@example.test",
+  "Show weather and register Alex Example alex@example.test password=hidden-value",
+  "Show weather and register Alex Example alex@example.test",
+  "Update report then deactivate Alex Example alex@example.test",
+  "register for a concert and deactivate Alex Example alex@example.test",
+  "Show weather; edit Alex Example alex@example.test token=hidden-value",
+  "I would like Alex Example alex@example.test to be registered",
+])("account request remains private before generic history/API: %s", async (message) => {
+  const user = userEvent.setup();
+  sessionStorage.clear();
+  fetch.mockImplementation(async (url) => {
+    const body = url === "/api/chatbot" ? { conversation_enabled: true, weather: { text: "Weather ready." } }
+      : url.endsWith("/roles") ? { roles: [{ id: 3, role_name: "Server" }] }
+        : url.endsWith("/current") ? { action: null }
+          : url.includes("chat-lookup") ? { matches: [] }
+            : { action: { id: "private-draft", kind: "register", state: "draft", revision: 1, draft: {} } };
+    return { ok: true, json: async () => body };
+  });
+  render(<ManagerChat />);
+  await user.click(screen.getByRole("button", { name: "Open RFS assistant" }));
+  await screen.findByText("Weather ready.");
+  fireEvent.change(screen.getByRole("textbox", { name: "Your message" }), { target: { value: message } });
+  await user.click(screen.getByRole("button", { name: "Send" }));
+  await screen.findByRole("region", { name: "Private staff conversation" });
+  await waitFor(() => expect(screen.queryByText("Checking staff details…")).not.toBeInTheDocument());
+  expect(document.querySelector(".manager-chat-user")).toBeNull();
+  expect(screen.queryByRole("textbox", { name: "Your message" })).not.toBeInTheDocument();
+  expect(fetch.mock.calls.some(([url, options]) => url === "/api/chatbot" && options?.method === "POST")).toBe(false);
+  const writes = fetch.mock.calls.filter(([, options]) => options?.method === "POST");
+  expect(writes.every(([url, options]) => url === "/api/backend/staff/chat-actions" && options.body === JSON.stringify({ kind: "register" }))).toBe(true);
+  expect(JSON.stringify(writes)).not.toMatch(/Alex|alex@example|hidden-value/);
+  expect(fetch.mock.calls.some(([url]) => url.includes("hidden-value"))).toBe(false);
+  if (/[’']d|please,|\b(and|then)\b|;|hidden-value/.test(message)) {
+    expect(screen.getByRole("button", { name: "Register a staff member" })).toBeInTheDocument();
+    expect(fetch.mock.calls.some(([url]) => url.includes("chat-lookup"))).toBe(false);
+    expect(writes).toHaveLength(0);
+  }
+});

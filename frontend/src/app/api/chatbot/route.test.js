@@ -76,7 +76,7 @@ test("every provider call reserves a durable budget first and receives only task
   fetch.mockResolvedValueOnce(ok({ user: { id: 7, role: "manager" } }));
   fetch.mockResolvedValueOnce(ok({ allowed: true }));
   classifyWithCloudflare.mockResolvedValueOnce("unknown");
-  await POST(message("nearby happenings Alice alex@example.test secret=123456"));
+  await POST(message("nearby happenings Alice alex@example.test +447700900001"));
   expect(fetch.mock.calls[1][0]).toBe(`${backendUrl}/staff/chat-model-budget`);
   expect(fetch.mock.calls[1][1]).toMatchObject({ method: "POST", body: "{}", headers: expect.objectContaining({ Authorization: "Bearer session-token" }) });
   expect(classifyWithCloudflare).toHaveBeenCalledWith("events");
