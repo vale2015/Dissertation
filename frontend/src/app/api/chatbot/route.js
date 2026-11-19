@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { verifyChatbotManager } from "@/lib/chatbot-access.mjs";
 import { classifyChatbotMessage, chatbotReadTarget, summarizeChatbotResult, validChatbotContext } from "@/lib/chatbot-read.mjs";
-import { classifyWithCloudflare, cloudflareModelAvailable, taskSignals, modelFailureCategory } from "@/lib/chatbot-model.mjs";
+import { classifyWithCloudflare, cloudflareModelAvailable, taskSignals, modelFailureDiagnostics } from "@/lib/chatbot-model.mjs";
 
 function reply(body, status) {
   return NextResponse.json(body, {
@@ -82,8 +82,9 @@ export async function POST(request) {
       }
       try { intent = { intent: await classifyWithCloudflare(taskSignals(body.message)) }; }
       catch (error) {
-        const category = modelFailureCategory(error);
-        console.warn("chatbot_model_failure", { category });
+        const diagnostics = modelFailureDiagnostics(error);
+        const category = diagnostics.category;
+        console.warn("chatbot_model_failure", diagnostics);
         return reply({ text: "AI interpretation is temporarily unavailable. Try asking directly for weather, events, reports, or staff management.", category }, 200);
       }
     }

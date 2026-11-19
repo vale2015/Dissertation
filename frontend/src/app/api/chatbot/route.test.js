@@ -22,6 +22,8 @@ afterEach(() => {
   vi.unstubAllGlobals();
   vi.clearAllMocks();
   delete process.env.BACKEND_API_URL;
+  delete process.env.CLOUDFLARE_ACCOUNT_ID;
+  delete process.env.CLOUDFLARE_API_TOKEN;
 });
 
 function message(value, origin = "https://app.example") {
@@ -96,13 +98,22 @@ test("model failure reports an enumerated diagnostic without leaking provider er
   cloudflareModelAvailable.mockReturnValue(true);
   fetch.mockResolvedValueOnce(ok({ user: { id: 7, role: "manager" } }));
   fetch.mockResolvedValueOnce(ok({ allowed: true }));
-  classifyWithCloudflare.mockRejectedValueOnce({ statusCode: 403, message: "secret provider token" });
+  process.env.CLOUDFLARE_ACCOUNT_ID = ` \n${"a".repeat(32)} `;
+  process.env.CLOUDFLARE_API_TOKEN = ' \n"synthetic-private-token" ';
+  classifyWithCloudflare.mockRejectedValueOnce({ statusCode: 403, message: "secret provider token", url: "secret-url", responseHeaders: { authorization: "secret-header" }, responseBody: JSON.stringify({ errors: [{ code: 10000, message: "secret-response-body" }, { code: "secret-code" }], error: { code: 9106 } }) });
   const logger = vi.spyOn(console, "warn").mockImplementation(() => {});
   const result = await POST(message("nearby happenings"));
   const body = await result.json();
   expect(body.category).toBe("provider_auth");
   expect(JSON.stringify(body)).not.toContain("secret");
-  expect(logger).toHaveBeenCalledWith("chatbot_model_failure", { category: "provider_auth" });
+  expect(logger).toHaveBeenCalledWith("chatbot_model_failure", {
+    category: "provider_auth", http_status: 403, cloudflare_error_codes: [10000, 9106],
+    configuration: { account_id_expected_shape: true, account_id_outer_whitespace: true, token_outer_whitespace: true, account_id_outer_quotes: false, token_outer_quotes: true },
+  });
+  expect(JSON.stringify(logger.mock.calls)).not.toMatch(/secret-|synthetic-private-token|a{32}/);
+  expect(body).not.toHaveProperty("http_status");
+  expect(body).not.toHaveProperty("configuration");
+  expect(body).not.toHaveProperty("cloudflare_error_codes");
   logger.mockRestore();
 });
 
