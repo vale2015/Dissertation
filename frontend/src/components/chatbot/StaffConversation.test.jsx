@@ -45,7 +45,9 @@ async function registerToReview() {
   await user.type(await screen.findByRole("textbox", { name: "Email" }), "alex@example.test");
   await user.click(screen.getByRole("button", { name: "Continue" }));
   await user.click(await screen.findByRole("button", { name: "staff", exact: true }));
+  await waitFor(() => expect(screen.getByRole("button", { name: "Server", exact: true })).toHaveFocus());
   await user.click(await screen.findByRole("button", { name: "Server", exact: true }));
+  await waitFor(() => expect(screen.getByRole("button", { name: "Review change" })).toHaveFocus());
   await user.click(await screen.findByRole("button", { name: "Review change" }));
   await screen.findByLabelText("Password", { exact: true });
   return user;
@@ -75,13 +77,16 @@ test("edit matches require an exact account selection and show before/after targ
   const user = userEvent.setup();
   render(<StaffConversation command={{ kind: "edit", query: "Alex" }} actorId={7} onExit={vi.fn()} />);
   await screen.findByRole("button", { name: /alex.other@example.test/ });
+  await waitFor(() => expect(screen.getByRole("button", { name: /alex@example.test/ })).toHaveFocus());
   expect(fetch.mock.calls.some(([url, opts]) => url.endsWith("/chat-actions") && opts.method === "POST")).toBe(false);
   await user.click(screen.getByRole("button", { name: /alex@example.test/ }));
+  await waitFor(() => expect(screen.getByRole("button", { name: "Change full name" })).toHaveFocus());
   await user.click(await screen.findByRole("button", { name: "Change full name" }));
   await user.type(screen.getByRole("textbox", { name: "Full name" }), "Alex Corrected");
   await user.click(screen.getByRole("button", { name: "Continue" }));
   await user.click(await screen.findByRole("button", { name: "Review change" }));
   await screen.findByRole("heading", { name: "After" });
+  await waitFor(() => expect(screen.getByRole("button", { name: "Confirm change" })).toHaveFocus());
   expect(screen.getByText("Alex Corrected")).toBeInTheDocument();
   expect(screen.getAllByText("alex@example.test").length).toBeGreaterThan(0);
   expect(screen.queryByLabelText("Password", { exact: true })).not.toBeInTheDocument();
@@ -138,8 +143,26 @@ test("a completed receipt is recovered from a per-actor ID pointer without anoth
   sessionStorage.setItem("rfs-staff-action:7", JSON.stringify({ id: "receipt-id", revision: 6 }));
   render(<StaffConversation command={{ kind: "register" }} actorId={7} onExit={vi.fn()} />);
   await screen.findByText("The account change is confirmed and verified.");
+  await waitFor(() => expect(screen.getByRole("button", { name: "Finish" })).toHaveFocus());
   expect(screen.getByText("alex@example.test")).toBeInTheDocument();
   expect(fetch.mock.calls.every(([, options]) => options.method === "GET")).toBe(true);
+});
+
+test("private choices receive focus and Edit moves focus into the new prompt without trapping Tab", async () => {
+  const user = userEvent.setup();
+  render(<><StaffConversation command={{ kind: "choose" }} actorId={7} onExit={vi.fn()} /><button type="button">Outside conversation</button></>);
+  const register = await screen.findByRole("button", { name: "Register a staff member" });
+  await waitFor(() => expect(register).toHaveFocus());
+  await user.tab();
+  expect(screen.getByRole("button", { name: "Edit a staff member" })).toHaveFocus();
+  await user.keyboard("{Enter}");
+  await waitFor(() => expect(screen.getByRole("textbox", { name: /Whose account should I edit/ })).toHaveFocus());
+  await user.tab();
+  expect(screen.getByRole("button", { name: "Cancel staff change" })).toHaveFocus();
+  await user.tab();
+  expect(screen.getByRole("button", { name: "Other staff controls" })).toHaveFocus();
+  await user.tab();
+  expect(screen.getByRole("button", { name: "Outside conversation" })).toHaveFocus();
 });
 
 test("manager registration allows an explicitly unassigned restaurant role", async () => {

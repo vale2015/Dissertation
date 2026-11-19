@@ -237,6 +237,29 @@ test("new chat cancels the protected draft and staff details never enter the gen
   expect(screen.queryByText("Private Example")).not.toBeInTheDocument();
 });
 
+test.each(["Cancel staff change", "Finish"])("%s returns focus to the general composer", async (exitButton) => {
+  const user = userEvent.setup();
+  sessionStorage.clear();
+  if (exitButton === "Finish") sessionStorage.setItem("rfs-staff-action:7", JSON.stringify({ id: "completed-receipt", revision: 6 }));
+  fetch.mockImplementation(async (url) => {
+    const body = url === "/api/chatbot" ? { conversation_enabled: true, weather: { text: "Weather ready." } }
+      : url.endsWith("/roles") ? { roles: [] }
+        : url.endsWith("/current") ? { action: null }
+          : { action: { id: "completed-receipt", kind: "register", state: "completed", result: { id: 42, full_name: "Example Account", email: "example@example.test" } } };
+    return { ok: true, json: async () => body };
+  });
+  render(<ManagerChat />);
+  await user.click(screen.getByRole("button", { name: "Open RFS assistant" }));
+  await screen.findByText("Weather ready.");
+  fireEvent.change(screen.getByRole("textbox", { name: "Your message" }), { target: { value: "manage staff" } });
+  await user.click(screen.getByRole("button", { name: "Send" }));
+  const button = await screen.findByRole("button", { name: exitButton, exact: true });
+  await waitFor(() => expect(button).toBeEnabled());
+  await user.click(button);
+  await waitFor(() => expect(screen.getByRole("textbox", { name: "Your message" })).toHaveFocus());
+  expect(screen.queryByRole("region", { name: "Private staff conversation" })).not.toBeInTheDocument();
+});
+
 test.each([
   "register Alex Example alex@example.test",
   "deactivate Alex Example alex@example.test",

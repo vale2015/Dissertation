@@ -39,6 +39,14 @@ const StaffConversation = forwardRef(function StaffConversation({ command, actor
   const [mode, setMode] = useState(command.kind);
   const inputRef = useRef(null);
   const passwordRef = useRef(null);
+  const choicesRef = useRef(null);
+  const roleChoicesRef = useRef(null);
+  const matchesRef = useRef(null);
+  const editFieldsRef = useRef(null);
+  const reviewRef = useRef(null);
+  const confirmRef = useRef(null);
+  const finishRef = useRef(null);
+  const reloadRef = useRef(null);
   const actionRef = useRef(null);
   const pointerKey = `rfs-staff-action:${actorId}`;
 
@@ -102,11 +110,27 @@ const StaffConversation = forwardRef(function StaffConversation({ command, actor
   }, []);
 
   const activeField = field || (action ? nextStaffField(action) : null);
+  const focusStep = result ? "finish" : stale && !field ? "reload"
+    : activeField ? (["full_name", "email"].includes(activeField) ? "input" : "roles")
+      : action?.state === "review" ? (action.kind === "register" ? "password" : "confirm")
+        : action ? (action.kind === "edit" && !Object.keys(action.draft || {}).length ? "fields" : "review")
+          : matches?.length ? "matches" : mode === "edit" ? "input" : "choices";
   useEffect(() => {
     if (busy) return;
-    if (action?.state === "review" && action.kind === "register") passwordRef.current?.focus();
-    else inputRef.current?.focus();
-  }, [busy, activeField, action?.state, action?.kind]);
+    const target = {
+      input: inputRef.current,
+      password: passwordRef.current,
+      choices: choicesRef.current?.querySelector("button:not(:disabled)"),
+      roles: roleChoicesRef.current?.querySelector("button:not(:disabled)"),
+      matches: matchesRef.current?.querySelector("button:not(:disabled)"),
+      fields: editFieldsRef.current?.querySelector("button:not(:disabled)"),
+      review: reviewRef.current,
+      confirm: confirmRef.current,
+      finish: finishRef.current,
+      reload: reloadRef.current,
+    }[focusStep];
+    target?.focus();
+  }, [busy, focusStep, activeField]);
 
   async function saveField(value) {
     if (!activeField || !action || busy) return;
@@ -137,22 +161,22 @@ const StaffConversation = forwardRef(function StaffConversation({ command, actor
     <p>Details stay in this protected workspace. They are never sent to AI or added to the general conversation. Drafts expire after 15 minutes.</p>
     {busy && <p role="status">Checking staff details…</p>}
     {notice && <p role="alert">{notice}</p>}
-    {stale && <button type="button" disabled={busy} onClick={() => run(async () => { setPassword(""); setConfirmation(""); if (!await restore()) setMode("choose"); })}>Reload draft</button>}
-    {result ? <><p role="status">The account change is confirmed and verified.</p><Snapshot title="Saved account" value={result} /><button type="button" onClick={() => { remember(null); onExit(); }}>Finish</button></> : <>
-      {!action && mode === "choose" && <div><p>What would you like to do?</p><button type="button" disabled={busy} onClick={() => run(async () => { setMode("register"); remember((await request("/chat-actions", "POST", { kind: "register" })).action); })}>Register a staff member</button><button type="button" disabled={busy} onClick={() => setMode("edit")}>Edit a staff member</button></div>}
+    {stale && <button ref={reloadRef} type="button" disabled={busy} onClick={() => run(async () => { setPassword(""); setConfirmation(""); if (!await restore()) setMode("choose"); })}>Reload draft</button>}
+    {result ? <><p role="status">The account change is confirmed and verified.</p><Snapshot title="Saved account" value={result} /><button ref={finishRef} type="button" onClick={() => { remember(null); onExit(); }}>Finish</button></> : <>
+      {!action && mode === "choose" && <div ref={choicesRef}><p>What would you like to do?</p><button type="button" disabled={busy} onClick={() => run(async () => { setMode("register"); remember((await request("/chat-actions", "POST", { kind: "register" })).action); })}>Register a staff member</button><button type="button" disabled={busy} onClick={() => setMode("edit")}>Edit a staff member</button></div>}
       {!action && mode === "edit" && <form onSubmit={(event) => { event.preventDefault(); void run(() => lookup(input.trim())); }}><label htmlFor="staff-private-reply">Whose account should I edit? Enter a name or email.</label><input ref={inputRef} id="staff-private-reply" autoComplete="off" maxLength={80} value={input} onChange={(event) => setInput(event.target.value)} disabled={busy} /><button disabled={busy || input.trim().length < 2}>Find account</button></form>}
-      {matches && <div aria-label="Matching staff accounts">{matches.length === 0 && <p>No matching accounts. Try the full name or email.</p>}{matches.map((member) => <button key={member.id} type="button" disabled={busy} onClick={() => run(async () => { remember((await request("/chat-actions", "POST", { kind: "edit", target_user_id: member.id })).action); setTarget(member); setMatches(null); })}>{member.full_name} · {member.email} · #{member.id} · {member.status}</button>)}</div>}
+      {matches && <div ref={matchesRef} aria-label="Matching staff accounts">{matches.length === 0 && <p>No matching accounts. Try the full name or email.</p>}{matches.map((member) => <button key={member.id} type="button" disabled={busy} onClick={() => run(async () => { remember((await request("/chat-actions", "POST", { kind: "edit", target_user_id: member.id })).action); setTarget(member); setMatches(null); })}>{member.full_name} · {member.email} · #{member.id} · {member.status}</button>)}</div>}
       {action && <>
         <Snapshot title={action.kind === "edit" ? "Selected account" : "Registration draft"} value={action.before || target || { ...action.draft, staff_role_name: roles.find((role) => role.id === action.draft?.staff_role_id)?.role_name }} />
-        {activeField && <div><p>{STAFF_FIELDS[activeField]}: {activeField === "application_role" ? "Choose application access." : activeField === "staff_role_id" ? "Choose the restaurant role." : "Enter the value below. Do not enter a password here."}</p>
+        {activeField && <div ref={roleChoicesRef}><p>{STAFF_FIELDS[activeField]}: {activeField === "application_role" ? "Choose application access." : activeField === "staff_role_id" ? "Choose the restaurant role." : "Enter the value below. Do not enter a password here."}</p>
           {activeField === "application_role" ? ["staff", "supervisor", "manager"].map((role) => <button key={role} type="button" disabled={busy} onClick={() => saveField(role)}>{role}</button>) : activeField === "staff_role_id" ? <>{roles.map((role) => <button key={role.id} type="button" disabled={busy} onClick={() => saveField(role.id)}>{role.role_name}</button>)}{(action.draft?.application_role || target?.application_role || action.before?.application_role) !== "staff" && <button type="button" disabled={busy} onClick={() => saveField(null)}>Not assigned</button>}</> : <form onSubmit={(event) => { event.preventDefault(); void saveField(input.trim()); }}><label htmlFor="staff-private-reply">{STAFF_FIELDS[activeField]}</label><input ref={inputRef} id="staff-private-reply" type={activeField === "email" ? "email" : "text"} required maxLength={activeField === "email" ? 254 : 120} autoComplete="off" value={input} onChange={(event) => setInput(event.target.value)} disabled={busy} /><button disabled={busy || !input.trim()}>Continue</button></form>}
         </div>}
         {!activeField && action.state !== "review" && <p>Choose a field to change, or review the proposed account.</p>}
-        <div aria-label="Correct staff details">{Object.entries(STAFF_FIELDS).filter(([key]) => action.kind === "register" || key !== "email").map(([key, label]) => <button key={key} type="button" disabled={busy} onClick={() => { setField(key); setInput(""); setPassword(""); setConfirmation(""); }}>{`Change ${label.toLowerCase()}`}</button>)}</div>
-        {!activeField && action.state !== "review" && <button type="button" disabled={busy || stale} onClick={() => run(async () => remember((await request(`/chat-actions/${action.id}/review`, "POST")).action))}>Review change</button>}
+        <div ref={editFieldsRef} aria-label="Correct staff details">{Object.entries(STAFF_FIELDS).filter(([key]) => action.kind === "register" || key !== "email").map(([key, label]) => <button key={key} type="button" disabled={busy} onClick={() => { setField(key); setInput(""); setPassword(""); setConfirmation(""); }}>{`Change ${label.toLowerCase()}`}</button>)}</div>
+        {!activeField && action.state !== "review" && <button ref={reviewRef} type="button" disabled={busy || stale} onClick={() => run(async () => remember((await request(`/chat-actions/${action.id}/review`, "POST")).action))}>Review change</button>}
         {action.state === "review" && !field && <div aria-label="Confirm staff change"><Snapshot title="Before" value={action.before} /><Snapshot title="After" value={action.after} /><p>Review the exact account and values above. Only the Confirm change button saves this change.</p>
           {action.kind === "register" && <><label htmlFor="staff-secure-password">Password</label><input ref={passwordRef} id="staff-secure-password" type="password" minLength={12} maxLength={128} autoComplete="new-password" value={password} onChange={(event) => setPassword(event.target.value)} disabled={busy} /><label htmlFor="staff-secure-confirmation">Confirm password</label><input id="staff-secure-confirmation" type="password" autoComplete="new-password" value={confirmation} onChange={(event) => setConfirmation(event.target.value)} disabled={busy} /><p>Use 12 to 128 non-blank characters.</p></>}
-          <button type="button" disabled={busy || stale || (action.kind === "register" && (password.length < 12 || password.length > 128 || !password.trim() || password !== confirmation))} onClick={confirm}>Confirm change</button>
+          <button ref={confirmRef} type="button" disabled={busy || stale || (action.kind === "register" && (password.length < 12 || password.length > 128 || !password.trim() || password !== confirmation))} onClick={confirm}>Confirm change</button>
         </div>}
       </>}
       <button type="button" disabled={busy} onClick={() => run(async () => { await cancel(); onExit(); })}>Cancel staff change</button>

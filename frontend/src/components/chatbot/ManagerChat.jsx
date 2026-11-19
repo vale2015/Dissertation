@@ -72,6 +72,11 @@ export default function ManagerChat() {
     window.requestAnimationFrame(() => launcherRef.current?.focus());
   }, []);
 
+  const exitStaffFlow = useCallback(() => {
+    setStaffFlow(null);
+    window.requestAnimationFrame(() => inputRef.current?.focus());
+  }, []);
+
   useEffect(() => {
     if (!open) return undefined;
     const controller = new AbortController();
@@ -234,7 +239,7 @@ export default function ManagerChat() {
                 calendarClassName="custom-datepicker manager-chat-calendar"
               />
             </div>}
-            {staffFlow && <StaffConversation key={user.id} ref={staffRef} command={staffFlow} actorId={user.id} onBusyChange={setStaffBusy} onExit={() => setStaffFlow(null)} onOtherControls={() => { setStaffFlow(null); setStaffWorkspace(true); }} />}
+            {staffFlow && <StaffConversation key={user.id} ref={staffRef} command={staffFlow} actorId={user.id} onBusyChange={setStaffBusy} onExit={exitStaffFlow} onOtherControls={() => { setStaffFlow(null); setStaffWorkspace(true); }} />}
             {staffWorkspace && <div className="manager-chat-workspace"><StaffManagement initialSearch={staffSearch} /></div>}
           </div>
           {!staffFlow && <form className="manager-chat-composer" onSubmit={submit}>
