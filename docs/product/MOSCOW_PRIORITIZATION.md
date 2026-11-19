@@ -12,6 +12,8 @@ Priority is independent of delivery state. A Must can already be **Done**, and a
 
 ## Earlier value-first sequence (superseded by the priority override)
 
+**Workflow research follow-up, 19 November:** #68 adds the token/process efficiency proposal (Should), bringing the tracker to 68 items. Its implementation follows chatbot #65–67; tool research alone does not change delivery rules. See [architecture plan](../agents/TOKEN_EFFICIENCY_WORKFLOW_PLAN.md).
+
 1. **Make training and demand writes safe, then prove forecast usefulness:** #17's mutating web retraining route is removed in the forecast-serving update but a durable job is still absent; resolve #62's demand-write permission gap. #20 is Done, while #21 still needs genuine completed-service actuals. Use real outcomes for #61's baseline-versus-model benchmark before changing algorithms or making performance claims from demo data.
 2. **Close release verification on the redesigned manager experience:** #57 has the approved shared shell, charts, notifications, Settings, and left-docked assistant, but remains Partial until its remaining acceptance checks pass. #29's shared layout is implemented and still awaits signed-in role checks.
 3. **Finish chatbot safety and the PM's staff workflow:** #54 is now the active Must-priority delivery: complete conversational registration/editing and safe staff writes before removing its sidebar entry. #54–55 are deployed pilots, not completed capabilities. Verify live model inference, protected manager/restricted-role journeys, report and staff actions, durable staff-write idempotency, privacy, and usage limits. Do not approve or widen use of the separate off-by-default #52 report-note pilot until reviewed.

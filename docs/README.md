@@ -1,5 +1,7 @@
 # RFS documentation
 
+- [AI token efficiency and workflow architecture](agents/TOKEN_EFFICIENCY_WORKFLOW_PLAN.md) — #68 research, measured pilot and Linear/n8n/tool comparison; chatbot release stays first.
+
 ## Start here
 
 1. [PRD](product/PRD.md) — the primary product reference: users, outcomes, behaviour, requirements, and open decisions.

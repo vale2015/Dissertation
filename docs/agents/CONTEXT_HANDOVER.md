@@ -1,5 +1,11 @@
 # RFS current handover
 
+## 19 November workflow-efficiency research
+
+- PM requested an architect/AI review of token usage and workflow execution, including Linear/n8n, and instructed committing/pushing the resulting work.
+- #68 is Open: [research and architecture proposal](TOKEN_EFFICIENCY_WORKFLOW_PLAN.md) complete, implementation/measurement not started. Current baseline has no trustworthy per-task token/cost export. Propose compact task packets, evidence reuse and deterministic coordination before optional single-tool pilots.
+- Chatbot #65 → #66 → #67 remains first. No tool installed, account connected, live AI call made, schedule enabled or workflow rules replaced by this research. New tool/cost/backlog migration decisions remain for PM review.
+
 ## 19 November PM priority override
 
 Chatbot completion takes precedence over all other work: #65 authentication → #66 independent live AI verification → #67 release acceptance and parent closure. These are Open/READY work packages for #54/#55, not new completed features. The earlier configuration hold remains until deliberately resumed. See [ordered plan](../chatbot/CHATBOT_BLOCKER_RESOLUTION.md). Other task statuses are preserved; necessary chatbot safety/release dependencies are included.
