@@ -7,7 +7,7 @@ DECLARE
         'user_account_tokens', 'staff_account_audit', 'auth_rate_limits',
         'report_history', 'forecast_runs', 'forecast_run_days',
         'active_forecast_run', 'service_actual_covers',
-        'service_actual_corrections', 'in_app_notifications'
+        'service_actual_corrections', 'in_app_notifications', 'staff_chat_actions'
     ];
     application_sequences text[] := ARRAY[
         'users_id_seq', 'bookings_id_seq', 'staff_roles_id_seq',
@@ -20,8 +20,8 @@ DECLARE
 BEGIN
     IF (SELECT count(*) FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace
         WHERE n.nspname = 'public' AND c.relkind = 'r'
-          AND c.relname = ANY(application_tables)) <> 17 THEN
-        RAISE EXCEPTION 'Expected seventeen application tables';
+          AND c.relname = ANY(application_tables)) <> 18 THEN
+        RAISE EXCEPTION 'Expected eighteen application tables';
     END IF;
     IF (SELECT count(*) FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace
         WHERE n.nspname = 'public' AND c.relkind = 'S'

@@ -38,6 +38,9 @@ def _validate_operational_role(db,role_id):
     if role_id is None:return
     if not db.execute(text("SELECT 1 FROM public.staff_roles WHERE id=:id"),{"id":role_id}).first():raise StaffConflict("The selected operational role does not exist.")
 def _active_manager_count(db):return int(db.execute(text("SELECT count(*) FROM public.users WHERE role='manager' AND status='active'")).scalar() or 0)
+def _lock_manager_membership(db):
+    # Serialize demotion/deactivation checks across different manager rows.
+    db.execute(text("SELECT pg_advisory_xact_lock(54054, 1)"))
 def invite_staff(values,actor_id,reissue_user_id=None):
     frontend=os.getenv("FRONTEND_URL","http://localhost:3000").rstrip("/")
     with SessionLocal() as db:
@@ -57,35 +60,58 @@ def invite_staff(values,actor_id,reissue_user_id=None):
         return {"staff":get_staff_by_id(user_id),"activation_link":f"{frontend}/activate-account?token={raw}","expires_at":expires}
       except IntegrityError as error:db.rollback();raise DuplicateStaff("An account already uses this email address.") from error
       except Exception:db.rollback();raise
+def register_staff_in_transaction(db,values,actor_id,action_id=None):
+    """Insert, validate and audit without committing the caller's transaction."""
+    _validate_operational_role(db,values["staff_role_id"])
+    row=db.execute(text("""INSERT INTO public.users(full_name,email,password_hash,role,status,staff_role_id,invited_by,invited_at,activated_at,session_version,updated_at)
+      VALUES(:name,:email,:password,:role,'active',:staff_role,:actor,now(),now(),1,now()) RETURNING id"""),{"name":values["full_name"],"email":values["email"],"password":generate_password_hash(values["password"]),"role":values["application_role"],"staff_role":values["staff_role_id"],"actor":actor_id}).first()
+    user_id=row[0]
+    _audit(db,actor_id,user_id,"staff_registered",{"chat_action_id":str(action_id)} if action_id else None)
+    return user_id
+
 def register_staff(values,actor_id):
     with SessionLocal() as db:
       try:
-        _validate_operational_role(db,values["staff_role_id"])
-        row=db.execute(text("""INSERT INTO public.users(full_name,email,password_hash,role,status,staff_role_id,invited_by,invited_at,activated_at,session_version,updated_at)
-          VALUES(:name,:email,:password,:role,'active',:staff_role,:actor,now(),now(),1,now()) RETURNING id"""),{"name":values["full_name"],"email":values["email"],"password":generate_password_hash(values["password"]),"role":values["application_role"],"staff_role":values["staff_role_id"],"actor":actor_id}).first()
-        user_id=row[0];_audit(db,actor_id,user_id,"staff_registered");db.commit()
+        user_id=register_staff_in_transaction(db,values,actor_id)
+        db.commit()
         return {"staff":get_staff_by_id(user_id)}
       except IntegrityError as error:db.rollback();raise DuplicateStaff("An account already uses this email address.") from error
       except Exception:db.rollback();raise
+
+def update_staff_in_transaction(db,user_id,values,actor_id,expected_updated_at=None,action_id=None):
+    """Lock and update one account inside the caller's transaction."""
+    _lock_manager_membership(db)
+    current=db.execute(text("SELECT id,role,status,staff_role_id,updated_at FROM public.users WHERE id=:id FOR UPDATE"),{"id":user_id}).mappings().first()
+    if not current:raise StaffNotFound("Staff account not found.")
+    if expected_updated_at is not None and current["updated_at"]!=expected_updated_at:
+        raise StaffConflict("This account changed since review. Start the edit again.")
+    _validate_operational_role(db,values.get("staff_role_id"))
+    resulting_role=values.get("role",current["role"])
+    resulting_staff_role=values.get("staff_role_id",current["staff_role_id"])
+    if resulting_role==ROLE_STAFF and resulting_staff_role is None:raise StaffConflict("An operational role is required for staff accounts.")
+    if values.get("role") and current["role"]==ROLE_MANAGER and values["role"]!=ROLE_MANAGER and current["status"]==STATUS_ACTIVE and _active_manager_count(db)<=1:raise StaffConflict("The last active manager cannot be demoted.")
+    assignments=[];params={"id":user_id}
+    for field in ("full_name","role","staff_role_id"):
+        if field in values:assignments.append(f"{field}=:{field}");params[field]=values[field]
+    if not assignments:raise StaffConflict("No editable fields were supplied.")
+    db.execute(text(f"UPDATE public.users SET {','.join(assignments)},updated_at=GREATEST(now(),updated_at + interval '1 microsecond') WHERE id=:id"),params)
+    metadata={"fields":sorted(values)}
+    if action_id:metadata["chat_action_id"]=str(action_id)
+    _audit(db,actor_id,user_id,"staff_updated",metadata)
+    return user_id
+
 def update_staff(user_id,values,actor_id):
     with SessionLocal() as db:
       try:
-        current=db.execute(text("SELECT id,role,status FROM public.users WHERE id=:id FOR UPDATE"),{"id":user_id}).mappings().first()
-        if not current:raise StaffNotFound("Staff account not found.")
-        _validate_operational_role(db,values.get("staff_role_id"))
-        resulting_role=values.get("role",current["role"])
-        resulting_staff_role=values.get("staff_role_id") if "staff_role_id" in values else db.execute(text("SELECT staff_role_id FROM public.users WHERE id=:id"),{"id":user_id}).scalar()
-        if resulting_role==ROLE_STAFF and resulting_staff_role is None:raise StaffConflict("An operational role is required for staff accounts.")
-        if values.get("role") and current["role"]==ROLE_MANAGER and values["role"]!=ROLE_MANAGER and current["status"]==STATUS_ACTIVE and _active_manager_count(db)<=1:raise StaffConflict("The last active manager cannot be demoted.")
-        assignments=[];params={"id":user_id}
-        for field in ("full_name","role","staff_role_id"):
-            if field in values:assignments.append(f"{field}=:{field}");params[field]=values[field]
-        db.execute(text(f"UPDATE public.users SET {','.join(assignments)},updated_at=now() WHERE id=:id"),params);_audit(db,actor_id,user_id,"staff_updated",{"fields":sorted(values)});db.commit();return get_staff_by_id(user_id)
+        update_staff_in_transaction(db,user_id,values,actor_id)
+        db.commit()
+        return get_staff_by_id(user_id)
       except Exception:db.rollback();raise
 def change_staff_status(user_id,status,actor_id):
     allowed={(STATUS_ACTIVE,STATUS_SUSPENDED),(STATUS_ACTIVE,STATUS_INACTIVE),(STATUS_SUSPENDED,STATUS_ACTIVE),(STATUS_SUSPENDED,STATUS_INACTIVE),(STATUS_INACTIVE,STATUS_ACTIVE)}
     with SessionLocal() as db:
       try:
+        _lock_manager_membership(db)
         user=db.execute(text("SELECT id,role,status FROM public.users WHERE id=:id FOR UPDATE"),{"id":user_id}).mappings().first()
         if not user:raise StaffNotFound("Staff account not found.")
         if user_id==actor_id and status in (STATUS_SUSPENDED,STATUS_INACTIVE):raise StaffConflict("You cannot suspend or deactivate your own account.")
