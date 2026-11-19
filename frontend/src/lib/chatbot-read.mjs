@@ -1,3 +1,5 @@
+import { staffCommand } from "./chatbot-staff.mjs";
+
 const ISO_DATE = /\b\d{4}-\d{2}-\d{2}\b/g;
 const TEN_DAY_HORIZON = /\b10(?:\s+|-)days?\b/;
 
@@ -26,6 +28,8 @@ export function classifyChatbotMessage(message, context = null) {
     return { intent: "new_chat" };
   }
   const lower = text.toLowerCase();
+  const staff = staffCommand(text);
+  if (staff) return { intent: "staff", ...(staff.kind === "edit" && staff.query ? { search: staff.query } : {}) };
   const dates = [...text.matchAll(ISO_DATE)].map((match) => match[0]);
   if (dates.some((date) => !validDate(date))) return { error: "Use a valid date in YYYY-MM-DD format." };
 
@@ -48,10 +52,6 @@ export function classifyChatbotMessage(message, context = null) {
     return { intent: "reservation_forecast" };
   }
 
-  if (/\b(staff|employee|employees|team members?|register|suspend|deactivate|reactivate|password reset|reset password)\b/.test(lower)) {
-    const search = text.match(/^(?:find|show|search(?: for)?|look up)\s+(?:staff|employee|team member)\s+(.{1,80})$/i)?.[1]?.trim();
-    return { intent: "staff", ...(search ? { search } : {}) };
-  }
   if (/\b(weather|temperature|rain|sunny|conditions)\b/.test(lower)) return { intent: "weather" };
   if (/\b(event|events|concert|concerts|sports)\b/.test(lower)) {
     if (dates.length === 1) return { error: "For events, provide a start and end date in YYYY-MM-DD format." };

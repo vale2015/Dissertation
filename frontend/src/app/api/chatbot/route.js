@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { verifyChatbotManager } from "@/lib/chatbot-access.mjs";
 import { classifyChatbotMessage, chatbotReadTarget, summarizeChatbotResult, validChatbotContext } from "@/lib/chatbot-read.mjs";
-import { classifyWithCloudflare, cloudflareModelAvailable } from "@/lib/chatbot-model.mjs";
+import { classifyWithCloudflare, cloudflareModelAvailable, taskSignals, modelFailureDiagnostics } from "@/lib/chatbot-model.mjs";
 
 function reply(body, status) {
   return NextResponse.json(body, {
@@ -27,7 +27,7 @@ async function backendRequest(token, target) {
   });
   const body = await response.json().catch(() => null);
   if (!response.ok) {
-    return { error: body?.error?.message || body?.message || "That request is unavailable right now.", status: response.status };
+    return { error: body?.error?.message || body?.message || "That request is unavailable right now.", status: response.status, retryAfter: response.headers.get("retry-after") };
   }
   return { body };
 }
@@ -71,14 +71,22 @@ export async function POST(request) {
   if (intent.error) return reply({ error: intent.error }, 400);
   if (intent.intent === "new_chat") return reply({ reset: true }, 200);
   if (intent.intent === "unknown" && cloudflareModelAvailable()) {
-    // Do not send likely account identifiers or secrets to the model.
-    if (/@|\b(password|token|secret|reset link)\b/i.test(body.message)) {
-      return reply({ text: "Please use the staff workspace for account details. Ask me to manage staff." }, 200);
-    }
-    try {
-      intent = { intent: await classifyWithCloudflare(body.message) };
-    } catch {
-      return reply({ text: "AI interpretation is temporarily unavailable. Try asking directly for weather, events, reports, or staff management." }, 200);
+    if (taskSignals(body.message)) {
+      let budget;
+      try { budget = await backendRequest(access.token, { path: "/staff/chat-model-budget", method: "POST", body: {} }); }
+      catch { return reply({ text: "AI interpretation is unavailable. Try a direct restaurant request.", category: "budget_unavailable" }, 200); }
+      if (!budget.body?.allowed) {
+        const response = reply({ text: "AI interpretation is temporarily limited. Try a direct request for weather, reports, bookings or staffing.", category: budget.status === 429 ? "budget_exhausted" : "budget_unavailable" }, 200);
+        if (budget.retryAfter && /^\d{1,6}$/.test(budget.retryAfter)) response.headers.set("Retry-After", budget.retryAfter);
+        return response;
+      }
+      try { intent = { intent: await classifyWithCloudflare(taskSignals(body.message)) }; }
+      catch (error) {
+        const diagnostics = modelFailureDiagnostics(error);
+        const category = diagnostics.category;
+        console.warn("chatbot_model_failure", diagnostics);
+        return reply({ text: "AI interpretation is temporarily unavailable. Try asking directly for weather, events, reports, or staff management.", category }, 200);
+      }
     }
   }
 

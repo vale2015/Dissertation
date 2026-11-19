@@ -47,7 +47,7 @@ test("manager sees branded chat, weather on open, and suggested requests only pr
   expect(fetch).toHaveBeenCalledTimes(2);
 });
 
-test("typed request stays in chat and opens staff workspace without navigation", async () => {
+test("typed staff request starts private conversation and other controls remain available", async () => {
   const user = userEvent.setup();
   fetch.mockResolvedValueOnce({ ok: true, json: async () => ({ conversation_enabled: true, weather: { text: "Weather ready." } }) });
   fetch.mockResolvedValueOnce({ ok: true, json: async () => ({ text: "I can manage staff here.", workspace: "staff" }) });
@@ -56,8 +56,10 @@ test("typed request stays in chat and opens staff workspace without navigation",
   await screen.findByText("Weather ready.");
   await user.type(screen.getByRole("textbox", { name: "Your message" }), "manage staff");
   await user.click(screen.getByRole("button", { name: "Send" }));
+  expect(await screen.findByRole("region", { name: "Private staff conversation" })).toBeInTheDocument();
+  await user.click(await screen.findByRole("button", { name: "Other staff controls" }));
   expect(await screen.findByText("Secure staff workspace")).toBeInTheDocument();
-  expect(fetch).toHaveBeenCalledWith("/api/chatbot", expect.objectContaining({ method: "POST", body: JSON.stringify({ message: "manage staff" }) }));
+  expect(fetch.mock.calls.filter(([url, options]) => url === "/api/chatbot" && options?.method === "POST")).toHaveLength(0);
 });
 
 test("an undated report opens an in-chat calendar and choosing a date generates that report", async () => {
@@ -164,7 +166,7 @@ test("typed fresh-chat command clears transcript, staff workspace and report fol
   await user.type(composer, "report for 2026-11-29");
   await user.click(screen.getByRole("button", { name: "Send" }));
   await screen.findByText("Generated report #8");
-  await user.type(composer, "manage staff");
+  await user.type(composer, "account controls");
   await user.click(screen.getByRole("button", { name: "Send" }));
   await screen.findByText("Secure staff workspace");
   await user.type(composer, "start a brand new chat");
@@ -184,18 +186,18 @@ test("typed fresh-chat command clears transcript, staff workspace and report fol
 test("New chat button resets locally and returns keyboard focus to the composer", async () => {
   const user = userEvent.setup();
   fetch.mockResolvedValueOnce({ ok: true, json: async () => ({ conversation_enabled: true, weather: { text: "Weather ready." } }) });
-  fetch.mockResolvedValueOnce({ ok: true, json: async () => ({ text: "I can manage staff here.", workspace: "staff" }) });
+  fetch.mockResolvedValueOnce({ ok: true, json: async () => ({ text: "I can account controls here.", workspace: "staff" }) });
   render(<ManagerChat />);
   await user.click(screen.getByRole("button", { name: "Open RFS assistant" }));
   await screen.findByText("Weather ready.");
   const composer = screen.getByRole("textbox", { name: "Your message" });
-  await user.type(composer, "manage staff");
+  await user.type(composer, "account controls");
   await user.click(screen.getByRole("button", { name: "Send" }));
   await screen.findByText("Secure staff workspace");
   const reset = screen.getByRole("button", { name: "New chat" });
   await user.click(reset);
   expect(screen.queryByText("Secure staff workspace")).not.toBeInTheDocument();
-  expect(screen.queryByText("manage staff")).not.toBeInTheDocument();
+  expect(screen.queryByText("account controls")).not.toBeInTheDocument();
   await waitFor(() => expect(composer).toHaveFocus());
   expect(fetch).toHaveBeenCalledTimes(2);
 });
@@ -204,4 +206,110 @@ test("restricted roles never see the launcher", () => {
   useSession.mockReturnValue({ user: { id: 9, role: "staff" } });
   render(<ManagerChat />);
   expect(screen.queryByRole("button", { name: "Open RFS assistant" })).not.toBeInTheDocument();
+});
+
+test("new chat cancels the protected draft and staff details never enter the generic transcript or API", async () => {
+  const user = userEvent.setup();
+  let draft = { id: "private-draft", kind: "register", state: "draft", revision: 1, draft: {} };
+  fetch.mockImplementation(async (url, options = {}) => {
+    let body;
+    if (url === "/api/chatbot") body = { conversation_enabled: true, weather: { text: "Weather ready." } };
+    else if (url.endsWith("/roles")) body = { roles: [{ id: 3, role_name: "Server" }] };
+    else if (url.endsWith("/current")) body = { action: null };
+    else if (options.method === "PATCH") { draft = { ...draft, draft: JSON.parse(options.body), revision: 2 }; body = { action: draft }; }
+    else body = { action: draft };
+    return { ok: true, json: async () => body };
+  });
+  render(<ManagerChat />);
+  await user.click(screen.getByRole("button", { name: "Open RFS assistant" }));
+  await screen.findByText("Weather ready.");
+  await user.type(screen.getByRole("textbox", { name: "Your message" }), "register staff");
+  await user.click(screen.getByRole("button", { name: "Send" }));
+  await user.type(await screen.findByRole("textbox", { name: "Full name" }), "Private Example");
+  await user.click(screen.getByRole("button", { name: "Continue" }));
+  await screen.findByRole("textbox", { name: "Email" });
+  expect(screen.queryByRole("textbox", { name: "Your message" })).not.toBeInTheDocument();
+  expect(document.querySelector(".manager-chat-message.manager-chat-user")).toBeNull();
+  await user.click(screen.getByRole("button", { name: "New chat" }));
+  await screen.findByRole("textbox", { name: "Your message" });
+  expect(fetch.mock.calls.filter(([, options]) => options.method === "DELETE")).toHaveLength(1);
+  expect(fetch.mock.calls.some(([url, options]) => url === "/api/chatbot" && options.method === "POST")).toBe(false);
+  expect(screen.queryByText("Private Example")).not.toBeInTheDocument();
+});
+
+test.each(["Cancel staff change", "Finish"])("%s returns focus to the general composer", async (exitButton) => {
+  const user = userEvent.setup();
+  sessionStorage.clear();
+  if (exitButton === "Finish") sessionStorage.setItem("rfs-staff-action:7", JSON.stringify({ id: "completed-receipt", revision: 6 }));
+  fetch.mockImplementation(async (url) => {
+    const body = url === "/api/chatbot" ? { conversation_enabled: true, weather: { text: "Weather ready." } }
+      : url.endsWith("/roles") ? { roles: [] }
+        : url.endsWith("/current") ? { action: null }
+          : { action: { id: "completed-receipt", kind: "register", state: "completed", result: { id: 42, full_name: "Example Account", email: "example@example.test" } } };
+    return { ok: true, json: async () => body };
+  });
+  render(<ManagerChat />);
+  await user.click(screen.getByRole("button", { name: "Open RFS assistant" }));
+  await screen.findByText("Weather ready.");
+  fireEvent.change(screen.getByRole("textbox", { name: "Your message" }), { target: { value: "manage staff" } });
+  await user.click(screen.getByRole("button", { name: "Send" }));
+  const button = await screen.findByRole("button", { name: exitButton, exact: true });
+  await waitFor(() => expect(button).toBeEnabled());
+  await user.click(button);
+  await waitFor(() => expect(screen.getByRole("textbox", { name: "Your message" })).toHaveFocus());
+  expect(screen.queryByRole("region", { name: "Private staff conversation" })).not.toBeInTheDocument();
+});
+
+test.each([
+  "register Alex Example alex@example.test",
+  "deactivate Alex Example alex@example.test",
+  "please register Alex Example alex@example.test",
+  "Can you please suspend Alex Example alex@example.test",
+  "please reactivate alex@example.test",
+  "Can you reset password for Alex Example alex@example.test",
+  "please edit Alex Example alex@example.test",
+  "please register Alex Example alex@example.test password=hidden-value",
+  "can you please deactivate Alex Example alex@example.test",
+  "I need to register Alex Example alex@example.test",
+  "Can you please edit Alex Example alex@example.test token=hidden-value",
+  "please find staff Alex Example alex@example.test secret=hidden-value",
+  "please, register Alex Example alex@example.test",
+  "I’d like to register Alex Example alex@example.test",
+  "I'd like to deactivate Alex Example alex@example.test",
+  "Show weather and register Alex Example alex@example.test password=hidden-value",
+  "Show weather and register Alex Example alex@example.test",
+  "Update report then deactivate Alex Example alex@example.test",
+  "register for a concert and deactivate Alex Example alex@example.test",
+  "Show weather; edit Alex Example alex@example.test token=hidden-value",
+  "I would like Alex Example alex@example.test to be registered",
+])("account request remains private before generic history/API: %s", async (message) => {
+  const user = userEvent.setup();
+  sessionStorage.clear();
+  fetch.mockImplementation(async (url) => {
+    const body = url === "/api/chatbot" ? { conversation_enabled: true, weather: { text: "Weather ready." } }
+      : url.endsWith("/roles") ? { roles: [{ id: 3, role_name: "Server" }] }
+        : url.endsWith("/current") ? { action: null }
+          : url.includes("chat-lookup") ? { matches: [] }
+            : { action: { id: "private-draft", kind: "register", state: "draft", revision: 1, draft: {} } };
+    return { ok: true, json: async () => body };
+  });
+  render(<ManagerChat />);
+  await user.click(screen.getByRole("button", { name: "Open RFS assistant" }));
+  await screen.findByText("Weather ready.");
+  fireEvent.change(screen.getByRole("textbox", { name: "Your message" }), { target: { value: message } });
+  await user.click(screen.getByRole("button", { name: "Send" }));
+  await screen.findByRole("region", { name: "Private staff conversation" });
+  await waitFor(() => expect(screen.queryByText("Checking staff details…")).not.toBeInTheDocument());
+  expect(document.querySelector(".manager-chat-user")).toBeNull();
+  expect(screen.queryByRole("textbox", { name: "Your message" })).not.toBeInTheDocument();
+  expect(fetch.mock.calls.some(([url, options]) => url === "/api/chatbot" && options?.method === "POST")).toBe(false);
+  const writes = fetch.mock.calls.filter(([, options]) => options?.method === "POST");
+  expect(writes.every(([url, options]) => url === "/api/backend/staff/chat-actions" && options.body === JSON.stringify({ kind: "register" }))).toBe(true);
+  expect(JSON.stringify(writes)).not.toMatch(/Alex|alex@example|hidden-value/);
+  expect(fetch.mock.calls.some(([url]) => url.includes("hidden-value"))).toBe(false);
+  if (/[’']d|please,|\b(and|then)\b|;|hidden-value/.test(message)) {
+    expect(screen.getByRole("button", { name: "Register a staff member" })).toBeInTheDocument();
+    expect(fetch.mock.calls.some(([url]) => url.includes("chat-lookup"))).toBe(false);
+    expect(writes).toHaveLength(0);
+  }
 });

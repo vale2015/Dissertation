@@ -4,10 +4,10 @@ import { GET, POST } from "./route";
 import { classifyWithCloudflare, cloudflareModelAvailable } from "@/lib/chatbot-model.mjs";
 
 vi.mock("next/headers", () => ({ cookies: vi.fn() }));
-vi.mock("@/lib/chatbot-model.mjs", () => ({ classifyWithCloudflare: vi.fn(), cloudflareModelAvailable: vi.fn(() => false) }));
+vi.mock("@/lib/chatbot-model.mjs", async (importOriginal) => ({ ...(await importOriginal()), classifyWithCloudflare: vi.fn(), cloudflareModelAvailable: vi.fn(() => false) }));
 
 const backendUrl = "https://backend.example/api";
-const ok = (body, status = 200) => ({ ok: status >= 200 && status < 300, status, json: async () => body });
+const ok = (body, status = 200) => ({ ok: status >= 200 && status < 300, status, headers: new Headers(), json: async () => body });
 
 beforeEach(() => {
   process.env.BACKEND_API_URL = backendUrl;
@@ -22,6 +22,8 @@ afterEach(() => {
   vi.unstubAllGlobals();
   vi.clearAllMocks();
   delete process.env.BACKEND_API_URL;
+  delete process.env.CLOUDFLARE_ACCOUNT_ID;
+  delete process.env.CLOUDFLARE_API_TOKEN;
 });
 
 function message(value, origin = "https://app.example") {
@@ -62,6 +64,57 @@ test("staff request opens in-chat workspace and never sends staff data to the mo
   expect(response.status).toBe(200);
   expect((await response.json()).workspace).toBe("staff");
   expect(fetch).toHaveBeenCalledTimes(1);
+});
+
+test("unknown PII without local task signals never reserves a budget or calls the provider", async () => {
+  cloudflareModelAvailable.mockReturnValue(true);
+  await POST(message("Alice alex@example.test +447700900001 yes"));
+  expect(fetch).toHaveBeenCalledTimes(1);
+  expect(classifyWithCloudflare).not.toHaveBeenCalled();
+});
+
+test("every provider call reserves a durable budget first and receives only task constants", async () => {
+  cloudflareModelAvailable.mockReturnValue(true);
+  fetch.mockResolvedValueOnce(ok({ user: { id: 7, role: "manager" } }));
+  fetch.mockResolvedValueOnce(ok({ allowed: true }));
+  classifyWithCloudflare.mockResolvedValueOnce("unknown");
+  await POST(message("nearby happenings Alice alex@example.test +447700900001"));
+  expect(fetch.mock.calls[1][0]).toBe(`${backendUrl}/staff/chat-model-budget`);
+  expect(fetch.mock.calls[1][1]).toMatchObject({ method: "POST", body: "{}", headers: expect.objectContaining({ Authorization: "Bearer session-token" }) });
+  expect(classifyWithCloudflare).toHaveBeenCalledWith("events");
+});
+
+test("budget refusal prevents inference and forwards a bounded retry delay", async () => {
+  cloudflareModelAvailable.mockReturnValue(true);
+  fetch.mockResolvedValueOnce(ok({ user: { id: 7, role: "manager" } }));
+  fetch.mockResolvedValueOnce({ ...ok({ error: { message: "Limited" } }, 429), headers: new Headers({ "Retry-After": "60" }) });
+  const result = await POST(message("nearby happenings"));
+  expect((await result.json()).category).toBe("budget_exhausted");
+  expect(result.headers.get("Retry-After")).toBe("60");
+  expect(classifyWithCloudflare).not.toHaveBeenCalled();
+});
+
+test("model failure reports an enumerated diagnostic without leaking provider error text", async () => {
+  cloudflareModelAvailable.mockReturnValue(true);
+  fetch.mockResolvedValueOnce(ok({ user: { id: 7, role: "manager" } }));
+  fetch.mockResolvedValueOnce(ok({ allowed: true }));
+  process.env.CLOUDFLARE_ACCOUNT_ID = ` \n${"a".repeat(32)} `;
+  process.env.CLOUDFLARE_API_TOKEN = ' \n"synthetic-private-token" ';
+  classifyWithCloudflare.mockRejectedValueOnce({ statusCode: 403, message: "secret provider token", url: "secret-url", responseHeaders: { authorization: "secret-header" }, responseBody: JSON.stringify({ errors: [{ code: 10000, message: "secret-response-body" }, { code: "secret-code" }], error: { code: 9106 } }) });
+  const logger = vi.spyOn(console, "warn").mockImplementation(() => {});
+  const result = await POST(message("nearby happenings"));
+  const body = await result.json();
+  expect(body.category).toBe("provider_auth");
+  expect(JSON.stringify(body)).not.toContain("secret");
+  expect(logger).toHaveBeenCalledWith("chatbot_model_failure", {
+    category: "provider_auth", http_status: 403, cloudflare_error_codes: [10000, 9106],
+    configuration: { account_id_expected_shape: true, account_id_outer_whitespace: true, token_outer_whitespace: true, account_id_outer_quotes: false, token_outer_quotes: true },
+  });
+  expect(JSON.stringify(logger.mock.calls)).not.toMatch(/secret-|synthetic-private-token|a{32}/);
+  expect(body).not.toHaveProperty("http_status");
+  expect(body).not.toHaveProperty("configuration");
+  expect(body).not.toHaveProperty("cloudflare_error_codes");
+  logger.mockRestore();
 });
 
 test("fresh-chat command resets after manager verification without a model or business API call", async () => {
