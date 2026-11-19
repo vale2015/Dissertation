@@ -1,5 +1,8 @@
 # RFS completion verification — 19 November 2026
 
+**Current acceptance — 19 November 2026:** The PM approved #21 as a demonstration feature and instructed moving it to Done. All three reviewed tasks (#21, #29 and #56) are Done. The 31 actuals remain labelled synthetic; genuine service/model validation remains under #61. Earlier Verify release statements below record the historical acceptance gate and are superseded.
+
+
 Production tested: `d2e941b308bb684facb3259df82a1caf7c235f3c` (Next.js/preset 16.4.6). Both production builds are READY. No runtime application code change was needed in this continuation.
 
 ## #21 synthetic expansion

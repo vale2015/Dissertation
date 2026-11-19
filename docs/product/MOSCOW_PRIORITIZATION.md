@@ -6,7 +6,13 @@ This is a **value-first** product-priority view of all 64 items in the canonical
 
 Priority is independent of delivery state. A Must can already be **Done**, and a Could can be **Open**. The [tracker](IMPROVEMENT_TRACKER.md) alone records authoritative work state and evidence; the [Trello board](../agents/TRELLO_BOARD_WORKFLOW.md) mirrors it. Original numbers remain stable identifiers, but this ranking is an explicit user-directed departure from numeric implementation order. These priorities are provisional because there are no measured traffic, error-budget, or delivery-deadline constraints yet.
 
-## Recommended value-first sequence
+## PM priority override — 19 November 2026
+
+**Chatbot completion takes precedence over all other project work.** Execute **#65 authentication → #66 live AI verification → #67 release acceptance/closure**, under #54 and #55, before resuming the earlier sequence below. These three new Must work packages bring the tracker to 67 items; the earlier counts and ranking below are historical context. Necessary chatbot security and release checks remain part of the priority work. Other tasks retain their actual statuses. #52 remains a separate off-by-default pilot after core chatbot completion. The credential/configuration hold remains until deliberately resumed; this prioritization is not permission to retry unchanged settings. See [the ordered plan](../chatbot/CHATBOT_BLOCKER_RESOLUTION.md).
+
+## Earlier value-first sequence (superseded by the priority override)
+
+**Workflow research follow-up, 19 November:** #68 adds the token/process efficiency proposal (Should), bringing the tracker to 68 items. Its implementation follows chatbot #65–67; tool research alone does not change delivery rules. See [architecture plan](../agents/TOKEN_EFFICIENCY_WORKFLOW_PLAN.md).
 
 1. **Make training and demand writes safe, then prove forecast usefulness:** #17's mutating web retraining route is removed in the forecast-serving update but a durable job is still absent; resolve #62's demand-write permission gap. #20 is Done, while #21 still needs genuine completed-service actuals. Use real outcomes for #61's baseline-versus-model benchmark before changing algorithms or making performance claims from demo data.
 2. **Close release verification on the redesigned manager experience:** #57 has the approved shared shell, charts, notifications, Settings, and left-docked assistant, but remains Partial until its remaining acceptance checks pass. #29's shared layout is implemented and still awaits signed-in role checks.

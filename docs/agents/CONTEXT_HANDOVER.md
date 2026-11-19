@@ -1,6 +1,29 @@
 # RFS current handover
 
-Updated: 17 November 2026 (Europe/London). This is a continuity checkpoint, not proof that external services are healthy; reconcile it with current evidence before acting.
+## 19 November workflow-efficiency research
+
+- PM requested an architect/AI review of token usage and workflow execution, including Linear/n8n, and instructed committing/pushing the resulting work.
+- #68 is Open: [research and architecture proposal](TOKEN_EFFICIENCY_WORKFLOW_PLAN.md) complete, implementation/measurement not started. Current baseline has no trustworthy per-task token/cost export. Propose compact task packets, evidence reuse and deterministic coordination before optional single-tool pilots.
+- Chatbot #65 → #66 → #67 remains first. No tool installed, account connected, live AI call made, schedule enabled or workflow rules replaced by this research. New tool/cost/backlog migration decisions remain for PM review.
+
+## 19 November PM priority override
+
+Chatbot completion takes precedence over all other work: #65 authentication → #66 independent live AI verification → #67 release acceptance and parent closure. These are Open/READY work packages for #54/#55, not new completed features. The earlier configuration hold remains until deliberately resumed. See [ordered plan](../chatbot/CHATBOT_BLOCKER_RESOLUTION.md). Other task statuses are preserved; necessary chatbot safety/release dependencies are included.
+
+## 19 November #54 working checkpoint (supersedes older state below)
+
+- **Current status:** #54 remains Partial / Trello IN PROGRESS. The PM chose to keep model verification blocked for now. No unchanged-auth retries, sidebar removal or Done claim.
+- **Publication:** main c2efc072addb68423c7d3876cfed19659dcfa9c9 includes reviewed app changes through PR #21. App files match preview a6304f7. Both production builds are Ready with normal aliases; all 12 read-only production checks pass. Root pushed review branches only; main merges were observed separately.
+- **Repository:** isolated checkout: C:\Users\valer\Documents\Codex\2026-11-19\referenced-chatgpt-conversation-this-is-an\work\chatbot54, branch codex/chatbot-staff-workflow-20261119. Original OneDrive checkout has older uncommitted staff drafts and staged docs; preserve it.
+- **Database:** existing migration 20261112120000 matches reviewed SQL, columns, constraints and indexes; RLS/privileges are private. Do not apply it twice. No new DDL was needed.
+- **Verification:** current-main CI 44573126364 passed 262 regular tests (7 DB cases intentionally isolated) and 16 PostgreSQL 17 checks with zero skips. Frontend passed 31 unit, 95 component and 14 API tests. Independent QA/security/frontend-AI/diagnostic reviews passed their scopes. Live registration, exact identity, reviewed name/role edits, secure confirmation, cancellation, duplicate/invalid correction, recovery/retries, supervisor/staff denials and preserved controls passed. Desktop keyboard and actual 320px review/duplicate/cancel/inactive-account-edit checks passed.
+- **Cleanup COMPLETE:** QA accounts 6/8 are inactive/session_version2; old 4/5 remain inactive2. The prior staff session is rejected. Only two new QA accounts exist, two cancelled drafts are cleared, no manager draft remains, and each of five completed QA actions has one audit. Random passwords were never saved and are discarded. Do not reactivate these accounts. Guards/evidence: thread work/qa54-account-cleanup.json and outputs/rfs54-cleanup.json.
+- **Reports:** approved saved reports 23/24 preserve 7/10 days for 2026-11-29. Fresh PDF/CSV and saved CSV downloads pass; ten-day export has ten dates through 2026-12-09. Records remain under normal retention; no further saves are authorized by that two-report approval.
+- **Model:** harmless inference returned HTTP401 / Cloudflare10000. Account-ID shape and whitespace/quote checks pass. PM confirms values/account/Read+Edit permissions. No token was tool-decrypted, stored value changed, model swapped or plan upgraded. PM declined a fresh token for now. Resume after a deliberate configuration/credential change and new build, with secrets out of chat.
+- **Other tasks:** #21 is Done in PM-approved demonstration scope (31 labelled synthetic actuals; genuine validation remains #61); #29/#56 are Done. Preserve those outcomes and the Result / Checked / Next / Evidence comment template.
+- **Resume gates:** resolve/retest inference, final release review/PM acceptance, then remove/verify sidebar and update tracker before Trello Done. See docs/chatbot/STAFF_CHAT_VERIFICATION_2026-11-19.md and MODEL_AUTH_DIAGNOSTICS.md. Board snapshot: 40 Ready, 15 In progress, 0 In review, 8 Done; re-read before future work.
+
+Updated: 19 November 2026 (Europe/London). This is a continuity checkpoint, not proof that external services are healthy; reconcile it with current evidence before acting.
 
 ## Current objective
 
