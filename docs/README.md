@@ -11,6 +11,8 @@ This index stays at the top of `docs/`; all other files are grouped by topic bel
 
 ## Product (`product/`)
 
+- [19 November completion verification](product/IN_REVIEW_COMPLETION_2026-11-19.md) — #29/#56 closure, synthetic #21 expansion, live role checks and QA-account cleanup.
+
 - [PRD](product/PRD.md) — primary product requirements and open decisions.
 - [Improvement tracker](product/IMPROVEMENT_TRACKER.md) — canonical backlog and implementation/release evidence.
 - [MoSCoW priorities](product/MOSCOW_PRIORITIZATION.md) — value ranking of the same 64 tracker items, not another backlog.
