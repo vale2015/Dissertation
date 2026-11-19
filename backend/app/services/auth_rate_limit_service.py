@@ -33,6 +33,10 @@ LOGIN_EMAIL = LimitPolicy("login_email", 5, 900, 30, 900)
 # limits are deliberately high; the normalized email limit is the main defense.
 LOGIN_IP = LimitPolicy("login_ip", 1000, 600, 60, 600)
 ACCOUNT_TOKEN_IP = LimitPolicy("account_token_ip", 1000, 600, 60, 600)
+STAFF_CHAT_ACTOR = LimitPolicy("staff_chat_actor", 120, 300, 30, 300)
+CHAT_MODEL_ACTOR_MINUTE = LimitPolicy("chat_model_actor_minute", 5, 60, 60, 60)
+CHAT_MODEL_ACTOR_DAY = LimitPolicy("chat_model_actor_day", 50, 86400, 3600, 86400)
+CHAT_MODEL_GLOBAL_DAY = LimitPolicy("chat_model_global_day", 200, 86400, 3600, 86400)
 
 
 RESERVE_SQL = text("""
@@ -152,5 +156,31 @@ def reserve_account_token_attempt(remote_address):
     now = datetime.now(timezone.utc)
     with SessionLocal.begin() as db:
         retry_after = _reserve(db, ACCOUNT_TOKEN_IP, _source_ip(remote_address), now)
+        _maybe_prune(db, now)
+    return retry_after
+
+
+def reserve_staff_chat_attempt(actor_id):
+    """Durable per-manager bound for staff-chat reads and draft actions."""
+    now = datetime.now(timezone.utc)
+    with SessionLocal.begin() as db:
+        retry_after = _reserve(db, STAFF_CHAT_ACTOR, str(actor_id), now)
+        _maybe_prune(db, now)
+    return retry_after
+
+
+def reserve_chat_model_attempt(actor_id):
+    """Reserve before provider inference; denied or failed storage is not allowed."""
+    now = datetime.now(timezone.utc)
+    with SessionLocal.begin() as db:
+        retry_after = 0
+        for policy, key in (
+            (CHAT_MODEL_ACTOR_MINUTE, str(actor_id)),
+            (CHAT_MODEL_ACTOR_DAY, str(actor_id)),
+            (CHAT_MODEL_GLOBAL_DAY, "all_managers"),
+        ):
+            retry_after = _reserve(db, policy, key, now)
+            if retry_after:
+                break
         _maybe_prune(db, now)
     return retry_after
