@@ -47,7 +47,7 @@ test("manager sees branded chat, weather on open, and suggested requests only pr
   expect(fetch).toHaveBeenCalledTimes(2);
 });
 
-test("typed request stays in chat and opens staff workspace without navigation", async () => {
+test("typed staff request starts private conversation and other controls remain available", async () => {
   const user = userEvent.setup();
   fetch.mockResolvedValueOnce({ ok: true, json: async () => ({ conversation_enabled: true, weather: { text: "Weather ready." } }) });
   fetch.mockResolvedValueOnce({ ok: true, json: async () => ({ text: "I can manage staff here.", workspace: "staff" }) });
@@ -56,8 +56,10 @@ test("typed request stays in chat and opens staff workspace without navigation",
   await screen.findByText("Weather ready.");
   await user.type(screen.getByRole("textbox", { name: "Your message" }), "manage staff");
   await user.click(screen.getByRole("button", { name: "Send" }));
+  expect(await screen.findByRole("region", { name: "Private staff conversation" })).toBeInTheDocument();
+  await user.click(await screen.findByRole("button", { name: "Other staff controls" }));
   expect(await screen.findByText("Secure staff workspace")).toBeInTheDocument();
-  expect(fetch).toHaveBeenCalledWith("/api/chatbot", expect.objectContaining({ method: "POST", body: JSON.stringify({ message: "manage staff" }) }));
+  expect(fetch.mock.calls.filter(([url, options]) => url === "/api/chatbot" && options?.method === "POST")).toHaveLength(0);
 });
 
 test("an undated report opens an in-chat calendar and choosing a date generates that report", async () => {
@@ -164,7 +166,7 @@ test("typed fresh-chat command clears transcript, staff workspace and report fol
   await user.type(composer, "report for 2026-11-29");
   await user.click(screen.getByRole("button", { name: "Send" }));
   await screen.findByText("Generated report #8");
-  await user.type(composer, "manage staff");
+  await user.type(composer, "account controls");
   await user.click(screen.getByRole("button", { name: "Send" }));
   await screen.findByText("Secure staff workspace");
   await user.type(composer, "start a brand new chat");
@@ -184,18 +186,18 @@ test("typed fresh-chat command clears transcript, staff workspace and report fol
 test("New chat button resets locally and returns keyboard focus to the composer", async () => {
   const user = userEvent.setup();
   fetch.mockResolvedValueOnce({ ok: true, json: async () => ({ conversation_enabled: true, weather: { text: "Weather ready." } }) });
-  fetch.mockResolvedValueOnce({ ok: true, json: async () => ({ text: "I can manage staff here.", workspace: "staff" }) });
+  fetch.mockResolvedValueOnce({ ok: true, json: async () => ({ text: "I can account controls here.", workspace: "staff" }) });
   render(<ManagerChat />);
   await user.click(screen.getByRole("button", { name: "Open RFS assistant" }));
   await screen.findByText("Weather ready.");
   const composer = screen.getByRole("textbox", { name: "Your message" });
-  await user.type(composer, "manage staff");
+  await user.type(composer, "account controls");
   await user.click(screen.getByRole("button", { name: "Send" }));
   await screen.findByText("Secure staff workspace");
   const reset = screen.getByRole("button", { name: "New chat" });
   await user.click(reset);
   expect(screen.queryByText("Secure staff workspace")).not.toBeInTheDocument();
-  expect(screen.queryByText("manage staff")).not.toBeInTheDocument();
+  expect(screen.queryByText("account controls")).not.toBeInTheDocument();
   await waitFor(() => expect(composer).toHaveFocus());
   expect(fetch).toHaveBeenCalledTimes(2);
 });
@@ -204,4 +206,33 @@ test("restricted roles never see the launcher", () => {
   useSession.mockReturnValue({ user: { id: 9, role: "staff" } });
   render(<ManagerChat />);
   expect(screen.queryByRole("button", { name: "Open RFS assistant" })).not.toBeInTheDocument();
+});
+
+test("new chat cancels the protected draft and staff details never enter the generic transcript or API", async () => {
+  const user = userEvent.setup();
+  let draft = { id: "private-draft", kind: "register", state: "draft", revision: 1, draft: {} };
+  fetch.mockImplementation(async (url, options = {}) => {
+    let body;
+    if (url === "/api/chatbot") body = { conversation_enabled: true, weather: { text: "Weather ready." } };
+    else if (url.endsWith("/roles")) body = { roles: [{ id: 3, role_name: "Server" }] };
+    else if (url.endsWith("/current")) body = { action: null };
+    else if (options.method === "PATCH") { draft = { ...draft, draft: JSON.parse(options.body), revision: 2 }; body = { action: draft }; }
+    else body = { action: draft };
+    return { ok: true, json: async () => body };
+  });
+  render(<ManagerChat />);
+  await user.click(screen.getByRole("button", { name: "Open RFS assistant" }));
+  await screen.findByText("Weather ready.");
+  await user.type(screen.getByRole("textbox", { name: "Your message" }), "register staff");
+  await user.click(screen.getByRole("button", { name: "Send" }));
+  await user.type(await screen.findByRole("textbox", { name: "Full name" }), "Private Example");
+  await user.click(screen.getByRole("button", { name: "Continue" }));
+  await screen.findByRole("textbox", { name: "Email" });
+  expect(screen.queryByRole("textbox", { name: "Your message" })).not.toBeInTheDocument();
+  expect(document.querySelector(".manager-chat-message.manager-chat-user")).toBeNull();
+  await user.click(screen.getByRole("button", { name: "New chat" }));
+  await screen.findByRole("textbox", { name: "Your message" });
+  expect(fetch.mock.calls.filter(([, options]) => options.method === "DELETE")).toHaveLength(1);
+  expect(fetch.mock.calls.some(([url, options]) => url === "/api/chatbot" && options.method === "POST")).toBe(false);
+  expect(screen.queryByText("Private Example")).not.toBeInTheDocument();
 });

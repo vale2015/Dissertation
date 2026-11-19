@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import DatePicker from "react-datepicker";
+import StaffConversation from "./StaffConversation";
+import { staffCommand } from "@/lib/chatbot-staff.mjs";
 import StaffManagement from "@/components/staff/StaffManagement";
 import useSession from "@/hooks/useSession";
 import { downloadManagementReport, downloadSavedReport } from "@/lib/report-download";
@@ -35,6 +37,9 @@ export default function ManagerChat() {
   const [error, setError] = useState("");
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([{ role: "assistant", text: GREETING }]);
+  const [staffFlow, setStaffFlow] = useState(null);
+  const [staffBusy, setStaffBusy] = useState(false);
+  const staffRef = useRef(null);
   const [staffWorkspace, setStaffWorkspace] = useState(false);
   const [staffSearch, setStaffSearch] = useState("");
   const [modelEnabled, setModelEnabled] = useState(false);
@@ -49,7 +54,9 @@ export default function ManagerChat() {
     setMessages((current) => [...current, { role, text }]);
   }, []);
 
-  const resetConversation = useCallback(() => {
+  const resetConversation = useCallback(async () => {
+    try { await staffRef.current?.cancel(); } catch { setError("The staff draft could not be cancelled. Please try again before starting a new chat."); return; }
+    setStaffFlow(null);
     setMessages([{ role: "assistant", text: GREETING }]);
     setReportContext(null);
     setPendingReport(null);
@@ -113,6 +120,8 @@ export default function ManagerChat() {
 
   async function sendMessage(message, requestMessage = message) {
     if (!message || loading || !ready) return;
+    const staff = staffCommand(message);
+    if (staff) { setStaffFlow(staff); setStaffWorkspace(false); setPendingReport(null); setInput(""); return; }
     let focusCalendar = false;
     setInput("");
     setError("");
@@ -128,7 +137,7 @@ export default function ManagerChat() {
       const body = await response.json().catch(() => null);
       if (!response.ok) throw new Error(body?.error || "I could not complete that request.");
       if (body.reset === true) {
-        resetConversation();
+        await resetConversation();
         return;
       }
       setPendingReport(body.date_picker || null);
@@ -192,11 +201,11 @@ export default function ManagerChat() {
               <Image src="/brand/rfs-ai-mascot-v2.png" alt="" width={56} height={56} />
               <div>
                 <h2 id="manager-chat-title">RFS AI</h2>
-                <p>{modelEnabled ? "Your Restaurant Assistant" : "Restaurant tools"}</p>
+                <p>{modelEnabled ? "Restaurant assistant · AI configured" : "Restaurant tools"}</p>
               </div>
             </div>
             <div className="manager-chat-header-actions">
-              <button type="button" className="manager-chat-new" onClick={resetConversation} disabled={!ready || loading}>New chat</button>
+              <button type="button" className="manager-chat-new" onClick={resetConversation} disabled={!ready || loading || (staffFlow && staffBusy)}>New chat</button>
               <button type="button" aria-label="Close assistant" onClick={close}>×</button>
             </div>
           </header>
@@ -225,9 +234,10 @@ export default function ManagerChat() {
                 calendarClassName="custom-datepicker manager-chat-calendar"
               />
             </div>}
+            {staffFlow && <StaffConversation key={user.id} ref={staffRef} command={staffFlow} actorId={user.id} onBusyChange={setStaffBusy} onExit={() => setStaffFlow(null)} onOtherControls={() => { setStaffFlow(null); setStaffWorkspace(true); }} />}
             {staffWorkspace && <div className="manager-chat-workspace"><StaffManagement initialSearch={staffSearch} /></div>}
           </div>
-          <form className="manager-chat-composer" onSubmit={submit}>
+          {!staffFlow && <form className="manager-chat-composer" onSubmit={submit}>
             <label htmlFor="manager-chat-input">Your message</label>
             <div>
               <input
@@ -242,7 +252,7 @@ export default function ManagerChat() {
               <button type="submit" disabled={!ready || loading || !input.trim()}>Send</button>
             </div>
             <small>Staff changes use secure forms and confirmation. AI never receives staff records or passwords.</small>
-          </form>
+          </form>}
         </section>
       )}
     </div>

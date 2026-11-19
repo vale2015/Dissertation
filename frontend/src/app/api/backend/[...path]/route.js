@@ -121,6 +121,8 @@ async function proxyRequest(request, context) {
       responseHeaders.set("Content-Disposition", contentDisposition);
     }
 
+    const retryAfter = backendResponse.headers.get("retry-after");
+    if (retryAfter && /^\d{1,6}$/.test(retryAfter)) responseHeaders.set("Retry-After", retryAfter);
     const serverTiming = backendResponse.headers.get("server-timing");
     if (serverTiming) {
       responseHeaders.set("Server-Timing", serverTiming);
@@ -151,8 +153,8 @@ async function proxyRequest(request, context) {
     }
 
     return response;
-  } catch (error) {
-    console.error("Backend proxy request failed:", error);
+  } catch {
+    console.error("backend_proxy_failure", { category: "connection_unavailable" });
 
     return errorResponse(
       "Unable to connect to the backend service.",
