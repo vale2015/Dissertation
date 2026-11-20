@@ -221,7 +221,8 @@ export default function ManagerChat() {
                 <p>{item.text}</p>
               </div>
             ))}
-            {ready && !messages.some((item) => item.role === "user") && <div className="manager-chat-suggestions" aria-label="Suggested requests">
+            {ready && !staffFlow && !staffWorkspace && !messages.some((item) => item.role === "user") && <div className="manager-chat-suggestions" aria-label="Suggested requests">
+              <button type="button" disabled={loading} onClick={() => { setStaffFlow({ kind: "choose" }); setStaffWorkspace(false); setPendingReport(null); setInput(""); }}>Manage staff</button>
               {SUGGESTIONS.map((suggestion) => <button key={suggestion} type="button" onClick={() => { setInput(suggestion); inputRef.current?.focus(); }}>{suggestion}</button>)}
             </div>}
             {loading && <p className="manager-chat-pending" role="status">Working on your request…</p>}

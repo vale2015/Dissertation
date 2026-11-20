@@ -1,5 +1,12 @@
 # RFS current handover
 
+## 20 November active registration-usability follow-up
+
+- PM requested #69 after a screenshot showed duplicate registration review, ambiguous roles and disabled confirmation without guidance. Highest active chatbot priority; #54/#55/#65–67 remain historically Done.
+- Independent UX pre-review completed; frontend implementation is underway. Use fictional component fixtures for registration visuals and preserve the PM's real pending draft. No live registration, draft cancellation or password change for this UI work.
+- See [scope and verification](../chatbot/STAFF_REGISTRATION_UX_2026-11-20.md). Required sequential next steps: independent QA/UX, then source/build and desktop/320px release checks.
+
+
 ## 20 November final chatbot release closure
 
 - #54/#55/#65/#66/#67 are Done. PM explicitly accepted the tested workflow and authorized final #67 completion. Final app commit b29ca52 removes only the Staff Management sidebar entry; in-chat controls and guarded recovery remain.

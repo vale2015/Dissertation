@@ -18,9 +18,12 @@ async function request(path, method = "GET", body) {
   return data;
 }
 
+const FIELD_LABELS = { ...STAFF_FIELDS, application_role: "System access", staff_role_id: "Job role" };
+const accessLabel = (value) => ({ staff: "Staff", supervisor: "Supervisor", manager: "Manager" })[value] || value;
+
 function Snapshot({ value, title }) {
   if (!value) return null;
-  return <div><h4>{title}</h4><dl>{[["Account", value.id], ["Name", value.full_name], ["Email", value.email], ["Access", value.application_role || value.role], ["Restaurant role", value.staff_role_name || (value.staff_role_id == null ? "Not assigned" : `Role #${value.staff_role_id}`)], ["Status", value.status]].filter(([, v]) => v != null).map(([key, value]) => <div key={key}><dt>{key}</dt><dd>{value}</dd></div>)}</dl></div>;
+  return <div><h4>{title}</h4><dl>{[["Account", value.id], ["Name", value.full_name], ["Email", value.email], ["System access", accessLabel(value.application_role || value.role)], ["Job role", value.staff_role_name || (value.staff_role_id == null ? "Not assigned" : `Role #${value.staff_role_id}`)], ["Status", value.status]].filter(([, v]) => v != null).map(([key, value]) => <div key={key}><dt>{key}</dt><dd>{value}</dd></div>)}</dl></div>;
 }
 
 const StaffConversation = forwardRef(function StaffConversation({ command, actorId, onOtherControls, onExit, onBusyChange }, ref) {
@@ -32,6 +35,7 @@ const StaffConversation = forwardRef(function StaffConversation({ command, actor
   const [input, setInput] = useState("");
   const [password, setPassword] = useState("");
   const [confirmation, setConfirmation] = useState("");
+  const [showPasswords, setShowPasswords] = useState(false);
   const [busy, setBusy] = useState(true);
   const [notice, setNotice] = useState("");
   const [result, setResult] = useState(null);
@@ -65,7 +69,7 @@ const StaffConversation = forwardRef(function StaffConversation({ command, actor
   }
 
   async function cancel() {
-    setPassword(""); setConfirmation(""); setInput("");
+    setPassword(""); setConfirmation(""); setShowPasswords(false); setInput("");
     if (busy) throw new Error("Wait for the current staff request before cancelling.");
     if (actionRef.current && ["draft", "review"].includes(actionRef.current.state)) await request(`/chat-actions/${actionRef.current.id}`, "DELETE");
     remember(null); setMatches(null); setResult(null); setField(null); setTarget(null);
@@ -123,7 +127,7 @@ const StaffConversation = forwardRef(function StaffConversation({ command, actor
       choices: choicesRef.current?.querySelector("button:not(:disabled)"),
       roles: roleChoicesRef.current?.querySelector("button:not(:disabled)"),
       matches: matchesRef.current?.querySelector("button:not(:disabled)"),
-      fields: editFieldsRef.current?.querySelector("button:not(:disabled)"),
+      fields: editFieldsRef.current?.querySelector("summary"),
       review: reviewRef.current,
       confirm: confirmRef.current,
       finish: finishRef.current,
@@ -136,13 +140,13 @@ const StaffConversation = forwardRef(function StaffConversation({ command, actor
     if (!activeField || !action || busy) return;
     await run(async () => {
       const next = (await request(`/chat-actions/${action.id}`, "PATCH", { [activeField]: value })).action;
-      remember(next); setStale(false); setInput(""); setField(null); setPassword(""); setConfirmation("");
+      remember(next); setStale(false); setInput(""); setField(null); setPassword(""); setConfirmation(""); setShowPasswords(false);
     });
   }
 
   async function confirm() {
     const secrets = action.kind === "register" ? { password, password_confirmation: confirmation } : {};
-    setPassword(""); setConfirmation("");
+    setPassword(""); setConfirmation(""); setShowPasswords(false);
     await run(async () => {
       try {
         const data = await request(`/chat-actions/${action.id}/confirm`, "POST", { confirm: true, revision: action.revision, ...secrets });
@@ -156,32 +160,43 @@ const StaffConversation = forwardRef(function StaffConversation({ command, actor
     });
   }
 
+  const passwordError = !password ? "Enter a password." : !password.trim() ? "Password cannot contain only whitespace." : password.length < 12 ? "Password needs at least 12 characters." : password.length > 128 ? "Password must be 128 characters or fewer." : "";
+  const confirmationError = !confirmation ? "Enter the password again to confirm it." : password !== confirmation ? "Passwords do not match." : "";
+  const finalLabel = action?.kind === "register" ? "Create staff account" : "Save account changes";
+
   return <section className="staff-conversation" aria-label="Private staff conversation">
-    <h3>Staff conversation</h3>
-    <p>Details stay in this protected workspace. They are never sent to AI or added to the general conversation. Drafts expire after 15 minutes.</p>
+    <h3>{action?.kind === "register" ? "Register a staff member" : "Manage staff"}</h3>
+    <p>Private staff workspace · Drafts expire after 15 minutes.</p><details className="staff-privacy"><summary>How your details are protected</summary><p>Staff details and passwords stay out of AI and the general chat. Passwords are sent only when you create the account.</p></details>
     {busy && <p role="status">Checking staff details…</p>}
     {notice && <p role="alert">{notice}</p>}
-    {stale && <button ref={reloadRef} type="button" disabled={busy} onClick={() => run(async () => { setPassword(""); setConfirmation(""); if (!await restore()) setMode("choose"); })}>Reload draft</button>}
+    {stale && <button ref={reloadRef} type="button" disabled={busy} onClick={() => run(async () => { setPassword(""); setConfirmation(""); setShowPasswords(false); if (!await restore()) setMode("choose"); })}>Reload draft</button>}
     {result ? <><p role="status">The account change is confirmed and verified.</p><Snapshot title="Saved account" value={result} /><button ref={finishRef} type="button" onClick={() => { remember(null); onExit(); }}>Finish</button></> : <>
       {!action && mode === "choose" && <div ref={choicesRef}><p>What would you like to do?</p><button type="button" disabled={busy} onClick={() => run(async () => { setMode("register"); remember((await request("/chat-actions", "POST", { kind: "register" })).action); })}>Register a staff member</button><button type="button" disabled={busy} onClick={() => setMode("edit")}>Edit a staff member</button></div>}
       {!action && mode === "edit" && <form onSubmit={(event) => { event.preventDefault(); void run(() => lookup(input.trim())); }}><label htmlFor="staff-private-reply">Whose account should I edit? Enter a name or email.</label><input ref={inputRef} id="staff-private-reply" autoComplete="off" maxLength={80} value={input} onChange={(event) => setInput(event.target.value)} disabled={busy} /><button disabled={busy || input.trim().length < 2}>Find account</button></form>}
       {matches && <div ref={matchesRef} aria-label="Matching staff accounts">{matches.length === 0 && <p>No matching accounts. Try the full name or email.</p>}{matches.map((member) => <button key={member.id} type="button" disabled={busy} onClick={() => run(async () => { remember((await request("/chat-actions", "POST", { kind: "edit", target_user_id: member.id })).action); setTarget(member); setMatches(null); })}>{member.full_name} · {member.email} · #{member.id} · {member.status}</button>)}</div>}
       {action && <>
-        <Snapshot title={action.kind === "edit" ? "Selected account" : "Registration draft"} value={action.before || target || { ...action.draft, staff_role_name: roles.find((role) => role.id === action.draft?.staff_role_id)?.role_name }} />
-        {activeField && <div ref={roleChoicesRef}><p>{STAFF_FIELDS[activeField]}: {activeField === "application_role" ? "Choose application access." : activeField === "staff_role_id" ? "Choose the restaurant role." : "Enter the value below. Do not enter a password here."}</p>
-          {activeField === "application_role" ? ["staff", "supervisor", "manager"].map((role) => <button key={role} type="button" disabled={busy} onClick={() => saveField(role)}>{role}</button>) : activeField === "staff_role_id" ? <>{roles.map((role) => <button key={role.id} type="button" disabled={busy} onClick={() => saveField(role.id)}>{role.role_name}</button>)}{(action.draft?.application_role || target?.application_role || action.before?.application_role) !== "staff" && <button type="button" disabled={busy} onClick={() => saveField(null)}>Not assigned</button>}</> : <form onSubmit={(event) => { event.preventDefault(); void saveField(input.trim()); }}><label htmlFor="staff-private-reply">{STAFF_FIELDS[activeField]}</label><input ref={inputRef} id="staff-private-reply" type={activeField === "email" ? "email" : "text"} required maxLength={activeField === "email" ? 254 : 120} autoComplete="off" value={input} onChange={(event) => setInput(event.target.value)} disabled={busy} /><button disabled={busy || !input.trim()}>Continue</button></form>}
+        {action.state !== "review" && <Snapshot title={action.kind === "edit" ? "Selected account" : "Registration draft"} value={action.before || target || { ...action.draft, staff_role_name: roles.find((role) => role.id === action.draft?.staff_role_id)?.role_name }} />}
+        {activeField && <div ref={roleChoicesRef}><p>{FIELD_LABELS[activeField]}: {activeField === "application_role" ? "Choose what this person can access in RFS." : activeField === "staff_role_id" ? "Choose the work this person does in the restaurant. This does not change system permissions." : "Enter the value below. Do not enter a password here."}</p>
+          {activeField === "application_role" ? ["staff", "supervisor", "manager"].map((role) => <button key={role} type="button" disabled={busy} onClick={() => saveField(role)}>{accessLabel(role)}</button>) : activeField === "staff_role_id" ? <>{roles.map((role) => <button key={role.id} type="button" disabled={busy} onClick={() => saveField(role.id)}>{role.role_name}</button>)}{(action.draft?.application_role || target?.application_role || action.before?.application_role) !== "staff" && <button type="button" disabled={busy} onClick={() => saveField(null)}>Not assigned</button>}</> : <form onSubmit={(event) => { event.preventDefault(); void saveField(input.trim()); }}><label htmlFor="staff-private-reply">{FIELD_LABELS[activeField]}</label><input ref={inputRef} id="staff-private-reply" type={activeField === "email" ? "email" : "text"} required maxLength={activeField === "email" ? 254 : 120} autoComplete="off" value={input} onChange={(event) => setInput(event.target.value)} disabled={busy} /><button disabled={busy || !input.trim()}>Continue</button></form>}
         </div>}
         {!activeField && action.state !== "review" && <p>Choose a field to change, or review the proposed account.</p>}
-        <div ref={editFieldsRef} aria-label="Correct staff details">{Object.entries(STAFF_FIELDS).filter(([key]) => action.kind === "register" || key !== "email").map(([key, label]) => <button key={key} type="button" disabled={busy} onClick={() => { setField(key); setInput(""); setPassword(""); setConfirmation(""); }}>{`Change ${label.toLowerCase()}`}</button>)}</div>
+        <details ref={editFieldsRef} className="staff-edit-details"><summary>Edit details</summary><div aria-label="Correct staff details">{Object.entries(FIELD_LABELS).filter(([key]) => action.kind === "register" || key !== "email").map(([key, label]) => <button key={key} type="button" disabled={busy} onClick={() => { setField(key); setInput(""); setPassword(""); setConfirmation(""); setShowPasswords(false); }}>{`Change ${label.toLowerCase()}`}</button>)}</div></details>
         {!activeField && action.state !== "review" && <button ref={reviewRef} type="button" disabled={busy || stale} onClick={() => run(async () => remember((await request(`/chat-actions/${action.id}/review`, "POST")).action))}>Review change</button>}
-        {action.state === "review" && !field && <div aria-label="Confirm staff change"><Snapshot title="Before" value={action.before} /><Snapshot title="After" value={action.after} /><p>Review the exact account and values above. Only the Confirm change button saves this change.</p>
-          {action.kind === "register" && <><label htmlFor="staff-secure-password">Password</label><input ref={passwordRef} id="staff-secure-password" type="password" minLength={12} maxLength={128} autoComplete="new-password" value={password} onChange={(event) => setPassword(event.target.value)} disabled={busy} /><label htmlFor="staff-secure-confirmation">Confirm password</label><input id="staff-secure-confirmation" type="password" autoComplete="new-password" value={confirmation} onChange={(event) => setConfirmation(event.target.value)} disabled={busy} /><p>Use 12 to 128 non-blank characters.</p></>}
-          <button ref={confirmRef} type="button" disabled={busy || stale || (action.kind === "register" && (password.length < 12 || password.length > 128 || !password.trim() || password !== confirmation))} onClick={confirm}>Confirm change</button>
+        {action.state === "review" && !field && <div aria-label="Confirm staff change"><Snapshot title={action.kind === "register" ? "Account details" : "Before"} value={action.kind === "register" ? action.after : action.before} />{action.kind === "edit" && <Snapshot title="After" value={action.after} />}<p>{action.kind === "register" ? "Check the details, then set a password to create this account." : "Check the before and after details, then save your changes."}</p>
+          {action.kind === "register" && <div className="staff-passwords">
+            <p id="staff-password-rule">Use 12–128 characters. A password cannot contain only whitespace.</p>
+            <label htmlFor="staff-secure-password">Password</label><input ref={passwordRef} id="staff-secure-password" type={showPasswords ? "text" : "password"} minLength={12} maxLength={128} autoComplete="new-password" aria-describedby="staff-password-rule staff-password-feedback" aria-invalid={Boolean(passwordError)} value={password} onChange={(event) => setPassword(event.target.value)} disabled={busy} />
+            <p id="staff-password-feedback" className="staff-field-feedback" aria-live="polite">{passwordError || "Password meets the requirements."}</p>
+            <label htmlFor="staff-secure-confirmation">Confirm password</label><input id="staff-secure-confirmation" type={showPasswords ? "text" : "password"} autoComplete="new-password" aria-describedby="staff-confirmation-feedback" aria-invalid={Boolean(confirmationError)} value={confirmation} onChange={(event) => setConfirmation(event.target.value)} disabled={busy} />
+            <p id="staff-confirmation-feedback" className="staff-field-feedback" aria-live="polite">{confirmationError || "Passwords match."}</p>
+            <label className="staff-show-passwords"><input type="checkbox" checked={showPasswords} onChange={(event) => setShowPasswords(event.target.checked)} disabled={busy} />Show passwords</label>
+          </div>}
+          <button ref={confirmRef} className="staff-primary-action" type="button" disabled={busy || stale || (action.kind === "register" && Boolean(passwordError || confirmationError))} onClick={confirm}>{busy ? "Saving…" : finalLabel}</button>
         </div>}
       </>}
       <button type="button" disabled={busy} onClick={() => run(async () => { await cancel(); onExit(); })}>Cancel staff change</button>
     </>}
-    <button type="button" disabled={busy || Boolean(action && !result)} onClick={onOtherControls}>Other staff controls</button>
+    {(!action || result) && <button type="button" disabled={busy} onClick={onOtherControls}>Other staff controls</button>}
   </section>;
 });
 export default StaffConversation;

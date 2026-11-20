@@ -17,7 +17,7 @@ Status key: **Done** = acceptance criteria verified; **Verify release** = implem
 **PM priority override — 19 November 2026:** chatbot completion takes precedence over all other project work. Execute #65 → #66 → #67 sequentially to unblock parent #54 and shared foundation #55. Only necessary chatbot safety/release dependencies interrupt this queue. On 20 November, #65/#66/#67 and parents #54/#55 completed their accepted scope; preserve chatbot safety gates for future changes. See [ordered blocker plan](../chatbot/CHATBOT_BLOCKER_RESOLUTION.md).
 
 - **Done:** 1–2, 20–21, 25–26, 29, 54–56, 65–67.
-- **Partial:** 3–4, 17, 22, 39, 52, 57–61, 63–64.
+- **Partial:** 3–4, 17, 22, 39, 52, 57–61, 63–64, 69.
 - **Verify release:** none.
 - **Deferred:** 5.
 - **Open:** remaining unstarted items, including #62 and the workflow efficiency proposal #68.
@@ -222,7 +222,11 @@ These are modernization candidates. The [PRD](PRD.md) defines the current manage
 
 - [ ] **68. Optimize AI token usage and workflow execution — Open; architecture research complete, implementation not started (Should).** PM-requested on 19 November 2026. The [architecture/research plan](../agents/TOKEN_EFFICIENCY_WORKFLOW_PLAN.md) inspects current context, handoffs, CI and chatbot routing; compares existing tools, Linear, n8n and Langfuse using official sources; and orders baseline measurement, compact task packets, evidence reuse, bounded model/retry policies and an optional single-tool pilot. Related to #58/#59/#64 without replacing them. **Priority:** chatbot #65–67 remains first. **Acceptance:** comparable before/after token or explicitly labelled proxy metrics, total-cost review and unchanged quality/authorization/independent-review gates; PM-approved tool/cost/data handling and source-of-truth changes before adoption. No savings, installed integration, app change or live telemetry collection claimed.
 
-## Research and verification notes
+## Phase 14 — Staff registration usability
+
+- [ ] **69. Make chatbot staff registration clear and discoverable — Partial; highest active chatbot priority (Must).** PM-reported on 20 November: registration review repeats draft/After details, uses technical labels and a disabled generic confirmation without clear guidance; staff tools are hard to find from the welcome screen. FULL sequential UX → frontend → independent QA/UX review. **Acceptance:** one authoritative registration review summary, clear access/job-role wording and creation action, accessible password validity/mismatch guidance without weakening validation or exposing credentials, discoverable manager-only staff entry, desktop/320px keyboard checks and existing privacy/confirmation/recovery/edit regression checks. Preserve server-authoritative review, exact revision/idempotency, secure password fields, explicit confirmation and existing user drafts. No real account registration or password change is authorized by this UI fix. Publish/retest before Done; parent #54 remains historically completed, with this new follow-up tracked separately.
+
+## Historical research and verification notes
 
 - 2026-10-21: `main` and `origin/main` both point to `8286e21`; the worktree was clean before this tracker was created.
 - 2026-10-21: Supabase migration history contains the staff-account, demand-date, bookings-security, and auth-counter migrations, but not baseline `20260811000000`.
