@@ -2,12 +2,12 @@
 
 PM decision: **19 November 2026 — chatbot delivery takes precedence over every other project task.** Work sequentially through #65 → #66 → #67, under parent #54 and shared foundation #55. Only work necessary to deliver the chatbot safely may interrupt this queue. Other backlog statuses are preserved; this is a priority change, not a claim they are finished.
 
-This is a QUICK planning/backlog update with focused self-checks. Executing the plan requires the existing FULL sequential implementation/independent QA/security/AI/UX gates where relevant. No provider requests, credential changes, new QA accounts, report saves or deployments are performed by this planning update. The prior model-verification hold remains until the PM deliberately resumes the credential/configuration step.
+This is a QUICK planning/backlog update with focused self-checks. Executing the plan requires the existing FULL sequential implementation/independent QA/security/AI/UX gates where relevant. No provider requests, credential changes, new QA accounts, report saves or deployments are performed by this planning update. The PM resumed the configuration step on 20 November and fresh-preview inference passed; #66/#67 remain open. See [current verification](MODEL_VERIFICATION_2026-11-20.md).
 
 ## Ordered work packages
 
 ### 1. #65 — Restore Cloudflare authentication for the manager chatbot
-**Open / READY · Must · first priority.** Parent #54; also unblocks #55.
+**Done · Must · preview authentication verified 20 November 2026.** Parent #54; also unblocks #55.
 
 - Use the recorded HTTP401 / Cloudflare10000 evidence; do not keep retrying unchanged settings.
 - Configuration owner deliberately replaces or corrects the Workers AI credential/account configuration in Vercel project **dissertation**, scoped to Preview and Production. Keep tokens out of chat, repository, browser transcripts and logs.
@@ -18,7 +18,7 @@ This is a QUICK planning/backlog update with focused self-checks. Executing the 
 **Done when:** actual inference succeeds on the exact fresh preview, without authentication failure; commit/build/environment and sanitized result are recorded. A green Cloudflare token entry or configured variable alone is insufficient.
 
 ### 2. #66 — Verify live chatbot AI journeys and safe failures
-**Open / READY · Must · depends on #65.** Reuses #54/#55 evidence; not a second chatbot implementation.
+**Done · Must · independent verification cleared 20 November 2026.** Reuses #54/#55 evidence; not a second chatbot implementation.
 
 - Independently verify normal typed conversation and representative model-routed requests, clarifications, unavailable/failure responses and usage-limit behavior without deliberately incurring excessive calls.
 - Verify fresh chat/reset and calendar/typed-date report generation, seven-/ten-day horizons, save/download behavior, staff private routing and explicit confirmation. Reuse unchanged deterministic/live evidence; repeat affected journeys after fixes.
@@ -29,7 +29,7 @@ This is a QUICK planning/backlog update with focused self-checks. Executing the 
 **Done when:** independent QA plus relevant AI/security/UX reviews clear the agreed live matrix on an exact source/build, with successful real inference and safe negative cases. Record separate remaining #55 criteria rather than silently closing them.
 
 ### 3. #67 — Complete chatbot release acceptance and close parent tasks
-**Open / READY · Must · depends on #66.**
+**Partial / IN PROGRESS · Must · production/final acceptance underway after #66.**
 
 - Reconcile #54 and #55 acceptance criteria with their actual evidence; include the already-tested staff/report behavior and any remaining foundation checks.
 - Publish reviewed fixes through normal main/production gates; verify exact frontend/backend builds and aliases, configuration loading, a harmless live model request and affected smoke journeys. Do not manually deploy or change schema unnecessarily.
