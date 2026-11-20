@@ -2,7 +2,7 @@
 
 PM decision: **19 November 2026 — chatbot delivery takes precedence over every other project task.** Work sequentially through #65 → #66 → #67, under parent #54 and shared foundation #55. Only work necessary to deliver the chatbot safely may interrupt this queue. Other backlog statuses are preserved; this is a priority change, not a claim they are finished.
 
-This is a QUICK planning/backlog update with focused self-checks. Executing the plan requires the existing FULL sequential implementation/independent QA/security/AI/UX gates where relevant. No provider requests, credential changes, new QA accounts, report saves or deployments are performed by this planning update. The PM resumed the configuration step on 20 November and fresh-preview inference passed; #66/#67 remain open. See [current verification](MODEL_VERIFICATION_2026-11-20.md).
+This is a QUICK planning/backlog update with focused self-checks. Executing the plan requires the existing FULL sequential implementation/independent QA/security/AI/UX gates where relevant. No provider requests, credential changes, new QA accounts, report saves or deployments are performed by this planning update. The PM resumed the configuration step on 20 November and fresh-preview inference passed; #65/#66/#67 and parents #54/#55 are now Done after PM acceptance and final production checks. See [current verification](MODEL_VERIFICATION_2026-11-20.md).
 
 ## Ordered work packages
 
@@ -29,7 +29,7 @@ This is a QUICK planning/backlog update with focused self-checks. Executing the 
 **Done when:** independent QA plus relevant AI/security/UX reviews clear the agreed live matrix on an exact source/build, with successful real inference and safe negative cases. Record separate remaining #55 criteria rather than silently closing them.
 
 ### 3. #67 — Complete chatbot release acceptance and close parent tasks
-**Partial / IN PROGRESS · Must · production/final acceptance underway after #66.**
+**Done · Must · PM accepted and final production/sidebar checks passed 20 November 2026.**
 
 - Reconcile #54 and #55 acceptance criteria with their actual evidence; include the already-tested staff/report behavior and any remaining foundation checks.
 - Publish reviewed fixes through normal main/production gates; verify exact frontend/backend builds and aliases, configuration loading, a harmless live model request and affected smoke journeys. Do not manually deploy or change schema unnecessarily.

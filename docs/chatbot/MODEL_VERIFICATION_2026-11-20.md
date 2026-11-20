@@ -1,31 +1,45 @@
-# Model verification — 20 November 2026
+# Chatbot release verification — 20 November 2026
 
-## #65 preview authentication: passed
+**#54, #55, #65, #66 and #67: Done.** PM explicitly accepted the tested workflow and authorized finishing #67. The final sidebar change is published and verified in production.
 
-- PM confirmed a fresh token was saved; metadata shows CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID scoped to Preview and Production. No credential was decrypted or printed.
-- Rebuilt the existing protected preview with the current environment: dpl_ALDcerWrDGxg4QsiBmoGzbF1bCsy, Ready, source 9d33aa4d0ad7aafa5704c0fbc6c09bd07acc9578. Its frontend/backend application trees equal published main 359cfc5; intervening changes are documentation only.
-- Signed-in demo manager sent exactly `nearby happenings`. The assistant returned four local events with dates/provider attribution. A local direct invocation of classifyChatbotMessage for that phrase returns unknown; taskSignals supplies fixed events vocabulary to the model. Thus this was the model-backed interpretation path, not the deterministic events shortcut.
-- Scoped runtime query for chatbot_model_failure on that exact deployment returned no records. Absence of logs is supporting evidence, not the primary success proof.
-- Preview URL: https://dissertation-8s51vlsb1-valeriogerardi-5538s-projects.vercel.app. Screenshot in this chat: outputs/rfs65-model-success.jpg.
+## Final application release
 
-## #66 current verification
+Application commit **b29ca525074b0f32c99d8e2e591c01b5265dbb41** removes only the Staff Management sidebar menu entry. ManagerChat, private registration/editing, Other staff controls, embedded staff management, protected APIs and the guarded /dashboard/staff recovery page remain.
 
-Independent QA passed 24 Node model/access/read/staff tests and 63 focused route/chat component tests: 87 passed, zero failed/skipped. Source comparison confirms unchanged application trees. Fixtures cover provider failure/budget refusal, permission denials, staff privacy, reset/calendar/report horizons, fixed task vocabulary, allowlisted output and bounded model calls.
+Both production builds are Ready:
+- Frontend dpl_GDqMThnECw74oBoXHDnD3aDx1mxg.
+- Backend dpl_27a9bMFdGDmdbRyXTNA28uE2WNqf.
 
-Coordinator live checks on the same fresh preview passed: New chat clears transcript/weather without duplication; `local activities` uses the model-backed path and returns four events; unsupported `tell me a joke` returns bounded capabilities guidance; undated report opens the in-chat calendar; typed 2026-11-29 returns 193 forecast covers across six open days (the seven-day report scope); private staff choices open and Cancel restores a clean composer. No staff draft or report save was made. Previous unchanged staff registration/edit/role/320px/export evidence remains scoped to the 19 November record.
+Subsequent closure-documentation commits have identical application source. Their build readiness is recorded separately; no repeated model call is needed solely for a documentation change with unchanged configuration.
 
-Independent live HTTP execution passed: a fresh ordinary app login returned 200, then exactly one nearby happenings POST returned 200 and four dated/provider-attributed events. No protection bypass, root-session reuse, provider-secret access, extra account or report save. Sanitized evidence is in this chat outputs/rfs66-independent-api.json. QA recommends #66 Done for the agreed bounded matrix. The independent browser provider was unavailable; independent live execution used HTTP and browser checks were coordinator-run. Failure/usage-limit cases used fixtures. No fresh physical-mobile, destructive-limit or concurrent-production claim.
+## Actual verification
 
-## #67 production activation: passed; PM/sidebar gates pending
+| Area | Result and scope |
+| --- | --- |
+| Authentication recovery #65 | PM saved a fresh token for Preview/Production. Metadata was checked without decryption. Fresh protected preview dpl_ALDcerWrDGxg4QsiBmoGzbF1bCsy on 9d33aa4 answered nearby happenings with four dated/provider-attributed events. Its application tree equals pre-navigation main359cfc5. |
+| Model-path proof | Local deterministic classifyChatbotMessage returns unknown for nearby happenings and local activities; fixed events signals reach the model-backed route. The UI returned events; scoped model-failure log queries were empty. Absence of logs is supporting evidence, not the success proof. |
+| Independent QA #66 | 24 Node model/access/read/staff tests and 63 route/chat-component tests passed: 87, zero failures/skips. Separate fresh-session normal HTTP login and exactly one model-backed request returned200/four events. No bypass or root-cookie reuse. Independent browser execution was unavailable; browser checks were coordinator-run. |
+| Coordinator browser matrix | Second model-routed request local activities succeeded; unsupported tell me a joke returned bounded capabilities guidance. New chat cleared transcript/weather without duplication. Undated report opened calendar; typed2026-11-29 returned193 forecast covers/six open days in the seven-day report scope. Private staff choices/cancel worked without creating a draft. |
+| Final navigation QA #67 | Six sidebar self-checks/lint passed. Independent review passed67 sidebar/chat/staff/API component tests plus11 access/private-routing tests: 78 total, zero failures/skips, with lint/whitespace checks. The only application diff is the deleted menu entry. |
+| Final production UI | Sidebar Staff Management link count is zero. Assistant launcher/private choices and embedded Other staff controls remain. Manager can access guarded recovery. Desktop and actual320px browser viewport checks passed. Keyboard Enter opens assistant and submits; private focus lands on Register, Cancel returns composer focus, Escape returns launcher focus. Viewport restored to1280x720. |
+| Production model | On production e4d4d0e before the one-line navigation change, normal manager nearby happenings returned four events. Model/API/configuration inputs are unchanged in b29ca52. No model failure logs on that tested deployment. |
+| Final production smoke | All12 read-only checks passed again on b29ca52: health, signed-out denials, manager session/current action/roles, assistant initialization, inactive QA6/8 and saved reports23/24 seven-/ten-day horizons. |
+| Earlier unchanged evidence | Recorded backend262 regular plus16 PostgreSQL checks and prior independent AI/security/UX, real staff registration/edit/retry/role and report/export/narrow checks remain valid within the [19 November record](STAFF_CHAT_VERIFICATION_2026-11-19.md). They were not rerun or added to today's counts. |
 
-Published verification commit e4d4d0e7c0ac5c0cd5479efe40e46557d2a95e08 triggered fresh production builds: frontend dpl_8zu9M7xzA3hHLUHGZWbR7e8VRUKM and backend dpl_DDrKjF2F9ZVDPYR2DKkR7cCcbXwy, both Ready. On the normal production frontend alias, coordinator demo-manager login and nearby happenings returned four dated/provider-attributed events. The exact deployment's scoped model-failure query returned no records. All 12 read-only production checks passed, including signed-out denials, manager recovery, QA accounts6/8 inactive and saved report23/24 horizons. Evidence is in this chat outputs/rfs67-production-smoke-2026-11-20.json and rfs67-production-model-success.jpg.
+## Limits and cleanup
 
-Weather initialization showed a truthful temporary-unavailability fallback on this check; preview weather had succeeded. This optional provider outcome does not establish continuous weather availability. Events/model inference succeeded. No new operational record was written; only normal sign-in/model-budget activity occurred.
+The model classifies supported restaurant intents; this release does not add general-purpose free-form generation. Failure/usage-limit scenarios used fixtures; no fresh destructive-limit, production concurrency or physical-mobile certification claim.
 
-## Limits and next steps
+Weather initialization briefly showed its truthful temporary-unavailability fallback, then current conditions succeeded on the final navigation release. This does not promise continuous optional-provider availability.
 
-#65 and #66 are Done for their stated scopes. #67 production configuration activation and read-only smoke/inference passed; PM explicitly accepted the tested workflow and authorized finishing #67 on 20 November. The one-line sidebar entry removal is implemented locally; six focused self-checks/lint and independent 78 tests/lint passed; production navigation verification remains before parent closure.
+QA accounts6/8 remain inactive; no pending manager draft remains. No new accounts, report saves, model/paid-plan change or schema migration was performed. Normal sign-in/model-budget activity and retained historical audit/report records remain.
 
-The current model is an intent classifier for existing restaurant actions, not a general-purpose free-form answer generator. No model, paid plan or database schema changed; the accepted final sidebar removal is the only new application change. No staff account was created/reactivated and no report was saved. Normal manager login/model budget activity occurred; existing audits and approved report records remain.
+## Evidence
 
-The older HTTP401/Cloudflare10000 evidence and hold in the [19 November record](STAFF_CHAT_VERIFICATION_2026-11-19.md) are historical and superseded by fresh preview and production inference. Reuse unchanged prior staff/report/role evidence only within its recorded scope. Subsequent documentation-only builds with identical application/configuration inputs do not require another model call solely to reproduce this evidence.
+- [Final application commit](https://github.com/vale2015/Dissertation/commit/b29ca525074b0f32c99d8e2e591c01b5265dbb41)
+- [Production frontend build](https://vercel.com/valeriogerardi-5538s-projects/dissertation/GDqMThnECw74oBoXHDnD3aDx1mxg)
+- [Production backend build](https://vercel.com/valeriogerardi-5538s-projects/dissertation-backend/27a9bMFdGDmdbRyXTNA28uE2WNqf)
+- [Staff workflow criteria](STAFF_MANAGEMENT_CHAT_WORKFLOW.md)
+- Thread outputs: rfs65-model-success.jpg; rfs66-independent-api.json; rfs67-production-model-success.jpg; rfs67-production-smoke-2026-11-20.json; rfs67-final-staff-navigation.jpg; rfs67-final-navigation-320.jpg.
+
+#68 token/workflow efficiency remains Open with research complete and implementation not started. No next feature was automatically picked up.

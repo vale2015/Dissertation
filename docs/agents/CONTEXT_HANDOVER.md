@@ -1,5 +1,13 @@
 # RFS current handover
 
+## 20 November final chatbot release closure
+
+- #54/#55/#65/#66/#67 are Done. PM explicitly accepted the tested workflow and authorized final #67 completion. Final app commit b29ca52 removes only the Staff Management sidebar entry; in-chat controls and guarded recovery remain.
+- Independent navigation QA passed78 tests/lint; prior model QA passed87 tests plus independent live HTTP inference. Coordinator browser production inference passed before this one-line change; unchanged model/API/configuration evidence remains valid.
+- Both b29ca52 production builds are Ready. Desktop/actual320px, keyboard Enter/cancel/Escape focus, retained embedded staff controls, manager recovery access and all12 read-only production checks passed. QA6/8 inactive; no pending draft or extra report save. Viewport restored to1280x720.
+- Weather briefly showed a safe unavailable fallback, then returned current conditions on the final release. No continuous optional-provider availability claim. Chatbot is an intent classifier for existing actions, not general-purpose generation.
+- Final record: [verification](../chatbot/MODEL_VERIFICATION_2026-11-20.md). This chat outputs/rfs67-final-staff-navigation.jpg and rfs67-final-navigation-320.jpg show the result. #68 remains Open/research complete; no new task was picked up. Original checkout should remain clean through Git synchronization, not document copying.
+
 ## 20 November chatbot authentication recovery (supersedes earlier model hold)
 
 - PM saved a fresh token and added Preview/Production; metadata checked without decryption. Fresh preview dpl_ALDcerWrDGxg4QsiBmoGzbF1bCsy is Ready on 9d33aa4 (app tree equal to main 359cfc5).

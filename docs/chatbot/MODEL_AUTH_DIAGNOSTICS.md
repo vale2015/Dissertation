@@ -1,6 +1,6 @@
 # Model authentication diagnostics
 
-**20 November recovery:** PM saved a fresh token for Preview/Production; one harmless inference passed on a fresh protected preview. The 19 November failure below remains historical evidence. Production activation and full acceptance remain open; see [current verification](MODEL_VERIFICATION_2026-11-20.md).
+**20 November recovery:** PM saved a fresh token for Preview/Production; one harmless inference passed on a fresh protected preview. The 19 November failure below remains historical evidence. Production inference, PM acceptance and final sidebar checks also passed; see [current verification](MODEL_VERIFICATION_2026-11-20.md).
 
 The assistant trims surrounding whitespace from its configured Cloudflare account ID and API token before checking configuration availability and constructing the provider. This handles copy/paste whitespace consistently. It does not strip quotes, alter stored environment values, change models or claim that configuration presence proves successful inference.
 

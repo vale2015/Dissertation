@@ -1,6 +1,6 @@
 # #54 staff conversation verification
 
-**20 November update:** fresh-token preview inference passed, closing #65. The model hold below is historical; #66/#67 and parent release acceptance remain open. See [current verification](MODEL_VERIFICATION_2026-11-20.md).
+**20 November update:** fresh-token preview inference passed, closing #65. The model hold below is historical; #66/#67 and parents #54/#55 are now Done after independent verification, PM acceptance and final production checks. See [current verification](MODEL_VERIFICATION_2026-11-20.md).
 
 19 November 2026. Status: **Partial / Trello IN PROGRESS**. The PM chose to keep live model verification blocked for now. Do not mark Done or remove Staff Management navigation.
 
