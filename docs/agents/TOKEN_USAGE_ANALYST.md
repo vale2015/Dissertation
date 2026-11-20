@@ -12,6 +12,16 @@ Project agent definitions live in `.codex/agents/`. They become available when t
 
 ## Collect and review each workflow
 
+The preferred path is the single capture command, which performs collection/history update and saves a bounded analyst brief:
+
+```powershell
+node tools/workflow_usage/capture.mjs --thread ROOT-CHAT-UUID --since UTC-START --turn ROOT-TURN-UUID --run-id workflow-id --category task-category --label "Workflow title" --scope full --state snapshot
+```
+
+Replace placeholders with the actual chat, start and task metadata. Reuse the same ID and original metadata on refresh; use `--state closed` for a finished selected window. Output is four summary lines. Detailed reports go in `.workflow-usage/reports/` and sanitized analyst briefs in `.workflow-usage/briefs/`, named by run ID. Give the analyst the brief once, then refresh capture to include its overhead. A capture taken before the final reply still excludes future tokens. A failed derived-file publication leaves the authoritative ledger intact and reports how to regenerate the files.
+
+The separate diagnostic commands remain supported below. Compare uncached input and output as well as cached/raw context volume; no token column establishes a monetary charge. See [optimisation actions](TOKEN_USAGE_OPTIMISATION_ACTIONS.md).
+
 Work only in the VS Code project folder specified in AGENTS.md. Record the workflow start in UTC and its root chat ID. Run from this repository:
 
 ```powershell
@@ -56,6 +66,8 @@ The coordinator is instructed to perform this reporting step for project workflo
 Local rollout formats can change. Schema version 1 supports observed `token_usage_record` response counters; unsupported cumulative-only data is reported as unavailable. Keep parser tests and coverage warnings when upgrading. Source: [Codex hooks and transcript caveat](https://learn.chatgpt.com/docs/hooks), [official Codex source](https://github.com/openai/codex).
 
 ## Verification checkpoint
+
+Capture/efficiency extension: 22 collector/history/capture tests plus three independent edge checks passed with zero skips. Safe identity/overlap/refresh behavior, compact four-line output, sanitized brief, link/hardlink rejection, unknown fields and ledger-preserving report recovery were checked. Crash/stale-lock recovery was inspected rather than process-kill tested. See [the optimisation actions](TOKEN_USAGE_OPTIMISATION_ACTIONS.md).
 
 History extension: 23 independent checks passed with zero skips after one fix/retest cycle: ten history tests, seven collector tests and six independent arithmetic/threshold/baseline edge checks. The discovered unknown-derived-uncached validation defect is fixed and has permanent regression coverage; rejected imports leave history files unchanged. Two real nonoverlapping records were seeded, and same-ID refresh retained two records. The dedicated analyst reviewed the measured flags; its review is saved under `.workflow-usage/reviews/rfs68-usage-history.md`. No eligible comparable baseline or saving is claimed. Fresh profile loading and automatic hooks remain separate, unverified capabilities.
 

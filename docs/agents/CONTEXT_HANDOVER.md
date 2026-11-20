@@ -1,5 +1,12 @@
 # RFS current handover
 
+## Current #68 efficiency actions
+
+- PM requested usage analysis and authorised necessary action. Start future project work from CURRENT_STATE.md, the active tracker item and .agents/task-packet.md; retrieve history on demand. All edits stay in the original VS Code checkout.
+- Added capture.mjs: one command collects, updates history and saves a sanitized analyst brief, with four summary lines. Separate collector/history commands remain diagnostic paths. Independent QA passed25 checks/zero skips; link, unknown-data and derived-write recovery cases passed.
+- Bounded excerpts, approval-preserving batching and one analyst call per meaningful workflow are now explicit. Models, required permissions/QA and source-of-truth rules are unchanged. This does not remove existing loaded context or prove savings.
+- Quantified three-slice analysis and current analyst review are private under .workflow-usage/. Shared action plan: TOKEN_USAGE_OPTIMISATION_ACTIONS.md. #68 stays Partial for comparable baselines and adoption evidence. Workflow ID rfs68-efficiency-actions; refresh this ID to include analyst/publication overhead.
+
 ## Current presentation update checkpoint
 
 - Recovered RFS_Agentic_Workflows.html from the existing Create Agentic Presentation chat into docs/presentations/ in the original VS Code project. That file is the maintained local presentation source.

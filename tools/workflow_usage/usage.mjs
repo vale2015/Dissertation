@@ -400,7 +400,7 @@ export function renderMarkdown(report) {
   ].join('\n');
 }
 
-async function writeReport(path, content) {
+export async function writeReport(path, content) {
   const directory = dirname(path);
   await mkdir(directory, { recursive: true });
   const temporary = join(directory, '.workflow-usage-' + randomUUID() + '.tmp');

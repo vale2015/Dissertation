@@ -1,5 +1,8 @@
 # RFS documentation
 
+- [Current project state](agents/CURRENT_STATE.md) — compact startup index; use targeted tracker/handover reads.
+- [Token optimisation actions](agents/TOKEN_USAGE_OPTIMISATION_ACTIONS.md) — approved context/execution changes and validation status; detailed usage figures remain private.
+
 - [RFS Agentic Workflows presentation](presentations/RFS_Agentic_Workflows.html) — recovered HTML presentation updated with the token analyst, workflow usage history and improvement flags.
 
 - [Dedicated token-usage analyst #68](agents/TOKEN_USAGE_ANALYST.md) — persistent local workflow usage records, task-model routes and evidence-backed improvement flags; execution/coverage limits are explicit.
