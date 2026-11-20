@@ -1,5 +1,12 @@
 # RFS current handover
 
+## Current #68 usage history checkpoint
+
+- PM clarified that usage must be recorded per workflow and the dedicated analyst must flag measured improvement opportunities. All edits remain directly in the VS Code project.
+- Added history.mjs and history.test.mjs: stable IDs, refresh without duplication, shared-thread/window overlap protection, safe locking/atomic ledger, readable USAGE_HISTORY.md and OPTIMIZATION_FLAGS.md in ignored .workflow-usage/. Two real records are present.
+- Independent QA passed23 checks/zero skips after fix cycle1 corrected unknown-derived-uncached validation. Dedicated gpt-6.1-sol/low analyst reviewed flags; saved review recommends complete comparable measurements, smaller contexts and concise coordinator handoffs. No measured saving/billing claim.
+- #68 remains Partial for comparable baselines/optimization adoption. Reporting runs during coordinator handoffs; automatic hooks and fresh named-profile activation remain unverified. Record Git publication/build status separately at handoff. See [runbook](TOKEN_USAGE_ANALYST.md).
+
 ## Current #68 workspace and token analyst checkpoint
 
 - PM requires all further edits directly in `C:/Users/valer/OneDrive/Desktop/DissertationApp/DissertationApp`; do not edit isolated copies or create worktrees. Clean original main was fast-forwarded to published5a7a4ab, then pending token-agent files transferred with hash checks.

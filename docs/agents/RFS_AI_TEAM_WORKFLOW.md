@@ -1,6 +1,6 @@
 # RFS sequential AI delivery team
 
-For #68, task-specific model routes are in `.agents/model-routing.json`. The dedicated token analyst consumes sanitized counters and reports measured opportunities; it does not implement or approve changes. See [the runbook](TOKEN_USAGE_ANALYST.md). Work directly in the PM's VS Code checkout and keep one active specialist at a time.
+For #68, task-specific model routes are in `.agents/model-routing.json`. Persist one usage-history record per workflow, refresh it without duplication and retain analyst reviews. The dedicated token analyst consumes sanitized counters/history and surfaces important optimization flags with evidence, an action and a success check; it does not implement or approve changes. See [the runbook](TOKEN_USAGE_ANALYST.md). Work directly in the PM's VS Code checkout and keep one active specialist at a time.
 
 **Product owner:** the user, acting as Product Manager (PM). **Backlog:** [IMPROVEMENT_TRACKER.md](../product/IMPROVEMENT_TRACKER.md), item #58. **Priority:** Should (user-directed delivery process). **Current status:** Partial until the demonstrated sequence receives explicit PM acceptance and remaining validation.
 
