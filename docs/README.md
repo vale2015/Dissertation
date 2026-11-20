@@ -1,5 +1,7 @@
 # RFS documentation
 
+- [Dedicated token-usage analyst #68](agents/TOKEN_USAGE_ANALYST.md) — local usage collection, task-model routes and optimization review; execution/coverage limits are explicit.
+
 - [Staff registration usability #69](chatbot/STAFF_REGISTRATION_UX_2026-11-20.md) — active follow-up for clearer review, role labels, password feedback and staff discovery.
 
 - [20 November live model verification](chatbot/MODEL_VERIFICATION_2026-11-20.md) — #54/#55/#65–67 Done after preview/production inference, independent QA, PM acceptance and final navigation checks.

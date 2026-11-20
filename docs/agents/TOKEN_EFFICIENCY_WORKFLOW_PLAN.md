@@ -1,6 +1,8 @@
 # RFS token efficiency and workflow architecture plan
 19 November 2026 · Architecture/research proposal · Backlog #68
 
+**20 November implementation checkpoint:** PM selected #68 and requested task-specific models, a dedicated token analyst and per-workflow reports. Local response counters are now available; see [the implementation runbook](TOKEN_USAGE_ANALYST.md). The historical research below remains evidence, not proof of installed integrations or measured savings. All edits now take place directly in the PM’s VS Code checkout.
+
 **Recommendation:** optimize the existing Codex + GitHub + Trello workflow first. Pilot Linear only if coordination remains expensive; pilot n8n only for proven cross-service automation. Add token observability before attributing savings to either. Chatbot #65 → #66 → #67 retains first priority. This report is planning/research, not an installed tool, enabled automation or measured saving.
 
 ## What was inspected and what remains unknown

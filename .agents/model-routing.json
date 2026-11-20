@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "max_active_specialists": 1,
+  "default_context": "fresh_task_packet",
+  "unavailable_model_policy": "report_and_request_an_available_choice_never_silent_fallback",
+  "routes": {
+    "architecture_security_design": {"profile":"rfs_architect","model":"gpt-6.2-astra","reasoning_effort":"high"},
+    "implementation": {"profile":"rfs_engineer","model":"gpt-6.2-sol","reasoning_effort":"medium"},
+    "independent_qa": {"profile":"rfs_reviewer","model":"gpt-6.1-sol","reasoning_effort":"high"},
+    "visual_accessibility": {"profile":"rfs_ux_reviewer","model":"gpt-6.1-terra","reasoning_effort":"high"},
+    "token_analysis": {"profile":"rfs_token_analyst","model":"gpt-6.1-sol","reasoning_effort":"low"}
+  }
+}

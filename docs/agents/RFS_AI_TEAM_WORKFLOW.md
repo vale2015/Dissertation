@@ -1,5 +1,7 @@
 # RFS sequential AI delivery team
 
+For #68, task-specific model routes are in `.agents/model-routing.json`. The dedicated token analyst consumes sanitized counters and reports measured opportunities; it does not implement or approve changes. See [the runbook](TOKEN_USAGE_ANALYST.md). Work directly in the PM's VS Code checkout and keep one active specialist at a time.
+
 **Product owner:** the user, acting as Product Manager (PM). **Backlog:** [IMPROVEMENT_TRACKER.md](../product/IMPROVEMENT_TRACKER.md), item #58. **Priority:** Should (user-directed delivery process). **Current status:** Partial until the demonstrated sequence receives explicit PM acceptance and remaining validation.
 
 This is a repository configuration, not seven continuously running services. Codex can invoke one specialist at a time for a particular PM-approved task. The engineering lead starts with `feature-triage`, chooses a proportional path, and hands off sequentially. The PM owns product decisions and final product acceptance.

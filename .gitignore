@@ -9,3 +9,6 @@ venv/
 node_modules/
 .next/
 supabase/.temp/
+
+# Local workflow counters/reports contain private session metadata.
+.workflow-usage/
