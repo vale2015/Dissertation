@@ -1,5 +1,7 @@
 # RFS documentation
 
+- [RFS Agentic Workflows presentation](presentations/RFS_Agentic_Workflows.html) — recovered HTML presentation updated with the token analyst, workflow usage history and improvement flags.
+
 - [Dedicated token-usage analyst #68](agents/TOKEN_USAGE_ANALYST.md) — persistent local workflow usage records, task-model routes and evidence-backed improvement flags; execution/coverage limits are explicit.
 
 - [Staff registration usability #69](chatbot/STAFF_REGISTRATION_UX_2026-11-20.md) — active follow-up for clearer review, role labels, password feedback and staff discovery.

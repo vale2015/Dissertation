@@ -1,5 +1,13 @@
 # RFS current handover
 
+## Current presentation update checkpoint
+
+- Recovered RFS_Agentic_Workflows.html from the existing Create Agentic Presentation chat into docs/presentations/ in the original VS Code project. That file is the maintained local presentation source.
+- Added token analyst to both diagrams, all ten roles, private workflow ledger/flags/reviews, model routes and truthful activation/baseline limits. Retained the sample app as a dated19November prototype; replaced its private Library pointer with a public research-source link. No private usage counters are embedded.
+- Implementation self-checks and independent gpt-6.1-terra/high content/visual review passed. Original script and two embedded images are byte-identical; anchors/ARIA targets resolve. Coordinator desktop1280 and mobile320 checks passed after one mobile-table layout fix; keyboard horizontal scrolling works and viewport override was reset. No application/API/data change.
+- This workflow is recorded as rfs68-presentation-update, category presentation-docs. One descendant exposes only cumulative usage, so coverage remains Partial and unknown tokens are excluded. Analyst review is saved locally; final counter refresh includes its overhead. #68 remains Partial for comparable baselines/adoption.
+- A hidden local preview serves only docs/presentations on port18767 (PID20404), with the updated token section retained as a browser deliverable. The HTML also works as an offline file. Verify Git/build status separately at handoff.
+
 ## Current #68 usage history checkpoint
 
 - PM clarified that usage must be recorded per workflow and the dedicated analyst must flag measured improvement opportunities. All edits remain directly in the VS Code project.
