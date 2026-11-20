@@ -313,3 +313,27 @@ test.each([
     expect(writes).toHaveLength(0);
   }
 });
+
+
+test("Manage staff shortcut opens private choices without general transcript or API writes", async () => {
+  const user = userEvent.setup();
+  fetch.mockImplementation(async (url) => ({ ok: true, json: async () => url.endsWith("/roles") ? { roles: [] } : url.endsWith("/current") ? { action: null } : { conversation_enabled: true, weather: { text: "Weather ready." } } }));
+  render(<ManagerChat />);
+  await user.click(screen.getByRole("button", { name: "Open RFS assistant" }));
+  await user.click(await screen.findByRole("button", { name: "Manage staff" }));
+  await screen.findByRole("button", { name: "Register a staff member" });
+  expect(screen.queryByRole("button", { name: "Manage staff" })).not.toBeInTheDocument();
+  expect(screen.queryByText("Manage staff", { selector: ".manager-chat-user p" })).not.toBeInTheDocument();
+  expect(fetch.mock.calls.every(([, options]) => !options?.method || options.method === "GET")).toBe(true);
+});
+
+test("Manage staff shortcut restores existing review without creating or cancelling a draft", async () => {
+  const user = userEvent.setup();
+  fetch.mockImplementation(async (url) => ({ ok: true, json: async () => url.endsWith("/roles") ? { roles: [] } : url.endsWith("/current") ? { action: { id: "synthetic-review", kind: "register", state: "review", revision: 6, draft: { full_name: "Test Example", email: "test@example.test", application_role: "manager", staff_role_id: null }, after: { full_name: "Test Example", email: "test@example.test", application_role: "manager", staff_role_id: null } } } : { conversation_enabled: true } }));
+  render(<ManagerChat />);
+  await user.click(screen.getByRole("button", { name: "Open RFS assistant" }));
+  await user.click(await screen.findByRole("button", { name: "Manage staff" }));
+  await screen.findByRole("heading", { name: "Account details" });
+  expect(screen.getByLabelText("Password", { exact: true })).toHaveValue("");
+  expect(fetch.mock.calls.every(([, options]) => !options?.method || options.method === "GET")).toBe(true);
+});

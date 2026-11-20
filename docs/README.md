@@ -1,5 +1,7 @@
 # RFS documentation
 
+- [Staff registration usability #69](chatbot/STAFF_REGISTRATION_UX_2026-11-20.md) — active follow-up for clearer review, role labels, password feedback and staff discovery.
+
 - [20 November live model verification](chatbot/MODEL_VERIFICATION_2026-11-20.md) — #54/#55/#65–67 Done after preview/production inference, independent QA, PM acceptance and final navigation checks.
 
 - [AI token efficiency and workflow architecture](agents/TOKEN_EFFICIENCY_WORKFLOW_PLAN.md) — #68 research, measured pilot and Linear/n8n/tool comparison; chatbot release stays first.

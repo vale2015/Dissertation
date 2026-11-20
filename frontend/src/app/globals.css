@@ -3154,3 +3154,13 @@ button.event-impact-badge:hover {
 .staff-conversation button { max-width: 100%; white-space: normal; overflow-wrap: anywhere; margin: 5px 6px 5px 0; padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px; background: #fff; color: #9f1239; cursor: pointer; }
 .staff-conversation button:disabled { opacity: .55; cursor: default; }
 .staff-conversation :focus-visible { outline: 2px solid #be123c; outline-offset: 2px; }
+
+.staff-conversation summary { cursor: pointer; font-size: 13px; font-weight: 600; padding: 8px 0; }
+.staff-conversation .staff-privacy { color: #475467; margin-bottom: 12px; }
+.staff-conversation .staff-edit-details { border-top: 1px solid #e5e7eb; margin-top: 12px; }
+.staff-conversation .staff-passwords { margin-top: 16px; }
+.staff-conversation .staff-field-feedback { margin: 4px 0 10px; color: #475467; }
+.staff-conversation input[aria-invalid="true"] { border-color: #9f1239; }
+.staff-conversation .staff-show-passwords { display: flex; align-items: center; gap: 8px; margin: 12px 0; }
+.staff-conversation .staff-show-passwords input { width: auto; }
+.staff-conversation .staff-primary-action { display: block; width: 100%; background: #be123c; border-color: #be123c; color: #fff; font-weight: 600; margin: 16px 0 10px; }

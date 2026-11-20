@@ -44,7 +44,7 @@ async function registerToReview() {
   await user.click(screen.getByRole("button", { name: "Continue" }));
   await user.type(await screen.findByRole("textbox", { name: "Email" }), "alex@example.test");
   await user.click(screen.getByRole("button", { name: "Continue" }));
-  await user.click(await screen.findByRole("button", { name: "staff", exact: true }));
+  await user.click(await screen.findByRole("button", { name: "Staff", exact: true }));
   await waitFor(() => expect(screen.getByRole("button", { name: "Server", exact: true })).toHaveFocus());
   await user.click(await screen.findByRole("button", { name: "Server", exact: true }));
   await waitFor(() => expect(screen.getByRole("button", { name: "Review change" })).toHaveFocus());
@@ -58,14 +58,14 @@ test("registers through server drafts and explicit review; secrets only enter fi
   const password = screen.getByLabelText("Password", { exact: true });
   await waitFor(() => expect(password).toHaveFocus());
   expect(password).toHaveAttribute("type", "password");
-  expect(screen.getByRole("button", { name: "Confirm change" })).toBeDisabled();
+  expect(screen.getByRole("button", { name: "Create staff account" })).toBeDisabled();
   await user.type(password, "a secure password");
   await user.tab();
   expect(screen.getByLabelText("Confirm password")).toHaveFocus();
   await user.type(screen.getByLabelText("Confirm password"), "a secure password");
   expect(fetch.mock.calls.some(([, opts]) => opts.body?.includes("password"))).toBe(false);
   expect(sessionStorage.getItem("rfs-staff-action:7")).not.toMatch(/Alex|example|password/);
-  await user.click(screen.getByRole("button", { name: "Confirm change" }));
+  await user.click(screen.getByRole("button", { name: "Create staff account" }));
   await screen.findByText("The account change is confirmed and verified.");
   const writes = fetch.mock.calls.filter(([url]) => url.endsWith("/confirm"));
   expect(writes).toHaveLength(1);
@@ -80,13 +80,14 @@ test("edit matches require an exact account selection and show before/after targ
   await waitFor(() => expect(screen.getByRole("button", { name: /alex@example.test/ })).toHaveFocus());
   expect(fetch.mock.calls.some(([url, opts]) => url.endsWith("/chat-actions") && opts.method === "POST")).toBe(false);
   await user.click(screen.getByRole("button", { name: /alex@example.test/ }));
-  await waitFor(() => expect(screen.getByRole("button", { name: "Change full name" })).toHaveFocus());
+  await waitFor(() => expect(screen.getByText("Edit details")).toHaveFocus());
+  await user.click(screen.getByText("Edit details"));
   await user.click(await screen.findByRole("button", { name: "Change full name" }));
   await user.type(screen.getByRole("textbox", { name: "Full name" }), "Alex Corrected");
   await user.click(screen.getByRole("button", { name: "Continue" }));
   await user.click(await screen.findByRole("button", { name: "Review change" }));
   await screen.findByRole("heading", { name: "After" });
-  await waitFor(() => expect(screen.getByRole("button", { name: "Confirm change" })).toHaveFocus());
+  await waitFor(() => expect(screen.getByRole("button", { name: "Save account changes" })).toHaveFocus());
   expect(screen.getByText("Alex Corrected")).toBeInTheDocument();
   expect(screen.getAllByText("alex@example.test").length).toBeGreaterThan(0);
   expect(screen.queryByLabelText("Password", { exact: true })).not.toBeInTheDocument();
@@ -97,10 +98,10 @@ test("stale confirmation clears passwords and blocks retry until authoritative r
   const user = await registerToReview(); failConfirm = 409;
   await user.type(screen.getByLabelText("Password", { exact: true }), "a secure password");
   await user.type(screen.getByLabelText("Confirm password"), "a secure password");
-  await user.click(screen.getByRole("button", { name: "Confirm change" }));
+  await user.click(screen.getByRole("button", { name: "Create staff account" }));
   expect(await screen.findByRole("alert")).toHaveTextContent("changed or expired");
   expect(screen.getByLabelText("Password", { exact: true })).toHaveValue("");
-  expect(screen.getByRole("button", { name: "Confirm change" })).toBeDisabled();
+  expect(screen.getByRole("button", { name: "Create staff account" })).toBeDisabled();
   await user.click(screen.getByRole("button", { name: "Reload draft" }));
   expect(fetch.mock.calls.filter(([url]) => url.endsWith("/confirm"))).toHaveLength(1);
 });
@@ -109,7 +110,7 @@ test("lost confirmation response resolves the saved receipt without password rep
   const user = await registerToReview(); failConfirm = "lost";
   await user.type(screen.getByLabelText("Password", { exact: true }), "a secure password");
   await user.type(screen.getByLabelText("Confirm password"), "a secure password");
-  await user.click(screen.getByRole("button", { name: "Confirm change" }));
+  await user.click(screen.getByRole("button", { name: "Create staff account" }));
   await screen.findByText("The account change is confirmed and verified.");
   expect(fetch.mock.calls.filter(([url]) => url.endsWith("/confirm"))).toHaveLength(1);
 });
@@ -133,7 +134,7 @@ test("manager denial never reports success", async () => {
   const user = await registerToReview(); failConfirm = 403;
   await user.type(screen.getByLabelText("Password", { exact: true }), "a secure password");
   await user.type(screen.getByLabelText("Confirm password"), "a secure password");
-  await user.click(screen.getByRole("button", { name: "Confirm change" }));
+  await user.click(screen.getByRole("button", { name: "Create staff account" }));
   expect(await screen.findByRole("alert")).toHaveTextContent("Manager permission is required");
   expect(screen.queryByText("The account change is confirmed and verified.")).not.toBeInTheDocument();
 });
@@ -178,13 +179,14 @@ test.each(["register", "edit"])("%s preserves names above 100 characters through
   const user = userEvent.setup();
   if (kind === "edit") action = { id: "draft-id", kind, state: "draft", revision: 1, target_user_id: member.id, draft: {} };
   render(<StaffConversation command={{ kind }} actorId={7} onExit={vi.fn()} />);
-  if (kind === "edit") await user.click(await screen.findByRole("button", { name: "Change full name" }));
+  if (kind === "edit") { await screen.findByText("Edit details"); await user.click(screen.getByText("Edit details")); await user.click(screen.getByRole("button", { name: "Change full name" })); }
 
   const name101 = "A".repeat(101);
   await user.type(await screen.findByRole("textbox", { name: "Full name" }), name101);
   await user.click(screen.getByRole("button", { name: "Continue" }));
   await waitFor(() => expect(action.draft.full_name).toBe(name101));
 
+  if (!screen.getByText("Edit details").parentElement.open) await user.click(screen.getByText("Edit details"));
   await user.click(screen.getByRole("button", { name: "Change full name" }));
   const input = screen.getByRole("textbox", { name: "Full name" });
   const name120 = "B".repeat(120);
@@ -195,4 +197,72 @@ test.each(["register", "edit"])("%s preserves names above 100 characters through
   await waitFor(() => expect(action.draft.full_name).toBe(name120));
   const namePatches = fetch.mock.calls.filter(([, options]) => options.method === "PATCH").map(([, options]) => JSON.parse(options.body));
   expect(namePatches).toEqual([{ full_name: name101 }, { full_name: name120 }]);
+});
+
+
+test("registration review has one authoritative summary and named role fields", async () => {
+  await registerToReview();
+  expect(screen.getByRole("heading", { name: "Account details" })).toBeInTheDocument();
+  expect(screen.queryByRole("heading", { name: "Registration draft" })).not.toBeInTheDocument();
+  expect(screen.queryByRole("heading", { name: "After" })).not.toBeInTheDocument();
+  expect(screen.getAllByText("Alex Example")).toHaveLength(1);
+  expect(screen.getByText("System access")).toBeInTheDocument();
+  expect(screen.getByText("Job role")).toBeInTheDocument();
+  expect(screen.getByText("Staff", { exact: true })).toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "Other staff controls" })).not.toBeInTheDocument();
+  expect(screen.getByText("Edit details").parentElement).not.toHaveAttribute("open");
+});
+
+test("password feedback covers missing, short, whitespace and mismatch with optional visibility", async () => {
+  const user = await registerToReview();
+  const password = screen.getByLabelText("Password", { exact: true });
+  const confirmation = screen.getByLabelText("Confirm password");
+  const submit = screen.getByRole("button", { name: "Create staff account" });
+  expect(screen.getByText("Enter a password.")).toHaveAttribute("aria-live", "polite");
+  expect(password).toHaveAttribute("aria-describedby", "staff-password-rule staff-password-feedback");
+  expect(password).toHaveAttribute("aria-invalid", "true");
+  await user.type(password, "short");
+  expect(screen.getByText("Password needs at least 12 characters.")).toBeInTheDocument();
+  await user.clear(password); await user.type(password, "            ");
+  expect(screen.getByText("Password cannot contain only whitespace.")).toBeInTheDocument();
+  await user.type(confirmation, "            "); expect(submit).toBeDisabled();
+  await user.clear(password); await user.type(password, "a secure password");
+  expect(screen.getByText("Passwords do not match.")).toBeInTheDocument();
+  expect(confirmation).toHaveAttribute("aria-invalid", "true");
+  await user.clear(confirmation); await user.type(confirmation, "a secure password");
+  expect(password).toHaveAttribute("aria-invalid", "false"); expect(submit).toBeEnabled();
+  await user.tab(); expect(screen.getByRole("checkbox", { name: "Show passwords" })).toHaveFocus();
+  await user.keyboard(" ");
+  expect(password).toHaveAttribute("type", "text"); expect(confirmation).toHaveAttribute("type", "text");
+  await user.click(screen.getByRole("checkbox", { name: "Show passwords" }));
+  expect(password).toHaveAttribute("type", "password");
+  expect(fetch.mock.calls.some(([, options]) => options.body?.includes("password"))).toBe(false);
+});
+
+test("correcting review clears passwords and focuses a visible field", async () => {
+  const user = await registerToReview();
+  await user.type(screen.getByLabelText("Password", { exact: true }), "a secure password");
+  await user.type(screen.getByLabelText("Confirm password"), "a secure password");
+  await user.click(screen.getByRole("checkbox", { name: "Show passwords" }));
+  await user.click(screen.getByText("Edit details"));
+  await user.click(screen.getByRole("button", { name: "Change full name" }));
+  const name = screen.getByRole("textbox", { name: "Full name" });
+  await waitFor(() => expect(name).toHaveFocus());
+  expect(screen.queryByLabelText("Password", { exact: true })).not.toBeInTheDocument();
+  await user.type(name, "Alex Corrected"); await user.click(screen.getByRole("button", { name: "Continue" }));
+  await user.click(screen.getByRole("button", { name: "Review change" }));
+  expect(screen.getByLabelText("Password", { exact: true })).toHaveValue("");
+  expect(screen.getByLabelText("Confirm password")).toHaveValue("");
+  expect(screen.getByRole("checkbox", { name: "Show passwords" })).not.toBeChecked();
+  expect(screen.getByRole("button", { name: "Create staff account" })).toBeDisabled();
+});
+
+test("restored registration uses authoritative review values and fresh password capture", async () => {
+  action = { id: "draft-id", kind: "register", state: "review", revision: 6, draft: { ...member, full_name: "Old draft name" }, after: member };
+  render(<StaffConversation command={{ kind: "choose" }} actorId={7} onExit={vi.fn()} />);
+  await screen.findByRole("heading", { name: "Account details" });
+  expect(screen.getAllByText("Alex Example")).toHaveLength(1);
+  expect(screen.queryByText("Old draft name")).not.toBeInTheDocument();
+  expect(screen.getByLabelText("Password", { exact: true })).toHaveValue("");
+  expect(fetch.mock.calls.every(([, options]) => options.method === "GET")).toBe(true);
 });
