@@ -1,5 +1,7 @@
 # Staff registration and editing in RFS AI — delivery plan
 
+**Current checkpoint, 20 November 2026:** conversational registration/editing and preserved staff controls are implemented and tested; fresh-preview and production model inference passed. This original proposal below is historical scope. PM acceptance and verified sidebar removal remain #67; parent #54/#55 are not Done. See [current verification](MODEL_VERIFICATION_2026-11-20.md).
+
 Status: **proposed scope, not implemented** (6 November 2026). This is the focused plan for [backlog #54](../product/IMPROVEMENT_TRACKER.md), not a second backlog. The PM has asked to remove Staff Management from the sidebar and complete **register** and **edit** inside the bot. The live app still shows the sidebar link and opens the entire Staff Management workspace inside chat; that is not the requested conversational experience.
 
 ## Product boundary

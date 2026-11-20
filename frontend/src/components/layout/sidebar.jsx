@@ -286,7 +286,6 @@ function SidebarContent({ today }) {
         href: "/dashboard/staff-forecast",
         permission: PERMISSIONS.VIEW_FORECASTS,
       },
-      { label: "Staff Management", icon: "staff", href: "/dashboard/staff", permission: PERMISSIONS.MANAGE_STAFF_ACCOUNTS },
       {
         label: "Reports",
         icon: "reports",

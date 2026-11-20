@@ -4,7 +4,7 @@
 
 - PM saved a fresh token and added Preview/Production; metadata checked without decryption. Fresh preview dpl_ALDcerWrDGxg4QsiBmoGzbF1bCsy is Ready on 9d33aa4 (app tree equal to main 359cfc5).
 - Demo manager sent nearby happenings; assistant returned four events. That phrase is unknown to the deterministic classifier and uses the model-backed route. One harmless live inference; no scoped model-failure logs. #65/#66 Done: independent87 tests plus fresh-session HTTP inference passed; coordinator browser matrix passed. #67 production activation/final acceptance is in progress.
-- Production was not rebuilt with the new token yet. Parent #54/#55 stay Partial and Staff Management sidebar remains. No QA account was reactivated, no report saved, no schema/model/plan changed. Existing two-report and cleanup limits remain.
+- Production e4d4d0e builds are Ready; actual inference and all12 read-only smoke checks passed. Optional weather returned its safe unavailable fallback; no continuous weather-availability claim. PM explicitly accepted the tested workflow and authorized final #67 completion on 20 November. Parent #54/#55 stay Partial until the one-line sidebar removal passes independent review and production verification. No QA account was reactivated, no report saved, no schema/model/plan changed. Existing two-report and cleanup limits remain.
 - Original OneDrive checkout is now clean on published main; synchronize accepted updates through Git rather than copying uncommitted documentation into it.
 - See [current verification](../chatbot/MODEL_VERIFICATION_2026-11-20.md). Screenshot: this chat outputs/rfs65-model-success.jpg. Do not repeat old unchanged-auth troubleshooting.
 
