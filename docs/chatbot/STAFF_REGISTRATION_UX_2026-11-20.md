@@ -1,6 +1,6 @@
 # Staff registration usability — #69
 
-20 November 2026. Status: Partial / In progress. PM requested a more user-friendly registration after seeing duplicated draft/After summaries, ambiguous role labels and disabled generic confirmation. The completed #54 release remains historical; this is a new follow-up.
+20 November 2026. Status: Done. PM requested a more user-friendly registration after seeing duplicated draft/After summaries, ambiguous role labels and disabled generic confirmation. The completed #54 release remains historical; this is a new follow-up.
 
 ## Scope and acceptance
 
@@ -24,4 +24,4 @@ Implementation touches StaffConversation/ManagerChat, their component tests and 
 
 Coordinator visual checks used the actual component in an isolated localhost Vite fixture with fictional account/API data. Missing/short/whitespace-only/mismatched passwords disable creation with guidance; matching valid passwords enable it. Show/hide works. Native closed Edit details Tab skips hidden controls; open disclosure reaches correction buttons. Correction removes/clears password fields, then requires new review. Actual320px viewport has no horizontal overflow; restored to1280x720. No confirmation was clicked, live service contacted, user draft read/changed or account created by these visual checks. This verifies presentation/interaction with a simulated contract, not a new live registration.
 
-Screenshots in this chat outputs: rfs69-registration-desktop.jpg and rfs69-registration-320.jpg. Independent UX retest cleared source and both fictional screenshots with no blocking finding; its visual execution was coordinator-run. Publication and deployed shortcut/read-only checks are pending. Record exact preview/production state before Done. Link [tracker #69](../product/IMPROVEMENT_TRACKER.md) and [Trello card](https://trello.com/c/CfZ7mVVg).
+Screenshots in this chat outputs: rfs69-registration-desktop.jpg and rfs69-registration-320.jpg. Independent UX retest cleared source and both fictional screenshots with no blocking finding; its visual execution was coordinator-run. PM explicitly approved production release of PR #23. Merge d671f71 is published; preview frontend dpl_2GCHptepmgfmMFV7vTVMZuiiJzmn/backend dpl_CejjFapJQWZSCDA6rK4u8LNxMjV5 and production frontend dpl_CTpjuxefH8Sa2aJxtHpVTQPiKM3W/backend dpl_ALwdetUqwwNUy7yGiyUdmqCjmiJN are Ready. Preview and production manager shortcut/read-only private entry checks passed, including hidden shortcut during private work and unchanged sidebar. No confirm/cancel action or live account registration was performed. Record exact preview/production state before Done. Link [tracker #69](../product/IMPROVEMENT_TRACKER.md) and [Trello card](https://trello.com/c/CfZ7mVVg).

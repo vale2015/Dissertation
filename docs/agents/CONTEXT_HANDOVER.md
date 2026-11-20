@@ -1,5 +1,11 @@
 # RFS current handover
 
+## 20 November current task handoff
+
+- #69 registration UX is Done: PR23 merged d671f71, production/preview Ready,51 self +83 independent checks/lint and independent UX clear; fictional desktop/320px and read-only live shortcut passed. No real draft confirmation/cancellation or account creation.
+- PM selected #68 next: model selection per development task and per-workflow token reporting. Implementation starts by checking actual supported telemetry/configuration. Do not invent token counts, treat quotas as spend or claim app-model changes. Preserve sequential specialists and independent QA.
+
+
 ## 20 November active registration-usability follow-up
 
 - PM requested #69 after a screenshot showed duplicate registration review, ambiguous roles and disabled confirmation without guidance. Highest active chatbot priority; #54/#55/#65–67 remain historically Done.
