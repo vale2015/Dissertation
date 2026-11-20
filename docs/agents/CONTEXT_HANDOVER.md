@@ -3,7 +3,7 @@
 ## Current #68 workspace and token analyst checkpoint
 
 - PM requires all further edits directly in `C:/Users/valer/OneDrive/Desktop/DissertationApp/DissertationApp`; do not edit isolated copies or create worktrees. Clean original main was fast-forwarded to published5a7a4ab, then pending token-agent files transferred with hash checks.
-- #68 Partial: local usage collector, task-model profiles and dedicated analyst instructions exist. Independent QA passed all seven tests, syntax and five TOML profiles; no blockers. Bounded gpt-6.1-sol/low analyst completed; local refreshed counters include overhead. Publication pending. No automatic hooks or measured savings claimed.
+- #68 Partial: local usage collector, task-model profiles and dedicated analyst instructions exist. Independent QA passed all seven tests, syntax and five TOML profiles; no blockers. Bounded gpt-6.1-sol/low analyst completed; local refreshed counters include overhead. Implementation b42384c is published on GitHub main and present in the VS Code checkout; private reports are ignored. No application deployment is required for these local tools. No automatic hooks or measured savings claimed.
 - Measurement starts mid-workflow at2026-11-20T14:35:29Z; earlier work excluded. Reports remain ignored in `.workflow-usage/`. See [runbook](TOKEN_USAGE_ANALYST.md).
 
 ## 20 November current task handoff
