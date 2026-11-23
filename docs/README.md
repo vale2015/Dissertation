@@ -1,5 +1,9 @@
 # RFS documentation
 
+- [New specialist architecture](agents/RFS_AGENTIC_ARCHITECTURE.md) — seven engineer/reviewer pairs, Backlog Handoff and compact fresh-context invocation.
+
+- [22 November agentic improvements](agents/RFS_AGENTIC_IMPROVEMENTS_2026-11-22.md) — ordered specialist, reviewer, context and Trello implementation under #58/#68.
+
 - [Current project state](agents/CURRENT_STATE.md) — compact startup index; use targeted tracker/handover reads.
 - [Token optimisation actions](agents/TOKEN_USAGE_OPTIMISATION_ACTIONS.md) — approved context/execution changes and validation status; detailed usage figures remain private.
 

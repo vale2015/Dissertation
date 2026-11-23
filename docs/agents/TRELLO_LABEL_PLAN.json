@@ -1,0 +1,938 @@
+{
+  "schema_version": 1,
+  "board_url": "https://trello.com/b/vF796eiJ/rfs-backlog-tasks",
+  "board_id": "ari:cloud:trello::board/workspace/663e11a16b3c43e0d91d1a4e/6ae4dee9466522b9f1a2e03e",
+  "snapshot_date": "2026-11-22",
+  "status": "applied_independently_verified",
+  "tasks": [
+    {
+      "task_id": 1,
+      "title": "Make booking and demand updates atomic",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a1decaeabea99f21826",
+      "url": "https://trello.com/c/josygqkv/2-1-make-booking-and-demand-updates-atomic",
+      "list": "DONE",
+      "domains": [
+        "Backend Dev",
+        "Db Dev"
+      ],
+      "tier": "FULL",
+      "rationale": "Booking writes and the demand rebuild share a transaction whose failure could leave operational totals inconsistent."
+    },
+    {
+      "task_id": 2,
+      "title": "Prevent concurrent demand recalculation conflicts",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a1f78a9f6429430a9cc",
+      "url": "https://trello.com/c/oRrD1xcs/3-2-prevent-concurrent-demand-recalculation-conflicts",
+      "list": "DONE",
+      "domains": [
+        "Backend Dev",
+        "Db Dev"
+      ],
+      "tier": "FULL",
+      "rationale": "Date-scoped locking and uniqueness protect shared aggregates from concurrent writes."
+    },
+    {
+      "task_id": 3,
+      "title": "Introduce complete database migrations",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a219421b9b7b63084cc",
+      "url": "https://trello.com/c/W3P3APfD/4-3-introduce-complete-database-migrations",
+      "list": "IN PROGRESS",
+      "domains": [
+        "Db Dev"
+      ],
+      "tier": "FULL",
+      "rationale": "Baseline and forward migration replay must match production schema and migration history."
+    },
+    {
+      "task_id": 4,
+      "title": "Verify and restrict Supabase table access",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a22e34150c26b71c009",
+      "url": "https://trello.com/c/6PbL1KjR/5-4-verify-and-restrict-supabase-table-access",
+      "list": "IN PROGRESS",
+      "domains": [
+        "Db Dev",
+        "Security Dev"
+      ],
+      "tier": "FULL",
+      "rationale": "RLS, grants and privileged app access protect all application tables and sequences."
+    },
+    {
+      "task_id": 6,
+      "title": "Standardize safe API errors",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a08170d9c3a71ff8e19",
+      "url": "https://trello.com/c/VNAIBIf2/1-6-standardize-safe-api-errors",
+      "list": "READY",
+      "domains": [
+        "Backend Dev",
+        "Security Dev"
+      ],
+      "tier": "STANDARD",
+      "rationale": "Shared Flask error handlers need endpoint regressions and leakage checks."
+    },
+    {
+      "task_id": 7,
+      "title": "Strengthen browser security headers",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a23077e9a860303b952",
+      "url": "https://trello.com/c/6AiIssQq/6-7-strengthen-browser-security-headers",
+      "list": "READY",
+      "domains": [
+        "Front end Dev",
+        "Backend Dev",
+        "Security Dev"
+      ],
+      "tier": "STANDARD",
+      "rationale": "Browser headers, cookies and HSTS need regression checks across authenticated pages and downloads."
+    },
+    {
+      "task_id": 8,
+      "title": "Add API request limits and validation",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a252ca994a25934bb41",
+      "url": "https://trello.com/c/qWUGod2I/7-8-add-api-request-limits-and-validation",
+      "list": "READY",
+      "domains": [
+        "Backend Dev",
+        "Security Dev"
+      ],
+      "tier": "STANDARD",
+      "rationale": "Request size and field limits change a shared API input boundary and require malformed-input regressions."
+    },
+    {
+      "task_id": 9,
+      "title": "Add pagination to list endpoints",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a26e2b175a24c1dce73",
+      "url": "https://trello.com/c/HjVOgIu6/8-9-add-pagination-to-list-endpoints",
+      "list": "READY",
+      "domains": [
+        "Front end Dev",
+        "Backend Dev",
+        "Db Dev"
+      ],
+      "tier": "STANDARD",
+      "rationale": "Stable cursors across three list APIs need ordering, boundary and consuming-table checks."
+    },
+    {
+      "task_id": 10,
+      "title": "Push filtering and aggregation into PostgreSQL",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a2801113dc04f1d35ff",
+      "url": "https://trello.com/c/OwQw7T2J/9-10-push-filtering-and-aggregation-into-postgresql",
+      "list": "READY",
+      "domains": [
+        "Backend Dev",
+        "Db Dev"
+      ],
+      "tier": "STANDARD",
+      "rationale": "Moving filtering and aggregates into SQL requires equivalent outputs and relevant query-plan checks."
+    },
+    {
+      "task_id": 11,
+      "title": "Add the necessary database indexes",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a29cdf65a6b193bdafc",
+      "url": "https://trello.com/c/IZnbxsop/10-11-add-the-necessary-database-indexes",
+      "list": "READY",
+      "domains": [
+        "Db Dev"
+      ],
+      "tier": "STANDARD",
+      "rationale": "Query profiling and index migrations need plan and write-performance regressions."
+    },
+    {
+      "task_id": 12,
+      "title": "Consolidate dashboard requests",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a2b2a8316e8590a82a2",
+      "url": "https://trello.com/c/alGYCZNM/11-12-consolidate-dashboard-requests",
+      "list": "READY",
+      "domains": [
+        "Front end Dev",
+        "Backend Dev"
+      ],
+      "tier": "STANDARD",
+      "rationale": "A dashboard bootstrap changes the response contract and when secondary data loads."
+    },
+    {
+      "task_id": 13,
+      "title": "Add frontend query caching and deduplication",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a2d1635051ab65dffe3",
+      "url": "https://trello.com/c/nXGy3Af9/13-13-add-frontend-query-caching-and-deduplication",
+      "list": "READY",
+      "domains": [
+        "Front end Dev"
+      ],
+      "tier": "STANDARD",
+      "rationale": "Shared query cache keys and mutation invalidation affect freshness across views."
+    },
+    {
+      "task_id": 14,
+      "title": "Reduce authentication database amplification",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a2cd110f02e0d9a5d59",
+      "url": "https://trello.com/c/CkdEXJ0D/12-14-reduce-authentication-database-amplification",
+      "list": "READY",
+      "domains": [
+        "Backend Dev",
+        "Db Dev",
+        "Security Dev"
+      ],
+      "tier": "FULL",
+      "rationale": "Session caching risks stale authorization and needs invalidation and sensitive-action review."
+    },
+    {
+      "task_id": 15,
+      "title": "Add timeouts and cancellation to the BFF",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a2f3d0b79f3489fd183",
+      "url": "https://trello.com/c/fEz6LqJa/14-15-add-timeouts-and-cancellation-to-the-bff",
+      "list": "READY",
+      "domains": [
+        "Front end Dev",
+        "Backend Dev"
+      ],
+      "tier": "STANDARD",
+      "rationale": "Next.js BFF deadlines and cancellation affect Flask fetches and report error handling."
+    },
+    {
+      "task_id": 16,
+      "title": "Version the API",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a304899798980f10127",
+      "url": "https://trello.com/c/MngL7rLQ/15-16-version-the-api",
+      "list": "READY",
+      "domains": [
+        "Front end Dev",
+        "Backend Dev"
+      ],
+      "tier": "FULL",
+      "rationale": "Versioned routes and compatibility rules affect clients at the service boundary and need migration review."
+    },
+    {
+      "task_id": 17,
+      "title": "Move training out of web requests",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a31298a14b220fe86bc",
+      "url": "https://trello.com/c/4G1AIWAe/16-17-move-training-out-of-web-requests",
+      "list": "IN PROGRESS",
+      "domains": [
+        "Backend Dev",
+        "Security Dev",
+        "Automation Dev"
+      ],
+      "tier": "FULL",
+      "rationale": "Manager-only retraining needs durable job recovery, concurrency protection and model rollback."
+    },
+    {
+      "task_id": 18,
+      "title": "Store model files in durable object storage",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a3304e2774f021f3554",
+      "url": "https://trello.com/c/O889OinQ/17-18-store-model-files-in-durable-object-storage",
+      "list": "READY",
+      "domains": [
+        "Backend Dev",
+        "Security Dev"
+      ],
+      "tier": "FULL",
+      "rationale": "Private immutable model artifacts and active pointer changes need integrity, access and rollback review."
+    },
+    {
+      "task_id": 19,
+      "title": "Add a model registry",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a353e78c72788b3667a",
+      "url": "https://trello.com/c/FigZBbpB/19-19-add-a-model-registry",
+      "list": "READY",
+      "domains": [
+        "Backend Dev",
+        "Db Dev"
+      ],
+      "tier": "STANDARD",
+      "rationale": "Model metadata and lifecycle state change the persistence schema and model-version queries."
+    },
+    {
+      "task_id": 20,
+      "title": "Create immutable forecast runs",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a34b728ded46b67d9bd",
+      "url": "https://trello.com/c/iGcJ6Uo6/18-20-create-immutable-forecast-runs",
+      "list": "DONE",
+      "domains": [
+        "Front end Dev",
+        "Backend Dev",
+        "Db Dev",
+        "Security Dev"
+      ],
+      "tier": "FULL",
+      "rationale": "Immutable runs change forecast persistence, activation and protected history consumed by dashboard and staffing views."
+    },
+    {
+      "task_id": 21,
+      "title": "Add prediction-versus-actual tracking",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a37d3f6f993ecb44a77",
+      "url": "https://trello.com/c/DT1bhjfP/20-21-add-prediction-versus-actual-tracking",
+      "list": "DONE",
+      "domains": [
+        "Front end Dev",
+        "Backend Dev",
+        "Db Dev",
+        "Security Dev"
+      ],
+      "tier": "FULL",
+      "rationale": "Actual-cover entry, audited corrections and real/demo separation span protected storage, API and accuracy UI."
+    },
+    {
+      "task_id": 22,
+      "title": "Optimize prediction requests",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a39704ca87ceed5d754",
+      "url": "https://trello.com/c/fK8Sf7vf/21-22-optimize-prediction-requests",
+      "list": "IN PROGRESS",
+      "domains": [
+        "Backend Dev",
+        "Db Dev"
+      ],
+      "tier": "STANDARD",
+      "rationale": "Bounded history queries and model-cache reuse must preserve prediction output and reduce measured latency."
+    },
+    {
+      "task_id": 23,
+      "title": "Replace instance-local provider caches",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a46e8f406b41355d258",
+      "url": "https://trello.com/c/khUd2MzO/22-23-replace-instance-local-provider-caches",
+      "list": "READY",
+      "domains": [
+        "Backend Dev"
+      ],
+      "tier": "STANDARD",
+      "rationale": "A shared provider cache needs TTL, stale fallback, concurrent refresh and observability regressions."
+    },
+    {
+      "task_id": 24,
+      "title": "Fetch independent providers concurrently",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a474b3dd164aed9ff4d",
+      "url": "https://trello.com/c/1Uc48mGK/23-24-fetch-independent-providers-concurrently",
+      "list": "READY",
+      "domains": [
+        "Backend Dev"
+      ],
+      "tier": "STANDARD",
+      "rationale": "Parallel provider fetches need deadline and partial-result regression checks."
+    },
+    {
+      "task_id": 25,
+      "title": "Remove network calls from critical report latency",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a49fb6fa49babad291d",
+      "url": "https://trello.com/c/SRf0pGyf/24-25-remove-network-calls-from-critical-report-latency",
+      "list": "DONE",
+      "domains": [
+        "Front end Dev",
+        "Backend Dev"
+      ],
+      "tier": "STANDARD",
+      "rationale": "Cache-only report generation and BFF timing propagation need JSON, CSV and PDF coverage."
+    },
+    {
+      "task_id": 26,
+      "title": "Add a report history feature",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a4a07f307ee50a79969",
+      "url": "https://trello.com/c/RKzJOi4F/25-26-add-a-report-history-feature",
+      "list": "DONE",
+      "domains": [
+        "Front end Dev",
+        "Backend Dev",
+        "Db Dev",
+        "Security Dev"
+      ],
+      "tier": "FULL",
+      "rationale": "Private report snapshots span retention, pagination, role checks, signed downloads and history UI."
+    },
+    {
+      "task_id": 27,
+      "title": "Make the tenancy decision explicit",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a4cd3f6f993ecb4688b",
+      "url": "https://trello.com/c/8wg8Xk0b/26-27-make-the-tenancy-decision-explicit",
+      "list": "READY",
+      "domains": [
+        "Backend Dev",
+        "Db Dev",
+        "Security Dev"
+      ],
+      "tier": "FULL",
+      "rationale": "A tenancy decision can change schema, cache keys and access isolation across restaurants."
+    },
+    {
+      "task_id": 28,
+      "title": "Separate global identity from restaurant membership",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a4deb18febb65e80b49",
+      "url": "https://trello.com/c/8R4IJYAf/27-28-separate-global-identity-from-restaurant-membership",
+      "list": "READY",
+      "domains": [
+        "Backend Dev",
+        "Db Dev",
+        "Security Dev"
+      ],
+      "tier": "FULL",
+      "rationale": "Restaurant memberships change identity, authorization and role audit boundaries."
+    },
+    {
+      "task_id": 29,
+      "title": "Create a shared dashboard layout",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a4f9e556527ff043b94",
+      "url": "https://trello.com/c/KfbENrwN/28-29-create-a-shared-dashboard-layout",
+      "list": "DONE",
+      "domains": [
+        "Front end Dev",
+        "Security Dev"
+      ],
+      "tier": "STANDARD",
+      "rationale": "A shared dashboard shell centralizes route guards and needs role-specific navigation regressions."
+    },
+    {
+      "task_id": 30,
+      "title": "Break large frontend files into focused components",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a50deda1f28dc566626",
+      "url": "https://trello.com/c/asYGEnOK/29-30-break-large-frontend-files-into-focused-components",
+      "list": "READY",
+      "domains": [
+        "Front end Dev"
+      ],
+      "tier": "STANDARD",
+      "rationale": "Refactoring page orchestration, hooks and views requires behavior regressions across affected pages."
+    },
+    {
+      "task_id": 31,
+      "title": "Introduce TypeScript incrementally",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a524933182166cc818e",
+      "url": "https://trello.com/c/pgPqjy96/30-31-introduce-typescript-incrementally",
+      "list": "READY",
+      "domains": [
+        "Front end Dev"
+      ],
+      "tier": "STANDARD",
+      "rationale": "Incremental TypeScript adoption affects shared frontend contracts and build behavior."
+    },
+    {
+      "task_id": 32,
+      "title": "Add runtime response validation",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a532017ded1cf67a9dc",
+      "url": "https://trello.com/c/s0EWrRhy/31-32-add-runtime-response-validation",
+      "list": "READY",
+      "domains": [
+        "Front end Dev",
+        "Backend Dev"
+      ],
+      "tier": "STANDARD",
+      "rationale": "Validating Flask responses in the Next.js BFF needs cross-service contract and safe-failure regressions."
+    },
+    {
+      "task_id": 33,
+      "title": "Standardize loading, error and empty states",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a545c6a81e9259a1454",
+      "url": "https://trello.com/c/J5rAo2lk/32-33-standardize-loading-error-and-empty-states",
+      "list": "READY",
+      "domains": [
+        "Front end Dev"
+      ],
+      "tier": "STANDARD",
+      "rationale": "Shared UI states need regressions across pending, failed, empty and stale data paths."
+    },
+    {
+      "task_id": 34,
+      "title": "Improve accessibility",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a56a21ef9a7a717dcef",
+      "url": "https://trello.com/c/ZSwiqOns/33-34-improve-accessibility",
+      "list": "READY",
+      "domains": [
+        "Front end Dev"
+      ],
+      "tier": "STANDARD",
+      "rationale": "Keyboard flow, focus, contrast and screen-reader behavior need representative checks across pages."
+    },
+    {
+      "task_id": 35,
+      "title": "Add real database integration tests",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a5846b7540a50176d15",
+      "url": "https://trello.com/c/3KLixUbi/34-35-add-real-database-integration-tests",
+      "list": "READY",
+      "domains": [
+        "Backend Dev",
+        "Db Dev",
+        "Security Dev",
+        "Automation Dev"
+      ],
+      "tier": "STANDARD",
+      "rationale": "Disposable database tests cover persisted transactions, grants and concurrent booking without changing live behavior."
+    },
+    {
+      "task_id": 36,
+      "title": "Add frontend component tests",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a59757a006838d1a4b4",
+      "url": "https://trello.com/c/alQJTtba/35-36-add-frontend-component-tests",
+      "list": "READY",
+      "domains": [
+        "Front end Dev"
+      ],
+      "tier": "STANDARD",
+      "rationale": "Component tests cover several forms, tables, auth states and accessibility behavior."
+    },
+    {
+      "task_id": 37,
+      "title": "Add end-to-end tests",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a5bdf0e53352e10d458",
+      "url": "https://trello.com/c/TVQF0SMz/36-37-add-end-to-end-tests",
+      "list": "READY",
+      "domains": [
+        "Front end Dev",
+        "Backend Dev",
+        "Security Dev",
+        "Automation Dev"
+      ],
+      "tier": "STANDARD",
+      "rationale": "Browser automation exercises cross-service login, booking, forecasts, reports and access controls."
+    },
+    {
+      "task_id": 38,
+      "title": "Add API contract tests",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a5df3c5d4e85268cbb7",
+      "url": "https://trello.com/c/bVcJbgX6/37-38-add-api-contract-tests",
+      "list": "READY",
+      "domains": [
+        "Front end Dev",
+        "Backend Dev",
+        "Automation Dev"
+      ],
+      "tier": "STANDARD",
+      "rationale": "CI contract tests check compatibility between Next.js and Flask."
+    },
+    {
+      "task_id": 39,
+      "title": "Repair dependency reproducibility",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a6027484d52d82df2c9",
+      "url": "https://trello.com/c/ppDFzvkb/39-39-repair-dependency-reproducibility",
+      "list": "IN PROGRESS",
+      "domains": [
+        "Backend Dev",
+        "Automation Dev"
+      ],
+      "tier": "FULL",
+      "rationale": "Backend cold-start packaging and build-time dependency installation require deployment and recovery review."
+    },
+    {
+      "task_id": 40,
+      "title": "Remove the multiple-lockfile ambiguity",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a5e99e63587ce364905",
+      "url": "https://trello.com/c/ZzSHX0Dc/38-40-remove-the-multiple-lockfile-ambiguity",
+      "list": "READY",
+      "domains": [
+        "Automation Dev"
+      ],
+      "tier": "STANDARD",
+      "rationale": "Selecting a package-root and lockfile strategy requires clean-install and build regressions in both the repository root and frontend."
+    },
+    {
+      "task_id": 41,
+      "title": "Add continuous integration",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a61bca513e0150e934a",
+      "url": "https://trello.com/c/1kfG7VHs/40-41-add-continuous-integration",
+      "list": "READY",
+      "domains": [
+        "Automation Dev"
+      ],
+      "tier": "STANDARD",
+      "rationale": "CI wiring needs checks across lint, tests, builds, migrations and security gates."
+    },
+    {
+      "task_id": 42,
+      "title": "Make deployment configuration reproducible",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a6265f7c2b8f61abcba",
+      "url": "https://trello.com/c/RLfQHopW/41-42-make-deployment-configuration-reproducible",
+      "list": "READY",
+      "domains": [
+        "Security Dev",
+        "Automation Dev"
+      ],
+      "tier": "FULL",
+      "rationale": "Deployment configuration and promotion steps touch production environment boundaries and secret handling."
+    },
+    {
+      "task_id": 43,
+      "title": "Add deployment smoke tests",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a74b3db35a1ef6178cf",
+      "url": "https://trello.com/c/w7aVD6no/42-43-add-deployment-smoke-tests",
+      "list": "READY",
+      "domains": [
+        "Front end Dev",
+        "Backend Dev",
+        "Automation Dev"
+      ],
+      "tier": "STANDARD",
+      "rationale": "Post-deploy smoke automation verifies auth, representative API calls and report download."
+    },
+    {
+      "task_id": 44,
+      "title": "Align deployment regions",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a76310b1e204056a025",
+      "url": "https://trello.com/c/23kOmXEG/43-44-align-deployment-regions",
+      "list": "READY",
+      "domains": [
+        "Front end Dev",
+        "Backend Dev",
+        "Db Dev",
+        "Automation Dev"
+      ],
+      "tier": "FULL",
+      "rationale": "Cross-region placement spans frontend, backend and database infrastructure and changes deployment risk."
+    },
+    {
+      "task_id": 45,
+      "title": "Create a safe rollback strategy",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a7834cccaab6626a378",
+      "url": "https://trello.com/c/BxmyMCye/44-45-create-a-safe-rollback-strategy",
+      "list": "READY",
+      "domains": [
+        "Backend Dev",
+        "Db Dev",
+        "Automation Dev"
+      ],
+      "tier": "FULL",
+      "rationale": "Application and model rollback, migration compatibility and backup restoration need recovery review."
+    },
+    {
+      "task_id": 46,
+      "title": "Add structured logging",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a79ae15d5cd846ed1e5",
+      "url": "https://trello.com/c/8wHGCdbl/45-46-add-structured-logging",
+      "list": "READY",
+      "domains": [
+        "Backend Dev",
+        "Security Dev"
+      ],
+      "tier": "STANDARD",
+      "rationale": "Structured request logs require correlation and redaction regressions."
+    },
+    {
+      "task_id": 47,
+      "title": "Add centralized error monitoring",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a7b1f9286d56030d99f",
+      "url": "https://trello.com/c/n191eLcg/46-47-add-centralized-error-monitoring",
+      "list": "READY",
+      "domains": [
+        "Front end Dev",
+        "Backend Dev",
+        "Security Dev",
+        "Automation Dev"
+      ],
+      "tier": "FULL",
+      "rationale": "Centralized error capture crosses frontend and backend and needs privacy review before external reporting."
+    },
+    {
+      "task_id": 48,
+      "title": "Add technical and business metrics",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a7c4ae309cf5fc532e6",
+      "url": "https://trello.com/c/fjU2wFJa/47-48-add-technical-and-business-metrics",
+      "list": "READY",
+      "domains": [
+        "Backend Dev",
+        "Db Dev"
+      ],
+      "tier": "STANDARD",
+      "rationale": "Latency, query load, provider health, cache hits and forecast quality need instrumentation regressions."
+    },
+    {
+      "task_id": 49,
+      "title": "Add health and readiness endpoints",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a7dc82b8b35f32eca51",
+      "url": "https://trello.com/c/lpxWlDIw/48-49-add-health-and-readiness-endpoints",
+      "list": "READY",
+      "domains": [
+        "Backend Dev",
+        "Automation Dev"
+      ],
+      "tier": "STANDARD",
+      "rationale": "Liveness and readiness have distinct dependency behavior consumed by deployment checks."
+    },
+    {
+      "task_id": 50,
+      "title": "Add provider circuit breakers",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4ab86c888b72e9ec3eb4",
+      "url": "https://trello.com/c/PlkP98Nn/58-50-add-provider-circuit-breakers",
+      "list": "READY",
+      "domains": [
+        "Backend Dev"
+      ],
+      "tier": "STANDARD",
+      "rationale": "Circuit-breaker cooldown and fallback must preserve partial provider results."
+    },
+    {
+      "task_id": 51,
+      "title": "Automate manager briefings and alerts",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4aba75cb69fdbbea4ef0",
+      "url": "https://trello.com/c/XT9dMIVS/59-51-automate-manager-briefings-and-alerts",
+      "list": "READY",
+      "domains": [
+        "Backend Dev",
+        "Db Dev",
+        "Automation Dev"
+      ],
+      "tier": "FULL",
+      "rationale": "Scheduled outreach needs preferences, audit persistence, duplicate suppression and opt-out review."
+    },
+    {
+      "task_id": 52,
+      "title": "Add AI-assisted report explanations",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4abb49ad937d99f1d38d",
+      "url": "https://trello.com/c/IbbpYg9z/60-52-add-ai-assisted-report-explanations",
+      "list": "IN PROGRESS",
+      "domains": [
+        "Front end Dev",
+        "Backend Dev",
+        "Security Dev",
+        "Bot Dev"
+      ],
+      "tier": "FULL",
+      "rationale": "Protected report evidence crosses a model boundary and requires privacy and output-validity review."
+    },
+    {
+      "task_id": 53,
+      "title": "Pilot a low-code external integration",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4abd8ddf7e384edd007e",
+      "url": "https://trello.com/c/QoYH9Fhw/61-53-pilot-a-low-code-external-integration",
+      "list": "READY",
+      "domains": [
+        "Backend Dev",
+        "Security Dev",
+        "Automation Dev"
+      ],
+      "tier": "FULL",
+      "rationale": "External webhook integration needs authenticated minimal-data flow, retry and failure review."
+    },
+    {
+      "task_id": 54,
+      "title": "Add a restaurant manager chatbot for existing app actions",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4abf80f47345235c5a0d",
+      "url": "https://trello.com/c/8CJKQMtq/62-54-add-a-restaurant-manager-chatbot-for-existing-app-actions",
+      "list": "DONE",
+      "domains": [
+        "Front end Dev",
+        "Backend Dev",
+        "Db Dev",
+        "Security Dev",
+        "Bot Dev"
+      ],
+      "tier": "FULL",
+      "rationale": "Conversational staff actions and reports require confirmed, idempotent writes and permission review."
+    },
+    {
+      "task_id": 55,
+      "title": "Design and build the chatbot skeleton",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a82899cbc980bd248f7",
+      "url": "https://trello.com/c/DQ69mG8L/49-55-design-and-build-the-chatbot-skeleton",
+      "list": "DONE",
+      "domains": [
+        "Front end Dev",
+        "Backend Dev",
+        "Security Dev",
+        "Bot Dev"
+      ],
+      "tier": "FULL",
+      "rationale": "The assistant launcher and authenticated model route introduce manager-only access and fallback boundaries."
+    },
+    {
+      "task_id": 56,
+      "title": "Remediate audited frontend dependency vulnerabilities",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a836cff0b42b78578a8",
+      "url": "https://trello.com/c/HGGTLrrB/50-56-remediate-audited-frontend-dependency-vulnerabilities",
+      "list": "DONE",
+      "domains": [
+        "Front end Dev",
+        "Security Dev"
+      ],
+      "tier": "FULL",
+      "rationale": "Framework and transitive security patches require authenticated regression and release-risk review."
+    },
+    {
+      "task_id": 57,
+      "title": "Implement the approved RFS UI/UX redesign",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a846b087b622b016a79",
+      "url": "https://trello.com/c/4q15agKe/51-57-implement-the-approved-rfs-ui-ux-redesign",
+      "list": "IN PROGRESS",
+      "domains": [
+        "Front end Dev",
+        "Backend Dev",
+        "Db Dev",
+        "Security Dev",
+        "Bot Dev"
+      ],
+      "tier": "FULL",
+      "rationale": "Role-gated navigation, assistant UX and recipient-scoped notifications span UI, service, storage and access checks."
+    },
+    {
+      "task_id": 58,
+      "title": "Establish the PM-led sequential AI delivery team",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a866904890c5d14668d",
+      "url": "https://trello.com/c/OyAxkOHl/52-58-establish-the-pm-led-sequential-ai-delivery-team",
+      "list": "IN PROGRESS",
+      "domains": [
+        "Automation Dev"
+      ],
+      "tier": "FULL",
+      "rationale": "Sequential delivery, board handoffs and role boundaries require governance and external-action review."
+    },
+    {
+      "task_id": 59,
+      "title": "Audit and refresh project documentation",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a87935448d7616a46d5",
+      "url": "https://trello.com/c/DGlosXlK/53-59-audit-and-refresh-project-documentation",
+      "list": "IN PROGRESS",
+      "domains": [
+        "Front end Dev",
+        "Backend Dev",
+        "Db Dev",
+        "Bot Dev",
+        "Automation Dev"
+      ],
+      "tier": "QUICK",
+      "rationale": "Documentation-only edits can be independently checked for source accuracy, links and status consistency."
+    },
+    {
+      "task_id": 60,
+      "title": "Redesign the Add Booking page around stored fields",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a88df8a4716576e0dbd",
+      "url": "https://trello.com/c/81dCOxXu/54-60-redesign-the-add-booking-page-around-stored-fields",
+      "list": "IN PROGRESS",
+      "domains": [
+        "Front end Dev"
+      ],
+      "tier": "STANDARD",
+      "rationale": "The booking form changes grouping and validation feedback while retaining the existing create API and schema."
+    },
+    {
+      "task_id": 61,
+      "title": "Benchmark and calibrate the demand forecast before changing models",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a8b9ba66b6fdfac4c8c",
+      "url": "https://trello.com/c/yFIqyl3Q/55-61-benchmark-and-calibrate-the-demand-forecast-before-changing-models",
+      "list": "IN PROGRESS",
+      "domains": [
+        "Backend Dev",
+        "Db Dev"
+      ],
+      "tier": "FULL",
+      "rationale": "Forecast benchmarking and model promotion depend on genuine outcomes, leakage controls and rollback."
+    },
+    {
+      "task_id": 62,
+      "title": "Enforce least-privilege demand writes",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a8cca9b46716513a188",
+      "url": "https://trello.com/c/4J6hhbas/56-62-enforce-least-privilege-demand-writes",
+      "list": "READY",
+      "domains": [
+        "Backend Dev",
+        "Db Dev",
+        "Security Dev"
+      ],
+      "tier": "FULL",
+      "rationale": "Demand POST and DELETE authorization needs least-privilege review and denied-role checks for persisted writes."
+    },
+    {
+      "task_id": 63,
+      "title": "Redesign the Staffing Forecast planning page",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aef4a8e6882c7d8c2073e30",
+      "url": "https://trello.com/c/AT5pPs6y/57-63-redesign-the-staffing-forecast-planning-page",
+      "list": "IN PROGRESS",
+      "domains": [
+        "Front end Dev"
+      ],
+      "tier": "STANDARD",
+      "rationale": "Staffing presentation changes need accessibility, responsive and saved-run contract regressions."
+    },
+    {
+      "task_id": 64,
+      "title": "Install the RFS research knowledge base and automatic agent recovery",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6af1f8111f7ff1aafd88d637",
+      "url": "https://trello.com/c/rMCYDpwB/63-64-install-the-rfs-research-knowledge-base-and-automatic-agent-recovery",
+      "list": "IN PROGRESS",
+      "domains": [
+        "Security Dev",
+        "Automation Dev"
+      ],
+      "tier": "FULL",
+      "rationale": "Automated research publication and agent recovery need source validation, scoped writes and permission review."
+    },
+    {
+      "task_id": 65,
+      "title": "Restore Cloudflare authentication for the manager chatbot",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aff342a902430fa9b23753d",
+      "url": "https://trello.com/c/Ppb8CHd2/66-65-restore-cloudflare-authentication-for-the-manager-chatbot",
+      "list": "DONE",
+      "domains": [
+        "Security Dev",
+        "Bot Dev"
+      ],
+      "tier": "FULL",
+      "rationale": "Restoring provider authentication for live model inference requires credential-scope and protected-environment checks."
+    },
+    {
+      "task_id": 66,
+      "title": "Verify live chatbot AI journeys and safe failures",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aff342949ac5de1f447def8",
+      "url": "https://trello.com/c/vSlZUZBq/65-66-verify-live-chatbot-ai-journeys-and-safe-failures",
+      "list": "DONE",
+      "domains": [
+        "Front end Dev",
+        "Backend Dev",
+        "Security Dev",
+        "Bot Dev"
+      ],
+      "tier": "FULL",
+      "rationale": "Live model journeys require restricted-role, safe-failure and private-action verification."
+    },
+    {
+      "task_id": 67,
+      "title": "Complete chatbot release acceptance and close parent tasks",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aff3427247b25b1aea70176",
+      "url": "https://trello.com/c/DvMyM9JR/64-67-complete-chatbot-release-acceptance-and-close-parent-tasks",
+      "list": "DONE",
+      "domains": [
+        "Front end Dev",
+        "Backend Dev",
+        "Security Dev",
+        "Bot Dev"
+      ],
+      "tier": "FULL",
+      "rationale": "Release acceptance includes changing chatbot navigation and proving guarded staff recovery in production."
+    },
+    {
+      "task_id": 68,
+      "title": "Optimize AI token usage and workflow execution",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6aff35f85568c0ddd983e727",
+      "url": "https://trello.com/c/qr5cDnOW/67-68-optimize-ai-token-usage-and-workflow-execution",
+      "list": "IN PROGRESS",
+      "domains": [
+        "Security Dev",
+        "Automation Dev"
+      ],
+      "tier": "FULL",
+      "rationale": "Agent routing, telemetry and optional integrations require comparable measurement and data-handling review."
+    },
+    {
+      "task_id": 69,
+      "title": "Make chatbot staff registration clear and discoverable",
+      "card_id": "ari:cloud:trello::card/workspace/663e11a16b3c43e0d91d1a4e/6b001b5e31774fdd2b34c19d",
+      "url": "https://trello.com/c/CfZ7mVVg/68-69-make-chatbot-staff-registration-clear-and-discoverable",
+      "list": "DONE",
+      "domains": [
+        "Front end Dev",
+        "Bot Dev"
+      ],
+      "tier": "STANDARD",
+      "rationale": "Conversational registration review UX needs keyboard, validation and correction regressions while retaining write controls."
+    }
+  ],
+  "applied_at": "2026-11-22T19:38:12.944977+00:00",
+  "applied_additions": 231,
+  "independent_verification": {
+    "date": "2026-11-22",
+    "reviewer": "trello_labels_live_review",
+    "cards_checked": 68,
+    "exact_ids_and_titles": true,
+    "planned_domains": true,
+    "exactly_one_planned_tier": true,
+    "original_lists_preserved": true,
+    "done_cards_retaining_labels": 14,
+    "unique_required_catalog_labels": 9,
+    "unnamed_catalog_labels_preserved": 6,
+    "board_label_assignments": 231,
+    "actual_helper_replay_checks": 68,
+    "actual_helper_replay_additions": 0,
+    "evidence_source": "Independent live reviewer handoff; recorded by Backlog Handoff without rerunning live review"
+  }
+}
