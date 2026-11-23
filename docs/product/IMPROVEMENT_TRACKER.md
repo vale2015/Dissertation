@@ -1,5 +1,16 @@
 # Dissertation architecture improvement tracker
 
+## Current delivery checkpoint — 23 November 2026
+
+This checkpoint updates #58/#68. Earlier dated implementation notes remain historical; the numbered acceptance criteria still apply.
+
+- **#58 — Partial:** seven specialist/reviewer pairs and Backlog Handoff are implemented with one active workflow and specialist, fresh task packets (500-word briefing, 200-word handoff) and a separate reviewer for every delivery tier. The reviewed source is published on GitHub main at [952af98](https://github.com/vale2015/Dissertation/commit/952af986d11b75423b709201be264fc27144a153). See the [new architecture](../agents/RFS_AGENTIC_ARCHITECTURE.md) and [ordered implementation evidence](../agents/RFS_AGENTIC_IMPROVEMENTS_2026-11-22.md).
+- **Trello steps 1–5 — implemented and independently verified:** all 68 numbered tasks retain their identities and original states, with 231 domain/tier assignments. One empty front Open list receives unreviewed knowledge-base proposals; advancement requires a recorded PM decision. Six EPICS index cards link 163 domain memberships without moving child tasks. These are standard linked indexes, with no paid add-on or unattended synchronization.
+- **Checked:** 29 workflow helper tests, independent packet-privacy and label-catalog retests, 21 additional epic negative/escaping cases, deterministic replay and a fresh 74-card/six-list live readback passed. Manual Notes retention was checked in instructions only, without live note edits. The final step-5 outcome comment was read back on [Trello #58](https://trello.com/c/OyAxkOHl); action 6b04014dcf84b44ec8eb6130.
+- **Access/publication:** PM-approved ChatGPT Codex Connector installation 184939334 was verified with only vale2015/Dissertation selected. A branch write succeeded, followed by the reviewed source publication; this resolves the earlier 403/no-installation blocker. No Windows checkout, restaurant application, database or manual deployment change is included.
+- **#68 — Partial:** missing counters remain unknown. Comparable measured savings, automatic profile/runtime activation and adoption acceptance remain open. No percentage or monetary saving is established. Full-team PM acceptance remains open for #58; source publication alone does not close it.
+
+
 This is the project's canonical living improvement backlog, seeded from the original 50-item architecture plan in this chat. Keep the original numbers and order so that “continue with the improvements” has an unambiguous meaning; append any new improvements with new numbers. Focused improvement lists live in the relevant topic folders under `docs/` and are indexed in [docs/README.md](../README.md). Last reviewed: 2026-11-07.
 
 ## How to use this file
