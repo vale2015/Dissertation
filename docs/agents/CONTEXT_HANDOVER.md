@@ -1,5 +1,14 @@
 # RFS current handover
 
+## 23 November — agentic source published after repository authorization
+
+- The PM approved installing ChatGPT Codex Connector for only vale2015/Dissertation. GitHub UI and connector readback verified selected installation 184939334; a branch write succeeded. The previous integration-access blocker is resolved.
+- Reviewed source is on main at [952af98](https://github.com/vale2015/Dissertation/commit/952af986d11b75423b709201be264fc27144a153). Start with [RFS_AGENTIC_ARCHITECTURE.md](RFS_AGENTIC_ARCHITECTURE.md), then [CURRENT_STATE.md](CURRENT_STATE.md) and [ordered evidence](RFS_AGENTIC_IMPROVEMENTS_2026-11-22.md). The large tracker/handover receive these concise new entries while their original historical bodies are preserved.
+- Trello steps 1–5 are applied and independently verified: 68 unchanged numbered cards, 231 assignments, one empty first Open list and six EPICS indexes containing 163 memberships; 74 cards/six lists read back. All 29 workflow tests, 21 additional epic cases and deterministic replay passed. Manual Notes retention is instructions-only evidence. Step-5 comment on [#58](https://trello.com/c/OyAxkOHl) was read back as action 6b04014dcf84b44ec8eb6130.
+- #58 remains Partial for full-team PM acceptance. #68 remains Partial for comparable measured savings, activation and adoption. Usage is unknown, not zero; the existing analyst review is retained without a recursive analysis loop. No Windows checkout, restaurant application, database or manual deployment change is included.
+- Next: independently read back the final published file identities and tracker/handover insertion, keep Trello #58/#68 in progress, and deliver the architecture location and refreshed update package. A Git push does not establish a Vercel deployment.
+
+
 ## Current #68 efficiency actions
 
 - PM requested usage analysis and authorised necessary action. Start future project work from CURRENT_STATE.md, the active tracker item and .agents/task-packet.md; retrieve history on demand. All edits stay in the original VS Code checkout.
