@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="981" viewBox="0 0 1400 981" role="img" aria-labelledby="title desc">
+  <title id="title">Sign in</title>
+  <desc id="desc">An active account receives an eight-hour session through the same-origin login route. Replaces browser localStorage with the HttpOnly cookie and adds the role-specific landing page.</desc>
+  <defs>
+    <marker id="arrow14685C" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#14685C" />
+    </marker>
+    <marker id="arrow385876" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#385876" />
+    </marker>
+    <marker id="arrow142F35" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#142F35" />
+    </marker>
+    <marker id="arrow775118" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#775118" />
+    </marker>
+    <marker id="arrow425F62" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#425F62" />
+    </marker>
+  </defs>
+  <rect width="1400" height="981" fill="#F9FBF9" />
+  <rect x="0" y="0" width="12" height="981" rx="0" fill="#14685C" stroke="none" stroke-width="1.4" />
+  <text x="54" y="46.28" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" text-anchor="start">RFS  /  REQUEST SEQUENCES</text>
+  <text x="54" y="101.28" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="700" text-anchor="start">Sign in</text>
+  <text x="55" y="146.48" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="400" text-anchor="start">An active account receives an eight-hour session through the same-origin login route.</text>
+  <polyline points="54,177 1346,177" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <text x="55" y="228.44" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="start">OPERATION</text>
+  <text x="55" y="265.48" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="400" text-anchor="start">Read from top to bottom</text>
+  <rect x="520.0" y="208" width="154" height="65" rx="7" fill="#E7F4EF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="597.0" y="247.96" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="700" text-anchor="middle">Browser</text>
+  <polyline points="597,274 597,817" stroke-width="1.5" stroke-linejoin="round" fill="none" stroke="#B7CAC6" stroke-dasharray="6 5" />
+  <rect x="756.3333333333334" y="208" width="154" height="65" rx="7" fill="#E7F4EF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="833.3333333333334" y="247.96" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="700" text-anchor="middle">Next.js login</text>
+  <polyline points="833.33,274 833.33,817" stroke-width="1.5" stroke-linejoin="round" fill="none" stroke="#B7CAC6" stroke-dasharray="6 5" />
+  <rect x="992.6666666666667" y="208" width="154" height="65" rx="7" fill="#E7F4EF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="1069.6666666666667" y="247.96" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="700" text-anchor="middle">Flask auth</text>
+  <polyline points="1069.67,274 1069.67,817" stroke-width="1.5" stroke-linejoin="round" fill="none" stroke="#B7CAC6" stroke-dasharray="6 5" />
+  <rect x="1229.0" y="208" width="154" height="65" rx="7" fill="#E7F4EF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="1306.0" y="247.96" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="700" text-anchor="middle">PostgreSQL</text>
+  <polyline points="1306,274 1306,817" stroke-width="1.5" stroke-linejoin="round" fill="none" stroke="#B7CAC6" stroke-dasharray="6 5" />
+  <polyline points="54,289 1347,289" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <text x="56" y="324.28" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" text-anchor="start">01</text>
+  <text x="100" y="326.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Submit email and password to /api/auth/login</text>
+  <polyline points="597,320 833.33,320" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#14685C" marker-end="url(#arrow14685C)" />
+  <polyline points="54,355 1347,355" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <text x="56" y="390.28" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" text-anchor="start">02</text>
+  <text x="100" y="392.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Normalise email and forward the credentials</text>
+  <polyline points="833.33,386 1069.67,386" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#14685C" marker-end="url(#arrow14685C)" />
+  <polyline points="54,421 1347,421" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <text x="56" y="456.28" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" text-anchor="start">03</text>
+  <text x="100" y="458.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Look up the account and check login limits</text>
+  <polyline points="1069.67,452 1306,452" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#14685C" marker-end="url(#arrow14685C)" />
+  <polyline points="54,487 1347,487" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <text x="56" y="522.28" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" text-anchor="start">04</text>
+  <text x="100" y="524.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Return the account state and password hash</text>
+  <polyline points="1306,518 1069.67,518" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#385876" stroke-dasharray="6 5" marker-end="url(#arrow385876)" />
+  <polyline points="54,553 1347,553" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <text x="56" y="588.28" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" text-anchor="start">05</text>
+  <text x="100" y="590.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Verify the password and active status</text>
+  <polyline points="1069.67,572 1106.67,572 1106.67,594 1071.67,594" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#775118" marker-end="url(#arrow775118)" />
+  <polyline points="54,619 1347,619" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <text x="56" y="654.28" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" text-anchor="start">06</text>
+  <text x="100" y="656.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Return signed JWT and safe user fields</text>
+  <polyline points="1069.67,650 833.33,650" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#385876" stroke-dasharray="6 5" marker-end="url(#arrow385876)" />
+  <polyline points="54,685 1347,685" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <text x="56" y="720.28" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" text-anchor="start">07</text>
+  <text x="100" y="722.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Set rfs_session and return user details</text>
+  <polyline points="833.33,716 597,716" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#385876" stroke-dasharray="6 5" marker-end="url(#arrow385876)" />
+  <polyline points="54,751 1347,751" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <text x="56" y="786.28" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" text-anchor="start">08</text>
+  <text x="100" y="788.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Open own profile for staff, dashboard otherwise</text>
+  <polyline points="597,770 634,770 634,792 599,792" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#775118" marker-end="url(#arrow775118)" />
+  <rect x="54" y="879" width="1292" height="68" rx="6" fill="#E7F4EF" stroke="none" stroke-width="1.4" />
+  <text x="73" y="914.44" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="start">IF SIGN-IN FAILS</text>
+  <text x="282" y="914.96" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="400" text-anchor="start">The login route returns an error. Throttled attempts receive HTTP 429. No new session cookie is issued.</text>
+</svg>

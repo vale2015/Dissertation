@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="769" viewBox="0 0 1400 769" role="img" aria-labelledby="title desc">
+  <title id="title">Restaurant manager persona</title>
+  <desc id="desc">Original design persona · Andrew manages daily operations at an independent restaurant. Separates the original persona’s context, needs, traits and frustrations into four readable sections.</desc>
+  <defs>
+    <marker id="arrow14685C" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#14685C" />
+    </marker>
+    <marker id="arrow385876" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#385876" />
+    </marker>
+    <marker id="arrow142F35" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#142F35" />
+    </marker>
+    <marker id="arrow775118" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#775118" />
+    </marker>
+    <marker id="arrow425F62" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#425F62" />
+    </marker>
+  </defs>
+  <rect width="1400" height="769" fill="#F9FBF9" />
+  <rect x="0" y="0" width="12" height="769" rx="0" fill="#775118" stroke="none" stroke-width="1.4" />
+  <text x="54" y="46.28" fill="#775118" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" text-anchor="start">RFS  /  ORIGINAL DESIGN RESEARCH</text>
+  <text x="54" y="101.28" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="700" text-anchor="start">Restaurant manager persona</text>
+  <text x="55" y="146.48" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="400" text-anchor="start">Original design persona · Andrew manages daily operations at an independent restaurant.</text>
+  <polyline points="54,177 1346,177" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <rect x="54" y="205" width="630" height="192" rx="8" fill="#FFFFFF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="77" y="234.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">PROFILE</text>
+  <text x="77" y="273.68" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="700" text-anchor="start">Andrew</text>
+  <text x="77" y="313.64" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="400" text-anchor="start">32 years old; male; restaurant manager and owner.</text>
+  <text x="77" y="342.64" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="400" text-anchor="start">Moderate technical confidence. Responsible for bookings,</text>
+  <text x="77" y="371.64" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="400" text-anchor="start">staffing and service quality.</text>
+  <rect x="716" y="205" width="630" height="192" rx="8" fill="#FFFFFF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="739" y="234.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">GOALS</text>
+  <text x="739" y="273.68" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="700" text-anchor="start">Decide quickly</text>
+  <text x="739" y="313.64" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="400" text-anchor="start">See bookings, covers and staffing in one place. Use demand</text>
+  <text x="739" y="342.64" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="400" text-anchor="start">forecasts to assign the right number of people and control</text>
+  <text x="739" y="371.64" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="400" text-anchor="start">costs.</text>
+  <rect x="54" y="417" width="630" height="192" rx="8" fill="#FFFFFF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="77" y="446.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">TRAITS</text>
+  <text x="77" y="485.68" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="700" text-anchor="start">A practical operator</text>
+  <text x="77" y="525.64" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="400" text-anchor="start">Efficiency-oriented, cost-aware and focused on service. Time</text>
+  <text x="77" y="554.64" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="400" text-anchor="start">for learning complex tools or analysing large spreadsheets is</text>
+  <text x="77" y="583.64" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="400" text-anchor="start">limited.</text>
+  <rect x="716" y="417" width="630" height="192" rx="8" fill="#FFFFFF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="739" y="446.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">FRUSTRATIONS</text>
+  <text x="739" y="485.68" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="700" text-anchor="start">Planning under pressure</text>
+  <text x="739" y="525.64" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="400" text-anchor="start">Uncertain demand and manual planning lead to guesswork.</text>
+  <text x="739" y="554.64" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="400" text-anchor="start">Complex dashboards slow busy shifts; poor staffing can</text>
+  <text x="739" y="583.64" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="400" text-anchor="start">waste labour or weaken service.</text>
+  <rect x="54" y="667" width="1292" height="68" rx="6" fill="#E7F4EF" stroke="none" stroke-width="1.4" />
+  <text x="73" y="702.44" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="start">RESEARCH STATUS</text>
+  <text x="282" y="702.96" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="400" text-anchor="start">This is a design persona from the source board. The profile is presented as a design input.</text>
+</svg>

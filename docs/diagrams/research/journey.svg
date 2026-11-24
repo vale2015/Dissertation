@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="854" viewBox="0 0 1400 854" role="img" aria-labelledby="title desc">
+  <title id="title">Restaurant manager journey</title>
+  <desc id="desc">Original journey map · how Andrew uses the prototype to make a staffing decision. Preserves the seven stages and all four original dimensions of the manager’s journey.</desc>
+  <defs>
+    <marker id="arrow14685C" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#14685C" />
+    </marker>
+    <marker id="arrow385876" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#385876" />
+    </marker>
+    <marker id="arrow142F35" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#142F35" />
+    </marker>
+    <marker id="arrow775118" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#775118" />
+    </marker>
+    <marker id="arrow425F62" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#425F62" />
+    </marker>
+  </defs>
+  <rect width="1400" height="854" fill="#F9FBF9" />
+  <rect x="0" y="0" width="12" height="854" rx="0" fill="#775118" stroke="none" stroke-width="1.4" />
+  <text x="54" y="46.28" fill="#775118" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" text-anchor="start">RFS  /  ORIGINAL DESIGN RESEARCH</text>
+  <text x="54" y="101.28" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="700" text-anchor="start">Restaurant manager journey</text>
+  <text x="55" y="146.48" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="400" text-anchor="start">Original journey map · how Andrew uses the prototype to make a staffing decision.</text>
+  <polyline points="54,177 1346,177" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <rect x="54" y="211" width="1292" height="52" rx="4" fill="#142F35" stroke="none" stroke-width="1.4" />
+  <text x="70" y="242.12" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" text-anchor="start">Stage</text>
+  <text x="280" y="242.12" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" text-anchor="start">Action</text>
+  <text x="558" y="242.12" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" text-anchor="start">Touchpoint</text>
+  <text x="800" y="242.12" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" text-anchor="start">Feeling or need</text>
+  <text x="1046" y="242.12" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" text-anchor="start">Design requirement</text>
+  <rect x="54" y="263" width="1292" height="60" rx="0" fill="#FFFFFF" stroke="none" stroke-width="1.4" />
+  <text x="70" y="293.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">Access system</text>
+  <text x="280" y="293.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Log in securely</text>
+  <text x="558" y="293.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Login page</text>
+  <text x="800" y="293.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Needs quick access</text>
+  <text x="1046" y="293.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Simple, secure login</text>
+  <rect x="54" y="323" width="1292" height="60" rx="0" fill="#F0F5F2" stroke="none" stroke-width="1.4" />
+  <text x="70" y="353.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">Review dashboard</text>
+  <text x="280" y="353.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Check summary cards</text>
+  <text x="558" y="353.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Dashboard</text>
+  <text x="800" y="353.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Wants a fast overview</text>
+  <text x="1046" y="353.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Clear visual summaries</text>
+  <rect x="54" y="383" width="1292" height="60" rx="0" fill="#FFFFFF" stroke="none" stroke-width="1.4" />
+  <text x="70" y="413.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">Review demand</text>
+  <text x="280" y="413.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Check predicted covers</text>
+  <text x="558" y="413.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Reservation forecast</text>
+  <text x="800" y="413.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">More informed</text>
+  <text x="1046" y="413.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Forecast tables and charts</text>
+  <rect x="54" y="443" width="1292" height="81" rx="0" fill="#F0F5F2" stroke="none" stroke-width="1.4" />
+  <text x="70" y="473.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">Plan staffing</text>
+  <text x="280" y="473.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Review staff</text>
+  <text x="280" y="499.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">recommendations</text>
+  <text x="558" y="473.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Staff forecast</text>
+  <text x="800" y="473.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">More confident</text>
+  <text x="1046" y="473.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Clear staffing outputs</text>
+  <rect x="54" y="524" width="1292" height="60" rx="0" fill="#FFFFFF" stroke="none" stroke-width="1.4" />
+  <text x="70" y="554.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">Control costs</text>
+  <text x="280" y="554.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Check labour impact</text>
+  <text x="558" y="554.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Labour cost forecast</text>
+  <text x="800" y="554.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Cost-aware</text>
+  <text x="1046" y="554.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Labour cost summaries</text>
+  <rect x="54" y="584" width="1292" height="60" rx="0" fill="#F0F5F2" stroke="none" stroke-width="1.4" />
+  <text x="70" y="614.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">Review bookings</text>
+  <text x="280" y="614.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Check booking overview</text>
+  <text x="558" y="614.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Booking overview</text>
+  <text x="800" y="614.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">In control</text>
+  <text x="1046" y="614.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Booking records and trends</text>
+  <rect x="54" y="644" width="1292" height="60" rx="0" fill="#FFFFFF" stroke="none" stroke-width="1.4" />
+  <text x="70" y="674.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">Make decision</text>
+  <text x="280" y="674.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Adjust planning</text>
+  <text x="558" y="674.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Dashboard / forecasts</text>
+  <text x="800" y="674.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Confident</text>
+  <text x="1046" y="674.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Decision-support outputs</text>
+  <rect x="54" y="752" width="1292" height="68" rx="6" fill="#E7F4EF" stroke="none" stroke-width="1.4" />
+  <text x="73" y="787.44" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="start">RESEARCH STATUS</text>
+  <text x="282" y="787.96" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="400" text-anchor="start">Feelings and design requirements come from the original journey map.</text>
+</svg>

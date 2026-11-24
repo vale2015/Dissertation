@@ -1,0 +1,362 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" compressed="false">
+  <diagram name="Database entities and relationships" id="database">
+    <mxGraphModel grid="1" gridSize="10" page="1" pageScale="1" pageWidth="1400" pageHeight="1682" background="#F9FBF9">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="112" parent="1" vertex="1" connectable="1" style="group;resizable=1;recursiveResize=1;">
+          <mxGeometry x="54" y="30" width="1292" height="128" as="geometry" />
+        </mxCell>
+        <mxCell id="2" parent="1" vertex="1" style="rounded=0;arcSize=5;fillColor=#14685C;strokeColor=none;strokeWidth=1.4;">
+          <mxGeometry x="0" y="0" width="12" height="1682" as="geometry" />
+        </mxCell>
+        <mxCell id="3" parent="112" vertex="1" value="RFS  /  SYSTEM ARCHITECTURE" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=17;fontColor=#14685C;fontStyle=1;spacing=0;">
+          <mxGeometry x="0" y="0" width="1292" height="19.72" as="geometry" />
+        </mxCell>
+        <mxCell id="4" parent="112" vertex="1" value="Database entities and relationships" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=42;fontColor=#142F35;fontStyle=1;spacing=0;">
+          <mxGeometry x="0" y="34" width="1292" height="48.72" as="geometry" />
+        </mxCell>
+        <mxCell id="5" parent="112" vertex="1" value="Supabase PostgreSQL · selected keys and links across the core and follow-on migrations." style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=22;fontColor=#425F62;fontStyle=0;spacing=0;">
+          <mxGeometry x="1" y="96" width="1291" height="25.52" as="geometry" />
+        </mxCell>
+        <mxCell id="6" parent="1" edge="1" style="endArrow=none;endFill=1;strokeColor=#B7CAC6;strokeWidth=1;dashed=0;rounded=0;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="54" y="177" as="sourcePoint" />
+            <mxPoint x="1346" y="177" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7" parent="1" vertex="1" value="FORECAST RUN RELATIONSHIPS" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=16;fontColor=#14685C;fontStyle=1;spacing=0;">
+          <mxGeometry x="54" y="201" width="1292" height="18.56" as="geometry" />
+        </mxCell>
+        <mxCell id="8" parent="1" edge="1" style="endArrow=block;endFill=1;strokeColor=#14685C;strokeWidth=2.5;dashed=0;rounded=0;exitX=0.50000000;exitY=0.00000000;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.50000000;entryY=1.00000000;entryDx=0;entryDy=0;entryPerimeter=0;" source="96" target="95">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="243" y="350" />
+              <mxPoint x="700" y="350" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9" parent="1" edge="1" style="endArrow=block;endFill=1;strokeColor=#14685C;strokeWidth=2.5;dashed=0;rounded=0;exitX=0.50000000;exitY=0.00000000;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.50000000;entryY=1.00000000;entryDx=0;entryDy=0;entryPerimeter=0;" source="97" target="95">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="700" y="350" />
+              <mxPoint x="700" y="350" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="10" parent="1" edge="1" style="endArrow=block;endFill=1;strokeColor=#14685C;strokeWidth=2.5;dashed=0;rounded=0;exitX=0.50000000;exitY=0.00000000;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.50000000;entryY=1.00000000;entryDx=0;entryDy=0;entryPerimeter=0;" source="98" target="95">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1157" y="350" />
+              <mxPoint x="700" y="350" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="95" parent="1" vertex="1" connectable="1" style="group;resizable=1;recursiveResize=1;">
+          <mxGeometry x="510" y="245" width="380" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="11" parent="95" vertex="1" style="rounded=1;arcSize=5;fillColor=#E7F4EF;strokeColor=#B7CAC6;strokeWidth=1.4;" connectable="0">
+          <mxGeometry x="0" y="0" width="380" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="12" parent="95" vertex="1" value="forecast_runs" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=25;fontColor=#142F35;fontStyle=1;spacing=0;">
+          <mxGeometry x="8" y="16" width="364" height="29" as="geometry" />
+        </mxCell>
+        <mxCell id="13" parent="95" vertex="1" value="PK  id" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=17;fontColor=#14685C;fontStyle=0;spacing=0;">
+          <mxGeometry x="8" y="47" width="364" height="19.72" as="geometry" />
+        </mxCell>
+        <mxCell id="96" parent="1" vertex="1" connectable="1" style="group;resizable=1;recursiveResize=1;">
+          <mxGeometry x="54" y="375" width="378" height="88" as="geometry" />
+        </mxCell>
+        <mxCell id="14" parent="96" vertex="1" style="rounded=1;arcSize=5;fillColor=#FFFFFF;strokeColor=#B7CAC6;strokeWidth=1.4;" connectable="0">
+          <mxGeometry x="0" y="0" width="378" height="88" as="geometry" />
+        </mxCell>
+        <mxCell id="15" parent="96" vertex="1" value="forecast_run_days" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=23;fontColor=#142F35;fontStyle=1;spacing=0;">
+          <mxGeometry x="8" y="17" width="362" height="26.68" as="geometry" />
+        </mxCell>
+        <mxCell id="16" parent="96" vertex="1" value="Many immutable day rows" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=17;fontColor=#425F62;fontStyle=0;spacing=0;">
+          <mxGeometry x="8" y="52" width="362" height="19.72" as="geometry" />
+        </mxCell>
+        <mxCell id="97" parent="1" vertex="1" connectable="1" style="group;resizable=1;recursiveResize=1;">
+          <mxGeometry x="511" y="375" width="378" height="88" as="geometry" />
+        </mxCell>
+        <mxCell id="17" parent="97" vertex="1" style="rounded=1;arcSize=5;fillColor=#FFFFFF;strokeColor=#B7CAC6;strokeWidth=1.4;" connectable="0">
+          <mxGeometry x="0" y="0" width="378" height="88" as="geometry" />
+        </mxCell>
+        <mxCell id="18" parent="97" vertex="1" value="active_forecast_run" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=23;fontColor=#142F35;fontStyle=1;spacing=0;">
+          <mxGeometry x="8" y="17" width="362" height="26.68" as="geometry" />
+        </mxCell>
+        <mxCell id="19" parent="97" vertex="1" value="One active pointer" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=17;fontColor=#425F62;fontStyle=0;spacing=0;">
+          <mxGeometry x="8" y="52" width="362" height="19.72" as="geometry" />
+        </mxCell>
+        <mxCell id="98" parent="1" vertex="1" connectable="1" style="group;resizable=1;recursiveResize=1;">
+          <mxGeometry x="968" y="375" width="378" height="88" as="geometry" />
+        </mxCell>
+        <mxCell id="20" parent="98" vertex="1" style="rounded=1;arcSize=5;fillColor=#FFFFFF;strokeColor=#B7CAC6;strokeWidth=1.4;" connectable="0">
+          <mxGeometry x="0" y="0" width="378" height="88" as="geometry" />
+        </mxCell>
+        <mxCell id="21" parent="98" vertex="1" value="staff_cost_forecast" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=23;fontColor=#142F35;fontStyle=1;spacing=0;">
+          <mxGeometry x="8" y="17" width="362" height="26.68" as="geometry" />
+        </mxCell>
+        <mxCell id="22" parent="98" vertex="1" value="Many role costs; legacy run_id nullable" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=17;fontColor=#425F62;fontStyle=0;spacing=0;">
+          <mxGeometry x="8" y="52" width="362" height="19.72" as="geometry" />
+        </mxCell>
+        <mxCell id="23" parent="1" vertex="1" value="Each child’s run_id references forecast_runs.id. The register below also covers operational and access records." style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=19;fontColor=#425F62;fontStyle=0;spacing=0;">
+          <mxGeometry x="54" y="488" width="1292" height="22.04" as="geometry" />
+        </mxCell>
+        <mxCell id="99" parent="1" vertex="1" connectable="1" style="group;resizable=1;recursiveResize=1;">
+          <mxGeometry x="54" y="537" width="1292" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="24" parent="99" vertex="1" style="rounded=1;arcSize=5;fillColor=#142F35;strokeColor=none;strokeWidth=1.4;" connectable="0">
+          <mxGeometry x="0" y="0" width="1292" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="25" parent="99" vertex="1" value="Entity or relation" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=18;fontColor=#FFFFFF;fontStyle=1;spacing=0;">
+          <mxGeometry x="16" y="14" width="333" height="20.88" as="geometry" />
+        </mxCell>
+        <mxCell id="26" parent="99" vertex="1" value="Stored keys or references" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=18;fontColor=#FFFFFF;fontStyle=1;spacing=0;">
+          <mxGeometry x="381" y="14" width="405" height="20.88" as="geometry" />
+        </mxCell>
+        <mxCell id="27" parent="99" vertex="1" value="How the application uses it" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=18;fontColor=#FFFFFF;fontStyle=1;spacing=0;">
+          <mxGeometry x="818" y="14" width="458" height="20.88" as="geometry" />
+        </mxCell>
+        <mxCell id="100" parent="1" vertex="1" connectable="1" style="group;resizable=1;recursiveResize=1;">
+          <mxGeometry x="54" y="589" width="1292" height="81" as="geometry" />
+        </mxCell>
+        <mxCell id="28" parent="100" vertex="1" style="rounded=0;arcSize=5;fillColor=#FFFFFF;strokeColor=none;strokeWidth=1.4;" connectable="0">
+          <mxGeometry x="0" y="0" width="1292" height="81" as="geometry" />
+        </mxCell>
+        <mxCell id="29" parent="100" vertex="1" value="users / staff_roles" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#14685C;fontStyle=1;spacing=0;">
+          <mxGeometry x="16" y="12" width="333" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="30" parent="100" vertex="1" value="users.staff_role_id → staff_roles.id;" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="381" y="12" width="405" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="31" parent="100" vertex="1" value="invited_by → users.id" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="381" y="38" width="405" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="32" parent="100" vertex="1" value="Account identity, application role and optional" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="818" y="12" width="458" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="33" parent="100" vertex="1" value="operational role." style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="818" y="38" width="458" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="101" parent="1" vertex="1" connectable="1" style="group;resizable=1;recursiveResize=1;">
+          <mxGeometry x="54" y="670" width="1292" height="81" as="geometry" />
+        </mxCell>
+        <mxCell id="34" parent="101" vertex="1" style="rounded=0;arcSize=5;fillColor=#F0F5F2;strokeColor=none;strokeWidth=1.4;" connectable="0">
+          <mxGeometry x="0" y="0" width="1292" height="81" as="geometry" />
+        </mxCell>
+        <mxCell id="35" parent="101" vertex="1" value="bookings" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#14685C;fontStyle=1;spacing=0;">
+          <mxGeometry x="16" y="12" width="333" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="36" parent="101" vertex="1" value="id (PK), booking_date" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="381" y="12" width="405" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="37" parent="101" vertex="1" value="Booking changes recompute a date’s demand" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="818" y="12" width="458" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="38" parent="101" vertex="1" value="aggregates." style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="818" y="38" width="458" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="102" parent="1" vertex="1" connectable="1" style="group;resizable=1;recursiveResize=1;">
+          <mxGeometry x="54" y="751" width="1292" height="81" as="geometry" />
+        </mxCell>
+        <mxCell id="39" parent="102" vertex="1" style="rounded=0;arcSize=5;fillColor=#FFFFFF;strokeColor=none;strokeWidth=1.4;" connectable="0">
+          <mxGeometry x="0" y="0" width="1292" height="81" as="geometry" />
+        </mxCell>
+        <mxCell id="40" parent="102" vertex="1" value="restaurant_demand_features" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#14685C;fontStyle=1;spacing=0;">
+          <mxGeometry x="16" y="12" width="333" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="41" parent="102" vertex="1" value="date (PK)" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="381" y="12" width="405" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="42" parent="102" vertex="1" value="Daily demand rows feed the forecast by date. The" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="818" y="12" width="458" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="43" parent="102" vertex="1" value="link to individual bookings is derived." style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="818" y="38" width="458" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="103" parent="1" vertex="1" connectable="1" style="group;resizable=1;recursiveResize=1;">
+          <mxGeometry x="54" y="832" width="1292" height="81" as="geometry" />
+        </mxCell>
+        <mxCell id="44" parent="103" vertex="1" style="rounded=0;arcSize=5;fillColor=#F0F5F2;strokeColor=none;strokeWidth=1.4;" connectable="0">
+          <mxGeometry x="0" y="0" width="1292" height="81" as="geometry" />
+        </mxCell>
+        <mxCell id="45" parent="103" vertex="1" value="staffing_rules / business_settings" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#14685C;fontStyle=1;spacing=0;">
+          <mxGeometry x="16" y="12" width="333" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="46" parent="103" vertex="1" value="id (PK) on each table" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="381" y="12" width="405" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="47" parent="103" vertex="1" value="Cover bands determine role counts. Business" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="818" y="12" width="458" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="48" parent="103" vertex="1" value="settings supply spend and food cost assumptions." style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="818" y="38" width="458" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="104" parent="1" vertex="1" connectable="1" style="group;resizable=1;recursiveResize=1;">
+          <mxGeometry x="54" y="913" width="1292" height="81" as="geometry" />
+        </mxCell>
+        <mxCell id="49" parent="104" vertex="1" style="rounded=0;arcSize=5;fillColor=#FFFFFF;strokeColor=none;strokeWidth=1.4;" connectable="0">
+          <mxGeometry x="0" y="0" width="1292" height="81" as="geometry" />
+        </mxCell>
+        <mxCell id="50" parent="104" vertex="1" value="forecast_runs" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#14685C;fontStyle=1;spacing=0;">
+          <mxGeometry x="16" y="12" width="333" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="51" parent="104" vertex="1" value="id (PK)" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="381" y="12" width="405" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="52" parent="104" vertex="1" value="Immutable forecast metadata for one generated" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="818" y="12" width="458" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="53" parent="104" vertex="1" value="horizon." style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="818" y="38" width="458" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="105" parent="1" vertex="1" connectable="1" style="group;resizable=1;recursiveResize=1;">
+          <mxGeometry x="54" y="994" width="1292" height="81" as="geometry" />
+        </mxCell>
+        <mxCell id="54" parent="105" vertex="1" style="rounded=0;arcSize=5;fillColor=#F0F5F2;strokeColor=none;strokeWidth=1.4;" connectable="0">
+          <mxGeometry x="0" y="0" width="1292" height="81" as="geometry" />
+        </mxCell>
+        <mxCell id="55" parent="105" vertex="1" value="forecast_run_days /" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#14685C;fontStyle=1;spacing=0;">
+          <mxGeometry x="16" y="12" width="333" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="56" parent="105" vertex="1" value="active_forecast_run" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#14685C;fontStyle=1;spacing=0;">
+          <mxGeometry x="16" y="38" width="333" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="57" parent="105" vertex="1" value="run_id → forecast_runs.id on both tables" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="381" y="12" width="405" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="58" parent="105" vertex="1" value="Day rows belong to a run. A singleton pointer" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="818" y="12" width="458" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="59" parent="105" vertex="1" value="identifies the active run." style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="818" y="38" width="458" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="106" parent="1" vertex="1" connectable="1" style="group;resizable=1;recursiveResize=1;">
+          <mxGeometry x="54" y="1075" width="1292" height="81" as="geometry" />
+        </mxCell>
+        <mxCell id="60" parent="106" vertex="1" style="rounded=0;arcSize=5;fillColor=#FFFFFF;strokeColor=none;strokeWidth=1.4;" connectable="0">
+          <mxGeometry x="0" y="0" width="1292" height="81" as="geometry" />
+        </mxCell>
+        <mxCell id="61" parent="106" vertex="1" value="staff_cost_forecast" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#14685C;fontStyle=1;spacing=0;">
+          <mxGeometry x="16" y="12" width="333" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="62" parent="106" vertex="1" value="run_id → forecast_runs.id (nullable)" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="381" y="12" width="405" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="63" parent="106" vertex="1" value="Staff counts, rate, hours and estimated cost per" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="818" y="12" width="458" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="64" parent="106" vertex="1" value="role and date. Legacy rows may lack a run." style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="818" y="38" width="458" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="107" parent="1" vertex="1" connectable="1" style="group;resizable=1;recursiveResize=1;">
+          <mxGeometry x="54" y="1156" width="1292" height="107" as="geometry" />
+        </mxCell>
+        <mxCell id="65" parent="107" vertex="1" style="rounded=0;arcSize=5;fillColor=#F0F5F2;strokeColor=none;strokeWidth=1.4;" connectable="0">
+          <mxGeometry x="0" y="0" width="1292" height="107" as="geometry" />
+        </mxCell>
+        <mxCell id="66" parent="107" vertex="1" value="service_actual_covers /" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#14685C;fontStyle=1;spacing=0;">
+          <mxGeometry x="16" y="12" width="333" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="67" parent="107" vertex="1" value="service_actual_corrections" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#14685C;fontStyle=1;spacing=0;">
+          <mxGeometry x="16" y="38" width="333" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="68" parent="107" vertex="1" value="corrections.service_date →" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="381" y="12" width="405" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="69" parent="107" vertex="1" value="actuals.service_date; both tables reference" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="381" y="38" width="405" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="70" parent="107" vertex="1" value="users" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="381" y="64" width="405" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="71" parent="107" vertex="1" value="Recorded service covers and an audit of changes." style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="818" y="12" width="458" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="72" parent="107" vertex="1" value="Dates connect forecasts to actuals for evaluation." style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="818" y="38" width="458" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="108" parent="1" vertex="1" connectable="1" style="group;resizable=1;recursiveResize=1;">
+          <mxGeometry x="54" y="1263" width="1292" height="107" as="geometry" />
+        </mxCell>
+        <mxCell id="73" parent="108" vertex="1" style="rounded=0;arcSize=5;fillColor=#FFFFFF;strokeColor=none;strokeWidth=1.4;" connectable="0">
+          <mxGeometry x="0" y="0" width="1292" height="107" as="geometry" />
+        </mxCell>
+        <mxCell id="74" parent="108" vertex="1" value="user_account_tokens /" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#14685C;fontStyle=1;spacing=0;">
+          <mxGeometry x="16" y="12" width="333" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="75" parent="108" vertex="1" value="staff_account_audit /" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#14685C;fontStyle=1;spacing=0;">
+          <mxGeometry x="16" y="38" width="333" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="76" parent="108" vertex="1" value="staff_chat_actions" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#14685C;fontStyle=1;spacing=0;">
+          <mxGeometry x="16" y="64" width="333" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="77" parent="108" vertex="1" value="User ID references → users.id" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="381" y="12" width="405" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="78" parent="108" vertex="1" value="Activation and reset tokens, account audits and" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="818" y="12" width="458" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="79" parent="108" vertex="1" value="pending or executed staff actions." style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="818" y="38" width="458" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="109" parent="1" vertex="1" connectable="1" style="group;resizable=1;recursiveResize=1;">
+          <mxGeometry x="54" y="1370" width="1292" height="81" as="geometry" />
+        </mxCell>
+        <mxCell id="80" parent="109" vertex="1" style="rounded=0;arcSize=5;fillColor=#F0F5F2;strokeColor=none;strokeWidth=1.4;" connectable="0">
+          <mxGeometry x="0" y="0" width="1292" height="81" as="geometry" />
+        </mxCell>
+        <mxCell id="81" parent="109" vertex="1" value="report_history /" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#14685C;fontStyle=1;spacing=0;">
+          <mxGeometry x="16" y="12" width="333" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="82" parent="109" vertex="1" value="in_app_notifications" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#14685C;fontStyle=1;spacing=0;">
+          <mxGeometry x="16" y="38" width="333" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="83" parent="109" vertex="1" value="created_by / recipient_id → users.id" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="381" y="12" width="405" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="84" parent="109" vertex="1" value="Saved report snapshots and recipient-specific" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="818" y="12" width="458" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="85" parent="109" vertex="1" value="notifications." style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="818" y="38" width="458" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="110" parent="1" vertex="1" connectable="1" style="group;resizable=1;recursiveResize=1;">
+          <mxGeometry x="54" y="1451" width="1292" height="81" as="geometry" />
+        </mxCell>
+        <mxCell id="86" parent="110" vertex="1" style="rounded=0;arcSize=5;fillColor=#FFFFFF;strokeColor=none;strokeWidth=1.4;" connectable="0">
+          <mxGeometry x="0" y="0" width="1292" height="81" as="geometry" />
+        </mxCell>
+        <mxCell id="87" parent="110" vertex="1" value="auth_rate_limits" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#14685C;fontStyle=1;spacing=0;">
+          <mxGeometry x="16" y="12" width="333" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="88" parent="110" vertex="1" value="Bucket key identifies a counter" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="381" y="12" width="405" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="89" parent="110" vertex="1" value="Stores authentication throttling counters separately" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="818" y="12" width="458" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="90" parent="110" vertex="1" value="from account records." style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="818" y="38" width="458" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="111" parent="1" vertex="1" connectable="1" style="group;resizable=1;recursiveResize=1;">
+          <mxGeometry x="54" y="1580" width="1292" height="68" as="geometry" />
+        </mxCell>
+        <mxCell id="91" parent="111" vertex="1" style="rounded=1;arcSize=5;fillColor=#E7F4EF;strokeColor=none;strokeWidth=1.4;" connectable="0">
+          <mxGeometry x="0" y="0" width="1292" height="68" as="geometry" />
+        </mxCell>
+        <mxCell id="92" parent="111" vertex="1" value="NOTATION" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=16;fontColor=#14685C;fontStyle=1;spacing=0;">
+          <mxGeometry x="19" y="20" width="198" height="18.56" as="geometry" />
+        </mxCell>
+        <mxCell id="93" parent="111" vertex="1" value="Arrows denote database foreign keys. The date and cover-band matches described in the last column are application" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=19;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="228" y="18" width="1035" height="22.04" as="geometry" />
+        </mxCell>
+        <mxCell id="94" parent="111" vertex="1" value="calculations." style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=19;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="228" y="41" width="1035" height="22.04" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

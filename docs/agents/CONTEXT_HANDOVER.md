@@ -1,5 +1,14 @@
 # RFS current handover
 
+## 24 November - Diagram redesign and agentic documentation
+
+- PM requested every Additional Documentation diagram redesigned and consolidated, then added diagrams explaining all development agents. #70 contains 33 editable diagrams.net/SVG pairs: architecture 9, sequence 8, historical research 8, historical Gantt 1 and agentic development 7. Entry point: [gallery](../diagrams/index.html), [catalogue](../diagrams/README.md).
+- All 34 original images/backups move under docs/diagrams/originals with checked SHA-256 inventory. One ERD backup retains its original local CRLF bytes; archive attributes prevent conversion. Preserve the archive. Research remains historical; current technical diagrams cite the unchanged application baseline and agentic diagrams cite published a272406 definitions.
+- Independent QA passed after one editable-source correction cycle: 33 pairs, 1,174 labels, 289 groups, all 149 relationship arrows attached, independent 298-endpoint movement checks, 388 local links and 34 archive hashes. [Verification](../diagrams/VERIFICATION.md). Native editor roundtrip and live browser interaction remain untested; PM visual acceptance remains open, so #70 is Verify release.
+- The original Windows execution environment became unavailable after final QA. Reviewed sources were retained in a private [review and download page](https://chatgpt.com/space/page_951915d5871881919d16271d9ad4f35d), then recovered for publication. PM explicitly chose GitHub main on 24 November after the automatic upload review requested destination approval. This publication is built on current remote main and preserves its newer unrelated agent/tool/docs work. No synchronization of the now-unavailable Windows checkout is claimed.
+- Git publication/readback is separate from Vercel; no runtime code, Supabase migration, restaurant data or manual deployment changes. Token telemetry was unavailable in the earlier capture; no zero-usage, savings or billing claim is made.
+
+
 ## 23 November — agentic source published after repository authorization
 
 - The PM approved installing ChatGPT Codex Connector for only vale2015/Dissertation. GitHub UI and connector readback verified selected installation 184939334; a branch write succeeded. The previous integration-access blocker is resolved.

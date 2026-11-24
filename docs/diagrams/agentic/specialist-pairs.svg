@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1162" viewBox="0 0 1400 1162" role="img" aria-labelledby="title desc">
+  <title id="title">The seven specialist pairs</title>
+  <desc id="desc">Each specialist delivers an approved change. A different named reviewer checks the evidence in fresh context. Maps all seven registered workflows to their implementer, independent reviewer, inputs and deliverables.</desc>
+  <defs>
+    <marker id="arrow14685C" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#14685C" />
+    </marker>
+    <marker id="arrow385876" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#385876" />
+    </marker>
+    <marker id="arrow142F35" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#142F35" />
+    </marker>
+    <marker id="arrow775118" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#775118" />
+    </marker>
+    <marker id="arrow425F62" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#425F62" />
+    </marker>
+  </defs>
+  <rect width="1400" height="1162" fill="#F9FBF9" />
+  <rect x="0" y="0" width="12" height="1162" rx="0" fill="#14685C" stroke="none" stroke-width="1.4" />
+  <text x="54" y="46.28" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" text-anchor="start">RFS  /  DEVELOPMENT WORKFLOW</text>
+  <text x="54" y="101.28" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="700" text-anchor="start">The seven specialist pairs</text>
+  <text x="55" y="146.48" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="400" text-anchor="start">Each specialist delivers an approved change. A different named reviewer checks the evidence in fresh context.</text>
+  <polyline points="54,177 1346,177" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <rect x="54" y="211" width="1292" height="52" rx="4" fill="#142F35" stroke="none" stroke-width="1.4" />
+  <text x="70" y="242.12" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" text-anchor="start">Specialist / workflow</text>
+  <text x="353" y="242.12" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" text-anchor="start">Inputs → implementation output</text>
+  <text x="748" y="242.12" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" text-anchor="start">Independent reviewer</text>
+  <text x="1033" y="242.12" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" text-anchor="start">What the reviewer checks</text>
+  <rect x="54" y="263" width="1292" height="107" rx="0" fill="#FFFFFF" stroke="none" stroke-width="1.4" />
+  <text x="70" y="293.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">Frontend engineer</text>
+  <text x="70" y="319.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">RFS-FE · WF-FE</text>
+  <text x="353" y="293.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Approved UI behaviour and design →</text>
+  <text x="353" y="319.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Next.js components, routes and focused</text>
+  <text x="353" y="345.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">checks.</text>
+  <text x="748" y="293.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">RFS-FE-REVIEW</text>
+  <text x="1033" y="293.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Interaction states, access</text>
+  <text x="1033" y="319.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">boundaries and UI regressions.</text>
+  <rect x="54" y="370" width="1292" height="107" rx="0" fill="#F0F5F2" stroke="none" stroke-width="1.4" />
+  <text x="70" y="400.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">Backend engineer</text>
+  <text x="70" y="426.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">RFS-BE · WF-BE</text>
+  <text x="353" y="400.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">API contract and domain rules → Flask</text>
+  <text x="353" y="426.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">handlers, services and test evidence.</text>
+  <text x="748" y="400.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">RFS-BE-REVIEW</text>
+  <text x="1033" y="400.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Input validation, permission</text>
+  <text x="1033" y="426.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">enforcement, transactions and</text>
+  <text x="1033" y="452.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">API responses.</text>
+  <rect x="54" y="477" width="1292" height="107" rx="0" fill="#FFFFFF" stroke="none" stroke-width="1.4" />
+  <text x="70" y="507.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">UI/UX designer</text>
+  <text x="70" y="533.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">RFS-UX · WF-UX</text>
+  <text x="353" y="507.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">User needs and screen constraints →</text>
+  <text x="353" y="533.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">mockups, interaction states and</text>
+  <text x="353" y="559.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">guidance for frontend.</text>
+  <text x="748" y="507.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">RFS-UX-REVIEW</text>
+  <text x="1033" y="507.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Usability, responsive layouts,</text>
+  <text x="1033" y="533.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">accessibility and fidelity to the</text>
+  <text x="1033" y="559.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">brief.</text>
+  <rect x="54" y="584" width="1292" height="107" rx="0" fill="#F0F5F2" stroke="none" stroke-width="1.4" />
+  <text x="70" y="614.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">Security engineer</text>
+  <text x="70" y="640.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">RFS-SEC · WF-SEC</text>
+  <text x="353" y="614.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Approved trust boundaries and risks →</text>
+  <text x="353" y="640.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">scoped controls or security findings.</text>
+  <text x="748" y="614.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">RFS-SEC-REVIEW</text>
+  <text x="1033" y="614.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Sensitive data handling,</text>
+  <text x="1033" y="640.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">authorisation and independently</text>
+  <text x="1033" y="666.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">checked controls.</text>
+  <rect x="54" y="691" width="1292" height="107" rx="0" fill="#FFFFFF" stroke="none" stroke-width="1.4" />
+  <text x="70" y="721.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">Database engineer</text>
+  <text x="70" y="747.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">RFS-DB · WF-DB</text>
+  <text x="353" y="721.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Schema and data constraints →</text>
+  <text x="353" y="747.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">migration or query changes and</text>
+  <text x="353" y="773.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">validation evidence.</text>
+  <text x="748" y="721.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">RFS-DB-REVIEW</text>
+  <text x="1033" y="721.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Keys, data access, integrity and</text>
+  <text x="1033" y="747.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">migration safety.</text>
+  <rect x="54" y="798" width="1292" height="107" rx="0" fill="#F0F5F2" stroke="none" stroke-width="1.4" />
+  <text x="70" y="828.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">AI/chatbot engineer</text>
+  <text x="70" y="854.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">RFS-BOT · WF-BOT</text>
+  <text x="353" y="828.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Approved intents, fixtures and tool</text>
+  <text x="353" y="854.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">permissions → chatbot behaviour and</text>
+  <text x="353" y="880.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">evaluation evidence.</text>
+  <text x="748" y="828.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">RFS-BOT-REVIEW</text>
+  <text x="1033" y="828.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Routing, safe tool use,</text>
+  <text x="1033" y="854.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">confirmations and model/data</text>
+  <text x="1033" y="880.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">boundaries.</text>
+  <rect x="54" y="905" width="1292" height="107" rx="0" fill="#FFFFFF" stroke="none" stroke-width="1.4" />
+  <text x="70" y="935.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">Automation engineer</text>
+  <text x="70" y="961.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">RFS-AUTO · WF-AUTO</text>
+  <text x="353" y="935.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Authorised trigger, inputs and output</text>
+  <text x="353" y="961.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">scope → workflow scripts or automation</text>
+  <text x="353" y="987.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">changes.</text>
+  <text x="748" y="935.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">RFS-AUTO-REVIEW</text>
+  <text x="1033" y="935.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Trigger scope, output limits,</text>
+  <text x="1033" y="961.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">idempotency and failure</text>
+  <text x="1033" y="987.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">handling.</text>
+  <rect x="54" y="1060" width="1292" height="68" rx="6" fill="#E7F4EF" stroke="none" stroke-width="1.4" />
+  <text x="73" y="1095.44" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="start">CROSS-DOMAIN WORK</text>
+  <text x="282" y="1095.96" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="400" text-anchor="start">Only the pairs relevant to the task are invoked, one role at a time. The UI/UX and frontend pairs share the Front end Dev</text>
+  <text x="282" y="1118.96" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="400" text-anchor="start">label.</text>
+</svg>

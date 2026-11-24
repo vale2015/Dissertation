@@ -1,5 +1,8 @@
 # RFS documentation
 
+- [Diagram gallery](diagrams/index.html) — 33 reviewed diagrams with SVG previews, editable diagrams.net sources, and the preserved originals. Includes seven diagrams of the agentic development team.
+- [Diagram catalogue and evidence](diagrams/README.md) — original-to-redesign mapping, source references and independent verification.
+
 - [New specialist architecture](agents/RFS_AGENTIC_ARCHITECTURE.md) — seven engineer/reviewer pairs, Backlog Handoff and compact fresh-context invocation.
 
 - [22 November agentic improvements](agents/RFS_AGENTIC_IMPROVEMENTS_2026-11-22.md) — ordered specialist, reviewer, context and Trello implementation under #58/#68.

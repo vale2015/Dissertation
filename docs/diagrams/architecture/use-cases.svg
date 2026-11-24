@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="773" viewBox="0 0 1400 773" role="img" aria-labelledby="title desc">
+  <title id="title">Use cases by application role</title>
+  <desc id="desc">Signed-in staff, supervisors and managers share a login and receive different permissions. Expands the manager-only view into the implemented permission matrix and guarded manager assistant.</desc>
+  <defs>
+    <marker id="arrow14685C" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#14685C" />
+    </marker>
+    <marker id="arrow385876" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#385876" />
+    </marker>
+    <marker id="arrow142F35" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#142F35" />
+    </marker>
+    <marker id="arrow775118" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#775118" />
+    </marker>
+    <marker id="arrow425F62" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#425F62" />
+    </marker>
+  </defs>
+  <rect width="1400" height="773" fill="#F9FBF9" />
+  <rect x="0" y="0" width="12" height="773" rx="0" fill="#14685C" stroke="none" stroke-width="1.4" />
+  <text x="54" y="46.28" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" text-anchor="start">RFS  /  SYSTEM ARCHITECTURE</text>
+  <text x="54" y="101.28" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="700" text-anchor="start">Use cases by application role</text>
+  <text x="55" y="146.48" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="400" text-anchor="start">Signed-in staff, supervisors and managers share a login and receive different permissions.</text>
+  <polyline points="54,177 1346,177" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <rect x="54" y="211" width="1292" height="52" rx="4" fill="#142F35" stroke="none" stroke-width="1.4" />
+  <text x="70" y="242.12" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" text-anchor="start">Capability</text>
+  <text x="648" y="242.12" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" text-anchor="start">Staff</text>
+  <text x="886" y="242.12" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" text-anchor="start">Supervisor</text>
+  <text x="1124" y="242.12" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" text-anchor="start">Manager</text>
+  <rect x="54" y="263" width="1292" height="60" rx="0" fill="#FFFFFF" stroke="none" stroke-width="1.4" />
+  <text x="70" y="293.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">Own profile and account settings</text>
+  <text x="648" y="293.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Available</text>
+  <text x="886" y="293.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Available</text>
+  <text x="1124" y="293.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Available</text>
+  <rect x="54" y="323" width="1292" height="60" rx="0" fill="#F0F5F2" stroke="none" stroke-width="1.4" />
+  <text x="70" y="353.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">Operational dashboard and bookings</text>
+  <text x="648" y="353.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">—</text>
+  <text x="886" y="353.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Available</text>
+  <text x="1124" y="353.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Available</text>
+  <rect x="54" y="383" width="1292" height="60" rx="0" fill="#FFFFFF" stroke="none" stroke-width="1.4" />
+  <text x="70" y="413.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">Reservation, staffing and accuracy forecasts</text>
+  <text x="648" y="413.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">—</text>
+  <text x="886" y="413.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Available</text>
+  <text x="1124" y="413.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Available</text>
+  <rect x="54" y="443" width="1292" height="60" rx="0" fill="#F0F5F2" stroke="none" stroke-width="1.4" />
+  <text x="70" y="473.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">View management reports</text>
+  <text x="648" y="473.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">—</text>
+  <text x="886" y="473.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Available</text>
+  <text x="1124" y="473.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Available</text>
+  <rect x="54" y="503" width="1292" height="60" rx="0" fill="#FFFFFF" stroke="none" stroke-width="1.4" />
+  <text x="70" y="533.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">View staffing rules and administer accounts</text>
+  <text x="648" y="533.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">—</text>
+  <text x="886" y="533.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">—</text>
+  <text x="1124" y="533.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Available</text>
+  <rect x="54" y="563" width="1292" height="60" rx="0" fill="#F0F5F2" stroke="none" stroke-width="1.4" />
+  <text x="70" y="593.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">RFS AI, including confirmed staff actions</text>
+  <text x="648" y="593.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">—</text>
+  <text x="886" y="593.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">—</text>
+  <text x="1124" y="593.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Available</text>
+  <rect x="54" y="671" width="1292" height="68" rx="6" fill="#E7F4EF" stroke="none" stroke-width="1.4" />
+  <text x="73" y="706.44" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="start">ACCESS CHECKS</text>
+  <text x="282" y="706.96" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="400" text-anchor="start">Flask enforces backend permissions. Signing out ends the browser session for any role.</text>
+</svg>

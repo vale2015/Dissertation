@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="827" viewBox="0 0 1400 827" role="img" aria-labelledby="title desc">
+  <title id="title">Restaurant manager empathy map</title>
+  <desc id="desc">Original research synthesis · the four quadrants describe the planning experience of the manager persona. Groups overlapping sticky notes while preserving the distinct concerns, actions and feelings.</desc>
+  <defs>
+    <marker id="arrow14685C" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#14685C" />
+    </marker>
+    <marker id="arrow385876" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#385876" />
+    </marker>
+    <marker id="arrow142F35" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#142F35" />
+    </marker>
+    <marker id="arrow775118" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#775118" />
+    </marker>
+    <marker id="arrow425F62" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#425F62" />
+    </marker>
+  </defs>
+  <rect width="1400" height="827" fill="#F9FBF9" />
+  <rect x="0" y="0" width="12" height="827" rx="0" fill="#775118" stroke="none" stroke-width="1.4" />
+  <text x="54" y="46.28" fill="#775118" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" text-anchor="start">RFS  /  ORIGINAL DESIGN RESEARCH</text>
+  <text x="54" y="101.28" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="700" text-anchor="start">Restaurant manager empathy map</text>
+  <text x="55" y="146.48" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="400" text-anchor="start">Original research synthesis · the four quadrants describe the planning experience of the manager persona.</text>
+  <polyline points="54,177 1346,177" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <rect x="54" y="205" width="630" height="221" rx="8" fill="#FFFFFF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="77" y="234.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">EXPRESSED NEEDS</text>
+  <text x="77" y="273.68" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="700" text-anchor="start">Says</text>
+  <text x="77" y="313.64" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="400" text-anchor="start">Needs to know how busy service will be and avoid</text>
+  <text x="77" y="342.64" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="400" text-anchor="start">overstaffing quiet shifts. Wants quick access to booking</text>
+  <text x="77" y="371.64" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="400" text-anchor="start">information in one simple system. Has little time for</text>
+  <text x="77" y="400.64" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="400" text-anchor="start">spreadsheets and needs to control labour costs.</text>
+  <rect x="716" y="205" width="630" height="221" rx="8" fill="#FFFFFF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="739" y="234.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">QUESTIONS</text>
+  <text x="739" y="273.68" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="700" text-anchor="start">Thinks</text>
+  <text x="739" y="313.64" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="400" text-anchor="start">Will the weekend be busier? Which days will be quiet? Can</text>
+  <text x="739" y="342.64" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="400" text-anchor="start">the forecast guide planning? Does the rota meet demand,</text>
+  <text x="739" y="371.64" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="400" text-anchor="start">and can staffing be reduced while maintaining service</text>
+  <text x="739" y="400.64" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="400" text-anchor="start">quality?</text>
+  <rect x="54" y="446" width="630" height="221" rx="8" fill="#FFFFFF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="77" y="475.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">OBSERVED IN PERSONA</text>
+  <text x="77" y="514.68" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="700" text-anchor="start">Does</text>
+  <text x="77" y="554.64" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="400" text-anchor="start">Checks booking records and trends, reviews predicted</text>
+  <text x="77" y="583.64" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="400" text-anchor="start">covers, looks for busy and quiet days, adjusts the rota and</text>
+  <text x="77" y="612.64" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="400" text-anchor="start">monitors labour cost and service quality.</text>
+  <rect x="716" y="446" width="630" height="221" rx="8" fill="#FFFFFF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="739" y="475.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">EMOTIONAL CONTEXT</text>
+  <text x="739" y="514.68" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="700" text-anchor="start">Feels</text>
+  <text x="739" y="554.64" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="400" text-anchor="start">Pressure during busy periods and uncertainty when demand</text>
+  <text x="739" y="583.64" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="400" text-anchor="start">changes. Manual planning and complex tools cause</text>
+  <text x="739" y="612.64" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="400" text-anchor="start">frustration. Clear information supports confidence, efficiency</text>
+  <text x="739" y="641.64" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="400" text-anchor="start">and decisions backed by data.</text>
+  <rect x="54" y="725" width="1292" height="68" rx="6" fill="#E7F4EF" stroke="none" stroke-width="1.4" />
+  <text x="73" y="760.44" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="start">RESEARCH STATUS</text>
+  <text x="282" y="760.96" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="400" text-anchor="start">The wording summarises the original persona board. It is not presented as a new set of participant quotations.</text>
+</svg>
