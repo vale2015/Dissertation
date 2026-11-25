@@ -180,6 +180,9 @@ main section>p:not(.sources),.intro-problem,.subsection>p:not(.sources){max-widt
 @media(max-width:540px){#delivery .role-list>li{grid-template-columns:1fr;gap:2px}#delivery .route-table th,#delivery .route-table td{padding:6px}}
 @media(max-width:700px){#delivery .route-table-hint{display:block}}
 @media print{#delivery .route-table-scroll{overflow:visible}#delivery .route-table{min-width:0}#delivery .route-table-hint{display:none}}
+.design-status{--red:#09665e;--accent-wash:#e1f1ed;margin:24px 0;padding:clamp(18px,3vw,30px);border:1px solid var(--line);border-top:4px solid var(--red);background:var(--white)}
+.design-status table{width:100%;border-collapse:collapse;text-align:left}.design-status th,.design-status td{padding:12px;border:1px solid var(--line);vertical-align:top}.design-status th{width:28%}.design-status a{overflow-wrap:anywhere}.diagram-export{display:block;width:100%;height:auto;background:var(--white)}
+@media(max-width:540px){.design-status th,.design-status td{display:block;width:100%}.design-status td{border-top:0}}
 </style>
 </head>
 <body>
@@ -192,8 +195,26 @@ main section>p:not(.sources),.intro-problem,.subsection>p:not(.sources){max-widt
 <li><a href="#assistant"><strong>RFS AI chatbot</strong><span>Manager experience and request routing</span></a></li>
 <li><a href="#delivery"><strong>Agentic development</strong><span>Specialist handoffs and research</span></a></li>
 <li><a href="#token-usage"><strong>Token usage</strong><span>Workflow ledger and model routing</span></a></li>
+<li><a href="#figma-workspace"><strong>Figma UI workspace</strong><span>Connected design file, foundations and next screens</span></a></li>
 </ol>
 </nav>
+<section class="design-status" id="figma-workspace" aria-labelledby="figma-title">
+<p class="eyebrow">Design and development &middot; 25 November 2026</p>
+<h2 id="figma-title" tabindex="-1">Figma is connected to the RFS design workflow</h2>
+<p class="lead">The original RFS Figma file is now the project&rsquo;s connected UI design workspace. It brings the original research, reusable UI foundations and the current-screen design area into one file.</p>
+<p><a href="https://www.figma.com/design/vPKrtyR0JhVRLpyThwLtzm/RFS---Restaurant-Forecasting-System?node-id=206-414">Open the RFS Figma design workspace</a></p>
+<table aria-label="RFS Figma workspace content"><tbody>
+<tr><th scope="row">01 Original research and UI</th><td>The original page was renamed and all 106 original top-level items were preserved, including research, wireframes and the original high-fidelity designs.</td></tr>
+<tr><th scope="row">02 Current product UI</th><td>The page is created and ready for the current product screens. Updated screen layouts have not yet been assembled.</td></tr>
+<tr><th scope="row">03 UI foundations</th><td>Shared paint and typography styles; reusable buttons, fields, KPI cards, navigation, table rows, messages and notices; the current sidebar and editable chart components; and the source RFS mascot, account controls and assistant panel.</td></tr>
+</tbody></table>
+<h3>How designs inform implementation</h3>
+<p>Figma holds design layouts, shared UI assets and prototypes. The UI/UX agent prepares a proposed frame, the PM identifies the approved revision, and the frontend agent implements it using the existing codebase. A separate reviewer checks the implemented result. GitHub <code>main</code> remains the access point for the latest published code and documentation.</p>
+<p>Figma file access and edits were verified in this connected session. The separate Codex agent inside VS Code still needs its own MCP authentication. The connection does not establish continuous automatic synchronization between the canvas and application code.</p>
+<h3>Next design steps</h3>
+<ol class="brief-points"><li>Inspect the saved component IDs and finish checking foundation sizing, the launcher layout and responsive behavior.</li><li>Build current desktop and mobile screens using these components, the six current navigation destinations and the left-docked RFS AI panel.</li><li>Review the completed frames against the running app, record the approved design links and verify access from the VS Code agent.</li></ol>
+<p class="sources"><a href="../design/FIGMA_UI_SOURCE_OF_TRUTH.md">Figma setup and working agreement</a><a href="../design/FIGMA_FILE_REGISTER.md">Design file and continuation record</a><a href="../diagrams/index.html">33 reviewed project diagrams</a></p>
+</section>
 <section class="hero" id="overview" aria-labelledby="title">
 <h1 id="title" tabindex="-1">Restaurant Forecasting System</h1>
 <p class="lead">Help independent restaurant managers plan each service using bookings, expected covers and staffing recommendations in one place.</p>
@@ -358,7 +379,7 @@ main section>p:not(.sources),.intro-problem,.subsection>p:not(.sources){max-widt
 </figure>
 <div class="grid">
 <div class="card"><h3>What Qwen is and why we chose it</h3><p>Qwen is a language model that helps interpret everyday wording. The project chose Qwen 3.8 through Cloudflare Workers AI using a free account for the prototype. Its role is to suggest a task from a fixed list. The app checks permissions and carries out the task.</p></div>
-<div class="card"><h3>Next staff workflow</h3><p>Typed registration and editing are planned, with exact-account review, secure password capture, explicit confirmation and retry-safe writes.</p></div>
+<div class="card"><h3>Implemented staff workflow</h3><p>Conversational registration and editing include exact-account review, private password capture, explicit confirmation and retry-safe writes. The accepted chatbot release is recorded separately from this dated demonstration prototype.</p></div>
 </div>
 <p class="sources"><a href="https://github.com/vale2015/Dissertation/blob/main/docs/agents/AGENT.md">Request routing and permissions</a><a href="https://github.com/vale2015/Dissertation/blob/main/docs/chatbot/RFS%20Chatbot%20Architecture%20Design.md">Chatbot architecture and model choice</a><a href="https://github.com/vale2015/Dissertation/blob/main/docs/chatbot/STAFF_MANAGEMENT_CHAT_WORKFLOW.md">Staff workflow plan</a></p>
 </div>
@@ -374,16 +395,16 @@ main section>p:not(.sources),.intro-problem,.subsection>p:not(.sources){max-widt
 <div class="agent-arrow" aria-hidden="true">&darr;</div>
 <div class="agent-node"><strong>Engineering lead and workflow start</strong><span>The lead assesses risk and selects the delivery path. The coordinator records the root chat and UTC start of the workflow.</span></div>
 <div class="agent-arrow" aria-hidden="true">&darr;</div>
-<div class="agent-node"><strong>Frontend or backend engineer</strong><span>Implements the change, runs focused checks and records the result.</span></div>
+<div class="agent-node"><strong>Selected specialist engineer or UI/UX designer</strong><span>The coordinator selects the relevant frontend, backend, UI/UX, security, database, AI/chatbot or automation specialist. One specialist works at a time, then hands actual results to its dedicated reviewer.</span></div>
 <div class="agent-arrow" aria-hidden="true">&darr;</div>
 <div class="agent-paths">
-<div class="agent-node"><strong>Quick</strong><span>Focused self-check for a small, low-risk change.</span></div>
+<div class="agent-node"><strong>Quick</strong><span>Focused independent review for an isolated, low-risk change. Implementer self-checks are recorded separately.</span></div>
 <div class="agent-node"><strong>Standard</strong><span>Independent QA tests the change against the acceptance criteria.</span></div>
 <div class="agent-node"><strong>Full</strong><span>Independent QA plus UX, security or AI review as needed. Reviewers work one at a time.</span></div>
 </div>
 <div class="agent-loop"><strong>If checks find an issue</strong><span>The reviewer hands evidence back for a fix and retest. If the same defect remains after two cycles, report the blocker.</span></div>
 <div class="agent-arrow"><small>At meaningful handoffs</small><span aria-hidden="true">&darr;</span></div>
-<div class="agent-node"><strong>Backlog coordinator and ticket commenter</strong><span>For a status change, update the tracker first and mirror it on the matching Trello card. Record the role&rsquo;s result, checks, evidence and next action on that card.</span></div>
+<div class="agent-node"><strong>Backlog Handoff</strong><span>Receives the checked or blocked outcome. Updates the tracker first, mirrors the matching Trello card and records Result, Checked, Next and Evidence. A card move does not establish completion.</span></div>
 <div class="agent-arrow" aria-hidden="true">&darr;</div>
 <div class="agent-node"><strong>Collect and record usage</strong><span>The coordinator collects response records from the root chat and its descendants, counts each response once and saves the snapshot under the stable workflow ID.</span></div>
 <div class="agent-arrow" aria-hidden="true">&darr;</div>
@@ -401,23 +422,24 @@ main section>p:not(.sources),.intro-problem,.subsection>p:not(.sources){max-widt
 <div class="agent-arrow"><small>What each role receives, does and hands back</small><span aria-hidden="true">&darr;</span></div>
 <ul class="role-list" aria-label="Project roles and handoffs">
 <li><strong>Engineering lead</strong><span>Uses the approved task, tracker and relevant knowledge-base evidence to set scope, risks and checks. Hands the delivery path and acceptance criteria to the implementer.</span></li>
-<li><strong>Frontend engineer</strong><span>Uses the task brief to change and self-check the Next.js interface. Hands the GitHub changes and test results to the coordinator or reviewer.</span></li>
-<li><strong>Backend engineer</strong><span>Uses the task brief to change and self-check Flask, API or data logic. Hands the GitHub changes, test results and any data risks to the coordinator or reviewer.</span></li>
-<li><strong>QA engineer</strong><span>Receives the change and criteria. Independently tests acceptance and regressions, then sends passing evidence or a reproducible defect to the coordinator.</span></li>
-<li><strong>UX reviewer</strong><span>Receives the manager journey and screen changes. Checks usability, responsive behaviour and accessibility, then returns findings and retest steps.</span></li>
-<li><strong>Security reviewer</strong><span>Receives the change and risk areas. Reviews permissions, data handling and automated actions, then returns findings and verification criteria.</span></li>
-<li><strong>AI evaluator</strong><span>Receives chatbot scenarios and expected outcomes. Checks intent routing and tool use, then returns results and failure cases.</span></li>
-<li><strong>Backlog coordinator</strong><span>Receives the task ID and delivery evidence. Updates the authoritative improvement tracker, then mirrors the resulting status on the matching Trello card.</span></li>
-<li><strong>Ticket commenter</strong><span>Receives a specialist&rsquo;s handoff and its task ID. Posts the result, checks, next action and evidence on the matching Trello card for the PM.</span></li>
+<li><strong>Frontend engineer and reviewer</strong><span><code>RFS-FE</code> implements the Next.js interface; <code>RFS-FE-REVIEW</code> independently checks behavior, regressions and access. Approved Figma frames provide design context.</span></li>
+<li><strong>Backend engineer and reviewer</strong><span><code>RFS-BE</code> implements Flask contracts and business logic; <code>RFS-BE-REVIEW</code> checks validation, permissions and regressions.</span></li>
+<li><strong>UI/UX designer and reviewer</strong><span><code>RFS-UX</code> prepares screens and interaction guidance; <code>RFS-UX-REVIEW</code> checks manager journeys, responsive layout and accessibility.</span></li>
+<li><strong>Security engineer and reviewer</strong><span><code>RFS-SEC</code> implements scoped safeguards; <code>RFS-SEC-REVIEW</code> independently checks authorization, privacy and sensitive actions.</span></li>
+<li><strong>Database engineer and reviewer</strong><span><code>RFS-DB</code> handles approved schema and data-integrity changes; <code>RFS-DB-REVIEW</code> checks migrations, compatibility and access. Production writes retain their approval gates.</span></li>
+<li><strong>AI/chatbot engineer and reviewer</strong><span><code>RFS-BOT</code> implements routing and supported tools; <code>RFS-BOT-REVIEW</code> checks grounding, fallbacks, privacy and safe actions.</span></li>
+<li><strong>Automation engineer and reviewer</strong><span><code>RFS-AUTO</code> implements approved workflows; <code>RFS-AUTO-REVIEW</code> checks trigger scope, repeat execution, retries and recovery.</span></li>
+<li><strong>Backlog Handoff</strong><span><code>RFS-BACKLOG</code> receives delivery evidence, updates the authoritative tracker, then synchronizes the authorized Trello card and concise handoff comment.</span></li>
 <li><strong>Token-usage analyst</strong><span>Receives only sanitized counters, relevant history and flags from the private workflow ledger. Returns ranked evidence, actions and success checks to the coordinator.</span></li>
 </ul>
 </div>
 </figure>
 <ul class="brief-points">
-<li>Handoffs include the task ID, changed files, acceptance checks, actual test results, risks, next role and any decision the PM needs to make.</li>
-<li>Where independent QA is required, the reviewer supplies the acceptance evidence. A focused self-check is recorded as such.</li>
+<li>Fresh role packets are capped at 500 words and handoffs at 200 words. They include the task ID, actual preceding agent, changed files, checks, gaps and next action.</li>
+<li>Every delivery tier uses a separate reviewer. One workflow and one specialist are active at a time; after two unsuccessful fix/retest cycles on the same defect, record the blocker.</li>
 </ul>
-<p class="sources"><a href="https://github.com/vale2015/Dissertation/blob/main/AGENTS.md">Repository instructions</a><a href="https://github.com/vale2015/Dissertation/blob/main/docs/agents/RFS_AI_TEAM_WORKFLOW.md">Delivery workflow</a><a href="https://github.com/vale2015/Dissertation/blob/main/docs/product/IMPROVEMENT_TRACKER.md">Improvement tracker</a><a href="https://trello.com/b/vF796eiJ/rfs-backlog-tasks">RFS Trello board</a></p>
+<figure class="diagram"><figcaption>All specialist pairs and coordination roles</figcaption><img class="diagram-export" src="../diagrams/agentic/specialist-pairs.svg" alt="The seven RFS implementer and independent reviewer pairs, with PM, coordinator, Backlog Handoff and token analysis responsibilities."></figure>
+<p class="sources"><a href="../agents/RFS_AGENTIC_ARCHITECTURE.md">Current agentic architecture</a><a href="../diagrams/agentic/delivery-paths.svg">Sequential delivery paths</a><a href="../diagrams/agentic/context-handoff.svg">Context and handoff diagram</a><a href="https://github.com/vale2015/Dissertation/blob/main/AGENTS.md">Repository instructions</a><a href="https://github.com/vale2015/Dissertation/blob/main/docs/agents/RFS_AI_TEAM_WORKFLOW.md">Delivery workflow</a><a href="https://github.com/vale2015/Dissertation/blob/main/docs/product/IMPROVEMENT_TRACKER.md">Improvement tracker</a><a href="https://trello.com/b/vF796eiJ/rfs-backlog-tasks">RFS Trello board</a></p>
 <section class="subsection" id="token-usage" aria-labelledby="token-usage-title">
 <p class="eyebrow">Development measurement</p>
 <h2 id="token-usage-title" tabindex="-1">Token usage by workflow</h2>
@@ -455,6 +477,7 @@ main section>p:not(.sources),.intro-problem,.subsection>p:not(.sources){max-widt
 <tr><th scope="row">Implementation</th><td>gpt-6.2-sol</td><td>Medium</td></tr>
 <tr><th scope="row">Independent QA</th><td>gpt-6.1-sol</td><td>High</td></tr>
 <tr><th scope="row">Visual and accessibility review</th><td>gpt-6.1-terra</td><td>High</td></tr>
+<tr><th scope="row">Backlog coordination</th><td>gpt-6.1-sol</td><td>Low</td></tr>
 <tr><th scope="row">Token analysis</th><td>gpt-6.1-sol</td><td>Low</td></tr>
 </tbody>
 </table>
@@ -498,7 +521,7 @@ main section>p:not(.sources),.intro-problem,.subsection>p:not(.sources){max-widt
 </div>
 <p class="sources"><a href="https://github.com/vale2015/Dissertation/blob/main/docs/knowledge/README.md">Knowledge base</a><a href="https://github.com/vale2015/Dissertation/actions/runs/43206462552">Publication run</a><a href="https://github.com/vale2015/Dissertation/blob/main/docs/knowledge/html-output/index.html">Research HTML source</a></p>
 <div class="subsection" aria-labelledby="latest-research-title">
-<h3 id="latest-research-title">Latest research output · 16 November 2026</h3>
+<h3 id="latest-research-title">Published research snapshot · 16 November 2026</h3>
 <p>The source register records a review of nine entry pages across six publishers. It identified two new AI developments and one forecasting benchmark. These are candidates for review.</p>
 <div class="grid">
 <div class="card"><h3>Claude Fable 5.2</h3><p>Anthropic released a model for longer and more complex tasks. RFS could compare it with the current chatbot model on unclear manager requests, measuring accuracy, cost and response time.</p><p class="sources"><a href="https://platform.claude.com/docs/en/models/fable-5-2/whats-new-fable-5-2">Anthropic model notes</a></p></div>
