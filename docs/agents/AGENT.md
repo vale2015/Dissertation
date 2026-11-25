@@ -39,41 +39,33 @@ The chat route validates origin, JSON size, message/context, session, and manage
 
 ## 2. PM-led specialist team
 
-The repository contains reusable skills, **not persistent background agents**. The user is Product Manager and owns scope, priority, and final acceptance. `AGENTS.md` at the repository root coordinates handoffs; `.agents/skills/` contains the role instructions. Specialists work **sequentially**, not in parallel. The Markdown tracker is the authoritative backlog; the [Trello board](TRELLO_BOARD_WORKFLOW.md) mirrors numbered task status and contains descriptions and acceptance criteria.
+The user is the Product Manager (PM) and owns scope, priority, and final acceptance. The coordinator starts with `feature-triage`, picks a pair from the [role registry](../../.agents/team.json), and explicitly invokes one specialist at a time in a single active workflow. The [task packet](../../.agents/task-packet.md) generates a fresh briefing of at most 500 words. The reviewer starts after the implementer's turn ends and receives a handoff of at most 200 words.
 
 ```mermaid
 flowchart TD
-  PM[Product Manager: goal and acceptance] --> T[Engineering lead: feature-triage]
-  T --> P{Proportional path}
-  P -->|QUICK| I[One implementer: frontend or backend]
-  P -->|STANDARD / FULL| I
-  I --> V{Delivery path}
-  V -->|QUICK| S[Focused self-check]
-  V -->|STANDARD / FULL| Q[Independent QA]
-  Q --> X{Risk review needed?}
-  X -->|Yes, one at a time| R[UX / security / AI evaluation]
-  X -->|No| H[Backlog handoff]
-  R --> H
-  S --> H
-  H --> PM2[PM review and acceptance]
-  PM2 -. status and evidence .-> B[(docs/product/IMPROVEMENT_TRACKER.md)]
-  T -. pickup .-> B
-  B -. after tracker update .-> TB[Trello board status mirror]
+  PM["PM scope and acceptance criteria"] --> T["Engineering triage"]
+  T --> I["Selected implementer"]
+  I --> R["Dedicated independent reviewer"]
+  R -->|Defects to fix| I
+  R -->|Checked outcome or unresolved blocker| H["Backlog Handoff"]
+  H --> B["Markdown tracker"]
+  B --> TB["Authorized Trello update"]
+  H --> P["PM acceptance when due"]
 ```
 
-| Skill | When it is used | Responsibility |
-| --- | --- | --- |
-| `feature-triage` | Task pickup or scope change | Define acceptance and select QUICK, STANDARD, or FULL. |
-| `frontend-implementation` | Approved Next.js/UI change | Implement and self-check the frontend. |
-| `backend-implementation` | Approved Flask/data/API change | Implement and self-check the backend. |
-| `quality-assurance` | Non-trivial implementation or release | Independently test criteria and regressions. |
-| `ux-design-review` | Material manager-workflow or visual change | Review usability, responsive behaviour, and accessibility. |
-| `security-review` | Sensitive data or action boundary | Review authorization, exposure, injection, and unsafe automation. |
-| `ai-chatbot-evaluation` | Chatbot model, intent, or tool change | Evaluate routing, safety, and unsupported claims. |
-| `backlog-handoff` | Task-state change or completion | Record evidence and accurate status in the tracker. |
-| `move-board-cards` | After tracker handoff | Create or move the matching Trello card; keep its description and acceptance criteria aligned. |
+| Specialist | Implementer | Dedicated reviewer | Review focus |
+| --- | --- | --- | --- |
+| Frontend | `RFS-FE` | `RFS-FE-REVIEW` | Next.js behavior, client state, responsive layout, and keyboard access |
+| Backend | `RFS-BE` | `RFS-BE-REVIEW` | Flask contracts, validation, permissions, and regressions |
+| UI/UX design | `RFS-UX` | `RFS-UX-REVIEW` | Manager workflows, responsive design, and accessibility |
+| Security | `RFS-SEC` | `RFS-SEC-REVIEW` | Authorization, least privilege, privacy, and sensitive actions |
+| Database | `RFS-DB` | `RFS-DB-REVIEW` | Schema compatibility, migrations, data integrity, and access |
+| AI/chatbot | `RFS-BOT` | `RFS-BOT-REVIEW` | Routing, grounding, fallback behavior, and safe tools |
+| Automation | `RFS-AUTO` | `RFS-AUTO-REVIEW` | Trigger scope, retries, repeat execution, and recovery |
 
-QUICK uses a focused self-check for an isolated low-risk change; STANDARD adds independent QA; FULL adds only the risk reviews needed. An implementer cannot approve their own non-trivial work. A handoff records the task ID, changed files, actual checks, gaps, and next decision. After two unsuccessful fix/retest cycles, report the blocker. Skills do not authorize a `main` merge, deployment, or production data change. The PM re-enabled the board mirror on 7 November 2026; board moves follow the tracker and do not themselves prove completion.
+QUICK uses focused independent review, STANDARD adds relevant regression checks, and FULL adds the risk review selected during triage. The reviewer returns verifiable findings without editing implementation. Two unsuccessful fix/retest cycles end rework on that defect.
+
+Backlog Handoff (`RFS-BACKLOG`) receives review evidence, updates the authoritative Markdown tracker, then performs authorized card moves and comments on the [Trello board](TRELLO_BOARD_WORKFLOW.md). It preserves existing domain and delivery-tier labels and records outstanding PM acceptance. The PM retains authority for releases and production-data changes. The coordinator manages this sequence at each handoff. Runtime activation depends on the client.
 
 **Current evidence:** the skills and workflow are installed and their original configuration was independently reviewed. The #63 Staffing Forecast work exercised the sequence, but tracker [#58](../product/IMPROVEMENT_TRACKER.md) remains Partial until explicit PM acceptance and remaining validation are recorded. On 7 November 2026 the PM re-enabled Trello and the 62 non-deferred tracker items were mirrored with descriptions and acceptance criteria. See the [workflow history](RFS_AI_TEAM_WORKFLOW.md), [board rules](TRELLO_BOARD_WORKFLOW.md), and [chatbot technical note](../chatbot/RFS%20Chatbot%20Architecture%20Design.md).
 

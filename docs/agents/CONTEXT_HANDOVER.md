@@ -1,5 +1,24 @@
 # RFS current handover
 
+## 25 November - Connected Figma workspace and documentation publication
+
+- The PM designated the existing [RFS Figma file](https://www.figma.com/design/vPKrtyR0JhVRLpyThwLtzm/RFS---Restaurant-Forecasting-System?node-id=206-414) as the project UI design workspace. Connected-session file reads and writes passed. Original page 0:1 is now 01 Original research and UI with all 106 top-level items preserved. Page 206:413 is 02 Current product UI; it is created but has no new screen layouts. Page 206:414 is 03 UI foundations with shared paint/text styles and reusable UI assets.
+- [FIGMA_FILE_REGISTER.md](../design/FIGMA_FILE_REGISTER.md) and [FIGMA_SYNC_STATE.json](../design/FIGMA_SYNC_STATE.json) record the exact live IDs, source references and next steps. Navigation set 208:462 supersedes deleted 207:454. Added mascot 213:611, notification icon 213:614, account controls 213:615, header action 213:621 and assistant panel 213:623; the discrete mascot image came from the repository, not a flattened screen capture.
+- #71 is Partial. Next inspect foundations before further construction: the assistant launcher row needs fit review after adding its mascot; field/KPI/notice text and chart internals need fill/resize review; full visual QA, current desktop/mobile frames, prototype journeys and separate VS Code Codex MCP authentication remain open. Do not blindly replay construction records. The Figma connection is not an automatic code synchronization service.
+- The PM requested the presentation updated first, then all project documentation committed to main. Updated the existing plural-named RFS_Agentic_Workflows.html with connected Figma status and current seven specialist/reviewer pairs; preserved the dated interactive prototype and embedded image bytes. The PM asked that the documentation describe the connection and current UI workspace; it does not claim unfinished screen work is complete.
+- The local checkout returned with merge of published b77f07d into local 0be0cca in progress. Documentation content preserves local Figma work, published agent implementation and the longer local diagram QA evidence. Git index writes fail with Permission denied, so the local merge is still unfinished; publish a documentation-only successor to the verified remote head through the connected GitHub service, preserving its existing tree. Backups are in ignored .workflow-usage/docs-merge-20261125. Exact main readback and any automatic Vercel result are reported separately. No Figma, app runtime, database or manual deployment mutation is required for this documentation step.
+- Focused agent workflow regression: 28 of 29 tests passed; the remaining test could not create its symlink fixture because Windows returned EPERM. The existing workflow tools are unchanged by this documentation update. No full-suite pass is claimed.
+
+
+## 24 November - Diagram redesign and agentic documentation
+
+- PM requested every Additional Documentation diagram redesigned and consolidated, then added diagrams explaining all development agents. #70 contains 33 editable diagrams.net/SVG pairs: architecture 9, sequence 8, historical research 8, historical Gantt 1 and agentic development 7. Entry point: [gallery](../diagrams/index.html), [catalogue](../diagrams/README.md).
+- All 34 original images/backups move under docs/diagrams/originals with checked SHA-256 inventory. One ERD backup retains its original local CRLF bytes; archive attributes prevent conversion. Preserve the archive. Research remains historical; current technical diagrams cite the unchanged application baseline and agentic diagrams cite published a272406 definitions.
+- Independent QA passed after one editable-source correction cycle: 33 pairs, 1,174 labels, 289 groups, all 149 relationship arrows attached, independent 298-endpoint movement checks, 388 local links and 34 archive hashes. [Verification](../diagrams/VERIFICATION.md). Native editor roundtrip and live browser interaction remain untested; PM visual acceptance remains open, so #70 is Verify release.
+- The original Windows execution environment became unavailable after final QA. Reviewed sources were retained in a private [review and download page](https://chatgpt.com/space/page_951915d5871881919d16271d9ad4f35d), then recovered for publication. PM explicitly chose GitHub main on 24 November after the automatic upload review requested destination approval. This publication is built on current remote main and preserves its newer unrelated agent/tool/docs work. No synchronization of the now-unavailable Windows checkout is claimed.
+- Git publication/readback is separate from Vercel; no runtime code, Supabase migration, restaurant data or manual deployment changes. Token telemetry was unavailable in the earlier capture; no zero-usage, savings or billing claim is made.
+
+
 ## 23 November — agentic source published after repository authorization
 
 - The PM approved installing ChatGPT Codex Connector for only vale2015/Dissertation. GitHub UI and connector readback verified selected installation 184939334; a branch write succeeded. The previous integration-access blocker is resolved.
@@ -7,8 +26,6 @@
 - Trello steps 1–5 are applied and independently verified: 68 unchanged numbered cards, 231 assignments, one empty first Open list and six EPICS indexes containing 163 memberships; 74 cards/six lists read back. All 29 workflow tests, 21 additional epic cases and deterministic replay passed. Manual Notes retention is instructions-only evidence. Step-5 comment on [#58](https://trello.com/c/OyAxkOHl) was read back as action 6b04014dcf84b44ec8eb6130.
 - #58 remains Partial for full-team PM acceptance. #68 remains Partial for comparable measured savings, activation and adoption. Usage is unknown, not zero; the existing analyst review is retained without a recursive analysis loop. No Windows checkout, restaurant application, database or manual deployment change is included.
 - Next: independently read back the final published file identities and tracker/handover insertion, keep Trello #58/#68 in progress, and deliver the architecture location and refreshed update package. A Git push does not establish a Vercel deployment.
-
-
 
 
 ## Current #68 efficiency actions

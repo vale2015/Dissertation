@@ -1,6 +1,6 @@
 # Figma as the RFS UI source of truth
 
-Research checked: 25 November 2026. Status: recommended setup; connection and Figma workspace creation are not yet verified.
+Research checked: 25 November 2026. Status: Figma file connected and edited; workspace pages and UI foundations created. Current product screen assembly and the separate VS Code connection remain to be verified.
 
 **VS Code / Codex setup, 25 November:** the PM selected Codex as the VS Code agent. Session permissions rejected writing the active `.codex/config.toml` configuration. An [inactive configuration example](CODEX_FIGMA_CONFIG.toml) is provided instead; it does not enable the connection by itself. In Codex's gear menu, open MCP servers, select Add server, choose Streamable HTTP, enter `figma` and `https://mcp.figma.com/mcp`, save, restart the extension, and select Authenticate when offered. Complete Figma sign-in locally. Project configuration requires project trust; do not bypass that prompt. No credentials or approval overrides belong in the example. The Codex CLI was not found on this session's PATH. The Figma VS Code extension is installed, but Codex authentication and design-file access remain unverified.
 
@@ -30,7 +30,7 @@ Figma captures are dated design snapshots. A design edit is implemented through 
 3. Open a specific RFS Figma file link and verify read access.
 4. Verify edit access separately before creating or changing a small test frame.
 
-The available integration was found but reported not installed in this session. A connection suggestion was issued; no successful authorization or Figma file write has been observed.
+The Figma integration is now connected in this session. Reads and edits of the selected RFS file succeeded on 25 November. See the [file register](FIGMA_FILE_REGISTER.md) for the created pages and assets. This does not verify OAuth in a separate VS Code Codex process.
 
 Figma's official remote MCP endpoint is https://mcp.figma.com/mcp. It is a developer-tool connection, separate from any optional Figma-to-GitHub app authorization.
 
@@ -123,7 +123,7 @@ Use states such as Proposed, Approved for implementation, Implemented, Verified 
 - One small PM-approved design adjustment is implemented and independently checked.
 - File/frame URLs and implementation evidence are recorded; unrelated runtime/deployment/data changes are absent.
 
-Still needed: Figma connection, existing/new RFS file selection, confirmed plan/seat and PM choice of the pilot. No paid purchase, account authorization, code installation, capture, component publication or app change was performed by this research.
+The RFS file has been selected and its account reports Starter. Still needed: foundation visual checks, current product screen assembly, PM-approved screen revisions and separate VS Code authentication. No paid upgrade, library publication, runtime app change or automatic synchronization is claimed.
 
 ## Official sources
 
@@ -140,4 +140,3 @@ Checked 25 November 2026; features, eligibility and usage allowances can change.
 - [Code Connect UI setup and manual mappings](https://developers.figma.com/docs/code-connect/code-connect-ui-setup/)
 - [Current MCP rate limits](https://developers.figma.com/docs/figma-mcp-server/rate-limits-access/)
 - [SVG import behavior](https://help.figma.com/hc/en-us/articles/360040028034-Add-images-and-videos-to-designs)
-

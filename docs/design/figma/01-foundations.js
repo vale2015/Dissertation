@@ -1,9 +1,12 @@
+// Construction record for this specific Figma file. Not an automatic migration.
+// Inspect FIGMA_SYNC_STATE.json and the live file before using; later edits supersede some created IDs.
 const page=await figma.getNodeByIdAsync('206:414');
 await figma.setCurrentPageAsync(page);
 if(page.children.length) return {alreadyPopulated:true,pageId:page.id,items:page.children.map(n=>({id:n.id,name:n.name,type:n.type}))};
 const colors={Canvas:'#fafbfc',Surface:'#ffffff',Text:'#101828',Muted:'#667085',Brand:'#a7141c',Tint:'#fff1f2',Border:'#eceef1',Chart:'#db3347',Navy:'#394d78',Success:'#027a48',SuccessTint:'#ecfdf3',Error:'#b42318'};
-const paint={}; for(const [name,value] of Object.entries(colors)) paint[name]=$fig.getStyle('RFS/'+name)||$fig.paintStyle({name:'RFS/'+name,paints:[figma.util.solidPaint(value)]});
-const type={}; for(const [name,size,style] of [['Display',36,'Bold'],['Heading',22,'Semi Bold'],['Section',16,'Semi Bold'],['Body',14,'Regular'],['Label',13,'Semi Bold'],['Small',12,'Regular'],['Caption',11,'Medium'],['Value',29,'Bold']]) type[name]=$fig.getStyle('RFS/'+name)||$fig.textStyle({name:'RFS/'+name,fontName:{family:'Inter',style},fontSize:size,lineHeight:{unit:'PERCENT',value:140}});
+const existingPaintStyles=await figma.getLocalPaintStylesAsync(); const existingTextStyles=await figma.getLocalTextStylesAsync();
+const paint={}; for(const [name,value] of Object.entries(colors)) paint[name]=(existingPaintStyles.some(s=>s.name==='RFS/'+name)?$fig.getStyle(existingPaintStyles.find(s=>s.name==='RFS/'+name).id):null)||$fig.paintStyle({name:'RFS/'+name,paints:[figma.util.solidPaint(value)]});
+const type={}; for(const [name,size,style] of [['Display',36,'Bold'],['Heading',22,'Semi Bold'],['Section',16,'Semi Bold'],['Body',14,'Regular'],['Label',13,'Semi Bold'],['Small',12,'Regular'],['Caption',11,'Medium'],['Value',29,'Bold']]) type[name]=(existingTextStyles.some(s=>s.name==='RFS/'+name)?$fig.getStyle(existingTextStyles.find(s=>s.name==='RFS/'+name).id):null)||$fig.textStyle({name:'RFS/'+name,fontName:{family:'Inter',style},fontSize:size,lineHeight:{unit:'PERCENT',value:140}});
 const T=(s,role='Body',color='Text',extra={})=>$fig.text({name:s.slice(0,48),characters:s,textStyle:type[role],fills:paint[color],...extra});
 const box=(name,children,opts={})=>$fig.autoLayout({name,layoutMode:'VERTICAL',itemSpacing:12,fills:paint.Surface,...opts},children);
 const components={};
@@ -36,4 +39,3 @@ await $fig.done();
 for(const key of ['Button','Nav','Notice']) {const set=components[key].node; const vs=set.children; const maxW=Math.max(...vs.map(v=>v.width)), maxH=Math.max(...vs.map(v=>v.height)); for(let i=0;i<vs.length;i++){ $fig.get(vs[i].id).set({x:24+i*(maxW+24),y:24}); } $fig.get(set.id).set({width:vs.length*(maxW+24)+24,height:maxH+48});}
 await $fig.done();
 return {pageId:page.id,componentIds:Object.fromEntries(Object.entries(components).map(([k,v])=>[k,v.node.id])),paintStyles:Object.fromEntries(Object.entries(paint).map(([k,v])=>[k,v.id])),textStyles:Object.fromEntries(Object.entries(type).map(([k,v])=>[k,v.id])),foundationId:title.node.id};
-

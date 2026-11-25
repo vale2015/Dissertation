@@ -7,6 +7,6 @@ description: Implement RFS Flask API, data integrity, and permission changes. Us
 
 Implement the approved Flask service/API scope with input validation, authorization, explicit errors, and safe database access. Preserve the project's Monday closure and booking rules unless the PM explicitly changes them. Test success, invalid input, forbidden access, and relevant failure paths. Do not use production records as test fixtures or mutate live data without authorization.
 
-Handoff in under 250 words: task ID, role, changed files, acceptance criteria checked, commands and actual results, outstanding risks, next role, and PM decision needed. Self-check is not independent QA.
+Handoff in at most 200 words: task ID, role, changed files, acceptance criteria checked, commands and actual results, outstanding risks, next role, and PM decision needed. Self-check is not independent QA. End the specialist turn before the coordinator starts the dedicated reviewer `RFS-BE-REVIEW` with a fresh task packet.
 
-After a meaningful handoff, use `ticket-comment-handoff` to record the backend outcome on the matching numbered Trello card.
+Give the coordinator a concise `ticket-comment-handoff` draft after a meaningful handoff.

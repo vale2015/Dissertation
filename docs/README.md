@@ -1,10 +1,14 @@
 # RFS documentation
 
-- [Figma UI source of truth](design/FIGMA_UI_SOURCE_OF_TRUTH.md) - researched connection options, design-file structure and the proposed design-to-code workflow; account connection is not yet verified.
+- [RFS Agentic Workflows](presentations/RFS_Agentic_Workflows.html) - current delivery architecture and the connected Figma UI workspace.
+- [Connected Figma design file](design/FIGMA_FILE_REGISTER.md) - page links, reusable assets and the next UI screens.
+- [Figma setup and working agreement](design/FIGMA_UI_SOURCE_OF_TRUTH.md) - connection options and the design-to-code workflow.
 
-- [RFS diagram gallery](diagrams/index.html) and [source catalogue](diagrams/README.md) — 33 editable diagrams covering application architecture, request sequences, the agentic development team, the original project schedule and design research.
+- [Diagram gallery](diagrams/index.html) — 33 reviewed diagrams with SVG previews, editable diagrams.net sources, and the preserved originals. Includes seven diagrams of the agentic development team.
+- [Diagram catalogue and evidence](diagrams/README.md) — original-to-redesign mapping, source references and independent verification.
 
 - [New specialist architecture](agents/RFS_AGENTIC_ARCHITECTURE.md) — seven engineer/reviewer pairs, Backlog Handoff and compact fresh-context invocation.
+
 - [22 November agentic improvements](agents/RFS_AGENTIC_IMPROVEMENTS_2026-11-22.md) — ordered specialist, reviewer, context and Trello implementation under #58/#68.
 
 - [Current project state](agents/CURRENT_STATE.md) — compact startup index; use targeted tracker/handover reads.

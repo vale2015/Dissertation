@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "board_id": "ari:cloud:trello::board/workspace/663e11a16b3c43e0d91d1a4e/6ae4dee9466522b9f1a2e03e",
+  "status_to_list": {
+    "Proposed": "Open",
+    "Open": "READY",
+    "Partial": "IN PROGRESS",
+    "Verify release": "IN REVIEW",
+    "Done": "DONE",
+    "Deferred": null
+  },
+  "domains": [
+    "Front end Dev",
+    "Backend Dev",
+    "Db Dev",
+    "Security Dev",
+    "Bot Dev",
+    "Automation Dev"
+  ],
+  "tiers": [
+    "QUICK",
+    "STANDARD",
+    "FULL"
+  ],
+  "label_updates": "add_only",
+  "epics": {
+    "list": "EPICS",
+    "tier": "FULL",
+    "titles_by_domain": {
+      "Front end Dev": "EPIC — Front end Development",
+      "Backend Dev": "EPIC — Backend Development",
+      "Db Dev": "EPIC — Db Dev",
+      "Security Dev": "EPIC — Security Dev",
+      "Bot Dev": "EPIC — Bot Dev",
+      "Automation Dev": "EPIC — Automation Dev"
+    }
+  }
+}
