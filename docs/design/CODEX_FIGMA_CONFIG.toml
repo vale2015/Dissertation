@@ -1,0 +1,4 @@
+# Inactive example: this file does not configure Codex by itself.
+# Add through Codex's MCP settings, or merge into .codex/config.toml yourself.
+[mcp_servers.figma]
+url = "https://mcp.figma.com/mcp"

@@ -1,5 +1,9 @@
 # RFS documentation
 
+- [RFS Agentic Workflows](presentations/RFS_Agentic_Workflows.html) - current delivery architecture and the connected Figma UI workspace.
+- [Connected Figma design file](design/FIGMA_FILE_REGISTER.md) - page links, reusable assets and the next UI screens.
+- [Figma setup and working agreement](design/FIGMA_UI_SOURCE_OF_TRUTH.md) - connection options and the design-to-code workflow.
+
 - [Diagram gallery](diagrams/index.html) — 33 reviewed diagrams with SVG previews, editable diagrams.net sources, and the preserved originals. Includes seven diagrams of the agentic development team.
 - [Diagram catalogue and evidence](diagrams/README.md) — original-to-redesign mapping, source references and independent verification.
 
