@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1047" viewBox="0 0 1400 1047" role="img" aria-labelledby="title desc">
+  <title id="title">Read labour and revenue estimates</title>
+  <desc id="desc">The dashboard compares forecast labour with a revenue estimate derived from recent demand. Replaces a speculative date-specific labour endpoint with the implemented dashboard read and its mixed reporting periods.</desc>
+  <defs>
+    <marker id="arrow14685C" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#14685C" />
+    </marker>
+    <marker id="arrow385876" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#385876" />
+    </marker>
+    <marker id="arrow142F35" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#142F35" />
+    </marker>
+    <marker id="arrow775118" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#775118" />
+    </marker>
+    <marker id="arrow425F62" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#425F62" />
+    </marker>
+  </defs>
+  <rect width="1400" height="1047" fill="#F9FBF9" />
+  <rect x="0" y="0" width="12" height="1047" rx="0" fill="#14685C" stroke="none" stroke-width="1.4" />
+  <text x="54" y="46.28" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" text-anchor="start">RFS  /  REQUEST SEQUENCES</text>
+  <text x="54" y="101.28" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="700" text-anchor="start">Read labour and revenue estimates</text>
+  <text x="55" y="146.48" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="400" text-anchor="start">The dashboard compares forecast labour with a revenue estimate derived from recent demand.</text>
+  <polyline points="54,177 1346,177" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <text x="55" y="228.44" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="start">OPERATION</text>
+  <text x="55" y="265.48" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="400" text-anchor="start">Read from top to bottom</text>
+  <rect x="520.0" y="208" width="154" height="65" rx="7" fill="#E7F4EF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="597.0" y="247.96" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="700" text-anchor="middle">Dashboard UI</text>
+  <polyline points="597,274 597,883" stroke-width="1.5" stroke-linejoin="round" fill="none" stroke="#B7CAC6" stroke-dasharray="6 5" />
+  <rect x="756.3333333333334" y="208" width="154" height="65" rx="7" fill="#E7F4EF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="833.3333333333334" y="247.96" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="700" text-anchor="middle">Next.js proxy</text>
+  <polyline points="833.33,274 833.33,883" stroke-width="1.5" stroke-linejoin="round" fill="none" stroke="#B7CAC6" stroke-dasharray="6 5" />
+  <rect x="992.6666666666667" y="208" width="154" height="65" rx="7" fill="#E7F4EF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="1069.6666666666667" y="236.96" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="700" text-anchor="middle">Dashboard</text>
+  <text x="1069.6666666666667" y="258.96" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="700" text-anchor="middle">service</text>
+  <polyline points="1069.67,274 1069.67,883" stroke-width="1.5" stroke-linejoin="round" fill="none" stroke="#B7CAC6" stroke-dasharray="6 5" />
+  <rect x="1229.0" y="208" width="154" height="65" rx="7" fill="#E7F4EF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="1306.0" y="247.96" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="700" text-anchor="middle">PostgreSQL</text>
+  <polyline points="1306,274 1306,883" stroke-width="1.5" stroke-linejoin="round" fill="none" stroke="#B7CAC6" stroke-dasharray="6 5" />
+  <polyline points="54,289 1347,289" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <text x="56" y="324.28" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" text-anchor="start">01</text>
+  <text x="100" y="326.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Request dashboard metrics</text>
+  <polyline points="597,320 833.33,320" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#14685C" marker-end="url(#arrow14685C)" />
+  <polyline points="54,355 1347,355" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <text x="56" y="390.28" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" text-anchor="start">02</text>
+  <text x="100" y="392.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Forward authenticated GET /dashboard/</text>
+  <polyline points="833.33,386 1069.67,386" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#14685C" marker-end="url(#arrow14685C)" />
+  <polyline points="54,421 1347,421" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <text x="56" y="456.28" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" text-anchor="start">03</text>
+  <text x="100" y="458.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Read recent demand and business settings</text>
+  <polyline points="1069.67,452 1306,452" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#14685C" marker-end="url(#arrow14685C)" />
+  <polyline points="54,487 1347,487" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <text x="56" y="522.28" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" text-anchor="start">04</text>
+  <text x="100" y="524.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Sum role costs for the active run</text>
+  <polyline points="1069.67,518 1306,518" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#14685C" marker-end="url(#arrow14685C)" />
+  <polyline points="54,553 1347,553" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <text x="56" y="588.28" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" text-anchor="start">05</text>
+  <text x="100" y="590.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Return demand totals, spend settings and labour</text>
+  <polyline points="1306,584 1069.67,584" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#385876" stroke-dasharray="6 5" marker-end="url(#arrow385876)" />
+  <polyline points="54,619 1347,619" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <text x="56" y="654.28" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" text-anchor="start">06</text>
+  <text x="100" y="656.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Estimate food revenue and cost; calculate margin</text>
+  <polyline points="1069.67,638 1106.67,638 1106.67,660 1071.67,660" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#775118" marker-end="url(#arrow775118)" />
+  <polyline points="54,685 1347,685" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <text x="56" y="720.28" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" text-anchor="start">07</text>
+  <text x="100" y="722.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Divide estimated revenue by labour for the ratio</text>
+  <polyline points="1069.67,704 1106.67,704 1106.67,726 1071.67,726" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#775118" marker-end="url(#arrow775118)" />
+  <polyline points="54,751 1347,751" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <text x="56" y="786.28" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" text-anchor="start">08</text>
+  <text x="100" y="788.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Return labour and revenue metrics</text>
+  <polyline points="1069.67,782 833.33,782" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#385876" stroke-dasharray="6 5" marker-end="url(#arrow385876)" />
+  <polyline points="54,817 1347,817" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <text x="56" y="852.28" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" text-anchor="start">09</text>
+  <text x="100" y="854.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Render the dashboard response</text>
+  <polyline points="833.33,848 597,848" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#385876" stroke-dasharray="6 5" marker-end="url(#arrow385876)" />
+  <rect x="54" y="945" width="1292" height="68" rx="6" fill="#E7F4EF" stroke="none" stroke-width="1.4" />
+  <text x="73" y="980.44" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="start">INTERPRETATION</text>
+  <text x="282" y="980.96" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="400" text-anchor="start">Revenue uses recent 30-day covers × average spend. Labour uses the active forecast horizon, with a legacy fallback.</text>
+  <text x="282" y="1003.96" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="400" text-anchor="start">These periods differ.</text>
+</svg>

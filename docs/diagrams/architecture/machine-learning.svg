@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="799" viewBox="0 0 1400 799" role="img" aria-labelledby="title desc">
+  <title id="title">Demand forecasting pipeline</title>
+  <desc id="desc">The serialized model connects offline training to read-time demand prediction. Separates time-aware training/evaluation from recursive serving and downstream staffing persistence.</desc>
+  <defs>
+    <marker id="arrow14685C" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#14685C" />
+    </marker>
+    <marker id="arrow385876" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#385876" />
+    </marker>
+    <marker id="arrow142F35" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#142F35" />
+    </marker>
+    <marker id="arrow775118" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#775118" />
+    </marker>
+    <marker id="arrow425F62" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#425F62" />
+    </marker>
+  </defs>
+  <rect width="1400" height="799" fill="#F9FBF9" />
+  <rect x="0" y="0" width="12" height="799" rx="0" fill="#14685C" stroke="none" stroke-width="1.4" />
+  <text x="54" y="46.28" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" text-anchor="start">RFS  /  SYSTEM ARCHITECTURE</text>
+  <text x="54" y="101.28" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="700" text-anchor="start">Demand forecasting pipeline</text>
+  <text x="55" y="146.48" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="400" text-anchor="start">The serialized model connects offline training to read-time demand prediction.</text>
+  <polyline points="54,177 1346,177" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <polyline points="410,307 521,307" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#14685C" marker-end="url(#arrow14685C)" />
+  <polyline points="877,307 988,307" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#14685C" marker-end="url(#arrow14685C)" />
+  <polyline points="1166,406 1166,434.5 699,434.5 699,463" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#14685C" marker-end="url(#arrow14685C)" />
+  <polyline points="410,562 521,562" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#14685C" marker-end="url(#arrow14685C)" />
+  <polyline points="877,562 988,562" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#14685C" marker-end="url(#arrow14685C)" />
+  <rect x="54" y="208" width="356" height="198" rx="8" fill="#FFFFFF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="74" y="237.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">TRAINING DATA</text>
+  <text x="74" y="276.84" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" text-anchor="start">Daily demand history</text>
+  <text x="74" y="309.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Order historical cover data by date.</text>
+  <text x="74" y="336.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Construct calendar, lag and shifted</text>
+  <text x="74" y="363.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">rolling features.</text>
+  <rect x="521" y="208" width="356" height="198" rx="8" fill="#E7F4EF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="541" y="237.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">TRAINING</text>
+  <text x="541" y="276.84" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" text-anchor="start">Random Forest</text>
+  <text x="541" y="309.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Fit on earlier dates, cross-validate</text>
+  <text x="541" y="336.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">across time and evaluate on</text>
+  <text x="541" y="363.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">held-out later dates.</text>
+  <rect x="988" y="208" width="356" height="198" rx="8" fill="#E7F4EF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="1008" y="237.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">ARTIFACT</text>
+  <text x="1008" y="276.84" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" text-anchor="start">demand_model.pkl</text>
+  <text x="1008" y="309.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Save the estimator, ordered</text>
+  <text x="1008" y="336.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">feature columns and training</text>
+  <text x="1008" y="363.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">metadata. Evaluate MAE, RMSE</text>
+  <text x="1008" y="390.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">and R².</text>
+  <rect x="54" y="463" width="356" height="198" rx="8" fill="#FFFFFF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="74" y="492.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">SERVING INPUT</text>
+  <text x="74" y="531.84" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" text-anchor="start">Recent demand window</text>
+  <text x="74" y="564.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Use up to 90 calendar days</text>
+  <text x="74" y="591.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">through the base date. Require at</text>
+  <text x="74" y="618.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">least 30 usable records.</text>
+  <rect x="521" y="463" width="356" height="198" rx="8" fill="#E7F4EF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="541" y="492.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">SERVING</text>
+  <text x="541" y="531.84" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" text-anchor="start">Recursive prediction</text>
+  <text x="541" y="564.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Build inputs for each future date.</text>
+  <text x="541" y="591.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Apply closure logic and update the</text>
+  <text x="541" y="618.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">rolling history.</text>
+  <rect x="988" y="463" width="356" height="198" rx="8" fill="#FFFFFF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="1008" y="492.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">RESULT</text>
+  <text x="1008" y="531.84" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" text-anchor="start">Daily cover estimates</text>
+  <text x="1008" y="564.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">The demand route returns</text>
+  <text x="1008" y="591.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">predicted covers. Staffing</text>
+  <text x="1008" y="618.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">generation saves a separate run.</text>
+  <rect x="54" y="697" width="1292" height="68" rx="6" fill="#E7F4EF" stroke="none" stroke-width="1.4" />
+  <text x="73" y="732.44" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="start">FORECAST HORIZON</text>
+  <text x="282" y="732.96" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="400" text-anchor="start">The reservation and staffing views offer 7 or 10 days. Predicted covers and recorded service actuals have separate</text>
+  <text x="282" y="755.96" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="400" text-anchor="start">meanings.</text>
+</svg>

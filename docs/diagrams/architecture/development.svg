@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1054" viewBox="0 0 1400 1054" role="img" aria-labelledby="title desc">
+  <title id="title">Local development environment</title>
+  <desc id="desc">The root development command launches the frontend and backend as separate processes. Shows the local same-origin browser API and server-side backend address. Retains the original two-process development setup.</desc>
+  <defs>
+    <marker id="arrow14685C" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#14685C" />
+    </marker>
+    <marker id="arrow385876" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#385876" />
+    </marker>
+    <marker id="arrow142F35" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#142F35" />
+    </marker>
+    <marker id="arrow775118" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#775118" />
+    </marker>
+    <marker id="arrow425F62" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#425F62" />
+    </marker>
+  </defs>
+  <rect width="1400" height="1054" fill="#F9FBF9" />
+  <rect x="0" y="0" width="12" height="1054" rx="0" fill="#14685C" stroke="none" stroke-width="1.4" />
+  <text x="54" y="46.28" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" text-anchor="start">RFS  /  SYSTEM ARCHITECTURE</text>
+  <text x="54" y="101.28" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="700" text-anchor="start">Local development environment</text>
+  <text x="55" y="146.48" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="400" text-anchor="start">The root development command launches the frontend and backend as separate processes.</text>
+  <polyline points="54,177 1346,177" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <polyline points="699,406 699,463" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#14685C" marker-end="url(#arrow14685C)" />
+  <polyline points="699,406 699,434.5 1166,434.5 1166,463" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#14685C" marker-end="url(#arrow14685C)" />
+  <polyline points="410,562 521,562" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#14685C" marker-end="url(#arrow14685C)" />
+  <polyline points="877,562 988,562" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#14685C" marker-end="url(#arrow14685C)" />
+  <polyline points="1166,661 1166,689.5 699,689.5 699,718" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#14685C" marker-end="url(#arrow14685C)" />
+  <polyline points="1166,661 1166,718" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#14685C" marker-end="url(#arrow14685C)" />
+  <rect x="521" y="208" width="356" height="198" rx="8" fill="#E7F4EF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="541" y="237.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">PROJECT ROOT</text>
+  <text x="541" y="276.84" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" text-anchor="start">npm run dev</text>
+  <text x="541" y="309.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">concurrently starts the frontend</text>
+  <text x="541" y="336.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">and backend scripts in their own</text>
+  <text x="541" y="363.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">folders.</text>
+  <rect x="54" y="463" width="356" height="198" rx="8" fill="#FFFFFF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="74" y="492.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">CLIENT</text>
+  <text x="74" y="531.84" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" text-anchor="start">Browser</text>
+  <text x="74" y="564.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Opens the Next.js site and sends</text>
+  <text x="74" y="591.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">same-origin requests to its API</text>
+  <text x="74" y="618.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">routes.</text>
+  <rect x="521" y="463" width="356" height="198" rx="8" fill="#E7F4EF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="541" y="492.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">FRONTEND PROCESS</text>
+  <text x="541" y="531.84" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" text-anchor="start">Next.js · port 3000</text>
+  <text x="541" y="564.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Runs the React UI and forwards</text>
+  <text x="541" y="591.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">backend calls using</text>
+  <text x="541" y="618.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">BACKEND_API_URL.</text>
+  <rect x="988" y="463" width="356" height="198" rx="8" fill="#E7F4EF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="1008" y="492.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">BACKEND PROCESS</text>
+  <text x="1008" y="531.84" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" text-anchor="start">Flask · port 5000</text>
+  <text x="1008" y="564.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">backend/run.py binds to 127.0.0.1</text>
+  <text x="1008" y="591.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">and uses the app factory.</text>
+  <rect x="521" y="718" width="356" height="198" rx="8" fill="#FFFFFF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="541" y="747.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">DATA DEPENDENCY</text>
+  <text x="541" y="786.84" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" text-anchor="start">PostgreSQL</text>
+  <text x="541" y="819.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Flask opens a server-side</text>
+  <text x="541" y="846.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">database connection using its</text>
+  <text x="541" y="873.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">configured settings.</text>
+  <rect x="988" y="718" width="356" height="198" rx="8" fill="#FFFFFF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="1008" y="747.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">FILE DEPENDENCY</text>
+  <text x="1008" y="786.84" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" text-anchor="start">demand_model.pkl</text>
+  <text x="1008" y="819.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">The backend reads this bundled</text>
+  <text x="1008" y="846.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">model when serving demand</text>
+  <text x="1008" y="873.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">predictions.</text>
+  <rect x="54" y="952" width="1292" height="68" rx="6" fill="#E7F4EF" stroke="none" stroke-width="1.4" />
+  <text x="73" y="987.44" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="start">CONFIGURATION</text>
+  <text x="282" y="987.96" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="400" text-anchor="start">The root backend script expects backend/venv/Scripts/python.exe. Application secrets belong in the server environment.</text>
+</svg>

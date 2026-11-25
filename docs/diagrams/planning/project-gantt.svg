@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1162" viewBox="0 0 1400 1162" role="img" aria-labelledby="title desc">
+  <title id="title">Dissertation project schedule</title>
+  <desc id="desc">Original plan · February–June 2026 · 14 phases and three assessment milestones. Reconstructs the plotted dates, assessment groups, phase overlaps and milestones. Dates are read from the original weekly scale.</desc>
+  <defs>
+    <marker id="arrow14685C" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#14685C" />
+    </marker>
+    <marker id="arrow385876" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#385876" />
+    </marker>
+    <marker id="arrow142F35" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#142F35" />
+    </marker>
+    <marker id="arrow775118" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#775118" />
+    </marker>
+    <marker id="arrow425F62" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#425F62" />
+    </marker>
+  </defs>
+  <rect width="1400" height="1162" fill="#F9FBF9" />
+  <rect x="0" y="0" width="12" height="1162" rx="0" fill="#775118" stroke="none" stroke-width="1.4" />
+  <text x="54" y="46.28" fill="#775118" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" text-anchor="start">RFS  /  ORIGINAL PROJECT PLAN</text>
+  <text x="54" y="101.28" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="700" text-anchor="start">Dissertation project schedule</text>
+  <text x="55" y="146.48" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="400" text-anchor="start">Original plan · February–June 2026 · 14 phases and three assessment milestones.</text>
+  <polyline points="54,177 1346,177" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <polyline points="509,255 509,1028" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <text x="509.0" y="235.44" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="400" text-anchor="middle">24 Feb</text>
+  <polyline points="557.16,255 557.16,1028" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <polyline points="605.32,255 605.32,1028" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <text x="605.3199999999999" y="235.44" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="400" text-anchor="middle">10 Mar</text>
+  <polyline points="653.48,255 653.48,1028" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <polyline points="701.64,255 701.64,1028" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <text x="701.64" y="235.44" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="400" text-anchor="middle">24 Mar</text>
+  <polyline points="749.8,255 749.8,1028" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <polyline points="797.96,255 797.96,1028" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <text x="797.96" y="235.44" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="400" text-anchor="middle">07 Apr</text>
+  <polyline points="846.12,255 846.12,1028" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <polyline points="894.28,255 894.28,1028" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <text x="894.28" y="235.44" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="400" text-anchor="middle">21 Apr</text>
+  <polyline points="942.44,255 942.44,1028" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <polyline points="990.6,255 990.6,1028" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <text x="990.5999999999999" y="235.44" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="400" text-anchor="middle">05 May</text>
+  <polyline points="1038.76,255 1038.76,1028" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <polyline points="1086.92,255 1086.92,1028" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <text x="1086.92" y="235.44" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="400" text-anchor="middle">19 May</text>
+  <polyline points="1135.08,255 1135.08,1028" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <polyline points="1183.24,255 1183.24,1028" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <text x="1183.24" y="235.44" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="400" text-anchor="middle">02 Jun</text>
+  <polyline points="1231.4,255 1231.4,1028" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <polyline points="1279.56,255 1279.56,1028" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <text x="1279.56" y="235.44" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="400" text-anchor="middle">16 Jun</text>
+  <text x="55" y="235.44" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="start">PHASE OR MILESTONE</text>
+  <text x="55" y="286.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Literature review</text>
+  <text x="414" y="285.44" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="start">AE2</text>
+  <rect x="509.0" y="272" width="116.96" height="16" rx="5" fill="#14685C" stroke="none" stroke-width="1.4" />
+  <text x="55" y="330.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Project planning</text>
+  <text x="414" y="329.44" fill="#385876" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="start">AE1</text>
+  <rect x="557.16" y="316" width="68.8" height="16" rx="5" fill="#385876" stroke="none" stroke-width="1.4" />
+  <text x="55" y="374.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">AE1 submission</text>
+  <text x="414" y="373.44" fill="#775118" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="start">Due</text>
+  <rect x="618.96" y="360" width="15" height="15" rx="7" fill="#FAEFDA" stroke="#775118" stroke-width="1.4" />
+  <text x="55" y="418.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Requirements gathering</text>
+  <text x="414" y="417.44" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="start">AE2</text>
+  <rect x="632.84" y="404" width="48.16" height="16" rx="5" fill="#14685C" stroke="none" stroke-width="1.4" />
+  <text x="55" y="462.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">System design</text>
+  <text x="414" y="461.44" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="start">AE2</text>
+  <rect x="660.36" y="448" width="75.67999999999999" height="16" rx="5" fill="#14685C" stroke="none" stroke-width="1.4" />
+  <text x="55" y="506.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Dataset preparation</text>
+  <text x="414" y="505.44" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="start">AE2</text>
+  <rect x="708.52" y="492" width="110.08" height="16" rx="5" fill="#14685C" stroke="none" stroke-width="1.4" />
+  <text x="55" y="550.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Backend API development</text>
+  <text x="414" y="549.44" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="start">AE2</text>
+  <rect x="756.6800000000001" y="536" width="130.72" height="16" rx="5" fill="#14685C" stroke="none" stroke-width="1.4" />
+  <text x="55" y="594.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">ML forecasting development</text>
+  <text x="414" y="593.44" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="start">AE2</text>
+  <rect x="832.36" y="580" width="144.48" height="16" rx="5" fill="#14685C" stroke="none" stroke-width="1.4" />
+  <text x="55" y="638.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Frontend dashboard development</text>
+  <text x="414" y="637.44" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="start">AE2</text>
+  <rect x="887.4" y="624" width="172.0" height="16" rx="5" fill="#14685C" stroke="none" stroke-width="1.4" />
+  <text x="55" y="682.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Feature integration</text>
+  <text x="414" y="681.44" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="start">AE2</text>
+  <rect x="990.5999999999999" y="668" width="137.6" height="16" rx="5" fill="#14685C" stroke="none" stroke-width="1.4" />
+  <text x="55" y="726.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Testing and debugging</text>
+  <text x="414" y="725.44" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="start">AE2</text>
+  <rect x="1080.04" y="712" width="103.2" height="16" rx="5" fill="#14685C" stroke="none" stroke-width="1.4" />
+  <text x="55" y="770.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">System evaluation</text>
+  <text x="414" y="769.44" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="start">AE2</text>
+  <rect x="1135.08" y="756" width="89.44" height="16" rx="5" fill="#14685C" stroke="none" stroke-width="1.4" />
+  <text x="55" y="814.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Results analysis</text>
+  <text x="414" y="813.44" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="start">AE2</text>
+  <rect x="1176.3600000000001" y="800" width="61.92" height="16" rx="5" fill="#14685C" stroke="none" stroke-width="1.4" />
+  <text x="55" y="858.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Dissertation writing</text>
+  <text x="414" y="857.44" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="start">AE2</text>
+  <rect x="1093.8" y="844" width="158.24" height="16" rx="5" fill="#14685C" stroke="none" stroke-width="1.4" />
+  <text x="55" y="902.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">AE2 submission</text>
+  <text x="414" y="901.44" fill="#775118" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="start">Due</text>
+  <rect x="1245.04" y="888" width="15" height="15" rx="7" fill="#FAEFDA" stroke="#775118" stroke-width="1.4" />
+  <text x="55" y="946.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Final improvements</text>
+  <text x="414" y="945.44" fill="#70458B" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="start">AE3</text>
+  <rect x="1258.92" y="932" width="20.64" height="16" rx="5" fill="#70458B" stroke="none" stroke-width="1.4" />
+  <text x="55" y="990.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">AE3 final submission</text>
+  <text x="414" y="989.44" fill="#775118" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="start">Due</text>
+  <rect x="1279.44" y="976" width="15" height="15" rx="7" fill="#FAEFDA" stroke="#775118" stroke-width="1.4" />
+  <rect x="54" y="1060" width="1292" height="68" rx="6" fill="#E7F4EF" stroke="none" stroke-width="1.4" />
+  <text x="73" y="1095.44" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="start">READING THE PLAN</text>
+  <text x="282" y="1095.96" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="400" text-anchor="start">Bars show planned spans and circles mark submissions. The milestones plot at about 13 March, 12 June and 17 June.</text>
+  <text x="282" y="1118.96" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="400" text-anchor="start">Completion dates were not supplied.</text>
+</svg>

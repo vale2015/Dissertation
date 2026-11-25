@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="799" viewBox="0 0 1400 799" role="img" aria-labelledby="title desc">
+  <title id="title">Triage, delivery and independent review</title>
+  <desc id="desc">The PM defines scope. Engineering triage chooses the smallest delivery path that covers the risk. Shows the tier choices, reviewer separation, correction limit and checked or blocked handoff.</desc>
+  <defs>
+    <marker id="arrow14685C" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#14685C" />
+    </marker>
+    <marker id="arrow385876" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#385876" />
+    </marker>
+    <marker id="arrow142F35" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#142F35" />
+    </marker>
+    <marker id="arrow775118" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#775118" />
+    </marker>
+    <marker id="arrow425F62" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#425F62" />
+    </marker>
+  </defs>
+  <rect width="1400" height="799" fill="#F9FBF9" />
+  <rect x="0" y="0" width="12" height="799" rx="0" fill="#14685C" stroke="none" stroke-width="1.4" />
+  <text x="54" y="46.28" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" text-anchor="start">RFS  /  DEVELOPMENT WORKFLOW</text>
+  <text x="54" y="101.28" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="700" text-anchor="start">Triage, delivery and independent review</text>
+  <text x="55" y="146.48" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="400" text-anchor="start">The PM defines scope. Engineering triage chooses the smallest delivery path that covers the risk.</text>
+  <polyline points="54,177 1346,177" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <polyline points="410,307 521,307" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#14685C" marker-end="url(#arrow14685C)" />
+  <polyline points="877,307 988,307" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#14685C" marker-end="url(#arrow14685C)" />
+  <polyline points="1166,406 1166,463" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#14685C" marker-end="url(#arrow14685C)" />
+  <polyline points="988,562 877,562" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#14685C" marker-end="url(#arrow14685C)" />
+  <polyline points="521,562 410,562" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#14685C" marker-end="url(#arrow14685C)" />
+  <polyline points="1344,562 1361,562 1361,687 231,687 231,661" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#385876" stroke-dasharray="6 5" marker-end="url(#arrow385876)" />
+  <polyline points="699,463 699,435 1166,435 1166,406" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#775118" stroke-dasharray="6 5" marker-end="url(#arrow775118)" />
+  <rect x="54" y="208" width="356" height="198" rx="8" fill="#FFFFFF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="74" y="237.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">HUMAN DECISION</text>
+  <text x="74" y="276.84" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" text-anchor="start">PM scope and criteria</text>
+  <text x="74" y="309.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Specify the outcome, priority and</text>
+  <text x="74" y="336.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">acceptance criteria. The</text>
+  <text x="74" y="363.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">coordinator records the chosen</text>
+  <text x="74" y="390.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">workflow.</text>
+  <rect x="521" y="208" width="356" height="198" rx="8" fill="#E7F4EF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="541" y="237.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">COORDINATOR</text>
+  <text x="541" y="276.84" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" text-anchor="start">Engineering triage</text>
+  <text x="541" y="309.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">QUICK: focused review.</text>
+  <text x="541" y="336.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">STANDARD: add relevant</text>
+  <text x="541" y="363.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">regressions. FULL: add risk-based</text>
+  <text x="541" y="390.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">domain review.</text>
+  <rect x="988" y="208" width="356" height="198" rx="8" fill="#E7F4EF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="1008" y="237.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">SINGLE ACTIVE SPECIALIST</text>
+  <text x="1008" y="276.84" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" text-anchor="start">Implement and self-check</text>
+  <text x="1008" y="309.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">The selected specialist works within</text>
+  <text x="1008" y="336.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">its packet, checks the change and</text>
+  <text x="1008" y="363.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">hands over actual results.</text>
+  <rect x="988" y="463" width="356" height="198" rx="8" fill="#E7F4EF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="1008" y="492.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">INDEPENDENT SPECIALIST</text>
+  <text x="1008" y="531.84" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" text-anchor="start">Paired review</text>
+  <text x="1008" y="564.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">The implementer ends first. The</text>
+  <text x="1008" y="591.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">reviewer verifies criteria and</text>
+  <text x="1008" y="618.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">returns findings or checked</text>
+  <text x="1008" y="645.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">evidence.</text>
+  <rect x="521" y="463" width="356" height="198" rx="8" fill="#FAEFDA" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="541" y="492.6" fill="#775118" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">IF A CHECK FAILS</text>
+  <text x="541" y="531.84" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" text-anchor="start">Fix and retest</text>
+  <text x="541" y="564.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Reopen the implementation with a</text>
+  <text x="541" y="591.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">bounded correction. After two</text>
+  <text x="541" y="618.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">unsuccessful cycles on one defect,</text>
+  <text x="541" y="645.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">record the blocker.</text>
+  <rect x="54" y="463" width="356" height="198" rx="8" fill="#FFFFFF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="74" y="492.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">STATUS OWNER</text>
+  <text x="74" y="531.84" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" text-anchor="start">Backlog Handoff</text>
+  <text x="74" y="564.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Receives checked or blocked</text>
+  <text x="74" y="591.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">evidence. Records the actual</text>
+  <text x="74" y="618.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">status and any remaining PM</text>
+  <text x="74" y="645.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">decision.</text>
+  <rect x="54" y="697" width="1292" height="68" rx="6" fill="#E7F4EF" stroke="none" stroke-width="1.4" />
+  <text x="73" y="732.44" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="start">CHECKED OUTCOME</text>
+  <text x="282" y="732.96" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="400" text-anchor="start">A passing review can go directly to Backlog Handoff. On a fix, the coordinator reinvokes implementation and fresh review</text>
+  <text x="282" y="755.96" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="400" text-anchor="start">in sequence.</text>
+</svg>

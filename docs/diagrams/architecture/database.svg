@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1682" viewBox="0 0 1400 1682" role="img" aria-labelledby="title desc">
+  <title id="title">Database entities and relationships</title>
+  <desc id="desc">Supabase PostgreSQL · selected keys and links across the core and follow-on migrations. Distinguishes enforced references from derived date/cover links. Adds run, access, reporting, notification and actuals tables.</desc>
+  <defs>
+    <marker id="arrow14685C" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#14685C" />
+    </marker>
+    <marker id="arrow385876" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#385876" />
+    </marker>
+    <marker id="arrow142F35" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#142F35" />
+    </marker>
+    <marker id="arrow775118" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#775118" />
+    </marker>
+    <marker id="arrow425F62" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#425F62" />
+    </marker>
+  </defs>
+  <rect width="1400" height="1682" fill="#F9FBF9" />
+  <rect x="0" y="0" width="12" height="1682" rx="0" fill="#14685C" stroke="none" stroke-width="1.4" />
+  <text x="54" y="46.28" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" text-anchor="start">RFS  /  SYSTEM ARCHITECTURE</text>
+  <text x="54" y="101.28" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="700" text-anchor="start">Database entities and relationships</text>
+  <text x="55" y="146.48" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="400" text-anchor="start">Supabase PostgreSQL · selected keys and links across the core and follow-on migrations.</text>
+  <polyline points="54,177 1346,177" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <text x="54" y="216.44" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="start">FORECAST RUN RELATIONSHIPS</text>
+  <polyline points="243,375 243,350 700,350 700,320" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#14685C" marker-end="url(#arrow14685C)" />
+  <polyline points="700,375 700,350 700,350 700,320" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#14685C" marker-end="url(#arrow14685C)" />
+  <polyline points="1157,375 1157,350 700,350 700,320" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#14685C" marker-end="url(#arrow14685C)" />
+  <rect x="510" y="245" width="380" height="75" rx="6" fill="#E7F4EF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="700.0" y="284.0" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="700" text-anchor="middle">forecast_runs</text>
+  <text x="700.0" y="308.28" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="400" text-anchor="middle">PK  id</text>
+  <rect x="54" y="375" width="378" height="88" rx="6" fill="#FFFFFF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="243.0" y="413.32" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="23" font-weight="700" text-anchor="middle">forecast_run_days</text>
+  <text x="243.0" y="443.28" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="400" text-anchor="middle">Many immutable day rows</text>
+  <rect x="511" y="375" width="378" height="88" rx="6" fill="#FFFFFF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="700.0" y="413.32" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="23" font-weight="700" text-anchor="middle">active_forecast_run</text>
+  <text x="700.0" y="443.28" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="400" text-anchor="middle">One active pointer</text>
+  <rect x="968" y="375" width="378" height="88" rx="6" fill="#FFFFFF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="1157.0" y="413.32" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="23" font-weight="700" text-anchor="middle">staff_cost_forecast</text>
+  <text x="1157.0" y="443.28" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="400" text-anchor="middle">Many role costs; legacy run_id nullable</text>
+  <text x="54" y="505.96" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="400" text-anchor="start">Each child’s run_id references forecast_runs.id. The register below also covers operational and access records.</text>
+  <rect x="54" y="537" width="1292" height="52" rx="4" fill="#142F35" stroke="none" stroke-width="1.4" />
+  <text x="70" y="568.12" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" text-anchor="start">Entity or relation</text>
+  <text x="435" y="568.12" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" text-anchor="start">Stored keys or references</text>
+  <text x="872" y="568.12" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" text-anchor="start">How the application uses it</text>
+  <rect x="54" y="589" width="1292" height="81" rx="0" fill="#FFFFFF" stroke="none" stroke-width="1.4" />
+  <text x="70" y="619.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">users / staff_roles</text>
+  <text x="435" y="619.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">users.staff_role_id → staff_roles.id;</text>
+  <text x="435" y="645.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">invited_by → users.id</text>
+  <text x="872" y="619.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Account identity, application role and optional</text>
+  <text x="872" y="645.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">operational role.</text>
+  <rect x="54" y="670" width="1292" height="81" rx="0" fill="#F0F5F2" stroke="none" stroke-width="1.4" />
+  <text x="70" y="700.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">bookings</text>
+  <text x="435" y="700.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">id (PK), booking_date</text>
+  <text x="872" y="700.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Booking changes recompute a date’s demand</text>
+  <text x="872" y="726.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">aggregates.</text>
+  <rect x="54" y="751" width="1292" height="81" rx="0" fill="#FFFFFF" stroke="none" stroke-width="1.4" />
+  <text x="70" y="781.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">restaurant_demand_features</text>
+  <text x="435" y="781.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">date (PK)</text>
+  <text x="872" y="781.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Daily demand rows feed the forecast by date. The</text>
+  <text x="872" y="807.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">link to individual bookings is derived.</text>
+  <rect x="54" y="832" width="1292" height="81" rx="0" fill="#F0F5F2" stroke="none" stroke-width="1.4" />
+  <text x="70" y="862.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">staffing_rules / business_settings</text>
+  <text x="435" y="862.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">id (PK) on each table</text>
+  <text x="872" y="862.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Cover bands determine role counts. Business</text>
+  <text x="872" y="888.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">settings supply spend and food cost assumptions.</text>
+  <rect x="54" y="913" width="1292" height="81" rx="0" fill="#FFFFFF" stroke="none" stroke-width="1.4" />
+  <text x="70" y="943.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">forecast_runs</text>
+  <text x="435" y="943.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">id (PK)</text>
+  <text x="872" y="943.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Immutable forecast metadata for one generated</text>
+  <text x="872" y="969.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">horizon.</text>
+  <rect x="54" y="994" width="1292" height="81" rx="0" fill="#F0F5F2" stroke="none" stroke-width="1.4" />
+  <text x="70" y="1024.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">forecast_run_days /</text>
+  <text x="70" y="1050.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">active_forecast_run</text>
+  <text x="435" y="1024.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">run_id → forecast_runs.id on both tables</text>
+  <text x="872" y="1024.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Day rows belong to a run. A singleton pointer</text>
+  <text x="872" y="1050.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">identifies the active run.</text>
+  <rect x="54" y="1075" width="1292" height="81" rx="0" fill="#FFFFFF" stroke="none" stroke-width="1.4" />
+  <text x="70" y="1105.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">staff_cost_forecast</text>
+  <text x="435" y="1105.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">run_id → forecast_runs.id (nullable)</text>
+  <text x="872" y="1105.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Staff counts, rate, hours and estimated cost per</text>
+  <text x="872" y="1131.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">role and date. Legacy rows may lack a run.</text>
+  <rect x="54" y="1156" width="1292" height="107" rx="0" fill="#F0F5F2" stroke="none" stroke-width="1.4" />
+  <text x="70" y="1186.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">service_actual_covers /</text>
+  <text x="70" y="1212.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">service_actual_corrections</text>
+  <text x="435" y="1186.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">corrections.service_date →</text>
+  <text x="435" y="1212.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">actuals.service_date; both tables reference</text>
+  <text x="435" y="1238.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">users</text>
+  <text x="872" y="1186.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Recorded service covers and an audit of changes.</text>
+  <text x="872" y="1212.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Dates connect forecasts to actuals for evaluation.</text>
+  <rect x="54" y="1263" width="1292" height="107" rx="0" fill="#FFFFFF" stroke="none" stroke-width="1.4" />
+  <text x="70" y="1293.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">user_account_tokens /</text>
+  <text x="70" y="1319.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">staff_account_audit /</text>
+  <text x="70" y="1345.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">staff_chat_actions</text>
+  <text x="435" y="1293.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">User ID references → users.id</text>
+  <text x="872" y="1293.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Activation and reset tokens, account audits and</text>
+  <text x="872" y="1319.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">pending or executed staff actions.</text>
+  <rect x="54" y="1370" width="1292" height="81" rx="0" fill="#F0F5F2" stroke="none" stroke-width="1.4" />
+  <text x="70" y="1400.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">report_history /</text>
+  <text x="70" y="1426.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">in_app_notifications</text>
+  <text x="435" y="1400.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">created_by / recipient_id → users.id</text>
+  <text x="872" y="1400.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Saved report snapshots and recipient-specific</text>
+  <text x="872" y="1426.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">notifications.</text>
+  <rect x="54" y="1451" width="1292" height="81" rx="0" fill="#FFFFFF" stroke="none" stroke-width="1.4" />
+  <text x="70" y="1481.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">auth_rate_limits</text>
+  <text x="435" y="1481.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Bucket key identifies a counter</text>
+  <text x="872" y="1481.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Stores authentication throttling counters separately</text>
+  <text x="872" y="1507.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">from account records.</text>
+  <rect x="54" y="1580" width="1292" height="68" rx="6" fill="#E7F4EF" stroke="none" stroke-width="1.4" />
+  <text x="73" y="1615.44" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="start">NOTATION</text>
+  <text x="282" y="1615.96" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="400" text-anchor="start">Arrows denote database foreign keys. The date and cover-band matches described in the last column are application</text>
+  <text x="282" y="1638.96" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="400" text-anchor="start">calculations.</text>
+</svg>

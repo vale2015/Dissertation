@@ -1,0 +1,215 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" compressed="false">
+  <diagram name="Restaurant manager journey" id="journey">
+    <mxGraphModel grid="1" gridSize="10" page="1" pageScale="1" pageWidth="1400" pageHeight="854" background="#F9FBF9">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="68" parent="1" vertex="1" connectable="1" style="group;resizable=1;recursiveResize=1;">
+          <mxGeometry x="54" y="30" width="1292" height="128" as="geometry" />
+        </mxCell>
+        <mxCell id="2" parent="1" vertex="1" style="rounded=0;arcSize=5;fillColor=#775118;strokeColor=none;strokeWidth=1.4;">
+          <mxGeometry x="0" y="0" width="12" height="854" as="geometry" />
+        </mxCell>
+        <mxCell id="3" parent="68" vertex="1" value="RFS  /  ORIGINAL DESIGN RESEARCH" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=17;fontColor=#775118;fontStyle=1;spacing=0;">
+          <mxGeometry x="0" y="0" width="1292" height="19.72" as="geometry" />
+        </mxCell>
+        <mxCell id="4" parent="68" vertex="1" value="Restaurant manager journey" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=42;fontColor=#142F35;fontStyle=1;spacing=0;">
+          <mxGeometry x="0" y="34" width="1292" height="48.72" as="geometry" />
+        </mxCell>
+        <mxCell id="5" parent="68" vertex="1" value="Original journey map · how Andrew uses the prototype to make a staffing decision." style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=22;fontColor=#425F62;fontStyle=0;spacing=0;">
+          <mxGeometry x="1" y="96" width="1291" height="25.52" as="geometry" />
+        </mxCell>
+        <mxCell id="6" parent="1" edge="1" style="endArrow=none;endFill=1;strokeColor=#B7CAC6;strokeWidth=1;dashed=0;rounded=0;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="54" y="177" as="sourcePoint" />
+            <mxPoint x="1346" y="177" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="59" parent="1" vertex="1" connectable="1" style="group;resizable=1;recursiveResize=1;">
+          <mxGeometry x="54" y="211" width="1292" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="7" parent="59" vertex="1" style="rounded=1;arcSize=5;fillColor=#142F35;strokeColor=none;strokeWidth=1.4;" connectable="0">
+          <mxGeometry x="0" y="0" width="1292" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="8" parent="59" vertex="1" value="Stage" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=18;fontColor=#FFFFFF;fontStyle=1;spacing=0;">
+          <mxGeometry x="16" y="14" width="178" height="20.88" as="geometry" />
+        </mxCell>
+        <mxCell id="9" parent="59" vertex="1" value="Action" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=18;fontColor=#FFFFFF;fontStyle=1;spacing=0;">
+          <mxGeometry x="226" y="14" width="246" height="20.88" as="geometry" />
+        </mxCell>
+        <mxCell id="10" parent="59" vertex="1" value="Touchpoint" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=18;fontColor=#FFFFFF;fontStyle=1;spacing=0;">
+          <mxGeometry x="504" y="14" width="210" height="20.88" as="geometry" />
+        </mxCell>
+        <mxCell id="11" parent="59" vertex="1" value="Feeling or need" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=18;fontColor=#FFFFFF;fontStyle=1;spacing=0;">
+          <mxGeometry x="746" y="14" width="214" height="20.88" as="geometry" />
+        </mxCell>
+        <mxCell id="12" parent="59" vertex="1" value="Design requirement" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=18;fontColor=#FFFFFF;fontStyle=1;spacing=0;">
+          <mxGeometry x="992" y="14" width="284" height="20.88" as="geometry" />
+        </mxCell>
+        <mxCell id="60" parent="1" vertex="1" connectable="1" style="group;resizable=1;recursiveResize=1;">
+          <mxGeometry x="54" y="263" width="1292" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="13" parent="60" vertex="1" style="rounded=0;arcSize=5;fillColor=#FFFFFF;strokeColor=none;strokeWidth=1.4;" connectable="0">
+          <mxGeometry x="0" y="0" width="1292" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="14" parent="60" vertex="1" value="Access system" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#14685C;fontStyle=1;spacing=0;">
+          <mxGeometry x="16" y="12" width="178" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="15" parent="60" vertex="1" value="Log in securely" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="226" y="12" width="246" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="16" parent="60" vertex="1" value="Login page" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="504" y="12" width="210" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="17" parent="60" vertex="1" value="Needs quick access" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="746" y="12" width="214" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="18" parent="60" vertex="1" value="Simple, secure login" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="992" y="12" width="284" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="61" parent="1" vertex="1" connectable="1" style="group;resizable=1;recursiveResize=1;">
+          <mxGeometry x="54" y="323" width="1292" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="19" parent="61" vertex="1" style="rounded=0;arcSize=5;fillColor=#F0F5F2;strokeColor=none;strokeWidth=1.4;" connectable="0">
+          <mxGeometry x="0" y="0" width="1292" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="20" parent="61" vertex="1" value="Review dashboard" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#14685C;fontStyle=1;spacing=0;">
+          <mxGeometry x="16" y="12" width="178" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="21" parent="61" vertex="1" value="Check summary cards" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="226" y="12" width="246" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="22" parent="61" vertex="1" value="Dashboard" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="504" y="12" width="210" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="23" parent="61" vertex="1" value="Wants a fast overview" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="746" y="12" width="214" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="24" parent="61" vertex="1" value="Clear visual summaries" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="992" y="12" width="284" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="62" parent="1" vertex="1" connectable="1" style="group;resizable=1;recursiveResize=1;">
+          <mxGeometry x="54" y="383" width="1292" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="25" parent="62" vertex="1" style="rounded=0;arcSize=5;fillColor=#FFFFFF;strokeColor=none;strokeWidth=1.4;" connectable="0">
+          <mxGeometry x="0" y="0" width="1292" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="26" parent="62" vertex="1" value="Review demand" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#14685C;fontStyle=1;spacing=0;">
+          <mxGeometry x="16" y="12" width="178" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="27" parent="62" vertex="1" value="Check predicted covers" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="226" y="12" width="246" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="28" parent="62" vertex="1" value="Reservation forecast" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="504" y="12" width="210" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="29" parent="62" vertex="1" value="More informed" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="746" y="12" width="214" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="30" parent="62" vertex="1" value="Forecast tables and charts" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="992" y="12" width="284" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="63" parent="1" vertex="1" connectable="1" style="group;resizable=1;recursiveResize=1;">
+          <mxGeometry x="54" y="443" width="1292" height="81" as="geometry" />
+        </mxCell>
+        <mxCell id="31" parent="63" vertex="1" style="rounded=0;arcSize=5;fillColor=#F0F5F2;strokeColor=none;strokeWidth=1.4;" connectable="0">
+          <mxGeometry x="0" y="0" width="1292" height="81" as="geometry" />
+        </mxCell>
+        <mxCell id="32" parent="63" vertex="1" value="Plan staffing" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#14685C;fontStyle=1;spacing=0;">
+          <mxGeometry x="16" y="12" width="178" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="33" parent="63" vertex="1" value="Review staff" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="226" y="12" width="246" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="34" parent="63" vertex="1" value="recommendations" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="226" y="38" width="246" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="35" parent="63" vertex="1" value="Staff forecast" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="504" y="12" width="210" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="36" parent="63" vertex="1" value="More confident" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="746" y="12" width="214" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="37" parent="63" vertex="1" value="Clear staffing outputs" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="992" y="12" width="284" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="64" parent="1" vertex="1" connectable="1" style="group;resizable=1;recursiveResize=1;">
+          <mxGeometry x="54" y="524" width="1292" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="38" parent="64" vertex="1" style="rounded=0;arcSize=5;fillColor=#FFFFFF;strokeColor=none;strokeWidth=1.4;" connectable="0">
+          <mxGeometry x="0" y="0" width="1292" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="39" parent="64" vertex="1" value="Control costs" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#14685C;fontStyle=1;spacing=0;">
+          <mxGeometry x="16" y="12" width="178" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="40" parent="64" vertex="1" value="Check labour impact" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="226" y="12" width="246" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="41" parent="64" vertex="1" value="Labour cost forecast" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="504" y="12" width="210" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="42" parent="64" vertex="1" value="Cost-aware" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="746" y="12" width="214" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="43" parent="64" vertex="1" value="Labour cost summaries" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="992" y="12" width="284" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="65" parent="1" vertex="1" connectable="1" style="group;resizable=1;recursiveResize=1;">
+          <mxGeometry x="54" y="584" width="1292" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="44" parent="65" vertex="1" style="rounded=0;arcSize=5;fillColor=#F0F5F2;strokeColor=none;strokeWidth=1.4;" connectable="0">
+          <mxGeometry x="0" y="0" width="1292" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="45" parent="65" vertex="1" value="Review bookings" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#14685C;fontStyle=1;spacing=0;">
+          <mxGeometry x="16" y="12" width="178" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="46" parent="65" vertex="1" value="Check booking overview" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="226" y="12" width="246" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="47" parent="65" vertex="1" value="Booking overview" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="504" y="12" width="210" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="48" parent="65" vertex="1" value="In control" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="746" y="12" width="214" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="49" parent="65" vertex="1" value="Booking records and trends" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="992" y="12" width="284" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="66" parent="1" vertex="1" connectable="1" style="group;resizable=1;recursiveResize=1;">
+          <mxGeometry x="54" y="644" width="1292" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="50" parent="66" vertex="1" style="rounded=0;arcSize=5;fillColor=#FFFFFF;strokeColor=none;strokeWidth=1.4;" connectable="0">
+          <mxGeometry x="0" y="0" width="1292" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="51" parent="66" vertex="1" value="Make decision" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#14685C;fontStyle=1;spacing=0;">
+          <mxGeometry x="16" y="12" width="178" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="52" parent="66" vertex="1" value="Adjust planning" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="226" y="12" width="246" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="53" parent="66" vertex="1" value="Dashboard / forecasts" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="504" y="12" width="210" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="54" parent="66" vertex="1" value="Confident" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="746" y="12" width="214" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="55" parent="66" vertex="1" value="Decision-support outputs" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="992" y="12" width="284" height="23.2" as="geometry" />
+        </mxCell>
+        <mxCell id="67" parent="1" vertex="1" connectable="1" style="group;resizable=1;recursiveResize=1;">
+          <mxGeometry x="54" y="752" width="1292" height="68" as="geometry" />
+        </mxCell>
+        <mxCell id="56" parent="67" vertex="1" style="rounded=1;arcSize=5;fillColor=#E7F4EF;strokeColor=none;strokeWidth=1.4;" connectable="0">
+          <mxGeometry x="0" y="0" width="1292" height="68" as="geometry" />
+        </mxCell>
+        <mxCell id="57" parent="67" vertex="1" value="RESEARCH STATUS" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=16;fontColor=#14685C;fontStyle=1;spacing=0;">
+          <mxGeometry x="19" y="20" width="198" height="18.56" as="geometry" />
+        </mxCell>
+        <mxCell id="58" parent="67" vertex="1" value="Feelings and design requirements come from the original journey map." style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=19;fontColor=#142F35;fontStyle=0;spacing=0;">
+          <mxGeometry x="228" y="18" width="1035" height="22.04" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

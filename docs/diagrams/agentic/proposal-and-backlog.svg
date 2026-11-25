@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="799" viewBox="0 0 1400 799" role="img" aria-labelledby="title desc">
+  <title id="title">From a proposal to an approved task</title>
+  <desc id="desc">Knowledge proposals and approved unstarted work occupy different Trello lists. Explains the PM evidence gate, tracker-first status handoff, label preservation and epic grouping.</desc>
+  <defs>
+    <marker id="arrow14685C" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#14685C" />
+    </marker>
+    <marker id="arrow385876" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#385876" />
+    </marker>
+    <marker id="arrow142F35" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#142F35" />
+    </marker>
+    <marker id="arrow775118" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#775118" />
+    </marker>
+    <marker id="arrow425F62" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#425F62" />
+    </marker>
+  </defs>
+  <rect width="1400" height="799" fill="#F9FBF9" />
+  <rect x="0" y="0" width="12" height="799" rx="0" fill="#14685C" stroke="none" stroke-width="1.4" />
+  <text x="54" y="46.28" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" text-anchor="start">RFS  /  DEVELOPMENT WORKFLOW</text>
+  <text x="54" y="101.28" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="700" text-anchor="start">From a proposal to an approved task</text>
+  <text x="55" y="146.48" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="400" text-anchor="start">Knowledge proposals and approved unstarted work occupy different Trello lists.</text>
+  <polyline points="54,177 1346,177" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <polyline points="410,307 521,307" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#14685C" marker-end="url(#arrow14685C)" />
+  <polyline points="877,307 988,307" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#14685C" marker-end="url(#arrow14685C)" />
+  <polyline points="1166,406 1166,463" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#14685C" marker-end="url(#arrow14685C)" />
+  <polyline points="988,562 877,562" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#14685C" marker-end="url(#arrow14685C)" />
+  <polyline points="521,562 410,562" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#14685C" marker-end="url(#arrow14685C)" />
+  <rect x="54" y="208" width="356" height="198" rx="8" fill="#FFFFFF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="74" y="237.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">RESEARCH INPUT</text>
+  <text x="74" y="276.84" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" text-anchor="start">Proposed</text>
+  <text x="74" y="309.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Retain the knowledge-base origin</text>
+  <text x="74" y="336.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">and record the proposal. Its Trello</text>
+  <text x="74" y="363.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">list is Open.</text>
+  <rect x="521" y="208" width="356" height="198" rx="8" fill="#FAEFDA" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="541" y="237.6" fill="#775118" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">PRODUCT MANAGER</text>
+  <text x="541" y="276.84" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" text-anchor="start">Review the proposal</text>
+  <text x="541" y="309.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Record pmReviewed and</text>
+  <text x="541" y="336.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">pmDecisionRef. Verify that the real</text>
+  <text x="541" y="363.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">PM decision supports the</text>
+  <text x="541" y="390.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">transition.</text>
+  <rect x="988" y="208" width="356" height="198" rx="8" fill="#E7F4EF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="1008" y="237.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">APPROVED SCOPE</text>
+  <text x="1008" y="276.84" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" text-anchor="start">Tracker Open</text>
+  <text x="1008" y="309.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Approved work awaiting pickup</text>
+  <text x="1008" y="336.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">maps to READY. Select one</text>
+  <text x="1008" y="363.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">delivery tier and all relevant domain</text>
+  <text x="1008" y="390.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">labels.</text>
+  <rect x="988" y="463" width="356" height="198" rx="8" fill="#E7F4EF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="1008" y="492.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">AFTER DELIVERY / REVIEW</text>
+  <text x="1008" y="531.84" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" text-anchor="start">Backlog Handoff</text>
+  <text x="1008" y="564.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">RFS-BACKLOG receives checked</text>
+  <text x="1008" y="591.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">or blocked evidence. Update the</text>
+  <text x="1008" y="618.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">canonical tracker with status and</text>
+  <text x="1008" y="645.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">criteria.</text>
+  <rect x="521" y="463" width="356" height="198" rx="8" fill="#FFFFFF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="541" y="492.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">AUTHORISED HANDOFF</text>
+  <text x="541" y="531.84" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" text-anchor="start">Mirror the numbered card</text>
+  <text x="541" y="564.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Partial → IN PROGRESS. Verify</text>
+  <text x="541" y="591.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">release → IN REVIEW. Done →</text>
+  <text x="541" y="618.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">DONE. Deferred work stays off the</text>
+  <text x="541" y="645.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">active board.</text>
+  <rect x="54" y="463" width="356" height="198" rx="8" fill="#FFFFFF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="74" y="492.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">INDEX MAINTENANCE</text>
+  <text x="74" y="531.84" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" text-anchor="start">Six domain epics</text>
+  <text x="74" y="564.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Cross-domain tasks may appear in</text>
+  <text x="74" y="591.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">multiple indexes. Refresh linked</text>
+  <text x="74" y="618.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">tasks and preserve manual notes.</text>
+  <rect x="54" y="697" width="1292" height="68" rx="6" fill="#E7F4EF" stroke="none" stroke-width="1.4" />
+  <text x="73" y="732.44" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="start">HANDOFF SCOPE</text>
+  <text x="282" y="732.96" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="400" text-anchor="start">Domain epics index work across the board. The numbered task card retains its own state and labels. Board updates</text>
+  <text x="282" y="755.96" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="400" text-anchor="start">happen during authorised handoffs.</text>
+</svg>

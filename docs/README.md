@@ -1,5 +1,12 @@
 # RFS documentation
 
+- [Figma UI source of truth](design/FIGMA_UI_SOURCE_OF_TRUTH.md) - researched connection options, design-file structure and the proposed design-to-code workflow; account connection is not yet verified.
+
+- [RFS diagram gallery](diagrams/index.html) and [source catalogue](diagrams/README.md) — 33 editable diagrams covering application architecture, request sequences, the agentic development team, the original project schedule and design research.
+
+- [New specialist architecture](agents/RFS_AGENTIC_ARCHITECTURE.md) — seven engineer/reviewer pairs, Backlog Handoff and compact fresh-context invocation.
+- [22 November agentic improvements](agents/RFS_AGENTIC_IMPROVEMENTS_2026-11-22.md) — ordered specialist, reviewer, context and Trello implementation under #58/#68.
+
 - [Current project state](agents/CURRENT_STATE.md) — compact startup index; use targeted tracker/handover reads.
 - [Token optimisation actions](agents/TOKEN_USAGE_OPTIMISATION_ACTIONS.md) — approved context/execution changes and validation status; detailed usage figures remain private.
 

@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="824" viewBox="0 0 1400 824" role="img" aria-labelledby="title desc">
+  <title id="title">Original information architecture</title>
+  <desc id="desc">Original concept · destinations arranged around the restaurant manager’s dashboard. Rebuilds the embedded site map and retains its seven original navigation destinations.</desc>
+  <defs>
+    <marker id="arrow14685C" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#14685C" />
+    </marker>
+    <marker id="arrow385876" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#385876" />
+    </marker>
+    <marker id="arrow142F35" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#142F35" />
+    </marker>
+    <marker id="arrow775118" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#775118" />
+    </marker>
+    <marker id="arrow425F62" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#425F62" />
+    </marker>
+  </defs>
+  <rect width="1400" height="824" fill="#F9FBF9" />
+  <rect x="0" y="0" width="12" height="824" rx="0" fill="#775118" stroke="none" stroke-width="1.4" />
+  <text x="54" y="46.28" fill="#775118" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" text-anchor="start">RFS  /  ORIGINAL DESIGN RESEARCH</text>
+  <text x="54" y="101.28" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="700" text-anchor="start">Original information architecture</text>
+  <text x="55" y="146.48" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="400" text-anchor="start">Original concept · destinations arranged around the restaurant manager’s dashboard.</text>
+  <polyline points="54,177 1346,177" stroke-width="1" stroke-linejoin="round" fill="none" stroke="#B7CAC6" />
+  <rect x="55" y="231" width="329" height="143" rx="8" fill="#FFFFFF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="75" y="260.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">ENTRY</text>
+  <text x="75" y="299.84" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" text-anchor="start">Login</text>
+  <text x="75" y="332.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Access the system.</text>
+  <rect x="533" y="231" width="334" height="143" rx="8" fill="#E7F4EF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="553" y="260.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">WORKSPACE</text>
+  <text x="553" y="299.84" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" text-anchor="start">Dashboard</text>
+  <text x="553" y="332.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Choose a destination.</text>
+  <polyline points="384,302 533,302" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#14685C" marker-end="url(#arrow14685C)" />
+  <polyline points="700,374 700,409 249,409 249,448" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#14685C" marker-end="url(#arrow14685C)" />
+  <polyline points="700,374 700,409 700,409 700,448" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#14685C" marker-end="url(#arrow14685C)" />
+  <polyline points="700,374 700,409 1153,409 1153,448" stroke-width="2.5" stroke-linejoin="round" fill="none" stroke="#14685C" marker-end="url(#arrow14685C)" />
+  <rect x="54" y="448" width="390" height="190" rx="8" fill="#FFFFFF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="74" y="477.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">DASHBOARD DESTINATIONS</text>
+  <text x="74" y="516.84" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" text-anchor="start">Bookings</text>
+  <text x="74" y="549.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Bookings overview</text>
+  <text x="74" y="576.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Add new booking</text>
+  <rect x="505" y="448" width="390" height="190" rx="8" fill="#FFFFFF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="525" y="477.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">DASHBOARD DESTINATIONS</text>
+  <text x="525" y="516.84" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" text-anchor="start">Forecasting</text>
+  <text x="525" y="549.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Reservation forecast</text>
+  <text x="525" y="576.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Staff forecast</text>
+  <text x="525" y="603.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Staffing rules</text>
+  <rect x="957" y="448" width="390" height="190" rx="8" fill="#FFFFFF" stroke="#B7CAC6" stroke-width="1.4" />
+  <text x="977" y="477.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">DASHBOARD DESTINATIONS</text>
+  <text x="977" y="516.84" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" text-anchor="start">Review and exit</text>
+  <text x="977" y="549.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Reports</text>
+  <text x="977" y="576.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Logout</text>
+  <rect x="54" y="722" width="1292" height="68" rx="6" fill="#E7F4EF" stroke="none" stroke-width="1.4" />
+  <text x="73" y="757.44" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="start">SOURCE CONTEXT</text>
+  <text x="282" y="757.96" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="400" text-anchor="start">The original site map used a manager-only dashboard. The application now also has supervisor and staff roles.</text>
+</svg>
