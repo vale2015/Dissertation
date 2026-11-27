@@ -1,6 +1,6 @@
 # Weekly research automation — operating contract
 
-This is the current implementation path for improvement #64. The Product Manager chose a stable repository folder, `docs/knowledge/html-output/`, instead of a separate cloud file. The existing **Refresh RFS knowledge** web task remains the only weekly trigger; do not create another schedule. The HTML page and all research records are public in [the Dissertation repository](https://github.com/vale2015/RFS), so never include credentials, private restaurant data, staff data, or customer information.
+This is the current implementation path for improvement #64. The Product Manager chose a stable repository folder, `docs/knowledge/html-output/`, instead of a separate cloud file. **Runtime (27 November 2026, #72):** the weekly trigger is the Claude cloud scheduled task **Refresh RFS knowledge (weekly research, #64)** (`trig_01NZtKftsTFaFk15czirQGJr`, Sundays 10:00 UTC, Sonnet 5.5). It runs as `vale2015` through the Claude GitHub App and replaces the ChatGPT web task, which the PM disables; there must be only one weekly trigger, so do not create another schedule. The HTML page and all research records are public in [the Dissertation repository](https://github.com/vale2015/RFS), so never include credentials, private restaurant data, staff data, or customer information.
 
 ## How one run works
 
