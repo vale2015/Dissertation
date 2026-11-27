@@ -1,5 +1,11 @@
 # RFS current handover
 
+## 27 November (evening) - #76 done, first fresh-session #68 run
+
+- **#76:** STANDARD. Backend engineer (Sonnet) then independent backend reviewer (Opus), which passed first time. A shared helper returns `INTERNAL_ERROR` with a generic message and logs the exception; 11 sites fixed; 12 new tests; full backend suite 298 passed, 7 skipped. Committed `311a41e` and pushed to main. Both Vercel production builds READY. Live `/api/health/` 200 and unauthenticated `/api/demand/stats` 401; live 500 body not forced. PM accepted; tracker Done, Trello DONE.
+- **#68:** `rfs76-generic-500s` captured closed and refreshed after the analyst review. Average input check met; root share 50.9% narrowly missed. Actions 7 and 9 in [optimisation actions](TOKEN_USAGE_OPTIMISATION_ACTIONS.md).
+- **Unchanged:** Supabase schema and data; no manual deployments.
+
 ## 27 November (end of day) - security fixes, backlog additions, #72 done, #68 baselines
 
 - **Done and PM-accepted:** #62 (`81fc97a`), #7 (`6b0c0a7`, live headers verified with curl), #78 (`8fdefa4`), #79 (`13a205c`), #72 (`40667d8`). Vercel production builds READY for each code push. Trello cards in DONE.
