@@ -7,16 +7,16 @@
       "workflow_ref": "WF-FE",
       "domain_label": "Front end Dev",
       "engineer": {
-        "profile": "rfs_frontend_engineer",
-        "profile_path": ".codex/agents/rfs-frontend-engineer.toml",
-        "skill_path": ".agents/skills/frontend-implementation/SKILL.md",
+        "profile": "rfs-frontend-engineer",
+        "profile_path": ".claude/agents/rfs-frontend-engineer.md",
+        "skill_path": ".claude/skills/frontend-implementation/SKILL.md",
         "model_route": "implementation"
       },
       "reviewer": {
         "role_ref": "RFS-FE-REVIEW",
-        "profile": "rfs_frontend_reviewer",
-        "profile_path": ".codex/agents/rfs-frontend-reviewer.toml",
-        "skill_path": ".agents/skills/quality-assurance/SKILL.md",
+        "profile": "rfs-frontend-reviewer",
+        "profile_path": ".claude/agents/rfs-frontend-reviewer.md",
+        "skill_path": ".claude/skills/quality-assurance/SKILL.md",
         "model_route": "independent_qa"
       }
     },
@@ -26,16 +26,16 @@
       "workflow_ref": "WF-BE",
       "domain_label": "Backend Dev",
       "engineer": {
-        "profile": "rfs_backend_engineer",
-        "profile_path": ".codex/agents/rfs-backend-engineer.toml",
-        "skill_path": ".agents/skills/backend-implementation/SKILL.md",
+        "profile": "rfs-backend-engineer",
+        "profile_path": ".claude/agents/rfs-backend-engineer.md",
+        "skill_path": ".claude/skills/backend-implementation/SKILL.md",
         "model_route": "implementation"
       },
       "reviewer": {
         "role_ref": "RFS-BE-REVIEW",
-        "profile": "rfs_backend_reviewer",
-        "profile_path": ".codex/agents/rfs-backend-reviewer.toml",
-        "skill_path": ".agents/skills/quality-assurance/SKILL.md",
+        "profile": "rfs-backend-reviewer",
+        "profile_path": ".claude/agents/rfs-backend-reviewer.md",
+        "skill_path": ".claude/skills/quality-assurance/SKILL.md",
         "model_route": "independent_qa"
       }
     },
@@ -45,16 +45,16 @@
       "workflow_ref": "WF-UX",
       "domain_label": "Front end Dev",
       "engineer": {
-        "profile": "rfs_ui_ux_designer",
-        "profile_path": ".codex/agents/rfs-ui-ux-designer.toml",
-        "skill_path": ".agents/skills/ux-design-implementation/SKILL.md",
+        "profile": "rfs-ui-ux-designer",
+        "profile_path": ".claude/agents/rfs-ui-ux-designer.md",
+        "skill_path": ".claude/skills/ux-design-implementation/SKILL.md",
         "model_route": "architecture_security_design"
       },
       "reviewer": {
         "role_ref": "RFS-UX-REVIEW",
-        "profile": "rfs_ui_ux_design_reviewer",
-        "profile_path": ".codex/agents/rfs-ui-ux-design-reviewer.toml",
-        "skill_path": ".agents/skills/ux-design-review/SKILL.md",
+        "profile": "rfs-ui-ux-design-reviewer",
+        "profile_path": ".claude/agents/rfs-ui-ux-design-reviewer.md",
+        "skill_path": ".claude/skills/ux-design-review/SKILL.md",
         "model_route": "visual_accessibility"
       }
     },
@@ -64,16 +64,16 @@
       "workflow_ref": "WF-SEC",
       "domain_label": "Security Dev",
       "engineer": {
-        "profile": "rfs_security_engineer",
-        "profile_path": ".codex/agents/rfs-security-engineer.toml",
-        "skill_path": ".agents/skills/security-implementation/SKILL.md",
+        "profile": "rfs-security-engineer",
+        "profile_path": ".claude/agents/rfs-security-engineer.md",
+        "skill_path": ".claude/skills/security-implementation/SKILL.md",
         "model_route": "architecture_security_design"
       },
       "reviewer": {
         "role_ref": "RFS-SEC-REVIEW",
-        "profile": "rfs_security_reviewer",
-        "profile_path": ".codex/agents/rfs-security-reviewer.toml",
-        "skill_path": ".agents/skills/security-review/SKILL.md",
+        "profile": "rfs-security-reviewer",
+        "profile_path": ".claude/agents/rfs-security-reviewer.md",
+        "skill_path": ".claude/skills/security-review/SKILL.md",
         "model_route": "architecture_security_design"
       }
     },
@@ -83,16 +83,16 @@
       "workflow_ref": "WF-DB",
       "domain_label": "Db Dev",
       "engineer": {
-        "profile": "rfs_database_engineer",
-        "profile_path": ".codex/agents/rfs-database-engineer.toml",
-        "skill_path": ".agents/skills/database-implementation/SKILL.md",
+        "profile": "rfs-database-engineer",
+        "profile_path": ".claude/agents/rfs-database-engineer.md",
+        "skill_path": ".claude/skills/database-implementation/SKILL.md",
         "model_route": "implementation"
       },
       "reviewer": {
         "role_ref": "RFS-DB-REVIEW",
-        "profile": "rfs_database_reviewer",
-        "profile_path": ".codex/agents/rfs-database-reviewer.toml",
-        "skill_path": ".agents/skills/quality-assurance/SKILL.md",
+        "profile": "rfs-database-reviewer",
+        "profile_path": ".claude/agents/rfs-database-reviewer.md",
+        "skill_path": ".claude/skills/quality-assurance/SKILL.md",
         "model_route": "independent_qa"
       }
     },
@@ -102,16 +102,16 @@
       "workflow_ref": "WF-BOT",
       "domain_label": "Bot Dev",
       "engineer": {
-        "profile": "rfs_ai_chatbot_engineer",
-        "profile_path": ".codex/agents/rfs-ai-chatbot-engineer.toml",
-        "skill_path": ".agents/skills/ai-chatbot-implementation/SKILL.md",
+        "profile": "rfs-ai-chatbot-engineer",
+        "profile_path": ".claude/agents/rfs-ai-chatbot-engineer.md",
+        "skill_path": ".claude/skills/ai-chatbot-implementation/SKILL.md",
         "model_route": "implementation"
       },
       "reviewer": {
         "role_ref": "RFS-BOT-REVIEW",
-        "profile": "rfs_ai_chatbot_reviewer",
-        "profile_path": ".codex/agents/rfs-ai-chatbot-reviewer.toml",
-        "skill_path": ".agents/skills/ai-chatbot-evaluation/SKILL.md",
+        "profile": "rfs-ai-chatbot-reviewer",
+        "profile_path": ".claude/agents/rfs-ai-chatbot-reviewer.md",
+        "skill_path": ".claude/skills/ai-chatbot-evaluation/SKILL.md",
         "model_route": "independent_qa"
       }
     },
@@ -121,16 +121,16 @@
       "workflow_ref": "WF-AUTO",
       "domain_label": "Automation Dev",
       "engineer": {
-        "profile": "rfs_automation_engineer",
-        "profile_path": ".codex/agents/rfs-automation-engineer.toml",
-        "skill_path": ".agents/skills/automation-implementation/SKILL.md",
+        "profile": "rfs-automation-engineer",
+        "profile_path": ".claude/agents/rfs-automation-engineer.md",
+        "skill_path": ".claude/skills/automation-implementation/SKILL.md",
         "model_route": "implementation"
       },
       "reviewer": {
         "role_ref": "RFS-AUTO-REVIEW",
-        "profile": "rfs_automation_reviewer",
-        "profile_path": ".codex/agents/rfs-automation-reviewer.toml",
-        "skill_path": ".agents/skills/quality-assurance/SKILL.md",
+        "profile": "rfs-automation-reviewer",
+        "profile_path": ".claude/agents/rfs-automation-reviewer.md",
+        "skill_path": ".claude/skills/quality-assurance/SKILL.md",
         "model_route": "independent_qa"
       }
     }
@@ -146,9 +146,9 @@
     "backlog_handoff": {
       "role_ref": "RFS-BACKLOG",
       "workflow_ref": "WF-BACKLOG",
-      "profile": "rfs_backlog_handoff",
-      "profile_path": ".codex/agents/rfs-backlog-handoff.toml",
-      "skill_path": ".agents/skills/backlog-handoff/SKILL.md",
+      "profile": "rfs-backlog-handoff",
+      "profile_path": ".claude/agents/rfs-backlog-handoff.md",
+      "skill_path": ".claude/skills/backlog-handoff/SKILL.md",
       "model_route": "backlog_coordination"
     }
   }

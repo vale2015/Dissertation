@@ -70,6 +70,7 @@ This index stays at the top of `docs/`; all other files are grouped by topic bel
 - [Sequential team workflow](agents/RFS_AI_TEAM_WORKFLOW.md) — team-setup record and remaining acceptance proof for #58.
 - [Trello board workflow](agents/TRELLO_BOARD_WORKFLOW.md) — card fields, status mapping, and tracker-first handoff rules for the PM's board.
 - [Context-recovery memo](agents/RFS_CONTEXT_WINDOW_MEMO.md) — proposed startup and continuity specification; installation and fresh-session proof remain under #64.
+- [Codex → Claude Code migration and AI architecture review](agents/CLAUDE_MIGRATION_REVIEW_2026-11-27.md) — runtime migration #72, verification, PM decisions and proposed #73–#75.
 - [Current handover](agents/CONTEXT_HANDOVER.md) — concise checkpoint for resuming authorised project work; verify it against the tracker and working tree.
 
 ## Research knowledge (`knowledge/`)

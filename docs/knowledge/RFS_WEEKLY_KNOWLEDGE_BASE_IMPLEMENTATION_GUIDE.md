@@ -20,7 +20,7 @@ The research scope includes **applied AI techniques, engineering practices, rese
 
 The complete flow is: **scheduled trigger → retrieve public evidence → assess relevance to current RFS → merge linked knowledge → regenerate the HTML review → Valerio gives an instruction → record the decision → carry out only the authorised action**.
 
-The review page must explain what changed, where the information came from, why it may matter to RFS, and how it relates to existing functionality. It must keep previous findings and Valerio's decisions across refreshes. Each new development context must discover the current knowledge automatically through root `AGENTS.md`, without Valerio repeating the file locations.
+The review page must explain what changed, where the information came from, why it may matter to RFS, and how it relates to existing functionality. It must keep previous findings and Valerio's decisions across refreshes. Each new development context must discover the current knowledge automatically through root `CLAUDE.md`, without Valerio repeating the file locations.
 
 Use linked JSON records for the first version: source → observation → opportunity → project requirement/task → PM decision. This provides explicit relationships and searchable history without requiring a graph database.
 
@@ -29,7 +29,7 @@ Use linked JSON records for the first version: source → observation → opport
 | Item | Destination / current fact |
 | --- | --- |
 | Repository | [vale2015/RFS](https://github.com/vale2015/RFS), default branch `main`. |
-| Project instructions | Root `AGENTS.md`. The tracker is authoritative; Trello mirrors task state; specialist work is sequential. Re-read these rules before implementing. |
+| Project instructions | Root `CLAUDE.md`. The tracker is authoritative; Trello mirrors task state; specialist work is sequential. Re-read these rules before implementing. |
 | Product requirements | `docs/product/PRD.md`. |
 | Backlog and priorities | `docs/product/IMPROVEMENT_TRACKER.md`; `docs/product/MOSCOW_PRIORITIZATION.md`. |
 | Current source register | [RFS_FEATURE_DISCOVERY_SOURCES.md](https://chatgpt.com/library?file_id=libfile_965f58ba80bc8191a73ee3f1b13430e0&account_id=personal). Stable native file ID: `libfile_965f58ba80bc8191a73ee3f1b13430e0`. |
@@ -65,7 +65,7 @@ Use a snapshot identifier in JSON, HTML, and the run result to detect mismatched
 ## 4. Step 1 — recover the project and register this feature
 
 1. Resolve the active checkout root and inspect its branch, current commit, uncommitted changes, and remote reference. Preserve ongoing work.
-2. Read root `AGENTS.md`, applicable directory instructions, `docs/README.md`, the PRD, tracker, MoSCoW document, `docs/agents/RFS_AI_TEAM_WORKFLOW.md`, and relevant design/architecture documents.
+2. Read root `CLAUDE.md`, applicable directory instructions, `docs/README.md`, the PRD, tracker, MoSCoW document, `docs/agents/RFS_AI_TEAM_WORKFLOW.md`, and relevant design/architecture documents.
 3. Read the two persistent documents identified above. If the context memo's proposed repository files are already installed, use those current files. Merge guidance; do not overwrite the existing coordination rules.
 4. Invoke the existing `feature-triage` workflow. This feature needs implementation followed by independent QA, with UX and security review where relevant, **one role at a time**. Follow the current repository workflow if it has subsequently changed.
 5. Find an existing matching tracker item. If none exists, append one with the next unused number, determined from the current tracker. Suggested title: **Weekly AI/hospitality research knowledge base and HTML PM review**. Do not assume the next number from this guide's date.
@@ -110,7 +110,7 @@ Create or carefully merge these paths relative to the project root:
 | `tools/feature_discovery/pipeline.py` | JSON validation, deterministic merge/ranking, decision projection, rendering, and safe output generation. |
 | `tools/feature_discovery/templates/review.html` | HTML/CSS/JS template with no external runtime dependencies. |
 | `tools/feature_discovery/tests/` | Meaningful automated tests from section 15 and clearly synthetic fixtures. |
-| `AGENTS.md` | Add the automatic knowledge-discovery rule in section 13, preserving existing instructions. |
+| `CLAUDE.md` | Add the automatic knowledge-discovery rule in section 13, preserving existing instructions. |
 | `docs/agents/CONTEXT_HANDOVER.md` | Create if the context-recovery installation needs it; record current scope, actual evidence, blockers, and resume action. |
 
 Initialize JSON with `schema_version: 1`, empty observation/opportunity/decision arrays, null scan timestamps, and explicit **not yet scanned** state. Initialization must be idempotent and must never replace existing records with empty arrays. Generate real initial data through the baseline run; keep test fixtures out of the production knowledge base.
@@ -309,7 +309,7 @@ Render the real ID, never the bracketed descriptive token. Include a selectable 
 
 ## 13. Step 10 — install automatic context recovery
 
-Merge this block into root `AGENTS.md`; preserve existing rules and the broader context-recovery memo. Keep the root instruction short and point to the detailed files.
+Merge this block into root `CLAUDE.md`; preserve existing rules and the broader context-recovery memo. Keep the root instruction short and point to the detailed files.
 
 ```markdown
 ## Mandatory automatic knowledge recovery
@@ -330,7 +330,7 @@ resumption, discover and read the current knowledge without a user reminder:
    destinations if files move. Do not wait for the user to supply paths or repeat
    decisions already stored in the project.
 
-The existing Refresh RFS knowledge task supplies the weekly trigger. AGENTS.md
+The existing Refresh RFS knowledge task supplies the weekly trigger. CLAUDE.md
 does not act as a timer. See docs/knowledge/README.md for its current reference,
 runbook, source registry, and publication state. Report unavailable access accurately.
 ```
@@ -393,7 +393,7 @@ Implement and execute the following checks. Use fixtures for failure/injection/c
 | Concurrent PM update | Publication detects a new remote head, reads the newest decisions, and never overwrites them. |
 | Native version conflict | Re-read current version, preserve current identity, and resolve safely; do not bypass the concurrency guard. |
 | Same execution retried | Reuse run identity, avoid duplicate history/findings, and repair only unfinished publication work. |
-| Fresh development context | Root AGENTS.md causes knowledge loading without user-supplied paths or a restore-context prompt. |
+| Fresh development context | Root CLAUDE.md causes knowledge loading without user-supplied paths or a restore-context prompt. |
 | Scheduled runtime | The actual scheduled environment can browse, generate, persist, and publish; interactive success alone is insufficient. |
 
 Run the command interfaces from section 6 after implementing them. For this standalone Python/HTML feature, focused tool tests and actual browser verification are required. Run additional existing project checks when affected code or repository rules justify them; do not claim a frontend build verifies the weekly research workflow.
@@ -423,7 +423,7 @@ If any required gate is blocked or unrun, retain the corresponding unfinished st
 1. Privately look up **Refresh RFS knowledge** using the task reference in section 2; inspect its current prompt, schedule, enabled state, environment, and recorded runs.
 2. Confirm the code, canonical records, real publication file IDs, and permissions are installed and validated. Do not point an active schedule at nonexistent files or untested commands.
 3. Update that same task's prompt to the single-execution instruction below. Preserve its established weekly timing, `Europe/Dublin`, and flexible schedule unless Valerio has changed them. Inspect the returned result and re-read the task to confirm the change.
-4. Keep the internal schedule in its proper scheduler field, not as a timer simulated by AGENTS.md. The original schedule is shown below for reference; do not reset DTSTART to a past date or overwrite a later user edit.
+4. Keep the internal schedule in its proper scheduler field, not as a timer simulated by CLAUDE.md. The original schedule is shown below for reference; do not reset DTSTART to a past date or overwrite a later user edit.
 5. Record the current task reference, configuration time, runtime, stable HTML link, and outstanding verification in `docs/knowledge/README.md` and the tracker.
 
 ```text

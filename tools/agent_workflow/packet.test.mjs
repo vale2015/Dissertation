@@ -20,7 +20,9 @@ const task = {
   approval_limits: ['Use read-only local checks.'],
 };
 
-const engineer = buildInvocation(task).spawn;
+// Flatten the Claude Agent-tool call for assertions on the generated briefing.
+const view = (result) => ({ ...result, message: result.agent.prompt });
+const engineer = view(buildInvocation(task));
 const toReview = {
   ...task,
   role_ref: 'RFS-AUTO-REVIEW',
@@ -30,40 +32,40 @@ const toReview = {
     summary: 'The focused Node checks passed. Live invocation remains unverified.',
   },
 };
-const reviewer = buildInvocation(toReview).spawn;
+const reviewer = view(buildInvocation(toReview));
 
 test('all seven registered pairs get distinct fresh identities and their selected model routes', () => {
   const pairs = [
-    ['FE', 'rfs_frontend_engineer', 'rfs_frontend_reviewer', 'gpt-6.2-sol', 'gpt-6.1-sol'],
-    ['BE', 'rfs_backend_engineer', 'rfs_backend_reviewer', 'gpt-6.2-sol', 'gpt-6.1-sol'],
-    ['UX', 'rfs_ui_ux_designer', 'rfs_ui_ux_design_reviewer', 'gpt-6.2-astra', 'gpt-6.1-terra'],
-    ['SEC', 'rfs_security_engineer', 'rfs_security_reviewer', 'gpt-6.2-astra', 'gpt-6.2-astra'],
-    ['DB', 'rfs_database_engineer', 'rfs_database_reviewer', 'gpt-6.2-sol', 'gpt-6.1-sol'],
-    ['BOT', 'rfs_ai_chatbot_engineer', 'rfs_ai_chatbot_reviewer', 'gpt-6.2-sol', 'gpt-6.1-sol'],
-    ['AUTO', 'rfs_automation_engineer', 'rfs_automation_reviewer', 'gpt-6.2-sol', 'gpt-6.1-sol'],
+    ['FE', 'rfs-frontend-engineer', 'rfs-frontend-reviewer', 'claude-sonnet-5-5', 'medium'],
+    ['BE', 'rfs-backend-engineer', 'rfs-backend-reviewer', 'claude-sonnet-5-5', 'medium'],
+    ['UX', 'rfs-ui-ux-designer', 'rfs-ui-ux-design-reviewer', 'claude-opus-5-5', 'high'],
+    ['SEC', 'rfs-security-engineer', 'rfs-security-reviewer', 'claude-opus-5-5', 'high'],
+    ['DB', 'rfs-database-engineer', 'rfs-database-reviewer', 'claude-sonnet-5-5', 'medium'],
+    ['BOT', 'rfs-ai-chatbot-engineer', 'rfs-ai-chatbot-reviewer', 'claude-sonnet-5-5', 'medium'],
+    ['AUTO', 'rfs-automation-engineer', 'rfs-automation-reviewer', 'claude-sonnet-5-5', 'medium'],
   ];
   const identities = new Set();
-  for (const [id, engineerProfile, reviewerProfile, engineerModel, reviewerModel] of pairs) {
+  for (const [id, engineerProfile, reviewerProfile, engineerModel, engineerEffort] of pairs) {
     const input = { ...task, role_ref: `RFS-${id}` };
     const implementation = buildInvocation(input);
     const review = buildInvocation({
       ...input,
       role_ref: `RFS-${id}-REVIEW`,
       implementation_handoff: {
-        role_ref: input.role_ref, agent_id: implementation.spawn.task_name, summary: 'Local check passed.',
+        role_ref: input.role_ref, agent_id: implementation.task_name, summary: 'Local check passed.',
       },
     });
     assert.equal(implementation.profile, engineerProfile);
     assert.equal(review.profile, reviewerProfile);
-    assert.equal(implementation.spawn.model, engineerModel);
-    assert.equal(implementation.spawn.reasoning_effort, engineerModel === 'gpt-6.2-astra' ? 'high' : 'medium');
-    assert.equal(review.spawn.model, reviewerModel);
-    assert.equal(review.spawn.reasoning_effort, 'high');
-    assert.equal(implementation.spawn.fork_turns, 'none');
-    assert.equal(review.spawn.fork_turns, 'none');
-    assert.match(review.spawn.message, /Implementation handoff from .*Local check passed/);
-    identities.add(implementation.spawn.task_name);
-    identities.add(review.spawn.task_name);
+    assert.deepEqual(implementation.route, { model: engineerModel, effort: engineerEffort });
+    assert.deepEqual(review.route, { model: 'claude-opus-5-5', effort: 'high' });
+    assert.equal(implementation.agent.subagent_type, engineerProfile);
+    assert.equal(review.agent.subagent_type, reviewerProfile);
+    assert.ok(!('model' in implementation.agent) && !('model' in review.agent), 'frontmatter pins the model');
+    assert.match(review.agent.prompt, /Implementation handoff from .*Local check passed/);
+    assert.match(implementation.agent.prompt, /Read applicable CLAUDE\.md and \.claude\/skills\//);
+    identities.add(implementation.task_name);
+    identities.add(review.task_name);
   }
   assert.equal(identities.size, 14);
 });
@@ -76,21 +78,21 @@ test('output is deterministic, includes only path references, and supports a fre
     relevant_paths: ['frontend/src/app/api/auth/login/route.js'],
   };
   assert.deepEqual(buildInvocation(input), buildInvocation(input));
-  const first = buildInvocation(input).spawn;
+  const first = view(buildInvocation(input));
   assert.ok(first.message.includes('frontend/src/app/api/auth/login/route.js'));
   assert.ok(!first.message.includes(readFileSync(join(root, input.relevant_paths[0]), 'utf8')));
   assert.match(first.message, /Source revision: abcdef1/);
   assert.match(first.message, /Run the Node test suite/);
   assert.match(first.message, /Use read-only local checks/);
-  const retry = buildInvocation({ ...input, attempt: 2 }).spawn;
+  const retry = view(buildInvocation({ ...input, attempt: 2 }));
   assert.notEqual(first.task_name, retry.task_name);
-  assert.notEqual(reviewer.task_name, buildInvocation({ ...toReview, attempt: 2 }).spawn.task_name);
+  assert.notEqual(reviewer.task_name, buildInvocation({ ...toReview, attempt: 2 }).task_name);
 });
 
 test('review instructions increase by tier', () => {
   assert.match(reviewer.message, /check the changed behavior/);
-  assert.match(buildInvocation({ ...toReview, tier: 'STANDARD' }).spawn.message, /relevant regression/);
-  assert.match(buildInvocation({ ...toReview, tier: 'FULL' }).spawn.message, /additional risk review/);
+  assert.match(buildInvocation({ ...toReview, tier: 'STANDARD' }).agent.prompt, /relevant regression/);
+  assert.match(buildInvocation({ ...toReview, tier: 'FULL' }).agent.prompt, /additional risk review/);
 });
 
 test('backlog preserves evidence, labels, and PM acceptance after the correct review handoff', () => {
@@ -103,17 +105,16 @@ test('backlog preserves evidence, labels, and PM acceptance after the correct re
       summary: 'Independent checks passed. PM acceptance pending.',
     },
   };
-  const { profile, spawn } = buildInvocation(input);
-  assert.equal(profile, 'rfs_backlog_handoff');
-  assert.equal(spawn.model, 'gpt-6.1-sol');
-  assert.equal(spawn.reasoning_effort, 'low');
-  assert.equal(spawn.fork_turns, 'none');
-  assert.match(spawn.message, /tracker before authorized Trello actions/);
-  assert.match(spawn.message, /Preserve labels and outstanding PM acceptance/);
-  assert.match(spawn.message, /PM acceptance pending/);
+  const { profile, route, task_name, agent } = buildInvocation(input);
+  assert.equal(profile, 'rfs-backlog-handoff');
+  assert.equal(agent.subagent_type, 'rfs-backlog-handoff');
+  assert.deepEqual(route, { model: 'claude-haiku-5-5', effort: 'medium' });
+  assert.match(agent.prompt, /tracker before authorized Trello actions/);
+  assert.match(agent.prompt, /Preserve labels and outstanding PM acceptance/);
+  assert.match(agent.prompt, /PM acceptance pending/);
   assert.throws(() => buildInvocation({ ...input, review_handoff: undefined }), /registered reviewer/);
   assert.throws(() => buildInvocation({
-    ...input, review_handoff: { ...input.review_handoff, agent_id: `/root/${spawn.task_name}` },
+    ...input, review_handoff: { ...input.review_handoff, agent_id: `/root/${task_name}` },
   }), /independent specialist identity/);
 });
 
@@ -122,7 +123,7 @@ test('review handoff accepts a completed client identity and rejects a missing o
   const buildWithIdentity = (agent_id) => buildInvocation({
     ...toReview, implementation_handoff: { ...toReview.implementation_handoff, agent_id },
   });
-  assert.match(buildWithIdentity(actual).spawn.message, /handoff from \/root\/reviewer_context_implementation:/);
+  assert.match(buildWithIdentity(actual).agent.prompt, /handoff from \/root\/reviewer_context_implementation:/);
   for (const identity of [reviewer.task_name, `/root/${reviewer.task_name}`]) {
     assert.throws(() => buildWithIdentity(identity), /independent specialist identity/);
   }
@@ -174,15 +175,21 @@ test('rejects symlink aliases, including an in-repository target', (context) => 
   const scratch = mkdtempSync(join(tmpdir(), 'rfs-packet-'));
   context.after(() => rmSync(scratch, { recursive: true, force: true }));
   const files = [
-    '.agents/team.json', '.agents/model-routing.json', '.codex/agents/rfs-automation-engineer.toml',
-    '.agents/skills/automation-implementation/SKILL.md',
+    '.agents/team.json', '.agents/model-routing.json', '.claude/agents/rfs-automation-engineer.md',
+    '.claude/skills/automation-implementation/SKILL.md',
   ];
   for (const path of files) {
     mkdirSync(dirname(join(scratch, path)), { recursive: true });
     copyFileSync(join(root, path), join(scratch, path));
   }
   writeFileSync(join(scratch, 'inside.txt'), 'Local evidence.');
-  symlinkSync('inside.txt', join(scratch, 'alias.txt'));
+  try {
+    symlinkSync('inside.txt', join(scratch, 'alias.txt'));
+  } catch (error) {
+    if (error.code !== 'EPERM') throw error;
+    context.skip('The host does not allow file links (Windows without Developer Mode).');
+    return;
+  }
   assert.throws(() => buildInvocation({ ...task, relevant_paths: ['alias.txt'] }, { root: scratch }), /linked/);
   assert.doesNotThrow(() => buildInvocation({ ...task, relevant_paths: ['inside.txt'] }, { root: scratch }));
 });
@@ -223,7 +230,7 @@ test('rejects URI userinfo across schemes and permits URLs without it', () => {
     'redis://example.test:6379/0',
     'https://example.test/@docs?tag=x@y',
   ]) {
-    assert.ok(buildInvocation({ ...task, outcome: `Check ${uri}` }).spawn.message.includes(uri));
+    assert.ok(buildInvocation({ ...task, outcome: `Check ${uri}` }).agent.prompt.includes(uri));
   }
 });
 
@@ -235,11 +242,11 @@ test('enforces the 200-word previous handoff and the 500-word total briefing bou
   assert.throws(() => buildInvocation({
     ...toReview, implementation_handoff: { ...toReview.implementation_handoff, summary: edge + ' extra' },
   }), /handoff exceeds 200 words/);
-  const brief = buildInvocation({ ...task, checks: ['ok'] }).spawn.message;
+  const brief = buildInvocation({ ...task, checks: ['ok'] }).agent.prompt;
   const remaining = 500 - brief.trim().split(/\s+/u).length;
   const checks = Array.from({ length: 3 }, () => 'ok '.repeat(100).trim());
   checks.push('ok '.repeat(remaining - 302).trim());
-  const boundary = buildInvocation({ ...task, checks }).spawn.message;
+  const boundary = buildInvocation({ ...task, checks }).agent.prompt;
   assert.equal(boundary.trim().split(/\s+/u).length, 500);
   assert.throws(() => buildInvocation({ ...task, checks: [...checks, 'extra'] }), /500-word/);
 });
@@ -257,4 +264,22 @@ test('CLI emits only invocation JSON and fails safely on oversized or malformed 
   assert.equal(malformed.stdout, '');
   assert.match(malformed.stderr, /valid task packet JSON/);
   assert.doesNotMatch(malformed.stderr, /fake-sensitive-value/);
+});
+
+test('rejects a subagent profile whose pinned model or effort drifts from its route', (context) => {
+  const scratch = mkdtempSync(join(tmpdir(), 'rfs-packet-drift-'));
+  context.after(() => rmSync(scratch, { recursive: true, force: true }));
+  for (const path of ['.agents/team.json', '.agents/model-routing.json', '.claude/agents/rfs-automation-engineer.md',
+    '.claude/skills/automation-implementation/SKILL.md', 'tools/agent_workflow/packet.mjs']) {
+    mkdirSync(dirname(join(scratch, path)), { recursive: true });
+    copyFileSync(join(root, path), join(scratch, path));
+  }
+  const profile = join(scratch, '.claude/agents/rfs-automation-engineer.md');
+  const original = readFileSync(profile, 'utf8');
+  assert.equal(buildInvocation(task, { root: scratch }).agent.subagent_type, 'rfs-automation-engineer');
+  for (const drift of [original.replace('effort: medium', 'effort: high'),
+    original.replace('model: claude-sonnet-5-5', 'model: claude-opus-5-5'), original.replace(/^---[\s\S]*?---/, '')]) {
+    writeFileSync(profile, drift);
+    assert.throws(() => buildInvocation(task, { root: scratch }), /does not match its registered model route|no frontmatter/);
+  }
 });

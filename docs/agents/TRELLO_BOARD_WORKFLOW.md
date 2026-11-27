@@ -4,7 +4,7 @@
 
 The [Markdown improvement tracker](../product/IMPROVEMENT_TRACKER.md) remains the authoritative record for task IDs, detailed status, acceptance criteria, tests, Git, Supabase, and Vercel evidence. Trello is a visual mirror of the current task status, not a second backlog. The agent synchronizes a card during a task handoff; it does **not** run a continuous background sync or treat a board move as proof of completion.
 
-Every specialist also records one concise output comment on the matching numbered card after a meaningful role handoff, including an unfinished result. The comment states the role, actual evidence, remaining gap or blocker, and next action/PM decision; it omits secrets and personal staff/customer data. If status changes, update the tracker and board list first. Comments are progress notes, not acceptance or Done evidence by themselves. See `ticket-comment-handoff` under `.agents/skills/`.
+Every specialist also records one concise output comment on the matching numbered card after a meaningful role handoff, including an unfinished result. The comment states the role, actual evidence, remaining gap or blocker, and next action/PM decision; it omits secrets and personal staff/customer data. If status changes, update the tracker and board list first. Comments are progress notes, not acceptance or Done evidence by themselves. See `ticket-comment-handoff` under `.claude/skills/`.
 
 | Tracker state | Trello list | Rule |
 | --- | --- | --- |
@@ -34,9 +34,9 @@ Card titles begin with the stable tracker number, for example `#58 — Establish
 
 **One-time import verified 7 November 2026:** all 62 non-deferred tracker IDs appear exactly once, each with Description and Acceptance criteria sections. The lists hold 40 READY, 14 IN PROGRESS, 3 IN REVIEW, and 5 DONE cards. The PM explicitly excluded deferred #5. Later work must update the tracker first, then keep the matching card's description, criteria, and list in sync; an existing card is edited rather than duplicated.
 
-If the Trello connector is unavailable, keep the Markdown tracker correct and report the card as unsynced. A card can move back from DONE to IN PROGRESS if verified evidence requires the tracker to reopen; the tracker change comes first. See [`AGENTS.md`](../../AGENTS.md), [the sequential team workflow](RFS_AI_TEAM_WORKFLOW.md), and the `move-board-cards` skill for the operational rule.
+If the Trello connector is unavailable, keep the Markdown tracker correct and report the card as unsynced. A card can move back from DONE to IN PROGRESS if verified evidence requires the tracker to reopen; the tracker change comes first. See [`CLAUDE.md`](../../CLAUDE.md), [the sequential team workflow](RFS_AI_TEAM_WORKFLOW.md), and the `move-board-cards` skill for the operational rule.
 
-PM comment preference (19 November 2026): use short **Result**, **Checked**, **Next** and **Evidence** sections, with bullets and descriptive links. The template is maintained in .agents/skills/ticket-comment-handoff/SKILL.md. Keep original dates and status-at-the-time when reformatting historical comments.
+PM comment preference (19 November 2026): use short **Result**, **Checked**, **Next** and **Evidence** sections, with bullets and descriptive links. The template is maintained in .claude/skills/ticket-comment-handoff/SKILL.md. Keep original dates and status-at-the-time when reformatting historical comments.
 
 ## Card labels
 

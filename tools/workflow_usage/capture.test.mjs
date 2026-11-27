@@ -5,52 +5,57 @@ import { join } from 'node:path';
 import { test } from 'node:test';
 import { fileURLToPath } from 'node:url';
 import { promisify } from 'node:util';
+import { subagentThreadId } from './usage.mjs';
 
 const exec = promisify(execFile);
 const cli = fileURLToPath(new URL('./capture.mjs', import.meta.url));
 const scratch = fileURLToPath(new URL('../../.workflow-usage/capture-tests/', import.meta.url));
 const id = number => '00000000-0000-7000-a000-' + String(number).padStart(12, '0');
-const [root, child, unrelated, turn] = [1, 2, 3, 4].map(id);
+const [root, unrelated, turn] = [1, 3, 4].map(id);
+const child = subagentThreadId(root, 'specialist01');
 const time = second => '2026-11-20T18:00:' + String(second).padStart(2, '0') + '.000Z';
 const privateData = 'SYNTHETIC_PRIVATE_VALUE';
+// Anthropic usage shape; normalizes to 100 input (75 cached, 5 cache write), 40 output (20 thinking).
 const tokens = {
-  input_tokens: 100, cached_input_tokens: 75, cache_write_input_tokens: 5,
-  output_tokens: 40, reasoning_output_tokens: 20, total_tokens: 140,
+  input_tokens: 20, cache_creation_input_tokens: 5, cache_read_input_tokens: 75,
+  output_tokens: 40, output_tokens_details: { thinking_tokens: 20 },
 };
 
-const event = (type, payload, second) => ({ type, payload, timestamp: time(second) });
-const session = (thread, model, parent = null) => [
-  event('session_meta', { id: thread, parent_thread_id: parent, cwd: 'C:/private/' + privateData }, 0),
-  event('turn_context', { turn_id: turn, root_turn_id: turn, model, effort: 'medium', summary: privateData }, 1),
-  event('response_item', { arguments: privateData, content: privateData }, 1),
-];
-const usage = (thread, second, counts = tokens) => event('token_usage_record', {
-  thread_id: thread, response_id: 'private_response_' + second, turn_id: turn, root_turn_id: turn, usage: counts,
-}, second);
+let currentModel = new Map();
+const session = (thread, model) => {
+  currentModel.set(thread, model);
+  return [{ type: 'user', timestamp: time(1), sessionId: thread, promptId: turn, cwd: 'C:/private/' + privateData,
+    message: { role: 'user', content: privateData } }];
+};
+const usage = (thread, second, counts = tokens, model = currentModel.get(thread)) => ({
+  type: 'assistant', timestamp: time(second), sessionId: thread, requestId: 'private_response_' + second, effort: 'medium',
+  message: { id: 'msg_private', model, content: [{ type: 'text', text: privateData }], usage: counts },
+});
 
 async function fixture(t) {
   await mkdir(scratch, { recursive: true });
   const directory = await mkdtemp(join(scratch, 'run-'));
   t.after(() => rm(directory, { recursive: true, force: true }));
-  const rolloutDir = join(directory, 'rollouts');
+  const transcriptDir = join(directory, 'projects');
+  const project = join(transcriptDir, 'private-project');
   const store = join(directory, 'store');
-  await mkdir(rolloutDir);
-  const rollout = (name, lines) => writeFile(join(rolloutDir, 'rollout-' + name + '.jsonl'),
-    lines.map(line => JSON.stringify(line)).join('\n'));
-  const rootRollout = (...rows) => rollout('root', [...session(root, 'coordinator'), ...rows]);
+  await mkdir(join(project, root, 'subagents'), { recursive: true });
+  const transcript = (path, lines) => writeFile(join(project, ...path), lines.map(line => JSON.stringify(line)).join('\n'));
+  const rootRollout = (...rows) => transcript([root + '.jsonl'], [...session(root, 'coordinator'), ...rows]);
   await Promise.all([
-    rootRollout(usage(root, 2), usage(root, 2)),
-    rollout('child', [...session(child, 'specialist', root), usage(child, 3)]),
-    rollout('unrelated', [...session(unrelated, 'unrelated-model'), usage(unrelated, 4)]),
+    rootRollout(usage(root, 2, tokens, 'coordinator'), usage(root, 2, tokens, 'coordinator')),
+    transcript([root, 'subagents', 'agent-specialist01.jsonl'],
+      [{ ...session(root, 'coordinator')[0] }, usage(root, 3, tokens, 'specialist')]),
+    transcript([unrelated + '.jsonl'], [...session(unrelated, 'unrelated-model'), usage(unrelated, 4)]),
   ]);
   const capture = (options = {}) => exec(process.execPath, [cli,
     ...Object.entries({
-      thread: root, since: time(1), until: time(10), turn, 'rollout-dir': rolloutDir, store,
+      session: root, since: time(1), until: time(10), prompt: turn, 'transcript-dir': transcriptDir, store,
       'run-id': 'test-run', category: 'workflow-tooling', label: 'Test workflow', scope: 'full', ...options,
     }).flatMap(([key, value]) => value === undefined ? [] : ['--' + key, value]),
   ], { cwd: directory });
   const read = (...parts) => readFile(join(store, ...parts), 'utf8');
-  return { directory, rolloutDir, store, rootRollout, capture, read, json: async (...parts) => JSON.parse(await read(...parts)) };
+  return { directory, transcriptDir, store, rootRollout, capture, read, json: async (...parts) => JSON.parse(await read(...parts)) };
 }
 
 test('one command writes a deduplicated report, history and bounded analyst brief', async t => {
@@ -93,7 +98,7 @@ test('refreshes the stable ID, includes later usage and counts only comparable c
   await fixtureData.capture({ state: 'closed' });
   await fixtureData.rootRollout(usage(root, 2), usage(root, 12), usage(root, 23), usage(root, 35));
   await fixtureData.capture({ 'run-id': 'other-category', category: 'other', since: time(11), until: time(20), state: 'closed' });
-  await fixtureData.capture({ 'run-id': 'time-window', since: time(21), until: time(30), state: 'closed', turn: undefined });
+  await fixtureData.capture({ 'run-id': 'time-window', since: time(21), until: time(30), state: 'closed', prompt: undefined });
   await fixtureData.capture({ 'run-id': 'active-run', since: time(32), until: time(34) });
   await fixtureData.capture({ 'run-id': 'active-run', since: time(32), until: time(40), state: 'closed' });
   const ledger = await fixtureData.json('usage-history.json');
@@ -140,13 +145,13 @@ test('keeps missing telemetry unavailable and leaves prior runs intact', async t
   await fixtureData.capture();
   const prior = (await fixtureData.json('usage-history.json')).runs[0];
   const { stdout } = await fixtureData.capture({
-    'run-id': 'missing', since: time(11), until: time(20), 'rollout-dir': join(fixtureData.directory, 'missing'),
+    'run-id': 'missing', since: time(11), until: time(20), 'transcript-dir': join(fixtureData.directory, 'missing'),
   });
   assert.match(stdout, /Coverage unavailable/);
   assert.match(stdout, /Total tokens unavailable/);
   assert.match(stdout, /Flags telemetry-coverage, baseline-insufficient/);
   const brief = await fixtureData.json('briefs', 'missing.json');
-  assert.equal(brief.coverage.rollout_directory_found, false);
+  assert.equal(brief.coverage.transcript_directory_found, false);
   assert.equal(brief.response_count, 0);
   assert.ok(Object.values(brief.totals).every(value => value === null));
   const maintained = (await fixtureData.json('usage-history.json')).runs.find(run => run.runId === 'test-run');

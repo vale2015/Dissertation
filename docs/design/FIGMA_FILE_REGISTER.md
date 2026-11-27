@@ -42,7 +42,7 @@ The navigation family 207:454 was replaced by 208:462. Do not reuse the old ID. 
 
 Figma holds layouts, local reusable assets, shared styles and prototypes. GitHub `main` is the current published access point for application code and documentation. A PM-approved frame guides the frontend implementer; a separate reviewer checks the result. File links and matching code paths must remain recorded beside implementation evidence.
 
-The connection is verified for this session. Authentication and read access from the separate Codex extension in VS Code have not yet been demonstrated. The [inactive Codex configuration example](CODEX_FIGMA_CONFIG.toml) is a reference, not an active installed configuration. Figma and GitHub are not continuously synchronized automatically.
+The connection is verified for this session. The original connection was verified from the earlier Codex session. After the 27 November move to Claude Code (#72), Figma read access from Claude Code has not yet been demonstrated. The [inactive Claude Code MCP example](CLAUDE_FIGMA_MCP.example.json) is a reference, not an installed configuration. Figma and GitHub are not continuously synchronized automatically.
 
 ## Next work
 
@@ -52,7 +52,7 @@ The connection is verified for this session. Authentication and read access from
 4. Assemble current desktop/mobile screens, beginning with Dashboard and RFS AI closed/open. Use the actual six navigation destinations and keep staff account actions inside the assistant.
 5. Add the remaining source-supported screen states and journeys; use explicitly labelled fictional examples rather than restaurant customer/staff records.
 6. Verify native structure, fonts, responsive behavior and visual fidelity against the selected running build; record PM-approved frame links.
-7. Authenticate Figma from the VS Code Codex agent and verify a read of a specific frame.
+7. Authenticate Figma from Claude Code in VS Code (claude.ai connector or project `.mcp.json`) and verify a read of a specific frame.
 
 The file is on Starter. The three-page structure fits its page limit. No paid upgrade or published cross-file library is claimed.
 

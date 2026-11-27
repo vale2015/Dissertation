@@ -411,7 +411,7 @@ main section>p:not(.sources),.intro-problem,.subsection>p:not(.sources){max-widt
 <div class="agent-flow">
 <div class="agent-node"><strong>Product manager</strong><span>Approves scope and priorities. Receives evidence and decides whether to accept the work.</span></div>
 <div class="agent-arrow"><small>Approved task and acceptance criteria</small><span aria-hidden="true">&darr;</span></div>
-<div class="agent-node"><strong>Codex coordinator</strong><span>Uses <code>AGENTS.md</code> and the model routes to invoke one relevant role at a time with a fresh, bounded handoff.</span></div>
+<div class="agent-node"><strong>Claude Code coordinator</strong><span>Uses <code>AGENTS.md</code> and the model routes to invoke one relevant role at a time with a fresh, bounded handoff.</span></div>
 <div class="agent-arrow"><small>What each role receives, does and hands back</small><span aria-hidden="true">&darr;</span></div>
 <ul class="role-list" aria-label="Project roles and handoffs">
 <li><strong>Engineering lead</strong><span>Uses the approved task, tracker and relevant knowledge-base evidence to set scope, risks and checks. Hands the delivery path and acceptance criteria to the implementer.</span></li>
@@ -467,12 +467,12 @@ main section>p:not(.sources),.intro-problem,.subsection>p:not(.sources){max-widt
 <table class="route-table" aria-labelledby="workflow-models-title">
 <thead><tr><th scope="col">Responsibility</th><th scope="col">Model</th><th scope="col">Reasoning effort</th></tr></thead>
 <tbody>
-<tr><th scope="row">Architecture and security design</th><td>gpt-6.2-astra</td><td>High</td></tr>
-<tr><th scope="row">Implementation</th><td>gpt-6.2-sol</td><td>Medium</td></tr>
-<tr><th scope="row">Independent QA</th><td>gpt-6.1-sol</td><td>High</td></tr>
-<tr><th scope="row">Visual and accessibility review</th><td>gpt-6.1-terra</td><td>High</td></tr>
-<tr><th scope="row">Backlog coordination</th><td>gpt-6.1-sol</td><td>Low</td></tr>
-<tr><th scope="row">Token analysis</th><td>gpt-6.1-sol</td><td>Low</td></tr>
+<tr><th scope="row">Architecture and security design</th><td>claude-opus-5-5</td><td>High</td></tr>
+<tr><th scope="row">Implementation</th><td>claude-sonnet-5-5</td><td>Medium</td></tr>
+<tr><th scope="row">Independent QA</th><td>claude-opus-5-5</td><td>High</td></tr>
+<tr><th scope="row">Visual and accessibility review</th><td>claude-opus-5-5</td><td>High</td></tr>
+<tr><th scope="row">Backlog coordination</th><td>claude-haiku-5-5</td><td>Medium</td></tr>
+<tr><th scope="row">Token analysis</th><td>claude-haiku-5-5</td><td>Low</td></tr>
 </tbody>
 </table>
 </div>
@@ -528,7 +528,7 @@ main section>p:not(.sources),.intro-problem,.subsection>p:not(.sources){max-widt
 </tbody></table>
 <h3>How designs inform implementation</h3>
 <p>Figma holds design layouts, shared UI assets and prototypes. The UI/UX agent prepares a proposed frame, the PM identifies the approved revision, and the frontend agent implements it using the existing codebase. A separate reviewer checks the implemented result. GitHub <code>main</code> remains the access point for the latest published code and documentation.</p>
-<p>Figma file access and edits were verified in this connected session. The separate Codex agent inside VS Code still needs its own MCP authentication. The connection does not establish continuous automatic synchronization between the canvas and application code.</p>
+<p>Figma file access and edits were verified in this connected session. Claude Code in VS Code still needs its own Figma MCP read check. The connection does not establish continuous automatic synchronization between the canvas and application code.</p>
 <h3>Next design steps</h3>
 <ol class="brief-points"><li>Inspect the saved component IDs and finish checking foundation sizing, the launcher layout and responsive behavior.</li><li>Build current desktop and mobile screens using these components, the six current navigation destinations and the left-docked RFS AI panel.</li><li>Review the completed frames against the running app, record the approved design links and verify access from the VS Code agent.</li></ol>
 <p class="sources"><a href="../design/FIGMA_UI_SOURCE_OF_TRUTH.md">Figma setup and working agreement</a><a href="../design/FIGMA_FILE_REGISTER.md">Design file and continuation record</a><a href="../diagrams/index.html">33 reviewed project diagrams</a></p>

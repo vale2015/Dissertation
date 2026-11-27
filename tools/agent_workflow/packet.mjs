@@ -65,6 +65,14 @@ function checkFile(root, path) {
   return path;
 }
 
+// Reads the flat `key: value` frontmatter of a Claude Code subagent profile.
+function frontmatter(text) {
+  const block = /^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/.exec(text);
+  if (!block) throw new Error('The subagent profile has no frontmatter.');
+  return Object.fromEntries(block[1].split(/\r?\n/).map((line) => /^([a-zA-Z]+):\s*(.*)$/.exec(line))
+    .filter(Boolean).map(([, key, value]) => [key, value.trim()]));
+}
+
 function readConfig(root, path) {
   return JSON.parse(readFileSync(join(root, checkFile(root, path)), 'utf8'));
 }
@@ -143,6 +151,10 @@ export function buildInvocation(input, { root = repoRoot } = {}) {
   }
 
   const profile = checkFile(root, role.profile_path);
+  const pinned = frontmatter(readFileSync(join(root, profile), 'utf8'));
+  if (pinned.name !== role.profile || pinned.model !== route.model || pinned.effort !== route.reasoning_effort) {
+    throw new Error('The subagent profile name, model, or effort does not match its registered model route.');
+  }
   const skill = checkFile(root, role.skill_path);
   const outcome = textField(input.outcome, 'Outcome');
   const criteria = textList(input.acceptance_criteria, 'Acceptance criteria', 8);
@@ -155,7 +167,7 @@ export function buildInvocation(input, { root = repoRoot } = {}) {
 
   const message = [
     `${input.task_id} · ${input.workflow_id} · ${pair?.workflow_ref ?? backlog.workflow_ref} · ${input.role_ref} · ${input.tier} · attempt ${attempt}`,
-    `Work in "${root}". Read applicable AGENTS.md, ${profile}, and ${skill} for this assignment.`,
+    `Work in "${root}". Read applicable CLAUDE.md and ${skill} for this assignment.`,
     `Outcome: ${outcome}`,
     input.source_revision && `Source revision: ${input.source_revision}`,
     'Acceptance criteria:', ...criteria.map((criterion) => `- ${criterion}`),
@@ -171,10 +183,14 @@ export function buildInvocation(input, { root = repoRoot } = {}) {
     throw new Error('The generated briefing exceeds the 500-word or 6000-character limit.');
   }
 
+  // Claude Code Agent tool call. The subagent's frontmatter pins model, effort and tools,
+  // and every subagent starts in a fresh context, so no model override or fork is sent.
   return {
     role_ref: input.role_ref,
     profile: role.profile,
-    spawn: { task_name: name, fork_turns: 'none', model: route.model, reasoning_effort: route.reasoning_effort, message },
+    task_name: name,
+    route: { model: route.model, effort: route.reasoning_effort },
+    agent: { subagent_type: role.profile, description: `${input.task_id} ${input.role_ref} attempt ${attempt}`, prompt: message },
   };
 }
 

@@ -2,35 +2,37 @@
 
 20 November 2026 · #68 · Collector independently verified; bounded analyst demonstrated
 
-The dedicated `rfs_token_analyst` reviews usage and recommends up to three improvements. It does not build features, approve releases or read conversation content. Deterministic Node scripts count tokens; the analyst interprets sanitized results. No external monitoring platform, paid integration or background schedule is installed.
+Updated 27 November 2026 · #72 · Runtime migrated to Claude Code; the collector reads Claude Code transcripts
+
+The dedicated `rfs-token-analyst` subagent reviews usage and recommends up to three improvements. It does not build features, approve releases or read conversation content. Deterministic Node scripts count tokens; the analyst interprets sanitized results. No external monitoring platform, paid integration or background schedule is installed.
 
 ## Models by responsibility
 
-The routing source is `.agents/model-routing.json`. Architecture/security design uses gpt-6.2-astra/high; implementation gpt-6.2-sol/medium; independent QA gpt-6.1-sol/high; visual/accessibility review gpt-6.1-terra/high; token analysis gpt-6.1-sol/low. Select only relevant roles, sequentially. Different tasks can reuse an appropriate model: rotating models arbitrarily creates no measured saving. The main chat model is not changed by these files.
+The routing source is `.agents/model-routing.json`. Following the PM direction to use the most efficient model for each task (27 November 2026), the routes are: architecture/security design claude-opus-5-5/high; implementation claude-sonnet-5-5/medium; independent QA claude-opus-5-5/high; visual/accessibility review claude-opus-5-5/high; backlog coordination claude-haiku-5-5/medium; token analysis claude-haiku-5-5/low. Compare later workflows with this analyst before changing a tier. Select only relevant roles, sequentially. Different tasks can reuse an appropriate model: rotating models arbitrarily creates no measured saving. The main chat model is not changed by these files.
 
-Project agent definitions live in `.codex/agents/`. They become available when the client loads this trusted project. In a runtime exposing only explicit spawn overrides, the coordinator must supply the model, effort and bounded instructions directly. That invocation is not proof the named profile or its tool restrictions was loaded. Never silently fall back when a model is unavailable.
+Project subagent definitions live in `.claude/agents/`. Claude Code loads them when it opens this project. Each profile pins `model`, `effort` and its tool limits in frontmatter. The analyst profile allows only `Read`. A fresh headless session on 27 November confirmed it loads by `subagent_type` and runs on claude-haiku-5-5 at low effort. Invoke a profile by `subagent_type` so those pins apply. `tools/agent_workflow/packet.mjs` rejects a profile whose frontmatter drifts from the routing file. A configured profile is not proof that a particular session loaded it, so record the model the transcript actually shows. Never silently fall back when a model is unavailable.
 
 ## Collect and review each workflow
 
 The preferred path is the single capture command, which performs collection/history update and saves a bounded analyst brief:
 
 ```powershell
-node tools/workflow_usage/capture.mjs --thread ROOT-CHAT-UUID --since UTC-START --turn ROOT-TURN-UUID --run-id workflow-id --category task-category --label "Workflow title" --scope full --state snapshot
+node tools/workflow_usage/capture.mjs --session ROOT-SESSION-UUID --since UTC-START --prompt ROOT-PROMPT-UUID --run-id workflow-id --category task-category --label "Workflow title" --scope full --state snapshot
 ```
 
-Replace placeholders with the actual chat, start and task metadata. Reuse the same ID and original metadata on refresh; use `--state closed` for a finished selected window. Output is four summary lines. Detailed reports go in `.workflow-usage/reports/` and sanitized analyst briefs in `.workflow-usage/briefs/`, named by run ID. Give the analyst the brief once, then refresh capture to include its overhead. A capture taken before the final reply still excludes future tokens. A failed derived-file publication leaves the authoritative ledger intact and reports how to regenerate the files.
+Replace placeholders with the actual session, start and task metadata. The session UUID is the transcript file name under `~/.claude/projects/<project>/`. `--prompt` is optional and uses the `promptId` recorded on the user message. Reuse the same ID and original metadata on refresh; use `--state closed` for a finished selected window. Output is four summary lines. Detailed reports go in `.workflow-usage/reports/` and sanitized analyst briefs in `.workflow-usage/briefs/`, named by run ID. Give the analyst the brief once, then refresh capture to include its overhead. A capture taken before the final reply still excludes future tokens. A failed derived-file publication leaves the authoritative ledger intact and reports how to regenerate the files.
 
 The separate diagnostic commands remain supported below. Compare uncached input and output as well as cached/raw context volume; no token column establishes a monetary charge. See [optimisation actions](TOKEN_USAGE_OPTIMISATION_ACTIONS.md).
 
-Work only in the VS Code project folder specified in AGENTS.md. Record the workflow start in UTC and its root chat ID. Run from this repository:
+Work only in the VS Code project folder specified in CLAUDE.md. Record the workflow start in UTC and its root Claude Code session ID. Run from this repository:
 
 ```powershell
-node tools/workflow_usage/usage.mjs --thread ROOT-CHAT-UUID --since 2026-11-20T14:35:29Z --output .workflow-usage/current.json --markdown .workflow-usage/current.md
+node tools/workflow_usage/usage.mjs --session ROOT-SESSION-UUID --since 2026-11-20T14:35:29Z --output .workflow-usage/current.json --markdown .workflow-usage/current.md
 ```
 
-Use a real UUID and the workflow's actual start, not the example date for future tasks. `--until` fixes the exclusive UTC end; default is capture time. `--turn ROOT-TURN-UUID` optionally limits a report to one root turn. A multi-turn task needs a time window covering those turns. Reports remain local in the ignored `.workflow-usage/` directory; never commit them or raw rollouts.
+Use a real UUID and the workflow's actual start, not the example date for future tasks. `--until` fixes the exclusive UTC end; default is capture time. `--prompt ROOT-PROMPT-UUID` optionally limits a report to one root prompt. A multi-prompt task needs a time window covering those prompts. `--transcript-dir` overrides the default `~/.claude/projects` (or `$CLAUDE_CONFIG_DIR/projects`). Reports remain local in the ignored `.workflow-usage/` directory; never commit them or raw transcripts.
 
-The collector reads session metadata to identify root and descendants, then processes only their response usage records. It deduplicates thread/response IDs and ignores cumulative counters. Reports contain counters and coverage, not prompts, tool arguments or transcript paths. Missing sessions/fields remain unavailable, not zero. Cached input is included in input; reasoning is included in output. Total is input plus output, not the sum of all columns.
+The collector finds the root `<session>.jsonl` and its subagent transcripts under `<session>/subagents/`. It processes only their assistant usage records. Claude Code writes one line per content block, so each API response is counted once by `requestId`. Local `<synthetic>` messages are skipped because they were never billed. Each subagent gets a stable derived UUID, so the raw agent ID is never stored. Anthropic reports `input_tokens` without cache reads or writes, and the collector normalizes it: input = uncached + cache write + cache read. Reasoning output is the reported thinking-token subset of output. Reports contain counters and coverage, not prompts, tool arguments or transcript paths. Missing sessions/fields remain unavailable, not zero. Cached input is included in input; reasoning is included in output. Total is input plus output, not the sum of all columns.
 
 Give the analyst only the report and relevant task-role labels, in fresh context. Ask for up to three ranked evidence/action/verification recommendations in 180 words. Refresh the report after it returns to count its overhead; do not recursively analyze the analysis. Preserve required tests, privacy and independent review.
 
@@ -63,9 +65,13 @@ Initial heuristics are review candidates, not proof of waste: average input at l
 
 The coordinator is instructed to perform this reporting step for project workflows. Automatic lifecycle hooks are not installed or verified; this agent is invoked on demand, not continuously running. A future automatic hook requires a concrete reviewed definition and explicit client trust. Never bypass that trust. The current chat started outside this repository, so creating a project profile does not retroactively change its loaded configuration.
 
-Local rollout formats can change. Schema version 1 supports observed `token_usage_record` response counters; unsupported cumulative-only data is reported as unavailable. Keep parser tests and coverage warnings when upgrading. Source: [Codex hooks and transcript caveat](https://learn.chatgpt.com/docs/hooks), [official Codex source](https://github.com/openai/codex).
+Local transcript formats can change between Claude Code releases. The report remains schema version 1, with source `claude_code_transcript_usage`. History still accepts earlier `codex_rollout_token_usage_record` ledger entries, so existing baselines survive. Keep the parser tests and coverage warnings current when upgrading. Codex and Claude Code records come from different tokenizers and harnesses, so do not use pre-migration Codex records as a like-for-like baseline for Claude workflows.
 
 ## Verification checkpoint
+
+Claude Code migration (27 November 2026, #72): the collector, capture and history tests were rewritten against Claude Code transcript fixtures. These cover main and subagent files, multi-line response deduplication, prompt scoping, synthetic records, copied transcripts, junction containment and CLI privacy. With the packet and board tests, 53 tests run: 52 pass and 1 symlink test is skipped on this Windows host. A live capture of this session was run locally (counts not recorded here). Independent review is pending.
+
+The entries below are historical and describe the earlier Codex runtime.
 
 Capture/efficiency extension: 22 collector/history/capture tests plus three independent edge checks passed with zero skips. Safe identity/overlap/refresh behavior, compact four-line output, sanitized brief, link/hardlink rejection, unknown fields and ledger-preserving report recovery were checked. Crash/stale-lock recovery was inspected rather than process-kill tested. See [the optimisation actions](TOKEN_USAGE_OPTIMISATION_ACTIONS.md).
 

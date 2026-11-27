@@ -47,8 +47,8 @@
   <rect x="988" y="208" width="356" height="198" rx="8" fill="#E7F4EF" stroke="#B7CAC6" stroke-width="1.4" />
   <text x="1008" y="237.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">FRESH CONTEXT</text>
   <text x="1008" y="276.84" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" text-anchor="start">Invoke the selected role</text>
-  <text x="1008" y="309.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Specify profile, model and effort.</text>
-  <text x="1008" y="336.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Set fork_turns to none. Report an</text>
+  <text x="1008" y="309.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Use the subagent profile; it pins</text>
+  <text x="1008" y="336.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">model and effort. Report an</text>
   <text x="1008" y="363.8" fill="#425F62" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">unavailable route to the PM.</text>
   <rect x="988" y="463" width="356" height="198" rx="8" fill="#FFFFFF" stroke="#B7CAC6" stroke-width="1.4" />
   <text x="1008" y="492.6" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" text-anchor="start">RETURN · ≤200 WORDS</text>

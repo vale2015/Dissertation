@@ -106,10 +106,10 @@
         <mxCell id="28" parent="56" vertex="1" value="Invoke the selected role" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=26;fontColor=#142F35;fontStyle=1;spacing=0;">
           <mxGeometry x="20" y="45" width="316" height="30.16" as="geometry" />
         </mxCell>
-        <mxCell id="29" parent="56" vertex="1" value="Specify profile, model and effort." style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#425F62;fontStyle=0;spacing=0;">
+        <mxCell id="29" parent="56" vertex="1" value="Use the subagent profile; it pins" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#425F62;fontStyle=0;spacing=0;">
           <mxGeometry x="20" y="83" width="316" height="23.2" as="geometry" />
         </mxCell>
-        <mxCell id="30" parent="56" vertex="1" value="Set fork_turns to none. Report an" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#425F62;fontStyle=0;spacing=0;">
+        <mxCell id="30" parent="56" vertex="1" value="model and effort. Report an" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#425F62;fontStyle=0;spacing=0;">
           <mxGeometry x="20" y="110" width="316" height="23.2" as="geometry" />
         </mxCell>
         <mxCell id="31" parent="56" vertex="1" value="unavailable route to the PM." style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#425F62;fontStyle=0;spacing=0;">

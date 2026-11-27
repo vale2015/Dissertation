@@ -35,9 +35,9 @@ async function lockStore(store) {
 
 function analystBrief(report, { run, flags, ledger }) {
   const {
-    source, status, rollout_directory_found, root_thread_found, discovery_errors, unreadable_or_invalid_headers,
-    ambiguous_thread_links, unreadable_selected_rollouts, malformed_json_lines, invalid_response_records,
-    records_missing_root_turn, duplicate_response_records, conflicting_response_ids, legacy_only_threads,
+    source, status, transcript_directory_found, root_thread_found, discovery_errors,
+    ambiguous_thread_links, unreadable_selected_transcripts, malformed_json_lines, invalid_response_records,
+    records_missing_root_turn, duplicate_response_records, conflicting_response_ids, synthetic_records_skipped,
     threads_without_usage, unknown_model_responses, unknown_effort_responses, missing_fields, note,
   } = report.coverage;
 
@@ -59,9 +59,9 @@ function analystBrief(report, { run, flags, ledger }) {
     root_input_tokens: run.root_input_tokens,
     by_model: run.by_model,
     coverage: {
-      source, status, rollout_directory_found, root_thread_found, discovery_errors, unreadable_or_invalid_headers,
-      ambiguous_thread_links, unreadable_selected_rollouts, malformed_json_lines, invalid_response_records,
-      records_missing_root_turn, duplicate_response_records, conflicting_response_ids, legacy_only_threads,
+      source, status, transcript_directory_found, root_thread_found, discovery_errors,
+      ambiguous_thread_links, unreadable_selected_transcripts, malformed_json_lines, invalid_response_records,
+      records_missing_root_turn, duplicate_response_records, conflicting_response_ids, synthetic_records_skipped,
       threads_without_usage, unknown_model_responses, unknown_effort_responses, missing_fields, note,
     },
     flags,
@@ -71,14 +71,14 @@ function analystBrief(report, { run, flags, ledger }) {
 
 const json = value => JSON.stringify(value, null, 2) + '\n';
 
-async function captureUsage({ rolloutDir, rootThreadId, since, until, turnId,
+async function captureUsage({ transcriptDir, rootThreadId, since, until, turnId,
   runId, category, label, scope, state, storeDir = '.workflow-usage' }) {
   if (typeof runId !== 'string' || runIdPattern.exec(runId)?.[0] !== runId || deviceName.test(runId)) {
     throw new Error('Use a run ID of up to 64 lowercase letters, digits, hyphens or underscores, starting with a letter or digit.');
   }
   if (storeDir.length === 0) throw new Error('A capture store directory is required.');
   const store = resolve(storeDir);
-  const report = await collectUsage({ rolloutDir, rootThreadId, since, until, turnId });
+  const report = await collectUsage({ transcriptDir, rootThreadId, since, until, turnId });
 
   // Hold the capture lock through publication so two captures cannot publish out of ledger order.
   const lock = await lockStore(store);
@@ -118,17 +118,17 @@ async function main() {
   let args;
   try {
     args = parseArgs({ options: {
-      thread: { type: 'string' }, since: { type: 'string' }, until: { type: 'string' }, turn: { type: 'string' },
+      session: { type: 'string' }, since: { type: 'string' }, until: { type: 'string' }, prompt: { type: 'string' },
       'run-id': { type: 'string' }, category: { type: 'string' }, label: { type: 'string' }, scope: { type: 'string' },
-      state: { type: 'string' }, 'rollout-dir': { type: 'string' }, store: { type: 'string' },
+      state: { type: 'string' }, 'transcript-dir': { type: 'string' }, store: { type: 'string' },
     } }).values;
   } catch {
     throw new Error('Invalid capture options.');
   }
   const brief = await captureUsage({
-    rootThreadId: args.thread, since: args.since, until: args.until, turnId: args.turn, runId: args['run-id'],
+    rootThreadId: args.session, since: args.since, until: args.until, turnId: args.prompt, runId: args['run-id'],
     category: args.category, label: args.label, scope: args.scope, state: args.state,
-    rolloutDir: args['rollout-dir'], storeDir: args.store,
+    transcriptDir: args['transcript-dir'], storeDir: args.store,
   });
   const tokens = value => value ?? 'unavailable';
   const totals = brief.totals;

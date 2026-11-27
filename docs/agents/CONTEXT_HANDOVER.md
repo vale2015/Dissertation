@@ -1,5 +1,15 @@
 # RFS current handover
 
+## 27 November - Codex to Claude Code runtime migration (#72)
+
+- **Code:** local working tree only; nothing committed or pushed. `AGENTS.md` was renamed to `CLAUDE.md`. `.codex/` was removed in favour of `.claude/agents/` (20 subagents). Skills moved to `.claude/skills/`. The routing table, team registry, `packet.mjs` and the usage collector, capture and history tools were ported, along with their tests.
+- **Checked:** 53 tool tests, 52 pass and 1 skipped on Windows (symlink `EPERM`, which also fails on unmodified main). A live transcript capture reported observed coverage.
+- **Next:** dedicated independent review; PM review of the change summary before commit; after approval, merge to main and verify the remote commit. Trello #72 card and comment not yet created.
+- **PM decisions (made):** keep both GitHub apps with Claude taking precedence; move the weekly task to Claude; use the most efficient model per task (applied).
+- **Verified later the same day:** fresh-session subagent loading (Haiku/low as pinned) and Figma read from Claude Code.
+- **Blocked on PM:** install the Claude GitHub App; add the GitHub connector at claude.ai as `vale2015`. Then create the Claude cloud task (Sundays 10:00 UTC, Sonnet 5.5) and disable the ChatGPT task in the same step.
+- **Unchanged:** Supabase, Vercel, application runtime AI, the knowledge-refresh workflow.
+
 ## 25 November - Connected Figma workspace and documentation publication
 
 - The PM designated the existing [RFS Figma file](https://www.figma.com/design/vPKrtyR0JhVRLpyThwLtzm/RFS---Restaurant-Forecasting-System?node-id=206-414) as the project UI design workspace. Connected-session file reads and writes passed. Original page 0:1 is now 01 Original research and UI with all 106 top-level items preserved. Page 206:413 is 02 Current product UI; it is created but has no new screen layouts. Page 206:414 is 03 UI foundations with shared paint/text styles and reusable UI assets.

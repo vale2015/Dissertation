@@ -8,6 +8,8 @@ const jsonFile = 'usage-history.json';
 const historyFile = 'USAGE_HISTORY.md';
 const flagsFile = 'OPTIMIZATION_FLAGS.md';
 const lockFile = '.usage-history.lock';
+// Accept earlier Codex ledger records so history comparisons survive the Claude Code migration.
+const usageSources = new Set(['claude_code_transcript_usage', 'codex_rollout_token_usage_record']);
 const uuidPattern = /^[\da-f]{8}(?:-[\da-f]{4}){3}-[\da-f]{12}$/;
 const slugPattern = /^[a-z\d][a-z\d_-]{0,63}$/;
 const labelPattern = /^[a-z\d](?:[a-z\d ()-]{0,78}[a-z\d)])?$/i;
@@ -135,7 +137,7 @@ function workflowState(state) {
 
 function runFromReport(report, metadata) {
   requireValid(isObject(report) && report.schema_version === 1, 'report schema version');
-  requireValid(isObject(report.coverage) && report.coverage.source === 'codex_rollout_token_usage_record', 'report coverage source');
+  requireValid(isObject(report.coverage) && usageSources.has(report.coverage.source), 'report coverage source');
   requireValid(Array.isArray(report.by_thread), 'thread groups');
   const seen = new Set();
   const threads = report.by_thread.map(thread => {
@@ -197,7 +199,7 @@ function evaluate(run, otherRuns) {
     add('telemetry-coverage', 'note', 'Review the coverage and workflow window',
       'Selected scope is ' + run.scope + ' and telemetry is ' + run.coverage + ' for '
         + count(run.response_count) + ' recorded responses. Unknown usage remains unavailable.',
-      'Capture from the actual workflow start and review missing rollout records and token fields.',
+      'Capture from the actual workflow start and review missing transcript records and token fields.',
       'Confirm the intended window and inspect coverage after the next capture.');
   }
   if (input !== null && run.response_count >= thresholds.averageResponses

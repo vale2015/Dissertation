@@ -2,7 +2,9 @@
 
 Research checked: 25 November 2026. Status: Figma file connected and edited; workspace pages and UI foundations created. Current product screen assembly and the separate VS Code connection remain to be verified.
 
-**VS Code / Codex setup, 25 November:** the PM selected Codex as the VS Code agent. Session permissions rejected writing the active `.codex/config.toml` configuration. An [inactive configuration example](CODEX_FIGMA_CONFIG.toml) is provided instead; it does not enable the connection by itself. In Codex's gear menu, open MCP servers, select Add server, choose Streamable HTTP, enter `figma` and `https://mcp.figma.com/mcp`, save, restart the extension, and select Authenticate when offered. Complete Figma sign-in locally. Project configuration requires project trust; do not bypass that prompt. No credentials or approval overrides belong in the example. The Codex CLI was not found on this session's PATH. The Figma VS Code extension is installed, but Codex authentication and design-file access remain unverified.
+**Claude Code setup, 27 November (#72):** the project's VS Code agent is now Claude Code. In this session the Figma MCP tools are available through the claude.ai Figma connector. Read access to the RFS file has not yet been re-verified from Claude Code. For a project-level connection, use the [inactive Claude Code MCP example](CLAUDE_FIGMA_MCP.example.json): copy its block into a root `.mcp.json`, or run `claude mcp add --transport http figma https://mcp.figma.com/mcp`. Approve the server when Claude Code prompts, then complete Figma OAuth sign-in locally. Do not bypass project trust, and keep credentials out of the file. The paragraph below is the historical Codex record.
+
+**VS Code / Codex setup, 25 November (historical):** the PM selected Codex as the VS Code agent. Session permissions rejected writing the active `.codex/config.toml` configuration. An inactive Codex configuration example (since removed) was provided instead; it does not enable the connection by itself. In Codex's gear menu, open MCP servers, select Add server, choose Streamable HTTP, enter `figma` and `https://mcp.figma.com/mcp`, save, restart the extension, and select Authenticate when offered. Complete Figma sign-in locally. Project configuration requires project trust; do not bypass that prompt. No credentials or approval overrides belong in the example. The Codex CLI was not found on this session's PATH. The Figma VS Code extension is installed, but Codex authentication and design-file access remain unverified.
 
 ## Decision
 
@@ -23,21 +25,21 @@ Figma captures are dated design snapshots. A design edit is implemented through 
 
 ## Connection options
 
-### Recommended: Figma integration in Codex
+### Recommended: Figma MCP in Claude Code
 
-1. Install Figma from the app's Plugins area and authorize the intended Figma account.
-2. Confirm the integration is connected and the agent can identify the account.
+1. Enable the Figma connector in claude.ai connector settings, or add the project MCP server shown below, and authorize the intended Figma account.
+2. Confirm the agent can identify the account (Figma `whoami`).
 3. Open a specific RFS Figma file link and verify read access.
 4. Verify edit access separately before creating or changing a small test frame.
 
-The Figma integration is now connected in this session. Reads and edits of the selected RFS file succeeded on 25 November. See the [file register](FIGMA_FILE_REGISTER.md) for the created pages and assets. This does not verify OAuth in a separate VS Code Codex process.
+On 25 November, reads and edits of the selected RFS file succeeded from the earlier Codex session. See the [file register](FIGMA_FILE_REGISTER.md) for the created pages and assets. Claude Code access still needs its own read check, because a connection made in one client is not proof for another.
 
 Figma's official remote MCP endpoint is https://mcp.figma.com/mcp. It is a developer-tool connection, separate from any optional Figma-to-GitHub app authorization.
 
-For a Codex CLI installation, the documented command is:
+For a Claude Code project-scoped server, the command is:
 
 ~~~sh
-codex mcp add figma --url https://mcp.figma.com/mcp
+claude mcp add --transport http --scope project figma https://mcp.figma.com/mcp
 ~~~
 
 For VS Code's own MCP client, use its user or workspace MCP configuration:
@@ -54,11 +56,11 @@ For VS Code's own MCP client, use its user or workspace MCP configuration:
 }
 ~~~
 
-Use the client that actually runs the agent. A VS Code MCP setting does not prove that a separate Codex CLI/app session is connected. These are reference snippets, not installed configuration.
+Use the client that actually runs the agent. A VS Code MCP setting does not prove that a Claude Code session is connected; Claude Code reads its own `.mcp.json`, user settings and claude.ai connectors. These are reference snippets, not installed configuration.
 
 ### Optional later: Code Connect
 
-Code Connect maps Figma components to their actual code counterparts. It is useful after reusable components exist in Figma; it is not required to store screens or begin using Figma with Codex.
+Code Connect maps Figma components to their actual code counterparts. It is useful after reusable components exist in Figma; it is not required to store screens or begin using Figma with Claude Code.
 
 The current documentation lists Dev or Full seats on Professional, Organization and Enterprise plans. Professional supports one active library and one active framework. The UI workflow requires published components.
 

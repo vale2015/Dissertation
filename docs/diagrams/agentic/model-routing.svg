@@ -32,29 +32,29 @@
   <rect x="54" y="263" width="1292" height="81" rx="0" fill="#FFFFFF" stroke="none" stroke-width="1.4" />
   <text x="70" y="293.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">Frontend, backend, database, chatbot,</text>
   <text x="70" y="319.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">automation</text>
-  <text x="495" y="293.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">gpt-6.2-sol · medium</text>
-  <text x="920" y="293.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">gpt-6.1-sol · high</text>
+  <text x="495" y="293.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Sonnet 5.5 · medium</text>
+  <text x="920" y="293.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Opus 5.5 · high</text>
   <rect x="54" y="344" width="1292" height="60" rx="0" fill="#F0F5F2" stroke="none" stroke-width="1.4" />
   <text x="70" y="374.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">UI/UX design</text>
-  <text x="495" y="374.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">gpt-6.2-astra · high</text>
-  <text x="920" y="374.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">gpt-6.1-terra · high</text>
+  <text x="495" y="374.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Opus 5.5 · high</text>
+  <text x="920" y="374.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Opus 5.5 · high</text>
   <rect x="54" y="404" width="1292" height="60" rx="0" fill="#FFFFFF" stroke="none" stroke-width="1.4" />
   <text x="70" y="434.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">Security engineering</text>
-  <text x="495" y="434.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">gpt-6.2-astra · high</text>
-  <text x="920" y="434.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">gpt-6.2-astra · high, separate invocation</text>
+  <text x="495" y="434.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Opus 5.5 · high</text>
+  <text x="920" y="434.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Opus 5.5 · high, separate invocation</text>
   <rect x="54" y="464" width="1292" height="81" rx="0" fill="#F0F5F2" stroke="none" stroke-width="1.4" />
   <text x="70" y="494.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">Architecture / security design</text>
-  <text x="495" y="494.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">gpt-6.2-astra · high</text>
+  <text x="495" y="494.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Opus 5.5 · high</text>
   <text x="920" y="494.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Refer the resulting work to the relevant paired</text>
   <text x="920" y="520.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">reviewer.</text>
   <rect x="54" y="545" width="1292" height="81" rx="0" fill="#FFFFFF" stroke="none" stroke-width="1.4" />
   <text x="70" y="575.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">Backlog Handoff · RFS-BACKLOG</text>
-  <text x="495" y="575.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">gpt-6.1-sol · low</text>
+  <text x="495" y="575.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Haiku 5.5 · medium</text>
   <text x="920" y="575.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Records the outcome from the reviewer and</text>
   <text x="920" y="601.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">the PM’s decision where required.</text>
   <rect x="54" y="626" width="1292" height="81" rx="0" fill="#F0F5F2" stroke="none" stroke-width="1.4" />
   <text x="70" y="656.8" fill="#14685C" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="start">Token-usage analyst</text>
-  <text x="495" y="656.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">gpt-6.1-sol · low</text>
+  <text x="495" y="656.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Haiku 5.5 · low</text>
   <text x="920" y="656.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">Reviews sanitised counters, history and flags</text>
   <text x="920" y="682.8" fill="#142F35" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start">once per workflow.</text>
   <rect x="54" y="755" width="1292" height="68" rx="6" fill="#E7F4EF" stroke="none" stroke-width="1.4" />

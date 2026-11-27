@@ -1,5 +1,7 @@
 # RFS memo: MANDATORY AUTOMATIC STARTUP AND CONTEXT RECOVERY
 
+> Runtime note (27 November 2026, #72): the project now runs on Claude Code. Read each `AGENTS.md` reference below as the root `CLAUDE.md`, which Claude Code loads automatically at session start. Specialist instructions are in `.claude/skills/`. The memo text is otherwise preserved as imported.
+
 > Repository import note (9 November 2026): this is the supplied context-recovery specification. The root `AGENTS.md` now links the knowledge entry point and handover, but a fresh-context recovery test and the full weekly research workflow remain open under tracker #64. Dated service identifiers below must be verified before use.
 
 Prepared for Valerio Gerardi on 8 November 2026.
@@ -92,7 +94,7 @@ All paths below are relative to the repository root. Existing paths were checked
 | RFS assistant and delivery-agent boundaries | `docs/agents/AGENT.md` | When working on the assistant or delivery process. |
 | Sequential delivery and review | `docs/agents/RFS_AI_TEAM_WORKFLOW.md` | Before feature delivery or specialist handoffs. |
 | Board synchronization | `docs/agents/TRELLO_BOARD_WORKFLOW.md` | Before creating, editing, or moving task cards. |
-| Specialist instructions | `.agents/skills/` | Read the relevant `SKILL.md` before using that workflow. |
+| Specialist instructions | `.claude/skills/` | Read the relevant `SKILL.md` before using that workflow. |
 | Current design language | `docs/design/DESIGN_SYSTEM.md` | Before UI work. |
 | Current UI decisions and outstanding acceptance | `docs/design/RFS_UI_UX_REDESIGN_PLAN.md` | Before UI work; later PM decisions take precedence over the historical mockup. |
 | Historical visual reference | `docs/design/RFS_UI_UX_REDESIGN.md`; `docs/design/RFS Restaurant Analytics Dashboard.png` | For design history and reference, alongside current decisions. |

@@ -53,10 +53,10 @@
         <mxCell id="13" parent="44" vertex="1" value="automation" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#14685C;fontStyle=1;spacing=0;">
           <mxGeometry x="16" y="38" width="393" height="23.2" as="geometry" />
         </mxCell>
-        <mxCell id="14" parent="44" vertex="1" value="gpt-6.2-sol · medium" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+        <mxCell id="14" parent="44" vertex="1" value="Sonnet 5.5 · medium" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
           <mxGeometry x="441" y="12" width="393" height="23.2" as="geometry" />
         </mxCell>
-        <mxCell id="15" parent="44" vertex="1" value="gpt-6.1-sol · high" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+        <mxCell id="15" parent="44" vertex="1" value="Opus 5.5 · high" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
           <mxGeometry x="866" y="12" width="410" height="23.2" as="geometry" />
         </mxCell>
         <mxCell id="45" parent="1" vertex="1" connectable="1" style="group;resizable=1;recursiveResize=1;">
@@ -68,10 +68,10 @@
         <mxCell id="17" parent="45" vertex="1" value="UI/UX design" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#14685C;fontStyle=1;spacing=0;">
           <mxGeometry x="16" y="12" width="393" height="23.2" as="geometry" />
         </mxCell>
-        <mxCell id="18" parent="45" vertex="1" value="gpt-6.2-astra · high" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+        <mxCell id="18" parent="45" vertex="1" value="Opus 5.5 · high" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
           <mxGeometry x="441" y="12" width="393" height="23.2" as="geometry" />
         </mxCell>
-        <mxCell id="19" parent="45" vertex="1" value="gpt-6.1-terra · high" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+        <mxCell id="19" parent="45" vertex="1" value="Opus 5.5 · high" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
           <mxGeometry x="866" y="12" width="410" height="23.2" as="geometry" />
         </mxCell>
         <mxCell id="46" parent="1" vertex="1" connectable="1" style="group;resizable=1;recursiveResize=1;">
@@ -83,10 +83,10 @@
         <mxCell id="21" parent="46" vertex="1" value="Security engineering" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#14685C;fontStyle=1;spacing=0;">
           <mxGeometry x="16" y="12" width="393" height="23.2" as="geometry" />
         </mxCell>
-        <mxCell id="22" parent="46" vertex="1" value="gpt-6.2-astra · high" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+        <mxCell id="22" parent="46" vertex="1" value="Opus 5.5 · high" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
           <mxGeometry x="441" y="12" width="393" height="23.2" as="geometry" />
         </mxCell>
-        <mxCell id="23" parent="46" vertex="1" value="gpt-6.2-astra · high, separate invocation" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+        <mxCell id="23" parent="46" vertex="1" value="Opus 5.5 · high, separate invocation" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
           <mxGeometry x="866" y="12" width="410" height="23.2" as="geometry" />
         </mxCell>
         <mxCell id="47" parent="1" vertex="1" connectable="1" style="group;resizable=1;recursiveResize=1;">
@@ -98,7 +98,7 @@
         <mxCell id="25" parent="47" vertex="1" value="Architecture / security design" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#14685C;fontStyle=1;spacing=0;">
           <mxGeometry x="16" y="12" width="393" height="23.2" as="geometry" />
         </mxCell>
-        <mxCell id="26" parent="47" vertex="1" value="gpt-6.2-astra · high" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+        <mxCell id="26" parent="47" vertex="1" value="Opus 5.5 · high" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
           <mxGeometry x="441" y="12" width="393" height="23.2" as="geometry" />
         </mxCell>
         <mxCell id="27" parent="47" vertex="1" value="Refer the resulting work to the relevant paired" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
@@ -116,7 +116,7 @@
         <mxCell id="30" parent="48" vertex="1" value="Backlog Handoff · RFS-BACKLOG" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#14685C;fontStyle=1;spacing=0;">
           <mxGeometry x="16" y="12" width="393" height="23.2" as="geometry" />
         </mxCell>
-        <mxCell id="31" parent="48" vertex="1" value="gpt-6.1-sol · low" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+        <mxCell id="31" parent="48" vertex="1" value="Haiku 5.5 · medium" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
           <mxGeometry x="441" y="12" width="393" height="23.2" as="geometry" />
         </mxCell>
         <mxCell id="32" parent="48" vertex="1" value="Records the outcome from the reviewer and" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
@@ -134,7 +134,7 @@
         <mxCell id="35" parent="49" vertex="1" value="Token-usage analyst" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#14685C;fontStyle=1;spacing=0;">
           <mxGeometry x="16" y="12" width="393" height="23.2" as="geometry" />
         </mxCell>
-        <mxCell id="36" parent="49" vertex="1" value="gpt-6.1-sol · low" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
+        <mxCell id="36" parent="49" vertex="1" value="Haiku 5.5 · low" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">
           <mxGeometry x="441" y="12" width="393" height="23.2" as="geometry" />
         </mxCell>
         <mxCell id="37" parent="49" vertex="1" value="Reviews sanitised counters, history and flags" style="text;html=0;whiteSpace=nowrap;overflow=visible;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Arial;fontSize=20;fontColor=#142F35;fontStyle=0;spacing=0;">

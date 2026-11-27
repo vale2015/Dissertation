@@ -10,7 +10,7 @@ Collect new features, improvements, release changes, and deprecations from publi
 
 This document establishes the sources and collection process. Feature eligibility, prioritisation, and implementation approval are separate decisions to define next. Findings enter as research candidates; existing project instructions continue to govern implementation and releases.
 
-The original persistent research file was copied into this repository on 9 November 2026 and linked from `AGENTS.md`. The original file's identity and the current scheduler state have not yet been verified from this checkout.
+The original persistent research file was copied into this repository on 9 November 2026 and linked from `CLAUDE.md`. The original file's identity and the current scheduler state have not yet been verified from this checkout.
 
 ## Confirmed weekly task
 
@@ -18,7 +18,7 @@ The original persistent research file was copied into this repository on 9 Novem
 - Schedule: every Sunday around 10:00, Europe/Dublin; first scheduled check 15 November 2026. The time is flexible because the user specified a seven-day cadence without a clock time.
 - Destination: update this same persistent research file and retain its history, then provide a concise linked digest.
 - Scheduled execution evidence: no completed scheduled run yet. Task creation and an initial file save are confirmed; future execution and saves must be reported from actual run results.
-- GitHub synchronization and automatic consumption by the repository agent: not configured. Installation must either give the development agent access to this current file or synchronize it into the repository and link it from AGENTS.md.
+- GitHub synchronization and automatic consumption by the repository agent: not configured. Installation must either give the development agent access to this current file or synchronize it into the repository and link it from CLAUDE.md.
 
 ## Verified source register
 
@@ -71,10 +71,10 @@ Example of availability handling: OpenTable's [26 August 2026 product announceme
 
 | Capability | What it requires |
 | --- | --- |
-| Run without a manual weekly prompt | An enabled cloud scheduler with a recurring task; the schedule is separate from AGENTS.md startup instructions. |
+| Run without a manual weekly prompt | An enabled cloud scheduler with a recurring task; the schedule is separate from CLAUDE.md startup instructions. |
 | Read the selected public pages | Web search and page retrieval. No provider API key or vendor MCP connection is needed merely to read public announcements. |
 | Refresh this research file | Authenticated access to read and replace this persistent file, preserving its identity/version history. |
-| Let a fresh development context consume the updated knowledge | Installed AGENTS.md instructions pointing to the current research destination, plus read access from that development environment. A one-time downloaded copy needs synchronization to stay current. |
+| Let a fresh development context consume the updated knowledge | Installed CLAUDE.md instructions pointing to the current research destination, plus read access from that development environment. A one-time downloaded copy needs synchronization to stay current. |
 | Keep the same knowledge directly in GitHub later | Repository-content read/write access and the project's normal commit/review policy, plus a scheduled runtime able to use that access. This repository sync is not configured by creating this research file. |
 | Use a vendor's model or product in RFS later | Any API credentials, account entitlement, integration permissions, and evaluation required for that specific implementation. Research access does not establish implementation access. |
 

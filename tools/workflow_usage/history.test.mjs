@@ -39,7 +39,7 @@ function report({
     ...usage,
     by_thread: [{ thread_id: thread, parent_thread_id: null, ...usage }],
     by_model: [{ model: 'test-model', effort: 'medium', ...usage }],
-    coverage: { status: coverage, source: 'codex_rollout_token_usage_record' },
+    coverage: { status: coverage, source: 'claude_code_transcript_usage' },
   };
 }
 
@@ -238,16 +238,17 @@ test('baseline needs three earlier full, closed and observed runs in the same ca
 
 test('CLI consumes a JSON report from the collector without modifying it', async t => {
   const log = await fixture(t);
-  const sessions = join(log.directory, 'sessions');
-  await mkdir(sessions);
-  await writeFile(join(sessions, 'rollout-test.jsonl'), [
-    { type: 'session_meta', timestamp: date(0), payload: { id: root, cwd: secret } },
-    { type: 'turn_context', timestamp: date(1), payload: { model: 'test-model', effort: 'low' } },
-    { type: 'token_usage_record', timestamp: date(2), payload: { thread_id: root, response_id: 'ignored-id',
-      usage: totals(10_000, 1_000) } },
-    { type: 'response_item', timestamp: date(3), payload: { content: secret } },
+  const projects = join(log.directory, 'projects');
+  await mkdir(join(projects, 'project'), { recursive: true });
+  await writeFile(join(projects, 'project', root + '.jsonl'), [
+    { type: 'user', timestamp: date(1), sessionId: root, cwd: secret, message: { content: secret } },
+    // Anthropic usage: 5,000 uncached + 5,000 cache read = 10,000 normalized input.
+    { type: 'assistant', timestamp: date(2), sessionId: root, requestId: 'ignored-id', effort: 'low',
+      message: { model: 'test-model', content: [{ type: 'text', text: secret }], usage: {
+        input_tokens: 5_000, cache_read_input_tokens: 5_000, cache_creation_input_tokens: 0,
+        output_tokens: 1_000, output_tokens_details: { thinking_tokens: 30 } } } },
   ].map(line => JSON.stringify(line)).join('\n'));
-  const data = await collectUsage({ rootThreadId: root, since: date(0), until: date(10), rolloutDir: sessions });
+  const data = await collectUsage({ rootThreadId: root, since: date(0), until: date(10), transcriptDir: projects });
   const path = join(log.directory, 'current.json');
   const content = JSON.stringify(data);
   await writeFile(path, content);
@@ -266,4 +267,19 @@ test('CLI consumes a JSON report from the collector without modifying it', async
     return true;
   });
   assert.deepEqual(await log.read(), outputs);
+});
+
+test('accepts Claude Code and legacy Codex report sources but rejects an unknown source', async t => {
+  const log = await fixture(t);
+  const withSource = (source, start) => {
+    const data = report({ start, end: start + 5 });
+    data.coverage.source = source;
+    return data;
+  };
+  await log.record(withSource('claude_code_transcript_usage', 0), { runId: 'claude-source' });
+  const { ledger } = await log.record(withSource('codex_rollout_token_usage_record', 10), { runId: 'legacy-source' });
+  assert.deepEqual(ledger.runs.map(run => run.runId).sort(), ['claude-source', 'legacy-source']);
+  const before = await log.read();
+  await assert.rejects(log.record(withSource('unknown_usage_source', 20), { runId: 'unknown-source' }), /coverage source/);
+  assert.deepEqual(await log.read(), before);
 });

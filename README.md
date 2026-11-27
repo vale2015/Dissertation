@@ -45,7 +45,7 @@ The frontend and backend are separate Vercel projects. The Random Forest artifac
 | [`backend/`](backend/) | Flask routes, services, forecasting, reports, and pytest tests |
 | [`supabase/migrations/`](supabase/migrations/) | Ordered, forward-only PostgreSQL schema changes |
 | [`docs/`](docs/README.md) | PRD, current backlog, design decisions, and implementation evidence |
-| [`.agents/skills/`](.agents/skills/) and [`AGENTS.md`](AGENTS.md) | Sequential PM-led delivery roles and coordination rules |
+| [`CLAUDE.md`](CLAUDE.md), [`.claude/agents/`](.claude/agents/) and [`.claude/skills/`](.claude/skills/) | Claude Code coordination rules, specialist/reviewer subagents and delivery procedures |
 
 ## Run locally
 
@@ -68,7 +68,7 @@ GitHub `main` is connected to separate Vercel frontend and backend projects. The
 
 ## PM-led agentic delivery team
 
-The Product Manager (you) owns scope, priorities, and final product acceptance. `AGENTS.md` coordinates reusable project skills; it does not create agents that run continuously. For each task, the engineering lead chooses a QUICK, STANDARD, or FULL path. Specialists work **one at a time**, with independent QA and risk-based UX, security, or AI evaluation when needed. An implementer cannot approve their own non-trivial work. The [RFS BACKLOG TASKS Trello board](https://trello.com/b/vF796eiJ/rfs-backlog-tasks) shows task progress, while the [Markdown tracker](docs/product/IMPROVEMENT_TRACKER.md) remains authoritative for acceptance, tests, and release evidence. Agents update the tracker first, then the matching card at a task handoff; there is no unattended background sync.
+The Product Manager (you) owns scope, priorities, and final product acceptance. `CLAUDE.md` coordinates the Claude Code subagents and reusable project skills; it does not create agents that run continuously. For each task, the engineering lead chooses a QUICK, STANDARD, or FULL path. Specialists work **one at a time**, with independent QA and risk-based UX, security, or AI evaluation when needed. An implementer cannot approve their own non-trivial work. The [RFS BACKLOG TASKS Trello board](https://trello.com/b/vF796eiJ/rfs-backlog-tasks) shows task progress, while the [Markdown tracker](docs/product/IMPROVEMENT_TRACKER.md) remains authoritative for acceptance, tests, and release evidence. Agents update the tracker first, then the matching card at a task handoff; there is no unattended background sync.
 
 ```mermaid
 flowchart LR

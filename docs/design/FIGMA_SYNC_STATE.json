@@ -85,7 +85,7 @@
     "Check responsive fill behavior for fields, KPIs, notices and charts",
     "Assemble current product screen frames",
     "Run visual/structural verification",
-    "Verify separate VS Code Codex MCP authentication"
+    "Verify Claude Code Figma MCP authentication and frame read"
   ],
   "verification": {
     "connectedSessionReadWrite": true,
