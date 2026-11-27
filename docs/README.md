@@ -39,6 +39,7 @@ This index stays at the top of `docs/`; all other files are grouped by topic bel
 
 - [PRD](product/PRD.md) — primary product requirements and open decisions.
 - [Improvement tracker](product/IMPROVEMENT_TRACKER.md) — canonical backlog and implementation/release evidence.
+- [Staff and booking chatbot workflow requirements](product/STAFF_AND_BOOKING_WORKFLOW_REQUIREMENTS.md) — PM requirements for #81 (staff registration, organisation, role access) and #82 (chatbot booking creation).
 - [MoSCoW priorities](product/MOSCOW_PRIORITIZATION.md) — value ranking of the same 64 tracker items, not another backlog.
 - [Modernization options](product/MODERNIZATION_OPTIONS.md) — options and decision history, not implementation approval.
 
