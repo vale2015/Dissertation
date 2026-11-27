@@ -11,6 +11,8 @@ test("security headers apply to every route", async () => {
   const rules = await nextConfig.headers();
   assert.equal(rules.length, 1);
   assert.equal(rules[0].source, "/:path*");
+  assert.deepEqual(rules[0].headers, securityHeaders());
+  assert.ok(rules[0].headers.length > 0);
 });
 
 test("baseline browser security headers are sent in every environment", () => {
