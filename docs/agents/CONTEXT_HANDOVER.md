@@ -1,5 +1,10 @@
 # RFS current handover
 
+## 27 November (late) - #68 per-stage workflow analysis
+
+- PM stated #68's goal is to learn where the workflow should improve. Per-stage token split of the seven Claude Code workflows written to [workflow improvement findings](WORKFLOW_IMPROVEMENT_FINDINGS.md); actions 10–12 proposed in the optimisation actions table; tracker #68 and `CURRENT_STATE.md` updated. #68 stays Partial.
+- State: docs only, local and uncommitted pending PM review. No Supabase, Vercel or Trello change. Action 10 (role tool allowlists) awaits PM approval; the `--next` input-saving change was not started.
+
 ## 27 November (evening) - #76 done, first fresh-session #68 run
 
 - **#76:** STANDARD. Backend engineer (Sonnet) then independent backend reviewer (Opus), which passed first time. A shared helper returns `INTERNAL_ERROR` with a generic message and logs the exception; 11 sites fixed; 12 new tests; full backend suite 298 passed, 7 skipped. Committed `311a41e` and pushed to main. Both Vercel production builds READY. Live `/api/health/` 200 and unauthenticated `/api/demand/stats` 401; live 500 body not forced. PM accepted; tracker Done, Trello DONE.

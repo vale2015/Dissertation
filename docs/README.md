@@ -13,6 +13,7 @@
 
 - [Current project state](agents/CURRENT_STATE.md) — compact startup index; use targeted tracker/handover reads.
 - [Token optimisation actions](agents/TOKEN_USAGE_OPTIMISATION_ACTIONS.md) — approved context/execution changes and validation status; detailed usage figures remain private.
+- [Workflow improvement findings #68](agents/WORKFLOW_IMPROVEMENT_FINDINGS.md) — per-stage token split of the 27 November Claude Code workflows and where to improve, in order of measured size.
 
 - [RFS Agentic Workflows presentation](presentations/RFS_Agentic_Workflows.html) — recovered HTML presentation updated with the token analyst, workflow usage history and improvement flags.
 
