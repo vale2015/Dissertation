@@ -40,11 +40,11 @@ These destinations were checked through the connected services on 8 November 202
 
 | Destination | Exact location or identifier | What the agent should retrieve |
 | --- | --- | --- |
-| GitHub repository | https://github.com/vale2015/Dissertation | Current source, repository instructions, documentation, and commit history. |
-| Published code reference | `main`; https://github.com/vale2015/Dissertation/tree/main | Latest published project content. Check ongoing branch and uncommitted work separately. |
-| GitHub instructions | https://github.com/vale2015/Dissertation/blob/main/AGENTS.md | Current coordination, task, review, and release rules. |
-| Documentation index | https://github.com/vale2015/Dissertation/blob/main/docs/README.md | Current document locations after the documentation reorganization. |
-| GitHub checks | https://github.com/vale2015/Dissertation/actions | Relevant workflow results for the exact commit under review. |
+| GitHub repository | https://github.com/vale2015/RFS | Current source, repository instructions, documentation, and commit history. |
+| Published code reference | `main`; https://github.com/vale2015/RFS/tree/main | Latest published project content. Check ongoing branch and uncommitted work separately. |
+| GitHub instructions | https://github.com/vale2015/RFS/blob/main/AGENTS.md | Current coordination, task, review, and release rules. |
+| Documentation index | https://github.com/vale2015/RFS/blob/main/docs/README.md | Current document locations after the documentation reorganization. |
+| GitHub checks | https://github.com/vale2015/RFS/actions | Relevant workflow results for the exact commit under review. |
 | Trello board | https://trello.com/b/vF796eiJ/rfs-backlog-tasks | The RFS BACKLOG TASKS visual mirror; match cards to stable tracker numbers. |
 | Vercel frontend project | https://vercel.com/valeriogerardi-5538s-projects/dissertation | Frontend deployments, exact deployed commit, build/runtime logs, and environment scope. |
 | Frontend entry URL | https://dissertation-valeriogerardi-5538s-projects.vercel.app/ | Application entry point returned by Vercel project metadata. |
@@ -56,7 +56,7 @@ These destinations were checked through the connected services on 8 November 202
 
 | Service | Identifier |
 | --- | --- |
-| GitHub | `vale2015/Dissertation`; default branch `main` |
+| GitHub | `vale2015/RFS`; default branch `main` |
 | Trello workspace | `663e11a16b3c43e0d91d1a4e` |
 | Trello board | `6ae4dee9466522b9f1a2e03e` |
 | Trello board ARI | `ari:cloud:trello::board/workspace/663e11a16b3c43e0d91d1a4e/6ae4dee9466522b9f1a2e03e` |
@@ -255,7 +255,7 @@ Official OpenAI documentation describes `AGENTS.md` as persistent instructions d
 
 ## Verification record
 
-- Repository: `vale2015/Dissertation`, default branch `main`.
+- Repository: `vale2015/RFS`, default branch `main`.
 - Observed `main` commit: `ecd9e7bd9f9663dd7f2397fbeb0aeaa4abcc9927` on 8 November 2026. Re-read the current head in future sessions.
 - Sources read: root `AGENTS.md`, `docs/README.md`, architecture guide, team workflow, board workflow, the tracker opening/current-position sections, and the database migration guide; file destinations checked against the repository tree.
 - Service records checked: Trello board and four lists; Vercel frontend/backend project records, frontend aliases, backend domain, and owning team; matching Supabase project identity.

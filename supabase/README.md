@@ -52,7 +52,7 @@ application tables, all five later migration versions, and absence of the
 baseline row. A subsequent read confirmed all six ordered versions. The
 GitHub [migration replay workflow](../.github/workflows/migration-replay.yml)
 was introduced in `4365f46`. Its first
-[run](https://github.com/vale2015/Dissertation/actions/runs/39799268212)
+[run](https://github.com/vale2015/RFS/actions/runs/39799268212)
 never started a runner because of a GitHub account billing lock. On 2026-10-22,
 the CLI migration list matched all seven applied
 versions and `db push --dry-run --skip-vault --project-ref szvihzuaybmqkxwkoyli`
@@ -62,13 +62,13 @@ the embedded PostgreSQL check or GitHub's PostgreSQL-container replay for a
 full Supabase-stack reset. Before future migrations, run both the replay and
 dry-run gates again against the proposed change.
 
-A rerun of [workflow 39803299668](https://github.com/vale2015/Dissertation/actions/runs/39803299668)
+A rerun of [workflow 39803299668](https://github.com/vale2015/RFS/actions/runs/39803299668)
 on 2026-10-22 again failed before a runner started; GitHub still reported an
 account billing lock. The CLI dry-run passed, but the workflow gate did not.
 
-On 2026-10-23, [main replay 39816288254](https://github.com/vale2015/Dissertation/actions/runs/39816288254)
+On 2026-10-23, [main replay 39816288254](https://github.com/vale2015/RFS/actions/runs/39816288254)
 passed on its third attempt. The report-history branch's
-[replay 39930072476](https://github.com/vale2015/Dissertation/actions/runs/39930072476)
+[replay 39930072476](https://github.com/vale2015/RFS/actions/runs/39930072476)
 passed with the eighth migration and expanded privilege checks. A repeat CLI
 list and dry-run showed seven matching applied versions and only that migration
 pending. A later read-only live check found version `20261022161025` recorded
@@ -79,7 +79,7 @@ table access. The official local Supabase-stack reset is still outstanding.
 
 On 2026-10-23, a CLI `db push --dry-run --skip-vault --project-ref
 szvihzuaybmqkxwkoyli` reported only `20261023104500_immutable_forecast_runs.sql`
-pending. [GitHub replay 39935073350](https://github.com/vale2015/Dissertation/actions/runs/39935073350)
+pending. [GitHub replay 39935073350](https://github.com/vale2015/RFS/actions/runs/39935073350)
 then passed, and the CLI applied that migration to the live project. Read-only
 checks confirmed three new RLS tables and immutability triggers, no client
 table/sequence/function privileges, server access, and all 212 legacy staffing

@@ -40,8 +40,8 @@ Do not retry unchanged authentication or request credentials in chat. Resume aft
 
 ## Evidence
 
-- [Current-main backend/PostgreSQL checks](https://github.com/vale2015/Dissertation/actions/runs/44573126364)
-- [Published source / PR #21](https://github.com/vale2015/Dissertation/pull/21)
+- [Current-main backend/PostgreSQL checks](https://github.com/vale2015/RFS/actions/runs/44573126364)
+- [Published source / PR #21](https://github.com/vale2015/RFS/pull/21)
 - [Production frontend build](https://vercel.com/valeriogerardi-5538s-projects/dissertation/5Jk9Wp2GSdJi8YPmh53wkYhVrGwP)
 - [Production backend build](https://vercel.com/valeriogerardi-5538s-projects/dissertation-backend/GwsrMFdx1sEfwcEa6EtgRQ3vR7K1)
 - [Staff acceptance criteria](STAFF_MANAGEMENT_CHAT_WORKFLOW.md)

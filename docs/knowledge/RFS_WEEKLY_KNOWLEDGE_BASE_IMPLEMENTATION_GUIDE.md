@@ -28,7 +28,7 @@ Use linked JSON records for the first version: source → observation → opport
 
 | Item | Destination / current fact |
 | --- | --- |
-| Repository | [vale2015/Dissertation](https://github.com/vale2015/Dissertation), default branch `main`. |
+| Repository | [vale2015/RFS](https://github.com/vale2015/RFS), default branch `main`. |
 | Project instructions | Root `AGENTS.md`. The tracker is authoritative; Trello mirrors task state; specialist work is sequential. Re-read these rules before implementing. |
 | Product requirements | `docs/product/PRD.md`. |
 | Backlog and priorities | `docs/product/IMPROVEMENT_TRACKER.md`; `docs/product/MOSCOW_PRIORITIZATION.md`. |
@@ -440,7 +440,7 @@ Refresh the RFS research knowledge base and its HTML PM review file for
 Valerio Gerardi using the installed feature-discovery workflow.
 
 Read current project instructions and docs/knowledge/README.md from
-vale2015/Dissertation main, then sources.json, discoveries.json,
+vale2015/RFS main, then sources.json, discoveries.json,
 review_decisions.json, scan_state.json, and publication.json. Fetch the
 current validated generator and tests into a fresh runnable workspace.
 Preserve any newer repository state and all PM decisions.

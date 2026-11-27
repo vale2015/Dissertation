@@ -14,7 +14,7 @@ concurrency:
 jobs:
   publish:
     if: >-
-      ${{ github.repository == 'vale2015/Dissertation' &&
+      ${{ github.repository == 'vale2015/RFS' &&
           github.event.issue.user.login == 'vale2015' &&
           format('{0}', github.event.issue.user.id) == '147600089' &&
           startsWith(github.event.issue.title, 'RFS research input ') &&

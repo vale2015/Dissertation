@@ -1,6 +1,6 @@
 # RFS chatbot architecture design
 
-Status: deployed technical boundary with incomplete acceptance (reviewed 6 November 2026). #54 and #55 remain Partial after [PR #7](https://github.com/vale2015/Dissertation/pull/7) and later UI releases; live model inference, staff-action safety, and role-based end-to-end journeys remain open in the [tracker](../product/IMPROVEMENT_TRACKER.md). The [PRD](../product/PRD.md) owns the current product contract. The current launcher is below the left menu and opens a left dock; older top-bar/bottom-right proposals below are historical where noted. Conversational register/edit and subsequent sidebar removal are **planned, not deployed**; see the [focused workflow](STAFF_MANAGEMENT_CHAT_WORKFLOW.md).
+Status: deployed technical boundary with incomplete acceptance (reviewed 6 November 2026). #54 and #55 remain Partial after [PR #7](https://github.com/vale2015/RFS/pull/7) and later UI releases; live model inference, staff-action safety, and role-based end-to-end journeys remain open in the [tracker](../product/IMPROVEMENT_TRACKER.md). The [PRD](../product/PRD.md) owns the current product contract. The current launcher is below the left menu and opens a left dock; older top-bar/bottom-right proposals below are historical where noted. Conversational register/edit and subsequent sidebar removal are **planned, not deployed**; see the [focused workflow](STAFF_MANAGEMENT_CHAT_WORKFLOW.md).
 
 ## 1. Product intent and release boundary
 

@@ -62,7 +62,7 @@ Code Connect maps Figma components to their actual code counterparts. It is usef
 
 The current documentation lists Dev or Full seats on Professional, Organization and Enterprise plans. Professional supports one active library and one active framework. The UI workflow requires published components.
 
-In the Figma library, open Dev Mode, choose Library > Connect components to code, and map the published components. Optionally connect the GitHub account from Code Connect settings and select only vale2015/Dissertation when the authorization interface permits repository selection. File ownership or organization-admin permissions apply. Manual component-path mapping is also possible without the GitHub connection.
+In the Figma library, open Dev Mode, choose Library > Connect components to code, and map the published components. Optionally connect the GitHub account from Code Connect settings and select only vale2015/RFS when the authorization interface permits repository selection. File ownership or organization-admin permissions apply. Manual component-path mapping is also possible without the GitHub connection.
 
 This provides component references and implementation context; it does not deploy the app or automatically rewrite the repository.
 
