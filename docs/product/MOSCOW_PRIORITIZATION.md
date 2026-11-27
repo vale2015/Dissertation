@@ -33,7 +33,7 @@ The forecast review added **#61 (model-quality benchmark)** and **#62 (demand-wr
 | 4 | Verify and restrict Supabase table access | Protect customer and staff data before adding more stored reports. |
 | 7 | Strengthen browser security headers | Protect authenticated user sessions and downloads. |
 | 8 | Add API request limits and validation | Keep booking and report inputs safe and predictable. |
-| 17 | Move training out of web requests | The mutating web route has been removed, closing that immediate exposure; a manager-only durable training job and full release verification remain before Done. |
+| 17 | Move training out of web requests | Done 27 November 2026: the mutating web route is removed and retraining stays offline by PM decision. |
 | 20 | Create immutable forecast runs | Required to compare a prediction with the eventual actual without rewriting history. |
 | 21 | Add prediction-versus-actual tracking | Show managers whether forecasts are useful and meet a stated PRD goal. |
 | 61 | Benchmark and calibrate the demand forecast | Choose a model on genuine 7/10-day forecast outcomes, not synthetic demo scores or algorithm fashion. |

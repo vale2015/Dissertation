@@ -266,7 +266,7 @@ Priority definitions: **Must** is necessary for the product's core purpose, **Sh
 2. After service, an authorised manager or supervisor records served covers because the app has no POS feed. The system compares them with an eligible immutable pre-service forecast.
 3. The manager sees absolute error, percentage error, and whether the model over- or under-predicted.
 4. They compare performance by weekday and forecast horizon.
-5. When enough new data exists, an authorised manager can initiate controlled retraining and review the new metrics before adoption.
+5. Model retraining is an offline maintainer step (PM decision, 27 November 2026), not a manager app action; the maintainer reviews the new metrics before adopting a model.
 
 ## 10. Data requirements
 
@@ -363,7 +363,7 @@ Recommended events:
 - report previewed or downloaded by format;
 - event/weather provider succeeded, failed, or served cached data;
 - alert viewed or acknowledged;
-- model retraining initiated, completed, rejected, or failed.
+- model retraining initiated, completed, rejected, or failed (applies only if in-app retraining is added later; it is currently an offline maintainer step).
 
 Each event should include timestamp, authorised user identifier where appropriate, role, request correlation ID, and non-sensitive outcome metadata.
 

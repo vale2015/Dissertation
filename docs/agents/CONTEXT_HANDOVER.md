@@ -1,5 +1,9 @@
 # RFS current handover
 
+## 27 November (night) - #17 done, retraining stays offline
+
+- PM decided in-app retraining is not needed. Workflow `rfs17-offline-training` (QUICK, docs only): PRD 9.3 step 5 and the section 10 audit line now say retraining is an offline maintainer step; ARCHITECTURE.md documents the offline command, what it reads/writes and model rollback. Independent backend review passed (6 tests; live GET/POST `/api/demand/train` 404, health 200). Tracker and MoSCoW say Done; Trello #17 moved to DONE. Documented command not run end to end (it overwrites the model).
+
 ## 27 November (night) - #68 --next --save and fresh-session action 10 measurement
 
 - Workflow `rfs68-next-save` (fresh root session, QUICK): automation engineer added `packet.mjs --next ... --save PATH` (writes the derived packet input only after validation; refuses existing files and input paths); independent automation review found no defects (32/33 tests, 1 known Windows skip; directory-form `node --test tools/agent_workflow/` failure is pre-existing at `eaf4b40`). Backlog handoff updated tracker #68 and actions rows 9–10; Trello #68 commented, stays IN PROGRESS. #68 stays Partial.

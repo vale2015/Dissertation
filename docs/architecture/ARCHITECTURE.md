@@ -84,6 +84,10 @@ The manager asks RFS AI to generate, save, retrieve, or download a management re
 
 The project research pipeline is outside the runtime app architecture. A web-based weekly task is intended to submit public research Issues; a trusted GitHub Actions workflow validates them and writes only generated files under `docs/knowledge/`. The workflow cannot narrow the existing owner's GitHub connection, and its first real publication remains unverified. See the [knowledge runbook](../knowledge/AUTOMATION_RUNBOOK.md) and tracker [#64](../product/IMPROVEMENT_TRACKER.md).
 
+## Offline model retraining
+
+Retraining is an offline maintainer step (PM decision, 27 November 2026) and must not be exposed as a web route; `GET`/`POST /api/demand/train` return 404 and `backend/tests/test_forecast_serving.py` asserts this. From `backend/`, with the database environment configured, run `python -c "from app.ml.pipelines.train_pipeline import train_model; print(train_model())"`. It reads `public.restaurant_demand_features` through `SessionLocal` and overwrites `backend/app/ml/artifacts/demand_model.pkl`; it writes nothing to the database. Before running, copy the existing `demand_model.pkl` aside; to roll back, copy it back (or `git checkout` it) and redeploy. Review the returned metrics before committing a new artifact.
+
 ## Verification and known limits
 
 Use the [tracker](../product/IMPROVEMENT_TRACKER.md) for the exact status of each increment. Current gaps include authenticated role and responsive checks for the redesigned UI, durable staff-write idempotency, live assistant model/privacy/usage evaluation, real-data accuracy evidence, some migration/access gates, and broader end-to-end coverage. A Vercel READY state or passing unit test does not close these gaps. Historical design and release notes remain indexed in [docs/README.md](../README.md); this guide is the concise current architecture map.
