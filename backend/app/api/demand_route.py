@@ -9,6 +9,8 @@ from app.controllers.demand_controller import (
     weekly_demand,
     demand_forecast,
 )
+from app.middleware.authorization_middleware import require_permission
+from app.services.permission_service import MANAGE_DEMAND
 
 # Create a Blueprint to group all demand-related API endpoints.
 demand_bp = Blueprint("demand", __name__)
@@ -23,8 +25,9 @@ def get_all_demand():
 def get_latest_demand():
     return latest_demand()
 
-# Insert a new demand record into the database.
+# Insert a new demand record into the database (manager-only write).
 @demand_bp.post("/")
+@require_permission(MANAGE_DEMAND)
 def create_demand():
     return insert_demand()
 
@@ -38,8 +41,9 @@ def get_stats():
 def get_by_date(date):
     return get_demand_by_date(date)
 
-# Delete demand data for a specific date.
+# Delete demand data for a specific date (manager-only write).
 @demand_bp.delete("/date/<date>")
+@require_permission(MANAGE_DEMAND)
 def remove_by_date(date):
     return delete_demand(date)
 

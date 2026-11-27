@@ -28,10 +28,10 @@ Status key: **Done** = acceptance criteria verified; **Verify release** = implem
 **PM priority override — 19 November 2026:** chatbot completion takes precedence over all other project work. Execute #65 → #66 → #67 sequentially to unblock parent #54 and shared foundation #55. Only necessary chatbot safety/release dependencies interrupt this queue. On 20 November, #65/#66/#67 and parents #54/#55 completed their accepted scope; preserve chatbot safety gates for future changes. See [ordered blocker plan](../chatbot/CHATBOT_BLOCKER_RESOLUTION.md).
 
 - **Done:** 1–2, 20–21, 25–26, 29, 54–56, 65–67, 69.
-- **Partial:** 3–4, 17, 22, 39, 52, 57–61, 63–64, 68, 71–72.
+- **Partial:** 3–4, 17, 22, 39, 52, 57–64, 68, 71–72.
 - **Verify release:** 70 (documentation complete; PM visual acceptance pending).
 - **Deferred:** 5.
-- **Open:** remaining unstarted items, including #62 and the 27 November architecture-review proposals #73–#75. #68 is Partial and PM-selected.
+- **Open:** remaining unstarted items, including the 27 November architecture-review proposals #73–#75 and #62 review follow-ups #76–#77. #68 is Partial and PM-selected.
 - **Selected direction (20 November 2026):** core chatbot #54/#55 and blocker packages #65–67 are Done after PM acceptance and final production checks. #52 remains a separate Partial report-explanation pilot; #68 workflow-efficiency implementation is Partial and PM-selected. Other unfinished work keeps its actual state; no new task was automatically picked up.
 
 ## MoSCoW priority
@@ -41,8 +41,8 @@ Priority is separate from implementation status. This provisional, **value-first
 | Priority | Item numbers |
 |---|---|
 | **Must** | 1, 2, 3, 4, 7, 8, 17, 20, 21, 25, 26, 35, 37, 39, 41, 43, 54, 56, 57, 61, 62 |
-| **Should** | 6, 9, 10, 11, 12, 13, 15, 18, 23, 29, 32, 33, 34, 36, 38, 40, 42, 45, 46, 47, 48, 49, 50, 55, 58, 59, 60, 63, 64, 72, 73, 74 |
-| **Could** | 14, 16, 19, 22, 24, 27, 30, 31, 44, 51, 52, 53, 75 |
+| **Should** | 6, 9, 10, 11, 12, 13, 15, 18, 23, 29, 32, 33, 34, 36, 38, 40, 42, 45, 46, 47, 48, 49, 50, 55, 58, 59, 60, 63, 64, 72, 73, 74, 76 |
+| **Could** | 14, 16, 19, 22, 24, 27, 30, 31, 44, 51, 52, 53, 75, 77 |
 | **Won't for now** | 5, 28 |
 
 **Done** items 1–2 remain Must because priority describes their importance, not whether they still need work. Revisit this ranking if manager research, usage data, a second restaurant, or release criteria change the expected value.
@@ -57,7 +57,7 @@ Priority is separate from implementation status. This provisional, **value-first
 - [ ] **6. Standardize safe API errors — Open.** Add centralized Flask handlers and a consistent `{code, message, request_id}` response; keep internal details in logs and test that exceptions never leak.
 - [ ] **7. Strengthen browser security headers — Open.** Review the existing Flask headers and cookie settings, add missing browser-facing Next.js headers and production HSTS, then verify pages and downloads.
 - [ ] **8. Add API request limits and validation — Open.** Centralize body-size, date-range, field-length, numeric-boundary, and unknown-field rules with malformed-input tests.
-- [ ] **62. Enforce least-privilege demand writes — Open; high priority (Must).** The demand POST and DELETE routes are currently guarded by blueprint-wide `view_forecasts`, allowing a supervisor with read-only forecast permission to mutate demand records. Define the PM-approved manager write policy, apply action-specific authorization to both routes, and test manager success plus supervisor/staff denial. This pre-existing issue was identified by the independent forecast security review on 2026-11-06; no role permissions have been changed in the forecast-serving slice.
+- [ ] **62. Enforce least-privilege demand writes — Partial; high priority (Must).** The demand POST and DELETE routes are currently guarded by blueprint-wide `view_forecasts`, allowing a supervisor with read-only forecast permission to mutate demand records. Define the PM-approved manager write policy, apply action-specific authorization to both routes, and test manager success plus supervisor/staff denial. This pre-existing issue was identified by the independent forecast security review on 2026-11-06; no role permissions have been changed in the forecast-serving slice. **Started 2026-11-27 (STANDARD, RFS-SEC → RFS-SEC-REVIEW):** PM decision — add a new manager-only `manage_demand` permission required by the demand POST and DELETE routes; demand reads stay on `view_forecasts`. Permissions are code-only (no database table), so no migration is needed. Implementation and independent review in progress.
 
 ## Phase 2 — Database and API scalability
 
@@ -272,3 +272,5 @@ These are modernization candidates. The [PRD](PRD.md) defines the current manage
 - [ ] **73. Stop tracking dependency and bytecode artifacts - Open (Should).** 6,561 `node_modules/` files and 38 Python bytecode files have been tracked since `ffd0865`, despite `.gitignore`. The root `package.json` also carries frontend libraries. Acceptance: none of these paths are tracked; a fresh clone with `npm ci` and the backend venv passes every test suite; Vercel builds stay green.
 - [ ] **74. Gate the Node test suites in CI - Open (Should).** GitHub Actions runs only backend tests, migration replay and knowledge refresh. Frontend chatbot, auth and report tests and the agent-tooling tests are never run automatically. Acceptance: a workflow runs frontend tests and lint plus `tools/**` tests on PRs and `main`, fails on regressions, and is documented.
 - [ ] **75. Evaluate the runtime AI value and provider - Open (Could; PM decision required).** The intent classifier sees only regex-derived signal words, never user text. Measure deterministic mapping, the current Cloudflare Qwen model and Claude Haiku 5.5 on an eval set (accuracy, latency, failures, cost) before changing anything. Report explanations can trial Claude via `AI_GATEWAY_MODEL` without a code change. Acceptance: recorded eval evidence and a PM choice; any change preserves the allowlist, the no-user-text egress rule and the diagnostics.
+- [ ] **76. Stop returning raw exception text in API 500 responses - Open (Should; security).** Found by the #62 independent security review (2026-11-27): backend error handlers return `str(e)` to the caller, which can expose SQL, schema or connection details. Acceptance: 5xx responses return a generic error code and message while details go only to server logs; tests prove representative controllers (including demand) do not echo exception text; no client relies on the old message.
+- [ ] **77. Audit demand record deletions - Open (Could; security).** Found by the #62 independent security review (2026-11-27): `DELETE /api/demand/date/<date>` (now manager-only via `manage_demand`) removes demand rows without any audit record. Acceptance: each delete records actor, timestamp, date and affected row count in an append-only audit store consistent with existing audit patterns; a test proves the record is written and that a failed delete leaves no partial audit; a database migration, if needed, is replayed locally before any live apply.
