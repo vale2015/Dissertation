@@ -2,6 +2,7 @@ from datetime import date
 import re
 
 from flask import current_app, jsonify, request
+from app.utils.error_responses import internal_error_response
 from app.ml.pipelines.predict_pipeline import prediction_demand
 from app.services.demand_service import (
     get_all_demand_records,
@@ -18,8 +19,8 @@ def get_demand_features():
     try:
         rows = get_all_demand_records()
         return jsonify(rows), 200
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    except Exception:
+        return internal_error_response("Unable to fetch demand records.")
 
 # Return the most recent demand record.
 def latest_demand():
@@ -31,8 +32,8 @@ def latest_demand():
 
         return jsonify({"message": "No record found"}), 404
 
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    except Exception:
+        return internal_error_response("Unable to fetch latest demand record.")
 
 # Validate the request body and insert a new demand record.
 def insert_demand():
@@ -57,16 +58,16 @@ def insert_demand():
         result = insert_demand_record(data)
         return jsonify(result), 201
 
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    except Exception:
+        return internal_error_response("Unable to insert demand record.")
 
 # Return summary statistics for restaurant demand data.
 def demand_stats():
     try:
         row = get_demand_statistics()
         return jsonify(row), 200
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    except Exception:
+        return internal_error_response("Unable to fetch demand statistics.")
 
 # Return demand data for a selected date.
 def get_demand_by_date(date):
@@ -78,8 +79,8 @@ def get_demand_by_date(date):
 
         return jsonify({"message": "No record found"}), 404
 
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    except Exception:
+        return internal_error_response("Unable to fetch demand record by date.")
 
 # Delete a demand record for a selected date.
 def delete_demand(date):
@@ -91,16 +92,16 @@ def delete_demand(date):
 
         return jsonify({"message": "Record deleted"}), 200
 
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    except Exception:
+        return internal_error_response("Unable to delete demand record.")
 
 # Return a weekly summary of restaurant demand.
 def weekly_demand():
     try:
         rows = get_weekly_demand_summary()
         return jsonify(rows), 200
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    except Exception:
+        return internal_error_response("Unable to fetch weekly demand summary.")
 
 # Generate a short-term demand forecast using the trained machine learning model.
 def demand_forecast():

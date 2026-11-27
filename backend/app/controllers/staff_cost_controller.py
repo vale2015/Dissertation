@@ -1,6 +1,7 @@
 from datetime import date
 
 from flask import current_app, jsonify, request
+from app.utils.error_responses import internal_error_response
 from app.services.staff_cost_service import (
     ForecastRunError,
     generate_staff_cost_forecast,
@@ -48,11 +49,11 @@ def get_staff_cost_forecast_records():
         result = get_all_staff_cost_forecast_records()
         return jsonify(result), 200
 
-    except Exception as e:
-        return jsonify({
-            "message": "Failed to fetch staff cost forecast records",
-            "error": str(e),
-        }), 500
+    except Exception:
+        return internal_error_response(
+            "Unable to fetch staff cost forecast records.",
+            message="Failed to fetch staff cost forecast records",
+        )
 
 # Return staff-cost forecast records for a specific date.
 def get_staff_cost_forecast_by_date(forecast_date):
@@ -60,11 +61,11 @@ def get_staff_cost_forecast_by_date(forecast_date):
         result = get_staff_cost_forecast_by_date_service(forecast_date)
         return jsonify(result), 200
 
-    except Exception as e:
-        return jsonify({
-            "message": "Failed to fetch staff cost forecast by date",
-            "error": str(e),
-        }), 500
+    except Exception:
+        return internal_error_response(
+            "Unable to fetch staff cost forecast by date.",
+            message="Failed to fetch staff cost forecast by date",
+        )
 
 
 def list_saved_forecast_runs():

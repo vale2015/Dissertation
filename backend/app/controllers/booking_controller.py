@@ -1,4 +1,4 @@
-from flask import request, jsonify
+from flask import current_app, request, jsonify
 from datetime import datetime
 from app.services.booking_service import (
     create_booking_and_sync_features,
@@ -92,8 +92,8 @@ def add_booking():
             "booking": booking
         }), 201
 
-    except Exception as e:
-        print("ADD BOOKING ERROR:", str(e))
+    except Exception:
+        current_app.logger.exception("Unable to add booking.")
         return jsonify({"error": "Internal server error"}), 500
 
 # Returns all bookings.
