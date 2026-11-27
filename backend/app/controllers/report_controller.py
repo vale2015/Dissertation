@@ -16,7 +16,7 @@ def management_report_controller(format_name="json"):
         if format_name=="json": response=jsonify(report)
         else:
             content=generate_report_csv(report) if format_name=="csv" else generate_report_pdf(report)
-            extension="csv" if format_name=="csv" else "pdf"; mime="text/csv; charset=utf-8" if extension=="csv" else "application/pdf"
+            extension="csv" if format_name=="csv" else "pdf"; mime="text/csv" if extension=="csv" else "application/pdf"
             filename=f"management-report-{params['selected_date']}-{params['days_ahead']}-days.{extension}"
             response=Response(content,mimetype=mime); response.headers["Content-Disposition"]=f'attachment; filename="{filename}"'
         completed_at = perf_counter()

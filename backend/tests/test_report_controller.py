@@ -44,6 +44,10 @@ def test_report_responses_expose_timing_without_caching(monkeypatch, suffix, con
 
     assert response.status_code == 200
     assert response.content_type.startswith(content_type)
+    exact = {"": "application/json", "/csv": "text/csv; charset=utf-8", "/pdf": "application/pdf"}
+    assert response.headers["Content-Type"] == exact[suffix]
+    if suffix:
+        assert response.headers["Content-Disposition"].startswith('attachment; filename="management-report-2026-08-11-7-days.')
     assert response.headers["Cache-Control"] == "no-store"
     assert response.headers["Server-Timing"].startswith("report;dur=")
     assert ", render;dur=" in response.headers["Server-Timing"]

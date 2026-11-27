@@ -100,7 +100,7 @@ def download_saved_report_controller(report_id, format_name):
         saved = get_report_file(report_id, format_name)
         if saved is None:
             return _error("REPORT_NOT_FOUND", "Report not found.", 404)
-        mime = "application/pdf" if format_name == "pdf" else "text/csv; charset=utf-8"
+        mime = "application/pdf" if format_name == "pdf" else "text/csv"
         filename = f"management-report-{saved['selected_date']}-{saved['days_ahead']}-days.{format_name}"
         response = Response(bytes(saved["content"]), mimetype=mime)
         response.headers["Content-Disposition"] = f'attachment; filename="{filename}"'

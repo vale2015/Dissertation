@@ -138,3 +138,24 @@ def test_cursor_validation_and_token_expiration(monkeypatch):
 def test_saved_report_files_are_size_bounded():
     with pytest.raises(ReportHistoryError):
         save_report({"metadata": {}}, b"x" * 262145, b"a", 7)
+
+
+@pytest.mark.parametrize("format_name,expected", [
+    ("csv", "text/csv; charset=utf-8"), ("pdf", "application/pdf"),
+])
+def test_saved_download_content_type_is_exact(manager_client, monkeypatch, format_name, expected):
+    monkeypatch.setattr("app.services.report_history_service.get_secret_key", lambda: "test-secret")
+    monkeypatch.setattr(
+        "app.controllers.report_history_controller.get_report_file",
+        lambda report_id, fmt: {"selected_date": date(2026, 10, 22), "days_ahead": 7, "content": b"a,b"},
+    )
+    token = create_download_token(1, format_name, 7)
+    response = manager_client.get(
+        f"/api/reports/history/1/{format_name}?token={token}",
+        headers={"Authorization": "Bearer valid"},
+    )
+    assert response.status_code == 200
+    assert response.headers["Content-Type"] == expected
+    assert response.headers["Content-Disposition"] == (
+        f'attachment; filename="management-report-2026-10-22-7-days.{format_name}"'
+    )
