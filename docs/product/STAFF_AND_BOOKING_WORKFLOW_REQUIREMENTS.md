@@ -52,7 +52,7 @@ PM requirements received 27 November 2026 (two Mi Notes pages), transcribed for 
 
 - **Duplicate role:** Management is the division; the second "Restaurant Manager" is the **Bar Manager**.
 - **Redirects:** all roles land on the same page for now. Role-based access still controls what each role can use.
-- **One employee per role:** create one person for each role and store them in the database. This is PM approval to create these 16 records when #81 is implemented. Use clearly fictitious identity data (no real passport, tax or address details).
+- **One employee per role:** create one person for each role and store them in the database. This is PM approval to create these 15 records (one per role) when #81 is implemented. Use clearly fictitious identity data (no real passport, tax or address details).
 - **Priority:** Must, but not to be started now.
 
 ### Still open
