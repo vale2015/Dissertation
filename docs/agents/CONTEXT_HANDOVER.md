@@ -1,5 +1,14 @@
 # RFS current handover
 
+## 27 November (end of day) - security fixes, backlog additions, #72 done, #68 baselines
+
+- **Done and PM-accepted:** #62 (`81fc97a`), #7 (`6b0c0a7`, live headers verified with curl), #78 (`8fdefa4`), #79 (`13a205c`), #72 (`40667d8`). Vercel production builds READY for each code push. Trello cards in DONE.
+- **Weekly research:** Claude cloud task `trig_01NZtKftsTFaFk15czirQGJr` replaces the ChatGPT task (turned off by the PM). First run 29 November; verify under #64.
+- **#68:** four Claude baselines captured and reviewed by the token analyst; actions 7 and 8 added to [optimisation actions](TOKEN_USAGE_OPTIMISATION_ACTIONS.md). Next: fresh root session per workflow, then re-measure.
+- **Backlog:** #76, #77, #80 (review follow-ups), #81–#83 (PM chatbot staff/booking workflows and payment research). PM rule added: pick In Progress before READY.
+- **Open PM decisions:** listed in [CURRENT_STATE.md](CURRENT_STATE.md).
+- **Unchanged:** Supabase schema and data; no manual deployments.
+
 ## 27 November - Codex to Claude Code runtime migration (#72)
 
 - **Code:** published to GitHub main as `c6ba015` (27 November) after independent RFS-AUTO-REVIEW passed on attempt 2. Both Vercel production builds reached READY; no application code changed. `AGENTS.md` was renamed to `CLAUDE.md`. `.codex/` was removed in favour of `.claude/agents/` (20 subagents). Skills moved to `.claude/skills/`. The routing table, team registry, `packet.mjs` and the usage collector, capture and history tools were ported, along with their tests.
