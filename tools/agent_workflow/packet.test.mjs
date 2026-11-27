@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { copyFileSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import test from 'node:test';
@@ -328,6 +328,47 @@ test('--next derives reviewer then backlog packets from files and rejects an inv
     const long = run('--next', write('eng4.json', task), '--handoff', write('long.txt', 'word '.repeat(201)));
     assert.equal(long.status, 1);
     assert.match(long.stderr, /exceeds 200 words/);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('--next --save writes the derived packet after success, chains, and never writes on rejection', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'packet-save-'));
+  try {
+    const write = (name, value) => {
+      const file = join(dir, name);
+      writeFileSync(file, typeof value === 'string' ? value : JSON.stringify(value));
+      return file;
+    };
+    const run = (...args) => spawnSync(process.execPath, [script, ...args], { cwd: dir, encoding: 'utf8' });
+    const handoff = write('h.txt', 'Checks passed.');
+    const plain = run('--next', write('eng.json', task), '--handoff', handoff);
+    const saved = join(dir, 'rev.json');
+    const first = run('--next', join(dir, 'eng.json'), '--handoff', handoff, '--save', saved);
+    assert.equal(first.status, 0, first.stderr);
+    assert.equal(first.stdout, plain.stdout);
+    assert.equal(JSON.parse(readFileSync(saved, 'utf8')).role_ref, 'RFS-AUTO-REVIEW');
+
+    const chained = run('--next', saved, '--handoff', handoff);
+    assert.equal(chained.status, 0, chained.stderr);
+    assert.equal(JSON.parse(chained.stdout).role_ref, 'RFS-BACKLOG');
+
+    const again = run('--next', join(dir, 'eng.json'), '--handoff', handoff, '--save', saved);
+    assert.equal(again.status, 1);
+    assert.match(again.stderr, /--save/);
+    for (const flag of ['--next', '--handoff']) {
+      const same = flag === '--next' ? join(dir, 'eng.json') : handoff;
+      const refused = run('--next', join(dir, 'eng.json'), '--handoff', handoff, '--save', same);
+      assert.equal(refused.status, 1, flag);
+    }
+    const unsaved = join(dir, 'none.json');
+    const rejected = run('--next', join(dir, 'eng.json'), '--handoff', write('long.txt', 'word '.repeat(201)), '--save', unsaved);
+    assert.equal(rejected.status, 1);
+    assert.equal(existsSync(unsaved), false);
+    const badPatch = run('--next', join(dir, 'eng.json'), '--handoff', handoff, '--input', write('bad.json', { tier: 'FULL' }), '--save', unsaved);
+    assert.equal(badPatch.status, 1);
+    assert.equal(existsSync(unsaved), false);
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }

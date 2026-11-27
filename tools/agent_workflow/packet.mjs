@@ -1,4 +1,4 @@
-import { readFileSync, realpathSync, statSync } from 'node:fs';
+import { existsSync, readFileSync, realpathSync, statSync, writeFileSync } from 'node:fs';
 import { isAbsolute, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -248,15 +248,24 @@ function argValue(args, flag) {
 }
 
 function nextInput(args) {
-  const allowed = ['--next', '--handoff', '--input'];
+  const allowed = ['--next', '--handoff', '--input', '--save'];
+  const usage = 'Usage: packet.mjs --next PREVIOUS.json --handoff HANDOFF.txt [--input PATCH.json] [--save NEXT.json]';
   if (args.some((arg, i) => arg.startsWith('--') ? !allowed.includes(arg) : !allowed.includes(args[i - 1]))) {
-    throw new Error('Usage: packet.mjs --next PREVIOUS.json --handoff HANDOFF.txt [--input PATCH.json]');
+    throw new Error(usage);
   }
   const previousPath = argValue(args, '--next');
   const handoffPath = argValue(args, '--handoff');
   const patchPath = argValue(args, '--input');
+  const savePath = argValue(args, '--save');
   if (!previousPath || !handoffPath) {
-    throw new Error('Usage: packet.mjs --next PREVIOUS.json --handoff HANDOFF.txt [--input PATCH.json]');
+    throw new Error(usage);
+  }
+  if (savePath) {
+    const target = resolve(savePath);
+    if ([previousPath, handoffPath, patchPath].some((path) => path && resolve(path) === target)) {
+      throw new Error('--save must not name the --next, --handoff or --input file.');
+    }
+    if (existsSync(target)) throw new Error('--save will not overwrite an existing file.');
   }
   let text;
   try {
@@ -265,17 +274,29 @@ function nextInput(args) {
   } catch {
     throw new Error('The handoff must be a readable text file within the size limit.');
   }
-  return buildNext(
-    readJsonFile(previousPath, 'The previous packet'),
-    text,
-    patchPath ? readJsonFile(patchPath, 'The patch') : undefined,
-  );
+  return {
+    savePath,
+    next: buildNext(
+      readJsonFile(previousPath, 'The previous packet'),
+      text,
+      patchPath ? readJsonFile(patchPath, 'The patch') : undefined,
+    ),
+  };
 }
 
 async function main() {
   try {
     if (process.argv.length > 2) {
-      process.stdout.write(JSON.stringify(buildInvocation(nextInput(process.argv.slice(2))), null, 2) + '\n');
+      const { next, savePath } = nextInput(process.argv.slice(2));
+      const invocation = buildInvocation(next);
+      if (savePath) {
+        try {
+          writeFileSync(resolve(savePath), JSON.stringify(next, null, 2) + '\n', { flag: 'wx' });
+        } catch {
+          throw new Error('--save could not create the file (it must be a new, writable path).');
+        }
+      }
+      process.stdout.write(JSON.stringify(invocation, null, 2) + '\n');
       return;
     }
     let size = 0;

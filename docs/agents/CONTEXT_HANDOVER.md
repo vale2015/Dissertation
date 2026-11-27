@@ -1,5 +1,11 @@
 # RFS current handover
 
+## 27 November (night) - #68 --next --save and fresh-session action 10 measurement
+
+- Workflow `rfs68-next-save` (fresh root session, QUICK): automation engineer added `packet.mjs --next ... --save PATH` (writes the derived packet input only after validation; refuses existing files and input paths); independent automation review found no defects (32/33 tests, 1 known Windows skip; directory-form `node --test tools/agent_workflow/` failure is pre-existing at `eaf4b40`). Backlog handoff updated tracker #68 and actions rows 9–10; Trello #68 commented, stays IN PROGRESS. #68 stays Partial.
+- Action 10 measured: restricted reviewer first response 17.0k (was 50.5k), restricted backlog 25.6k with 8 responses (was 49–50k); unrestricted engineer 49.9k. `--save` produced reviewer and backlog packets with zero rejections.
+- Usage record `rfs68-next-save` in `.workflow-usage` covers only the first root prompt (root plus engineer) because `--prompt` was set; it could not be refreshed with a wider window under the same ID, so per-stage figures were read directly from subagent transcripts. Token analyst not run on the incomplete record. Next: PM decision on actions 11–12; repeat action 10 measurement over later workflows.
+
 ## 27 November (late) - #68 per-stage workflow analysis
 
 - PM stated #68's goal is to learn where the workflow should improve. Per-stage token split of the seven Claude Code workflows written to [workflow improvement findings](WORKFLOW_IMPROVEMENT_FINDINGS.md); actions 10–12 proposed in the optimisation actions table; tracker #68 and `CURRENT_STATE.md` updated. #68 stays Partial.
