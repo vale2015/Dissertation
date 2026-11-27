@@ -50,7 +50,7 @@ These destinations were checked through the connected services on 8 November 202
 | Frontend entry URL | https://rfs-valeriogerardi-5538s-projects.vercel.app/ | Application entry point (the old dissertation-valeriogerardi-5538s-projects.vercel.app address is kept as an alias). Returned by Vercel project metadata. |
 | Vercel backend project | https://vercel.com/valeriogerardi-5538s-projects/rfs-backend | Backend deployments, exact deployed commit, build/runtime logs, and environment scope. |
 | Backend entry URL | https://dissertation-backend-coral.vercel.app/ | Backend host returned by Vercel domain metadata; consult the code for endpoint paths. |
-| Supabase project | https://supabase.com/dashboard/project/szvihzuaybmqkxwkoyli | Dissertation Project: current database and applied migration evidence when relevant to the task. |
+| Supabase project | https://supabase.com/dashboard/project/szvihzuaybmqkxwkoyli | RFS Supabase project (renamed from Dissertation Project): current database and applied migration evidence when relevant to the task. |
 
 ### Stable service identifiers
 
@@ -63,7 +63,7 @@ These destinations were checked through the connected services on 8 November 202
 | Vercel team | `team_KGUi66NBGRaYuf8ectrvPEG9`; slug `valeriogerardi-5538s-projects` |
 | Vercel frontend | `rfs` (renamed from `dissertation`); `prj_EK0npFGJxfkzxdGJBKhpB0OC1ab2` |
 | Vercel backend | `rfs-backend` (renamed from `dissertation-backend`); `prj_MNn4dSKSDfwen8fzF6FohH27v8Aj` |
-| Supabase | `Dissertation Project`; project ref `szvihzuaybmqkxwkoyli` |
+| Supabase | `RFS` (renamed from `Dissertation Project`); project ref `szvihzuaybmqkxwkoyli` |
 
 ### Trello list destinations
 

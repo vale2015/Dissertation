@@ -21,7 +21,7 @@ schema from scratch. Check `supabase migration list` and run the read-only
 verification query below. No production records, users, or passwords are
 included in these schema migrations.
 
-## Existing Dissertation Supabase project
+## Existing RFS Supabase project
 
 The live project's original tables were created before migration tracking.
 On 2026-10-22, the missing baseline version `20260811000000` was recorded in

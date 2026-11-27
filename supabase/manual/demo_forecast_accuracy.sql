@@ -1,5 +1,5 @@
 -- One-time, manual production demo fixture for forecast accuracy (#21).
--- Run only against the intended Dissertation Supabase project after the
+-- Run only against the intended RFS Supabase project after the
 -- application supports dataset=demo. Never include this in migration replay
 -- or automatic seeding. The forecast run is immutable by design.
 -- Re-running this block is a no-op; it never resets manager-entered changes.
