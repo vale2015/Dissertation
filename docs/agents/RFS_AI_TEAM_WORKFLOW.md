@@ -30,6 +30,8 @@ During a coordinator-authorized knowledge-base intake handoff, unreviewed propos
 
 At meaningful handoffs, keep one evidence-based Trello comment per role, including incomplete outcomes. Work within the authorized connector scope. For a status change, update the tracker and board list before posting the comment. When Trello is unavailable, give the PM a copyable comment draft and record that synchronization is pending.
 
+Efficiency rules (#68 actions 11 and 12): the backlog packet gives exact tracker row text and evidence so the backlog agent edits once without searching, and the coordinator does not repeat reviewer checks. It relies on the reviewer handoff and runs only its own commit, push, remote and deployment checks in one batched command, still verifying Git and deployment state itself.
+
 The packet helper produces explicit invocation fields and leaves execution order with the coordinator. Client support determines whether fresh-context invocation and the requested model are available. Report any gap and leave independent verification open until the required review runs.
 
 The supplied starter pack contained a Trello handoff and an outdated right-side chatbot direction. The original no-Trello instruction was reversed by the PM on 7 November 2026: the [RFS board](TRELLO_BOARD_WORKFLOW.md) now mirrors numbered tracker status, while the Markdown tracker remains canonical and the live chatbot remains left-docked. The Trello connector is used only for this board and does not authorize a merge, deployment, or production-data change.

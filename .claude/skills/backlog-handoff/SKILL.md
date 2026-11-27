@@ -13,6 +13,8 @@ Preserve every existing label ID during moves and completion, including labels o
 
 When a grouping refresh is authorized, the coordinator follows the [epic index procedure](../../../docs/agents/TRELLO_BOARD_WORKFLOW.md#epic-indexes) using fresh numbered card labels. Preserve numbered task statuses and index-card manual notes. Record any epic sync gap separately from the numbered tracker state.
 
+When the packet supplies exact row text, apply it as given in one edit per row, without searching or rereading the whole tracker. Add new tracker evidence as one short sentence with a link. If the supplied anchor text is not found, report back rather than improvise.
+
 Handoff in at most 200 words: task ID, role, tracker change, acceptance criteria checked, actual evidence, remaining risks, next role, and PM decision needed.
 
 After a meaningful tracker/status handoff and any necessary board synchronization, use `ticket-comment-handoff` to record the coordinator's outcome on the matching numbered Trello card. Do not duplicate a specialist's unchanged evidence.
