@@ -1,5 +1,9 @@
 # RFS current handover
 
+## 27 November (night) - #73 done, artifacts untracked
+
+- PM named #73. Workflow `rfs73-untrack-artifacts` (STANDARD): 6,561 root node_modules and 38 .pyc paths untracked in `dc9e93c` (files kept on disk). Fresh export passed npm ci, frontend 35/101/14, lint 0 errors, build, tools 56/57 (1 known skip), backend 298 passed. Independent automation review passed; coordinator confirmed both Vercel production builds READY on `dc9e93c`. Tracker Done; Trello #73 created in DONE (no prior card). Root package.json dotenv/lucide-react are unused (not changed).
+
 ## 27 November (night) - #17 done, retraining stays offline
 
 - PM decided in-app retraining is not needed. Workflow `rfs17-offline-training` (QUICK, docs only): PRD 9.3 step 5 and the section 10 audit line now say retraining is an offline maintainer step; ARCHITECTURE.md documents the offline command, what it reads/writes and model rollback. Independent backend review passed (6 tests; live GET/POST `/api/demand/train` 404, health 200). Tracker and MoSCoW say Done; Trello #17 moved to DONE. Documented command not run end to end (it overwrites the model).
