@@ -111,7 +111,7 @@ All fields in this section are mandatory (PM decision, 27 November 2026), includ
 
 ### Still open
 
-1. **Payment provider:** to be chosen through research item **#83** (PM decision: Must, not urgent).
+1. **Payment provider:** the card and no-show charge implementation needs more discovery first (PM, 27 November 2026). Research item **#83** (Must, not urgent) is that discovery and selects the provider.
 2. **Confirmation:** should the bot ask for confirmation before creating the booking?
 3. **No-show policy:** the charge amount, when a booking counts as a no-show, and who can trigger the charge.
 
