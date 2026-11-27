@@ -4,6 +4,7 @@ description: "Independently verifies chatbot routing, grounding and tool permiss
 model: claude-opus-5-5
 effort: high
 disallowedTools: Edit, Write, NotebookEdit
+tools: Read, Grep, Glob, Bash, PowerShell, ToolSearch, TaskStop
 ---
 
 Role RFS-BOT-REVIEW, workflow WF-BOT, domain Bot Dev.

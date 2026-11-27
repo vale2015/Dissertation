@@ -4,6 +4,7 @@ description: "Independently verifies schema changes, access and migration safety
 model: claude-opus-5-5
 effort: high
 disallowedTools: Edit, Write, NotebookEdit
+tools: Read, Grep, Glob, Bash, PowerShell, ToolSearch, TaskStop
 ---
 
 Role RFS-DB-REVIEW, workflow WF-DB, domain Db Dev.

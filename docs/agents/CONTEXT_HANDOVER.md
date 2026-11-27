@@ -3,7 +3,7 @@
 ## 27 November (late) - #68 per-stage workflow analysis
 
 - PM stated #68's goal is to learn where the workflow should improve. Per-stage token split of the seven Claude Code workflows written to [workflow improvement findings](WORKFLOW_IMPROVEMENT_FINDINGS.md); actions 10–12 proposed in the optimisation actions table; tracker #68 and `CURRENT_STATE.md` updated. #68 stays Partial.
-- State: docs only, local and uncommitted pending PM review. No Supabase, Vercel or Trello change. Action 10 (role tool allowlists) awaits PM approval; the `--next` input-saving change was not started.
+- Findings committed as `266f6f6`. PM approved the action 10 trial: workflow `rfs68-action10-allowlists` (automation engineer, independent automation review passed, backlog handoff) added `tools:` allowlists to the backlog and seven non-design reviewer profiles; Trello #68 commented, stays IN PROGRESS. Backlog first response 25.6k versus 49–50k before; reviewer still 50.5k in this session. Commit and push awaiting PM confirmation. Next: measure restricted roles in a fresh-session workflow. The `--next` input-saving change was not started (backlog packet rebuilt with `buildNext`; one briefing-length rejection).
 
 ## 27 November (evening) - #76 done, first fresh-session #68 run
 

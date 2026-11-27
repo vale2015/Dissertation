@@ -4,6 +4,7 @@ description: "Independently verifies Flask APIs and backend regressions."
 model: claude-opus-5-5
 effort: high
 disallowedTools: Edit, Write, NotebookEdit
+tools: Read, Grep, Glob, Bash, PowerShell, ToolSearch, TaskStop
 ---
 
 Role RFS-BE-REVIEW, workflow WF-BE, domain Backend Dev.

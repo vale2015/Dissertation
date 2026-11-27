@@ -3,6 +3,7 @@ name: rfs-backlog-handoff
 description: "Records reviewed RFS work in the tracker before mirroring task state on Trello."
 model: claude-haiku-5-5
 effort: medium
+tools: Read, Edit, Grep, Glob, Bash, PowerShell, Skill, ToolSearch, mcp__claude_ai_Trello__trelloSearch, mcp__claude_ai_Trello__trelloReadCard, mcp__claude_ai_Trello__trelloWriteCard, mcp__claude_ai_Trello__trelloReadBoard, mcp__claude_ai_Trello__trelloReadList
 ---
 
 Role RFS-BACKLOG, workflow WF-BACKLOG.

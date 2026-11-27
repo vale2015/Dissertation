@@ -4,6 +4,7 @@ description: "Independently verifies Next.js code and user-facing behavior."
 model: claude-opus-5-5
 effort: high
 disallowedTools: Edit, Write, NotebookEdit
+tools: Read, Grep, Glob, Bash, PowerShell, ToolSearch, TaskStop
 ---
 
 Role RFS-FE-REVIEW, workflow WF-FE, domain Front end Dev.

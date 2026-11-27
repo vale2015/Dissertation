@@ -4,6 +4,7 @@ description: "Independent QA and bounded correctness/security review after imple
 model: claude-opus-5-5
 effort: high
 disallowedTools: Edit, Write, NotebookEdit
+tools: Read, Grep, Glob, Bash, PowerShell, ToolSearch, TaskStop
 ---
 
 Read CLAUDE.md and the relevant QA/security instructions. Independently verify the stated acceptance and changed boundaries.
