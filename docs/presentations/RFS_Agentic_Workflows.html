@@ -199,7 +199,7 @@ main section>p:not(.sources),.intro-problem,.subsection>p:not(.sources){max-widt
 <li><a href="#assistant"><strong>RFS AI chatbot</strong><span>Manager experience and request routing</span></a></li>
 <li><a href="#delivery"><strong>Agentic development</strong><span>Specialist handoffs and research</span></a></li>
 <li><a href="#token-usage"><strong>Token usage</strong><span>Workflow ledger and model routing</span></a></li>
-<li><a href="#figma-workspace"><strong>Figma UI workspace</strong><span>Work in progress: connected design file and next screens</span></a></li>
+
 </ol>
 </nav>
 <section class="hero" id="overview" aria-labelledby="title">
@@ -227,8 +227,8 @@ main section>p:not(.sources),.intro-problem,.subsection>p:not(.sources){max-widt
 </ul></div>
 </div>
 <div class="subsection" aria-labelledby="extensions-title">
-<h3 id="extensions-title">Ongoing extensions · RFS AI Chatbot, Agentic Development and Research Knowledge Base</h3>
-<p>Following the forecasting MVP, the project added a conversational assistant for managers and explored how AI could help build the application and identify useful improvements. These extensions are still being developed and verified.</p>
+<h3 id="extensions-title">Ongoing extensions · RFS AI Chatbot, Agentic Development, Research Knowledge Base and Figma UI Design</h3>
+<p>Following the forecasting MVP, the project added a conversational assistant for managers and explored how AI could help build the application, identify useful improvements and connect UI design to development. These extensions are still being developed and verified.</p>
 <div class="grid">
 <div class="card"><h3>RFS AI Chatbot</h3>
 <ul class="brief-points">
@@ -254,21 +254,17 @@ main section>p:not(.sources),.intro-problem,.subsection>p:not(.sources){max-widt
 <li><strong>Prioritisation:</strong> The product manager decides which findings deserve investigation or an approved backlog task.</li>
 <li><strong>Delivery:</strong> Development agents implement and test approved work.</li>
 </ul></div>
+<div class="card"><h3>Figma UI Design</h3>
+<ul class="brief-points">
+<li><strong>Workspace:</strong> The original RFS Figma file is the connected design workspace. It keeps the original research and designs, a page for the current product screens and reusable UI foundations.</li>
+<li><strong>Agentic flow:</strong> The UI/UX agent proposes a frame, the product manager approves a revision, the frontend agent implements it in the codebase and a separate reviewer checks the result.</li>
+<li><strong>Status:</strong> Work in progress. Claude Code reads the file; current screens are not yet assembled and the foundations still need visual checks.</li>
+<li><strong>Next:</strong> Build desktop and mobile screens from the foundations and confirm edit access from Claude Code.</li>
+<li><a href="https://www.figma.com/design/vPKrtyR0JhVRLpyThwLtzm/RFS---Restaurant-Forecasting-System?node-id=206-414">Open the Figma workspace</a></li>
+</ul></div>
 </div>
 <p>For example, research about forecasting by service period could lead to a task to explore lunch and dinner predictions. The agents would develop and review the change against the product manager’s requirements.</p>
-<div class="intro-knowledge">
-<h3>How research becomes development work</h3>
-<p>As part of its ongoing expansion beyond forecasting, RFS uses external research to identify possible product improvements. A research task checks public AI and hospitality sources and submits its findings through GitHub. GitHub Actions checks the submission and publishes it to the knowledge base. The product manager reviews the evidence and decides which findings should become backlog tasks for the development agents.</p>
-<p>For example, research about hourly restaurant forecasts could lead to an investigation into forecasting demand by service period.</p>
 
-<ol class="flow" aria-label="Research and development architecture">
-<li><b>Research task</b>Scans public AI and hospitality sources and submits findings as structured data in a GitHub issue.</li>
-<li><b>GitHub Actions</b>The new issue triggers a workflow that checks who submitted it, verifies the data format and checks that the submission was prepared against the current main branch.</li>
-<li><b>Knowledge base</b>If the checks pass, the workflow updates the research records and generates the HTML review page, then commits those outputs to the main branch.</li>
-<li><b>PM and agents</b>The PM reviews evidence. Agents work on approved backlog items.</li>
-</ol>
-<p>If validation fails, the previous published snapshot stays available. A manual issue submission successfully triggered publication. The scheduled submission is still to be verified. It will run as a Claude scheduled task, which a test confirmed acts as the owner account the publisher accepts.</p>
-</div>
 </div>
 <h2>How the system fits together</h2>
 <figure class="diagram">
@@ -297,13 +293,6 @@ main section>p:not(.sources),.intro-problem,.subsection>p:not(.sources){max-widt
 </div>
 
 </figure>
-<h3>Why these boundaries matter</h3>
-<div class="grid">
-<div class="card"><h3>Keep business rules in one place</h3><p>The dashboard and chatbot use the same Flask services and permissions. Next.js forwards authenticated requests from the server, keeping database access and provider credentials outside the browser.</p></div>
-<div class="card"><h3>Keep forecasts reviewable</h3><p>The prediction model estimates demand. Explicit staffing rules turn those estimates into recommendations. Stored forecast runs and report snapshots preserve the figures a manager saw.</p></div>
-<div class="card"><h3>Keep staff changes safe</h3><p>Staff account changes are reviewed and explicitly confirmed. Flask records each chat action once, so a retried request cannot write twice, and the last active manager cannot be demoted or disabled.</p></div>
-<div class="card"><h3>Keep optional services independent</h3><p>Weather and event providers add context. The optional chatbot classifier helps resolve ambiguous requests. Core forecasting and reporting can operate when those services are unavailable.</p></div>
-</div>
 <p class="sources"><a href="https://github.com/vale2015/RFS/blob/main/docs/architecture/ARCHITECTURE.md">System architecture</a><a href="https://github.com/vale2015/RFS/blob/main/docs/product/PRD.md">Product requirements</a><a href="https://github.com/vale2015/RFS/blob/main/docs/knowledge/README.md">Research knowledge base</a><a href="https://github.com/vale2015/RFS/blob/main/docs/knowledge/AUTOMATION_RUNBOOK.md">Publishing workflow</a><a href="https://github.com/vale2015/RFS/blob/main/docs/chatbot/STAFF_MANAGEMENT_CHAT_WORKFLOW.md">Staff Management chat workflow</a><a href="https://github.com/vale2015/RFS/tree/main/supabase/migrations">Database migrations</a></p>
 </section>
 <section class="whats-new" id="latest" aria-labelledby="latest-title">
@@ -460,28 +449,22 @@ main section>p:not(.sources),.intro-problem,.subsection>p:not(.sources){max-widt
 <section class="subsection" id="token-usage" aria-labelledby="token-usage-title">
 <p class="eyebrow">Development measurement</p>
 <h2 id="token-usage-title" tabindex="-1">Token usage by workflow</h2>
-<p class="lead">Each workflow gets a private ledger entry. At handoffs, the coordinator updates it and uses the analyst&rsquo;s findings to identify changes worth testing.</p>
-<h3>What the ledger records</h3>
+<p class="lead">Each workflow gets one private ledger entry. At each handoff the coordinator records the tokens used, and a low-cost analyst flags where a workflow used more than expected.</p>
+<figure class="diagram" aria-labelledby="token-flow-title">
+<figcaption id="token-flow-title">How token usage is measured and reviewed</figcaption>
+<ol class="flow" style="--steps:5" aria-label="Token usage measurement flow">
+<li><b>1 · Claude Code logs</b>The root session and its subagents, read for one workflow&rsquo;s time window.</li>
+<li><b>2 · Collector</b>Counts each response once and totals input, cached input, output and reasoning by model.</li>
+<li><b>3 · Ledger</b>One private entry per workflow, refreshed in place so nothing is counted twice.</li>
+<li><b>4 · Analyst</b>Haiku 5.5 reviews sanitized counts and returns up to three findings with evidence.</li>
+<li><b>5 · Coordinator and PM</b>Decide which change is worth testing and how to check the saving.</li>
+</ol>
+</figure>
+<h3>What gets flagged</h3>
 <ul class="brief-points">
-<li><strong>Measurement window.</strong> The collector reads the local Claude Code logs for the root session and its subagents within an explicit UTC window. It counts each API response once by request ID, reads its usage and reports coverage through the capture time.</li>
-<li><strong>Token counts by model.</strong> The ledger records input, cached input, uncached input, output, reasoning and total. Claude reports cache reads and writes separately; the ledger counts both as part of input. Reasoning (thinking) is part of output. Total equals input plus output. Missing values are recorded as <code>null</code>.</li>
-<li><strong>One entry per workflow.</strong> Each entry records its stable ID, window, category and measurement state. Refreshes update that entry in place, including the analyst&rsquo;s overhead. The history rejects captures that could count shared-thread usage twice.</li>
-</ul>
-<h3>What the analyst flags</h3>
-<p>The analyst receives sanitized counters, relevant history and flags only. It returns up to three prioritized findings with evidence, an action and a success check. Its authority is limited to review and recommendations. Implementation and acceptance stay with the delivery team and PM.</p>
-<ul class="brief-points">
-<li><strong>High average input.</strong> At least 50,000 input tokens per response across at least ten responses.</li>
-<li><strong>Coordinator input share.</strong> At least 60% of recorded input and at least 250,000 input tokens from the root session.</li>
-<li><strong>Above comparable baseline.</strong> A full, closed, observed workflow uses over 1.5 times the median total of at least three prior full, closed, observed workflows with the same category and selection type.</li>
-</ul>
-<p>These thresholds identify candidates for review. The recorded counts support comparisons of observed usage. Billing and savings claims require separate evidence.</p>
-<h3>Private history and reviews</h3>
-<p>The history files and analyst reviews stay in the ignored <code>.workflow-usage/</code> directory in the project checkout.</p>
-<ul class="brief-points">
-<li><code>usage-history.json</code> stores one authoritative entry per workflow.</li>
-<li><code>USAGE_HISTORY.md</code> summarises workflows, models and token counts.</li>
-<li><code>OPTIMIZATION_FLAGS.md</code> records measured candidates, evidence, actions and success checks.</li>
-<li><code>reviews/</code> holds the analyst reviews saved by the coordinator.</li>
+<li><strong>Large prompts:</strong> 50,000 or more input tokens per response on average.</li>
+<li><strong>Busy coordinator:</strong> the root session uses 60% or more of the input.</li>
+<li><strong>Above baseline:</strong> a workflow uses over 1.5 times the median of similar past workflows.</li>
 </ul>
 <figure class="diagram" aria-labelledby="workflow-models-title">
 <figcaption id="workflow-models-title">Model routing for development tasks</figcaption>
@@ -501,13 +484,7 @@ main section>p:not(.sources),.intro-problem,.subsection>p:not(.sources){max-widt
 </div>
 </figure>
 <p>These routes apply to development work. The RFS chatbot keeps its separate Qwen model configuration. If a development model is unavailable, the coordinator reports it and requests an available choice.</p>
-<h3>Verification and activation</h3>
-<ul class="brief-points">
-<li>After the move to Claude Code, 54 tool tests run (53 pass, 1 skipped on Windows), and an independent reviewer passed the change.</li>
-<li>A fresh Claude Code session loaded the token analyst subagent on Haiku 5.5 at low effort, as pinned. Live captures of Claude Code sessions, including a subagent, reported complete coverage.</li>
-<li>The coordinator runs the reporting step at handoffs. Automatic hooks and continuous monitoring are inactive. Records from before the migration came from Codex and are kept, but they are not like-for-like baselines for Claude workflows.</li>
-<li>#68 remains <strong>Partial</strong> pending a comparable baseline and evidence of workflow optimisation and adoption.</li>
-</ul>
+<p class="note"><strong>Status:</strong> #68 is Partial. Counts are observed tokens, not billing. Comparable Claude baselines and measured savings are still needed.</p>
 <p class="sources"><a href="https://github.com/vale2015/RFS/blob/main/docs/agents/TOKEN_USAGE_ANALYST.md">Analyst runbook</a><a href="https://github.com/vale2015/RFS/blob/main/tools/workflow_usage/capture.mjs">Handoff capture</a><a href="https://github.com/vale2015/RFS/blob/main/tools/workflow_usage/usage.mjs">Usage collector</a><a href="https://github.com/vale2015/RFS/blob/main/tools/workflow_usage/history.mjs">History and flags</a><a href="https://github.com/vale2015/RFS/blob/main/.agents/model-routing.json">Model routing</a></p>
 </section>
 <div class="subsection" id="research">
@@ -539,24 +516,7 @@ main section>p:not(.sources),.intro-problem,.subsection>p:not(.sources){max-widt
 </div>
 <p class="sources"><a href="https://github.com/vale2015/RFS/blob/main/docs/knowledge/README.md">Knowledge base</a><a href="https://github.com/vale2015/RFS/actions/runs/43206462552">Publication run</a><a href="https://github.com/vale2015/RFS/blob/main/docs/knowledge/html-output/index.html">Research HTML source</a></p>
 </div></section>
-<section class="design-status" id="figma-workspace" aria-labelledby="figma-title">
-<p class="eyebrow">Design and development &middot; Work in progress</p>
-<h2 id="figma-title" tabindex="-1">Figma is connected to the RFS design workflow</h2>
-<p class="note"><strong>Work in progress.</strong> The Figma workspace is still being built. The current product screens have not been assembled yet, and the foundations still need visual checks before designs are handed to development.</p>
-<p class="lead">The original RFS Figma file is now the project&rsquo;s connected UI design workspace. It brings the original research, reusable UI foundations and the current-screen design area into one file.</p>
-<p><a href="https://www.figma.com/design/vPKrtyR0JhVRLpyThwLtzm/RFS---Restaurant-Forecasting-System?node-id=206-414">Open the RFS Figma design workspace</a></p>
-<table aria-label="RFS Figma workspace content"><tbody>
-<tr><th scope="row">01 Original research and UI</th><td>The original page was renamed and all 106 original top-level items were preserved, including research, wireframes and the original high-fidelity designs.</td></tr>
-<tr><th scope="row">02 Current product UI</th><td>The page is created and ready for the current product screens. Updated screen layouts have not yet been assembled.</td></tr>
-<tr><th scope="row">03 UI foundations</th><td>Shared paint and typography styles; reusable buttons, fields, KPI cards, navigation, table rows, messages and notices; the current sidebar and editable chart components; and the source RFS mascot, account controls and assistant panel.</td></tr>
-</tbody></table>
-<h3>How designs inform implementation</h3>
-<p>Figma holds design layouts, shared UI assets and prototypes. The UI/UX agent prepares a proposed frame, the PM identifies the approved revision, and the frontend agent implements it using the existing codebase. A separate reviewer checks the implemented result. GitHub <code>main</code> remains the access point for the latest published code and documentation.</p>
-<p>Figma file access and edits were verified, and Claude Code in VS Code now reads the file through the Figma connector; editing from Claude Code has not been retested. The connection does not establish continuous automatic synchronization between the canvas and application code.</p>
-<h3>Next design steps</h3>
-<ol class="brief-points"><li>Inspect the saved component IDs and finish checking foundation sizing, the launcher layout and responsive behavior.</li><li>Build current desktop and mobile screens using these components, the six current navigation destinations and the left-docked RFS AI panel.</li><li>Review the completed frames against the running app, record the approved design links and confirm edit access from Claude Code.</li></ol>
-<p class="sources"><a href="../design/FIGMA_UI_SOURCE_OF_TRUTH.md">Figma setup and working agreement</a><a href="../design/FIGMA_FILE_REGISTER.md">Design file and continuation record</a><a href="../diagrams/index.html">33 reviewed project diagrams</a></p>
-</section>
+
 
 </main>
 <footer class="byline">Restaurant Forecasting System · Based on the RFS repository · Updated 27 November 2026 · Development runtime: Claude Code</footer>
