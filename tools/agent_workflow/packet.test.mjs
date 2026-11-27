@@ -283,3 +283,58 @@ test('rejects a subagent profile whose pinned model or effort drifts from its ro
     assert.throws(() => buildInvocation(task, { root: scratch }), /does not match its registered model route|no frontmatter/);
   }
 });
+
+test('--next derives reviewer then backlog packets from files and rejects an invalid chain', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'packet-next-'));
+  try {
+    const write = (name, value) => {
+      const file = join(dir, name);
+      writeFileSync(file, typeof value === 'string' ? value : JSON.stringify(value));
+      return file;
+    };
+    const run = (...args) => spawnSync(process.execPath, [script, ...args], { cwd: dir, encoding: 'utf8' });
+    const handoff = write('h.txt', 'Checks passed.\nOne gap remains.\n');
+
+    const review = run('--next', write('eng.json', task), '--handoff', handoff);
+    assert.equal(review.status, 0, review.stderr);
+    const reviewOut = JSON.parse(review.stdout);
+    assert.equal(reviewOut.role_ref, 'RFS-AUTO-REVIEW');
+    assert.match(reviewOut.agent.prompt, new RegExp(`Implementation handoff from ${engineer.task_name}: Checks passed\. One gap remains\.`));
+
+    const reviewerPacket = { ...toReview, implementation_handoff: { ...toReview.implementation_handoff } };
+    const backlog = run('--next', write('rev.json', reviewerPacket), '--handoff', handoff);
+    assert.equal(backlog.status, 0, backlog.stderr);
+    const backlogOut = JSON.parse(backlog.stdout);
+    assert.equal(backlogOut.role_ref, 'RFS-BACKLOG');
+    assert.match(backlogOut.agent.prompt, new RegExp(`Review handoff from ${reviewer.task_name}:`));
+    assert.doesNotMatch(backlogOut.agent.prompt, /Implementation handoff/);
+
+    const chained = run('--next', write('back.json', {
+      ...task, role_ref: 'RFS-BACKLOG',
+      review_handoff: { role_ref: 'RFS-AUTO-REVIEW', agent_id: reviewer.task_name, summary: 'Done.' },
+    }), '--handoff', handoff);
+    assert.equal(chained.status, 1);
+    assert.match(chained.stderr, /no next stage/);
+
+    const patched = run('--next', write('eng2.json', task), '--handoff', handoff, '--input',
+      write('p.json', { outcome: 'Patched outcome.', checks: ['Run it.'], source_revision: 'abcdef1' }));
+    assert.equal(patched.status, 0, patched.stderr);
+    assert.match(JSON.parse(patched.stdout).agent.prompt, /Outcome: Patched outcome\./);
+
+    for (const bad of [{ tier: 'FULL' }, { role_ref: 'RFS-BE' }, { implementation_handoff: {} }, { outcome: 'token: abcdef' }]) {
+      const rejected = run('--next', write('eng3.json', task), '--handoff', handoff, '--input', write('bad.json', bad));
+      assert.equal(rejected.status, 1, JSON.stringify(bad));
+    }
+    const long = run('--next', write('eng4.json', task), '--handoff', write('long.txt', 'word '.repeat(201)));
+    assert.equal(long.status, 1);
+    assert.match(long.stderr, /exceeds 200 words/);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('rejections for a missing agent_id or stale handoff field name the fix', () => {
+  const { agent_id, ...noId } = toReview.implementation_handoff;
+  assert.throws(() => buildInvocation({ ...toReview, implementation_handoff: noId }), /set agent_id to the previous stage's task_name/);
+  assert.throws(() => buildInvocation({ ...toReview, review_handoff: noId }), /drop implementation_handoff/);
+});

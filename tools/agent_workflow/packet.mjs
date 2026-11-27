@@ -83,7 +83,10 @@ function taskName(input, profile, attempt) {
 
 function handoff(value, stage, roleRef, nextName) {
   checkObject(value, ['role_ref', 'agent_id', 'summary'], `${stage} handoff`);
-  if (value.role_ref !== roleRef || typeof value.agent_id !== 'string' || value.agent_id.length > 180
+  if (value && typeof value.agent_id !== 'string') {
+    throw new Error(`The ${stage} handoff must identify the expected completed specialist: set agent_id to the previous stage's task_name (or use --next).`);
+  }
+  if (value.role_ref !== roleRef || value.agent_id.length > 180
       || !/^\/?[a-z0-9][a-z0-9_.-]*(?:\/[a-z0-9][a-z0-9_.-]*)*$/i.test(value.agent_id)
       || privateText.test(value.agent_id)) {
     throw new Error(`The ${stage} handoff must identify the expected completed specialist.`);
@@ -147,7 +150,7 @@ export function buildInvocation(input, { root = repoRoot } = {}) {
   }
   if ((!isReview && Object.hasOwn(input, 'implementation_handoff'))
       || (!isBacklog && Object.hasOwn(input, 'review_handoff'))) {
-    throw new Error('A handoff is only accepted for its next stage.');
+    throw new Error('A handoff is only accepted for its next stage: drop implementation_handoff from reviewer/backlog packets and review_handoff from engineer/reviewer packets (or use --next).');
   }
 
   const profile = checkFile(root, role.profile_path);
@@ -194,8 +197,87 @@ export function buildInvocation(input, { root = repoRoot } = {}) {
   };
 }
 
+const patchFields = ['outcome', 'acceptance_criteria', 'relevant_paths', 'checks', 'approval_limits', 'source_revision'];
+
+function readJsonFile(path, label) {
+  try {
+    const absolute = resolve(path);
+    if (statSync(absolute).size > maxInputBytes) throw new Error(`${label} is too large.`);
+    return JSON.parse(readFileSync(absolute, 'utf8'));
+  } catch (error) {
+    throw new Error(/too large/.test(error.message) ? error.message : `${label} must be a readable JSON file.`);
+  }
+}
+
+// Derives the next stage's task packet from the previous stage's packet and its handoff text.
+export function buildNext(previous, handoffText, patch, { root = repoRoot } = {}) {
+  const previousName = buildInvocation(previous, { root }).task_name;
+  const team = readConfig(realpathSync(root), '.agents/team.json');
+  const pair = team.specialists.find(({ role_ref, reviewer }) => (
+    role_ref === previous.role_ref || reviewer.role_ref === previous.role_ref
+  ));
+  let nextRole;
+  let field;
+  if (pair?.role_ref === previous.role_ref) {
+    [nextRole, field] = [pair.reviewer.role_ref, 'implementation_handoff'];
+  } else if (pair) {
+    [nextRole, field] = [team.coordination.backlog_handoff.role_ref, 'review_handoff'];
+  } else {
+    throw new Error('--next needs a previous engineer or reviewer packet; a backlog packet has no next stage.');
+  }
+  if (patch !== undefined) {
+    checkObject(patch, patchFields, '--input patch (allowed: ' + patchFields.join(', ') + ')');
+  }
+  if (typeof handoffText !== 'string') throw new Error('Provide the handoff text file.');
+  const next = { ...previous, ...patch, role_ref: nextRole };
+  delete next.implementation_handoff;
+  delete next.review_handoff;
+  next[field] = {
+    role_ref: previous.role_ref,
+    agent_id: previousName,
+    summary: handoffText.replace(/\s+/g, ' ').trim(),
+  };
+  return next;
+}
+
+function argValue(args, flag) {
+  const index = args.indexOf(flag);
+  if (index < 0) return undefined;
+  if (!args[index + 1] || args[index + 1].startsWith('--')) throw new Error(`${flag} needs a file path.`);
+  return args[index + 1];
+}
+
+function nextInput(args) {
+  const allowed = ['--next', '--handoff', '--input'];
+  if (args.some((arg, i) => arg.startsWith('--') ? !allowed.includes(arg) : !allowed.includes(args[i - 1]))) {
+    throw new Error('Usage: packet.mjs --next PREVIOUS.json --handoff HANDOFF.txt [--input PATCH.json]');
+  }
+  const previousPath = argValue(args, '--next');
+  const handoffPath = argValue(args, '--handoff');
+  const patchPath = argValue(args, '--input');
+  if (!previousPath || !handoffPath) {
+    throw new Error('Usage: packet.mjs --next PREVIOUS.json --handoff HANDOFF.txt [--input PATCH.json]');
+  }
+  let text;
+  try {
+    if (statSync(handoffPath).size > maxInputBytes) throw new Error();
+    text = readFileSync(handoffPath, 'utf8');
+  } catch {
+    throw new Error('The handoff must be a readable text file within the size limit.');
+  }
+  return buildNext(
+    readJsonFile(previousPath, 'The previous packet'),
+    text,
+    patchPath ? readJsonFile(patchPath, 'The patch') : undefined,
+  );
+}
+
 async function main() {
   try {
+    if (process.argv.length > 2) {
+      process.stdout.write(JSON.stringify(buildInvocation(nextInput(process.argv.slice(2))), null, 2) + '\n');
+      return;
+    }
     let size = 0;
     const chunks = [];
     for await (const chunk of process.stdin) {
