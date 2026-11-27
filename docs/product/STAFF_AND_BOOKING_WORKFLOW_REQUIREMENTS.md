@@ -46,9 +46,22 @@ PM requirements received 27 November 2026 (two Mi Notes pages), transcribed for 
 | Front of house | Bar | Bartender, Bar Commis |
 | Front of house | Restaurant | Supervisor, Waiter, Commis |
 | Kitchen | — | Starters, Pizza, Dessert, Kitchen Porter, Pasta, Mains/Pass |
-| Management | — | Owner, Restaurant Manager, Restaurant Manager (listed twice), Head Chef |
+| Management | — | Owner, Restaurant Manager, Bar Manager, Head Chef |
 
-### Clarify
+### PM decisions (27 November 2026)
+
+- **Duplicate role:** Management is the division; the second "Restaurant Manager" is the **Bar Manager**.
+- **Redirects:** all roles land on the same page for now. Role-based access still controls what each role can use.
+- **One employee per role:** create one person for each role and store them in the database. This is PM approval to create these 16 records when #81 is implemented. Use clearly fictitious identity data (no real passport, tax or address details).
+- **Priority:** Must, but not to be started now.
+
+### Still open
+
+1. **Advanced features:** which features count as Management-only? Today's permissions use the roles manager, supervisor and staff, and Supervisor sits under Front of house in the new organisation.
+2. **"Right to work (if needed)":** what decides whether it is needed?
+3. **Tax number:** is it a typed field, an uploaded document, or both?
+
+### Original questions
 
 1. **Duplicate role:** "Restaurant Manager" appears twice under Management. Is the second one a different role, for example Assistant Manager?
 2. **Advanced features:** which features count as Management-only? Today's permissions use the roles manager, supervisor and staff. Note that Supervisor sits under Front of house in the new organisation.
@@ -73,7 +86,7 @@ PM requirements received 27 November 2026 (two Mi Notes pages), transcribed for 
 
 ### Mandatory fields
 
-The PM's note marks the starred fields as mandatory. Time of booking and phone number are listed under Mandatory fields but are not starred (*Clarify*).
+All fields in this section are mandatory (PM decision, 27 November 2026), including time of booking and phone number.
 
 - Name \*
 - Surname \*
@@ -90,7 +103,19 @@ The PM's note marks the starred fields as mandatory. Time of booking and phone n
 - Special requests (allergies, dietary requirements); a free-text box
 - Date of birth
 
-### Clarify
+### PM decisions (27 November 2026)
+
+- **Time and phone:** mandatory, because they are listed under Mandatory fields.
+- **Card details:** used for a **no-show charge**. The card must be saved through the payment provider for a later charge, not charged at booking.
+- **Priority:** Must, but not to be started now.
+
+### Still open
+
+1. **Payment provider:** which provider should store the card for no-show charges (for example Stripe SetupIntent)?
+2. **Confirmation:** should the bot ask for confirmation before creating the booking?
+3. **No-show policy:** the charge amount, when a booking counts as a no-show, and who can trigger the charge.
+
+### Original questions
 
 1. **Time and phone:** are time of booking and phone number mandatory? They are listed under Mandatory fields without an asterisk.
 2. **Card details:** what are they for (a deposit, a no-show guarantee or a charge), and which payment provider should be used?
