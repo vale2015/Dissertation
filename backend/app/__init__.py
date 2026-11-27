@@ -46,6 +46,25 @@ BLUEPRINT_PERMISSIONS = {
 }
 
 
+# Matches the Vercel platform default so the deployed value is not weakened.
+HSTS_POLICY = "max-age=63072000; includeSubDomains; preload"
+
+# The API needs no powerful browser features.
+PERMISSIONS_POLICY = (
+    "accelerometer=(), browsing-topics=(), camera=(), display-capture=(), "
+    "geolocation=(), gyroscope=(), magnetometer=(), microphone=(), "
+    "payment=(), usb=()"
+)
+
+
+def _is_https_request():
+    # Vercel and other proxies terminate TLS and report the original scheme.
+    if request.is_secure:
+        return True
+    forwarded_proto = request.headers.get("X-Forwarded-Proto", "")
+    return forwarded_proto.split(",")[0].strip().lower() == "https"
+
+
 def create_app():
     # Create the main Flask application.
     app = Flask(__name__)
@@ -109,6 +128,11 @@ def create_app():
         response.headers[
             "Content-Security-Policy"
         ] = "default-src 'self'"
+        response.headers["Permissions-Policy"] = PERMISSIONS_POLICY
+
+        # Browsers ignore HSTS over plain HTTP, so only send it on HTTPS.
+        if _is_https_request():
+            response.headers["Strict-Transport-Security"] = HSTS_POLICY
 
         return response
 
