@@ -46,9 +46,9 @@ These destinations were checked through the connected services on 8 November 202
 | Documentation index | https://github.com/vale2015/RFS/blob/main/docs/README.md | Current document locations after the documentation reorganization. |
 | GitHub checks | https://github.com/vale2015/RFS/actions | Relevant workflow results for the exact commit under review. |
 | Trello board | https://trello.com/b/vF796eiJ/rfs-backlog-tasks | The RFS BACKLOG TASKS visual mirror; match cards to stable tracker numbers. |
-| Vercel frontend project | https://vercel.com/valeriogerardi-5538s-projects/dissertation | Frontend deployments, exact deployed commit, build/runtime logs, and environment scope. |
-| Frontend entry URL | https://dissertation-valeriogerardi-5538s-projects.vercel.app/ | Application entry point returned by Vercel project metadata. |
-| Vercel backend project | https://vercel.com/valeriogerardi-5538s-projects/dissertation-backend | Backend deployments, exact deployed commit, build/runtime logs, and environment scope. |
+| Vercel frontend project | https://vercel.com/valeriogerardi-5538s-projects/rfs | Frontend deployments, exact deployed commit, build/runtime logs, and environment scope. |
+| Frontend entry URL | https://rfs-valeriogerardi-5538s-projects.vercel.app/ | Application entry point (the old dissertation-valeriogerardi-5538s-projects.vercel.app address is kept as an alias). Returned by Vercel project metadata. |
+| Vercel backend project | https://vercel.com/valeriogerardi-5538s-projects/rfs-backend | Backend deployments, exact deployed commit, build/runtime logs, and environment scope. |
 | Backend entry URL | https://dissertation-backend-coral.vercel.app/ | Backend host returned by Vercel domain metadata; consult the code for endpoint paths. |
 | Supabase project | https://supabase.com/dashboard/project/szvihzuaybmqkxwkoyli | Dissertation Project: current database and applied migration evidence when relevant to the task. |
 
@@ -61,8 +61,8 @@ These destinations were checked through the connected services on 8 November 202
 | Trello board | `6ae4dee9466522b9f1a2e03e` |
 | Trello board ARI | `ari:cloud:trello::board/workspace/663e11a16b3c43e0d91d1a4e/6ae4dee9466522b9f1a2e03e` |
 | Vercel team | `team_KGUi66NBGRaYuf8ectrvPEG9`; slug `valeriogerardi-5538s-projects` |
-| Vercel frontend | `dissertation`; `prj_EK0npFGJxfkzxdGJBKhpB0OC1ab2` |
-| Vercel backend | `dissertation-backend`; `prj_MNn4dSKSDfwen8fzF6FohH27v8Aj` |
+| Vercel frontend | `rfs` (renamed from `dissertation`); `prj_EK0npFGJxfkzxdGJBKhpB0OC1ab2` |
+| Vercel backend | `rfs-backend` (renamed from `dissertation-backend`); `prj_MNn4dSKSDfwen8fzF6FohH27v8Aj` |
 | Supabase | `Dissertation Project`; project ref `szvihzuaybmqkxwkoyli` |
 
 ### Trello list destinations

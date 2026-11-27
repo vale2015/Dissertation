@@ -64,7 +64,7 @@ From `frontend/`, run `npm run lint`, `npm run test:unit`, `npm run test:compone
 
 ## Deployment and verification
 
-GitHub `main` is connected to separate Vercel frontend and backend projects. The [live frontend](https://dissertation-valeriogerardi-5538s-projects.vercel.app/) is a controlled prototype, not a claim of commercial readiness. Apply and verify new Supabase migrations before code that depends on them is released. After deployment, check health, authenticated manager and restricted-role journeys, relevant data changes, and runtime errors. [The tracker](docs/product/IMPROVEMENT_TRACKER.md) records Git, Supabase, Vercel, and end-to-end verification separately.
+GitHub `main` is connected to separate Vercel frontend and backend projects. The [live frontend](https://rfs-valeriogerardi-5538s-projects.vercel.app/) is a controlled prototype, not a claim of commercial readiness. Apply and verify new Supabase migrations before code that depends on them is released. After deployment, check health, authenticated manager and restricted-role journeys, relevant data changes, and runtime errors. [The tracker](docs/product/IMPROVEMENT_TRACKER.md) records Git, Supabase, Vercel, and end-to-end verification separately.
 
 ## PM-led agentic delivery team
 
