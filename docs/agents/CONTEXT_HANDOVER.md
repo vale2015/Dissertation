@@ -4,6 +4,8 @@
 
 - **#76:** STANDARD. Backend engineer (Sonnet) then independent backend reviewer (Opus), which passed first time. A shared helper returns `INTERNAL_ERROR` with a generic message and logs the exception; 11 sites fixed; 12 new tests; full backend suite 298 passed, 7 skipped. Committed `311a41e` and pushed to main. Both Vercel production builds READY. Live `/api/health/` 200 and unauthenticated `/api/demand/stats` 401; live 500 body not forced. PM accepted; tracker Done, Trello DONE.
 - **#68:** `rfs76-generic-500s` captured closed and refreshed after the analyst review. Average input check met; root share 50.9% narrowly missed. Actions 7 and 9 in [optimisation actions](TOKEN_USAGE_OPTIMISATION_ACTIONS.md).
+- **Task selection rule (PM, always follow):** In Review first to completion, then most urgent In Progress; never READY unless the PM names it (`2e282a7`). #70 PM-accepted and Done (`63cce84`).
+- **#68 action 9:** `packet.mjs --next` (`c08791c`, independent review passed, 55/56 tool tests, 1 known skip). Measured as `rfs68-packet-next-stage` in the continued root session (label says fresh in error). Follow-up: save the derived packet input. #68 stays Partial.
 - **Unchanged:** Supabase schema and data; no manual deployments.
 
 ## 27 November (end of day) - security fixes, backlog additions, #72 done, #68 baselines
